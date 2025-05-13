@@ -8,7 +8,6 @@
         "build-storybook": "storybook build"
     },
     "dependencies": {
-        "dotenv": "^16.5.0",
         "lit": "^3.3.0",
         "qr-creator": "^1.0.0"
     },
