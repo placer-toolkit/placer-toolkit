@@ -1,0 +1,79 @@
+import { CSSResultGroup, LitElement, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { watch } from "../../internal/watch.ts";
+import { emit } from "../../internal/emit.ts";
+import { styles } from "./resize-observer.styles.ts";
+
+@customElement("pc-resize-observer")
+export class PcResizeObserver extends LitElement {
+    static styles: CSSResultGroup = styles;
+
+    private resizeObserver!: ResizeObserver;
+    private observedElements: HTMLElement[] = [];
+
+    @property({ type: Boolean, reflect: true }) disabled = false;
+
+    connectedCallback() {
+        super.connectedCallback();
+
+        this.resizeObserver = new ResizeObserver(
+            (entries: ResizeObserverEntry[]) => {
+                emit(this, "pc-resize", {
+                    detail: { entries },
+                });
+            }
+        );
+
+        if (!this.disabled) {
+            this.startObserver();
+        }
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.stopObserver();
+    }
+
+    private handleSlotChange() {
+        if (!this.disabled) {
+            this.startObserver();
+        }
+    }
+
+    private startObserver() {
+        const slot = this.shadowRoot!.querySelector("slot");
+
+        if (slot !== null) {
+            const elements = slot.assignedElements({
+                flatten: true,
+            }) as HTMLElement[];
+
+            this.observedElements.forEach((element) =>
+                this.resizeObserver.unobserve(element)
+            );
+            this.observedElements = [];
+
+            elements.forEach((element) => {
+                this.resizeObserver.observe(element);
+                this.observedElements.push(element);
+            });
+        }
+    }
+
+    private stopObserver() {
+        this.resizeObserver.disconnect();
+    }
+
+    @watch("disabled", { waitUntilFirstUpdate: true })
+    handleDisabledChange() {
+        if (this.disabled) {
+            this.stopObserver();
+        } else {
+            this.startObserver();
+        }
+    }
+
+    render() {
+        return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+    }
+}

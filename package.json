@@ -1,0 +1,27 @@
+{
+    "name": "placer-toolkit",
+    "type": "module",
+    "private": "true",
+    "version": "0.1.0",
+    "scripts": {
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
+    },
+    "dependencies": {
+        "dotenv": "^16.5.0",
+        "lit": "^3.3.0",
+        "qr-creator": "^1.0.0"
+    },
+    "devDependencies": {
+        "@chromatic-com/storybook": "^3.2.6",
+        "@storybook/addon-essentials": "^8.6.12",
+        "@storybook/blocks": "^8.6.12",
+        "@storybook/experimental-addon-test": "^8.6.12",
+        "@storybook/test": "^8.6.12",
+        "@storybook/web-components": "^8.6.12",
+        "@storybook/web-components-vite": "^8.6.12",
+        "chromatic": "^11.28.2",
+        "storybook": "^8.6.12",
+        "typescript": "^5.8.3"
+    }
+}
