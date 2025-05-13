@@ -19,8 +19,28 @@ const meta: Meta = {
         },
         disabled: { control: "boolean" },
         download: { control: "text" },
+        form: { control: "text" },
+        formAction: { control: "text" },
+        formEnctype: {
+            control: "select",
+            options: [
+                "application/x-www-form-url-encoded",
+                "multipart/form-data",
+                "text/plain",
+            ],
+        },
+        formMethod: {
+            control: "select",
+            options: ["GET", "POST"],
+        },
+        formNoValidate: { control: "boolean" },
+        formTarget: {
+            control: "select",
+            options: ["_self", "_blank", "_parent", "_top"],
+        },
         href: { control: "text" },
         label: { control: "text" },
+        name: { control: "text" },
         outlined: { control: "boolean" },
         pill: { control: "boolean" },
         prefix: { control: "text" },
@@ -38,13 +58,21 @@ const meta: Meta = {
             control: "select",
             options: ["button", "submit", "reset"],
         },
+        value: { control: "text" },
     },
     args: {
         appearance: "default",
         disabled: false,
         download: undefined,
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
         href: undefined,
         label: "Button",
+        name: undefined,
         outlined: false,
         pill: false,
         prefix: undefined,
@@ -53,6 +81,7 @@ const meta: Meta = {
         suffix: undefined,
         target: undefined,
         type: "button",
+        value: undefined,
     },
 };
 
@@ -65,8 +94,15 @@ export const Default: Story = {
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -75,6 +111,7 @@ export const Default: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -83,7 +120,15 @@ export const Default: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -104,14 +149,29 @@ export const Primary: Story = {
         rel: "noreferrer noopener",
         size: "medium",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -120,6 +180,7 @@ export const Primary: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -128,7 +189,15 @@ export const Primary: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -149,14 +218,29 @@ export const Large: Story = {
         rel: "noreferrer noopener",
         size: "large",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -165,6 +249,7 @@ export const Large: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -173,7 +258,15 @@ export const Large: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -194,14 +287,29 @@ export const Small: Story = {
         rel: "noreferrer noopener",
         size: "small",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -210,6 +318,7 @@ export const Small: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -218,7 +327,15 @@ export const Small: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -241,14 +358,29 @@ export const Link: Story = {
         size: "medium",
         type: "button",
         target: "_blank",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -257,6 +389,7 @@ export const Link: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -265,7 +398,15 @@ export const Link: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -286,14 +427,29 @@ export const Disabled: Story = {
         rel: "noreferrer noopener",
         size: "medium",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -302,6 +458,7 @@ export const Disabled: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -310,7 +467,15 @@ export const Disabled: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -331,14 +496,29 @@ export const Outlined: Story = {
         rel: "noreferrer noopener",
         size: "medium",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -347,6 +527,7 @@ export const Outlined: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -355,7 +536,15 @@ export const Outlined: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
@@ -376,14 +565,29 @@ export const Pill: Story = {
         rel: "noreferrer noopener",
         size: "medium",
         type: "button",
+        form: undefined,
+        formAction: undefined,
+        formEnctype: undefined,
+        formMethod: undefined,
+        formNoValidate: undefined,
+        formTarget: undefined,
+        name: undefined,
+        value: undefined,
     },
 
     render: ({
         appearance,
         disabled,
         download,
+        form,
+        formAction,
+        formEnctype,
+        formMethod,
+        formNoValidate,
+        formTarget,
         href,
         label,
+        name,
         outlined,
         pill,
         prefix,
@@ -392,6 +596,7 @@ export const Pill: Story = {
         suffix,
         target,
         type,
+        value,
     }) => html`
         <pc-button
             type=${type}
@@ -400,7 +605,15 @@ export const Pill: Story = {
             href=${href}
             target=${target}
             rel=${rel}
+            value=${value}
             download=${download}
+            form=${form}
+            formAction=${formAction}
+            formEnctype=${formEnctype}
+            formMethod=${formMethod}
+            ?formNoValidate=${formNoValidate}
+            formTarget=${formTarget}
+            name=${name}
             ?outlined=${outlined}
             ?pill=${pill}
             ?disabled=${disabled}
