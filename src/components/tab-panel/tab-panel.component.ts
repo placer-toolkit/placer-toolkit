@@ -1,8 +1,8 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { watch } from "../../internal/watch.ts";
-import { styles } from "./tab-panel.styles.ts";
+import { watch } from "../../internal/watch.js";
+import { styles } from "./tab-panel.styles.js";
 
 let id = 0;
 

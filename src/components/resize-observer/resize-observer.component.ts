@@ -1,8 +1,8 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { styles } from "./resize-observer.styles.ts";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { styles } from "./resize-observer.styles.js";
 
 @customElement("pc-resize-observer")
 export class PcResizeObserver extends LitElement {

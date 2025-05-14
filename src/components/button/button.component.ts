@@ -5,12 +5,12 @@ import { ifDefined } from "lit/directives/if-defined.js";
 import {
     FormControlController,
     validValidityState,
-} from "../../internal/form.ts";
-import { HasSlotController } from "../../internal/slot.ts";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { styles } from "./button.styles.ts";
-import { PcIcon } from "../icon/icon.ts";
+} from "../../internal/form.js";
+import { HasSlotController } from "../../internal/slot.js";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { styles } from "./button.styles.js";
+import { PcIcon } from "../icon/icon.js";
 
 @customElement("pc-button")
 export class PcButton extends LitElement {

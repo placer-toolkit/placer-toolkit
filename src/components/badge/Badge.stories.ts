@@ -1,6 +1,6 @@
 import { html } from "lit";
 import type { Meta, StoryObj } from "@storybook/web-components";
-import "./badge.ts";
+import "./badge.js";
 
 const meta: Meta = {
     title: "Components/Badge",

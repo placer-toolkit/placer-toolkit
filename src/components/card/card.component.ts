@@ -1,8 +1,8 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { HasSlotController } from "../../internal/slot.ts";
-import { styles } from "./card.styles.ts";
+import { HasSlotController } from "../../internal/slot.js";
+import { styles } from "./card.styles.js";
 
 @customElement("pc-card")
 export class PcCard extends LitElement {

@@ -1,4 +1,4 @@
-import { PcTab } from "./tab.component.ts";
+import { PcTab } from "./tab.component.js";
 
-export * from "./tab.component.ts";
+export * from "./tab.component.js";
 export default PcTab;

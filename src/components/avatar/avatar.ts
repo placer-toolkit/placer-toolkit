@@ -1,4 +1,4 @@
-import { PcAvatar } from "./avatar.component.ts";
+import { PcAvatar } from "./avatar.component.js";
 
-export * from "./avatar.component.ts";
+export * from "./avatar.component.js";
 export default PcAvatar;

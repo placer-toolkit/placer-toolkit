@@ -1,4 +1,4 @@
-import { PcIcon } from "./icon.component.ts";
+import { PcIcon } from "./icon.component.js";
 
-export * from "./icon.component.ts";
+export * from "./icon.component.js";
 export default PcIcon;

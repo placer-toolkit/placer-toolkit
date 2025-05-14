@@ -9,11 +9,11 @@ import {
 import { classMap } from "lit/directives/class-map.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { clamp } from "../../internal/math.ts";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { PcIcon } from "../icon/icon.ts";
-import { styles } from "./rating.styles.ts";
+import { clamp } from "../../internal/math.js";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { PcIcon } from "../icon/icon.js";
+import { styles } from "./rating.styles.js";
 
 @customElement("pc-rating")
 export class PcRating extends LitElement {

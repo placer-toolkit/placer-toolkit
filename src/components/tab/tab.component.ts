@@ -1,8 +1,8 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import PcIconButton from "../icon-button/icon-button.ts";
-import { styles } from "./tab.styles.ts";
+import PcIconButton from "../icon-button/icon-button.js";
+import { styles } from "./tab.styles.js";
 
 let id = 0;
 

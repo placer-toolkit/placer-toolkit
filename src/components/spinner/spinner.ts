@@ -1,4 +1,4 @@
-import { PcSpinner } from "./spinner.component.ts";
+import { PcSpinner } from "./spinner.component.js";
 
-export * from "./spinner.component.ts";
+export * from "./spinner.component.js";
 export default PcSpinner;

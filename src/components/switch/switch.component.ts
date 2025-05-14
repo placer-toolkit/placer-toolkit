@@ -3,12 +3,12 @@ import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
-import { defaultValue } from "../../internal/default-value.ts";
-import { FormControlController } from "../../internal/form.ts";
-import { HasSlotController } from "../../internal/slot.ts";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { styles } from "./switch.styles.ts";
+import { defaultValue } from "../../internal/default-value.js";
+import { FormControlController } from "../../internal/form.js";
+import { HasSlotController } from "../../internal/slot.js";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { styles } from "./switch.styles.js";
 
 @customElement("pc-switch")
 export class PcSwitch extends LitElement {

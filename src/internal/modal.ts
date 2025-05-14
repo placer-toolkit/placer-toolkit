@@ -1,5 +1,5 @@
-import { activeElements, getDeepestActiveElement } from "./active-elements.ts";
-import { getTabbableElements } from "./tabbable.ts";
+import { activeElements, getDeepestActiveElement } from "./active-elements.js";
+import { getTabbableElements } from "./tabbable.js";
 
 let activeModals: HTMLElement[] = [];
 

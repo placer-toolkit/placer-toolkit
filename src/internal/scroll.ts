@@ -1,4 +1,4 @@
-import { getOffset } from "./offset.ts";
+import { getOffset } from "./offset.js";
 
 const locks = new Set();
 

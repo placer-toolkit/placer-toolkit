@@ -1,9 +1,9 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { watch } from "../../internal/watch.ts";
+import { watch } from "../../internal/watch.js";
 import QrCreator from "qr-creator";
-import { styles } from "./qr-code.styles.ts";
+import { styles } from "./qr-code.styles.js";
 
 @customElement("pc-qr-code")
 export class PcQrCode extends LitElement {

@@ -1,4 +1,4 @@
-import { PcResizeObserver } from "./resize-observer.component.ts";
+import { PcResizeObserver } from "./resize-observer.component.js";
 
-export * from "./resize-observer.component.ts";
+export * from "./resize-observer.component.js";
 export default PcResizeObserver;

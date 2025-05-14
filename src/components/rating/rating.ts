@@ -1,4 +1,4 @@
-import { PcRating } from "./rating.component.ts";
+import { PcRating } from "./rating.component.js";
 
-export * from "./rating.component.ts";
+export * from "./rating.component.js";
 export default PcRating;

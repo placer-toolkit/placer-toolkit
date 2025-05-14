@@ -1,4 +1,4 @@
 export {
     registerIconLibrary,
     unregisterIconLibrary,
-} from "../components/icon/library.ts";
+} from "../components/icon/library.js";

@@ -1,6 +1,6 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement } from "lit/decorators.js";
-import { styles } from "./spinner.styles.ts";
+import { styles } from "./spinner.styles.js";
 
 @customElement("pc-spinner")
 export class PcSpinner extends LitElement {

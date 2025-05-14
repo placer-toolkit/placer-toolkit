@@ -1,4 +1,4 @@
-import { PcQrCode } from "./qr-code.component.ts";
+import { PcQrCode } from "./qr-code.component.js";
 
-export * from "./qr-code.component.ts";
+export * from "./qr-code.component.js";
 export default PcQrCode;

@@ -1,4 +1,4 @@
-import { PcTabPanel } from "./tab-panel.component.ts";
+import { PcTabPanel } from "./tab-panel.component.js";
 
-export * from "./tab-panel.component.ts";
+export * from "./tab-panel.component.js";
 export default PcTabPanel;

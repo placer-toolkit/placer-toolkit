@@ -29,24 +29,24 @@ export async function discover(root: Element | ShadowRoot) {
 
 // Giving an object of all the components helps with loading speeds
 const components = {
-    "pc-avatar": () => import("./components/avatar/avatar.ts"),
-    "pc-badge": () => import("./components/badge/badge.ts"),
-    "pc-button": () => import("./components/button/button.ts"),
-    "pc-card": () => import("./components/card/card.ts"),
-    "pc-checkbox": () => import("./components/checkbox/checkbox.ts"),
-    "pc-icon": () => import("./components/icon/icon.ts"),
-    "pc-icon-button": () => import("./components/icon-button/icon-button.ts"),
-    "pc-qr-code": () => import("./components/qr-code/qr-code.ts"),
-    "pc-rating": () => import("./components/rating/rating.ts"),
+    "pc-avatar": () => import("./components/avatar/avatar.js"),
+    "pc-badge": () => import("./components/badge/badge.js"),
+    "pc-button": () => import("./components/button/button.js"),
+    "pc-card": () => import("./components/card/card.js"),
+    "pc-checkbox": () => import("./components/checkbox/checkbox.js"),
+    "pc-icon": () => import("./components/icon/icon.js"),
+    "pc-icon-button": () => import("./components/icon-button/icon-button.js"),
+    "pc-qr-code": () => import("./components/qr-code/qr-code.js"),
+    "pc-rating": () => import("./components/rating/rating.js"),
     "pc-resize-observer": () =>
-        import("./components/resize-observer/resize-observer.ts"),
-    "pc-spinner": () => import("./components/spinner/spinner.ts"),
-    "pc-switch": () => import("./components/switch/switch.ts"),
-    "pc-tab": () => import("./components/tab/tab.ts"),
-    "pc-tab-group": () => import("./components/tab-group/tab-group.ts"),
-    "pc-tab-panel": () => import("./components/tab-panel/tab-panel.ts"),
+        import("./components/resize-observer/resize-observer.js"),
+    "pc-spinner": () => import("./components/spinner/spinner.js"),
+    "pc-switch": () => import("./components/switch/switch.js"),
+    "pc-tab": () => import("./components/tab/tab.js"),
+    "pc-tab-group": () => import("./components/tab-group/tab-group.js"),
+    "pc-tab-panel": () => import("./components/tab-panel/tab-panel.js"),
     "pc-visually-hidden": () =>
-        import("./components/visually-hidden/visually-hidden.ts"),
+        import("./components/visually-hidden/visually-hidden.js"),
 };
 
 async function register(tagName: string): Promise<void> {

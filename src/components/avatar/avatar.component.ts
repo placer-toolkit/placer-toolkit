@@ -1,10 +1,10 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { PcIcon } from "../icon/icon.ts";
-import { styles } from "./avatar.styles.ts";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { PcIcon } from "../icon/icon.js";
+import { styles } from "./avatar.styles.js";
 
 @customElement("pc-avatar")
 export class PcAvatar extends LitElement {

@@ -1,4 +1,4 @@
-import type { IconLibrary } from "./library.ts";
+import type { IconLibrary } from "./library.js";
 
 const library: IconLibrary = {
     name: "default",

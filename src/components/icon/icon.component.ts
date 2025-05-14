@@ -3,14 +3,14 @@ import {
     type IconLibrary,
     unwatchIcon,
     watchIcon,
-} from "./library.ts";
+} from "./library.js";
 import { LitElement, html } from "lit";
 import type { CSSResultGroup, HTMLTemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { isTemplateResult } from "lit/directive-helpers.js";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { styles } from "./icon.styles.ts";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { styles } from "./icon.styles.js";
 
 const CACHEABLE_ERROR = Symbol();
 const RETRYABLE_ERROR = Symbol();

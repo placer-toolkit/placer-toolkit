@@ -7,15 +7,15 @@ import {
     state,
 } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { scrollIntoView } from "../../internal/scroll.ts";
-import { watch } from "../../internal/watch.ts";
-import { emit } from "../../internal/emit.ts";
-import { PcIconButton } from "../icon-button/icon-button.ts";
-import { PcResizeObserver } from "../resize-observer/resize-observer.ts";
-import type { PcTab } from "../tab/tab.ts";
-import type { PcTabPanel } from "../tab-panel/tab-panel.ts";
-import { styles } from "./tab-group.styles.ts";
-import "../../internal/scrollend-polyfill.ts";
+import { scrollIntoView } from "../../internal/scroll.js";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { PcIconButton } from "../icon-button/icon-button.js";
+import { PcResizeObserver } from "../resize-observer/resize-observer.js";
+import type { PcTab } from "../tab/tab.js";
+import type { PcTabPanel } from "../tab-panel/tab-panel.js";
+import { styles } from "./tab-group.styles.js";
+import "../../internal/scrollend-polyfill.js";
 
 @customElement("pc-tab-group")
 export class PcTabGroup extends LitElement {

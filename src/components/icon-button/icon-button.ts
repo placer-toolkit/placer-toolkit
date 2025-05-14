@@ -1,4 +1,4 @@
-import { PcIconButton } from "./icon-button.component.ts";
+import { PcIconButton } from "./icon-button.component.js";
 
-export * from "./icon-button.component.ts";
+export * from "./icon-button.component.js";
 export default PcIconButton;

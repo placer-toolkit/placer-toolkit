@@ -1,4 +1,4 @@
-import { PcTabGroup } from "./tab-group.component.ts";
+import { PcTabGroup } from "./tab-group.component.js";
 
-export * from "./tab-group.component.ts";
+export * from "./tab-group.component.js";
 export default PcTabGroup;

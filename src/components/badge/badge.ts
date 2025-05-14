@@ -1,4 +1,4 @@
-import { PcBadge } from "./badge.component.ts";
+import { PcBadge } from "./badge.component.js";
 
-export * from "./badge.component.ts";
+export * from "./badge.component.js";
 export default PcBadge;

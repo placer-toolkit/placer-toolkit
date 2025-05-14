@@ -1,4 +1,4 @@
-import { PcCard } from "./card.component.ts";
+import { PcCard } from "./card.component.js";
 
-export * from "./card.component.ts";
+export * from "./card.component.js";
 export default PcCard;

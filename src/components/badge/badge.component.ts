@@ -1,7 +1,7 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import { styles } from "./badge.styles.ts";
+import { styles } from "./badge.styles.js";
 
 @customElement("pc-badge")
 export class PcBadge extends LitElement {

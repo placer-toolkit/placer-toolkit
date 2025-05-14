@@ -1,4 +1,4 @@
-import { PcSwitch } from "./switch.component.ts";
+import { PcSwitch } from "./switch.component.js";
 
-export * from "./switch.component.ts";
+export * from "./switch.component.js";
 export default PcSwitch;

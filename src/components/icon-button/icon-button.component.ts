@@ -2,9 +2,9 @@ import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-import { emit } from "../../internal/emit.ts";
-import { PcIcon } from "../icon/icon.ts";
-import { styles } from "./icon-button.styles.ts";
+import { emit } from "../../internal/emit.js";
+import { PcIcon } from "../icon/icon.js";
+import { styles } from "./icon-button.styles.js";
 
 @customElement("pc-icon-button")
 export class PcIconButton extends LitElement {
