@@ -34,11 +34,11 @@ type Story = StoryObj;
 export const Default: Story = {
     render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
     `,
 };
@@ -53,11 +53,11 @@ export const Image: Story = {
 
     render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
     `,
 };
@@ -67,102 +67,70 @@ export const Initials: Story = {
         initials: "PC",
         label: "Placer Toolkit’s avatar",
         loading: "eager",
-        shape: "circle"
+        shape: "circle",
     },
 
-    render: (
-        {
-            image,
-            initials,
-            label,
-            loading,
-            shape
-        }
-    ) => html`
+    render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
-    `
+    `,
 };
 
 export const Rounded: Story = {
     args: {
         label: "Rounded user avatar",
         loading: "eager",
-        shape: "rounded"
+        shape: "rounded",
     },
 
-    render: (
-        {
-            image,
-            initials,
-            label,
-            loading,
-            shape
-        }
-    ) => html`
+    render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
-    `
+    `,
 };
 
 export const Square: Story = {
     args: {
         label: "Square user avatar",
         loading: "eager",
-        shape: "square"
+        shape: "square",
     },
 
-    render: (
-        {
-            image,
-            initials,
-            label,
-            loading,
-            shape
-        }
-    ) => html`
+    render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
-    `
+    `,
 };
 
 export const Lazy: Story = {
     args: {
         label: "Lazy‐loaded user avatar",
         loading: "lazy",
-        shape: "circle"
+        shape: "circle",
     },
 
-    render: (
-        {
-            image,
-            initials,
-            label,
-            loading,
-            shape
-        }
-    ) => html`
+    render: ({ image, initials, label, loading, shape }) => html`
         <pc-avatar
-            image="${image}"
-            initials="${initials}"
-            label="${label}"
-            loading="${loading}"
-            shape="${shape}"
+            image=${image}
+            initials=${initials}
+            label=${label}
+            loading=${loading}
+            shape=${shape}
         ></pc-avatar>
-    `
+    `,
 };

@@ -28,11 +28,7 @@ type Story = StoryObj;
 
 export const Default: Story = {
     render: ({ appearance, label, rounded, pulse }) => html`
-        <pc-badge
-            appearance="${appearance}"
-            ?rounded=${rounded}
-            ?pulse=${pulse}
-        >
+        <pc-badge appearance=${appearance} ?rounded=${rounded} ?pulse=${pulse}>
             ${label}
         </pc-badge>
     `,
@@ -47,11 +43,7 @@ export const Success: Story = {
     },
 
     render: ({ appearance, label, rounded, pulse }) => html`
-        <pc-badge
-            appearance="${appearance}"
-            ?rounded=${rounded}
-            ?pulse=${pulse}
-        >
+        <pc-badge appearance=${appearance} ?rounded=${rounded} ?pulse=${pulse}>
             ${label}
         </pc-badge>
     `,
@@ -66,11 +58,7 @@ export const Rounded: Story = {
     },
 
     render: ({ appearance, label, rounded, pulse }) => html`
-        <pc-badge
-            appearance="${appearance}"
-            ?rounded=${rounded}
-            ?pulse=${pulse}
-        >
+        <pc-badge appearance=${appearance} ?rounded=${rounded} ?pulse=${pulse}>
             ${label}
         </pc-badge>
     `,
@@ -85,11 +73,7 @@ export const Pulse: Story = {
     },
 
     render: ({ appearance, label, rounded, pulse }) => html`
-        <pc-badge
-            appearance="${appearance}"
-            ?rounded=${rounded}
-            ?pulse=${pulse}
-        >
+        <pc-badge appearance=${appearance} ?rounded=${rounded} ?pulse=${pulse}>
             ${label}
         </pc-badge>
     `,
