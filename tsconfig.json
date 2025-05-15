@@ -1,18 +1,36 @@
 {
     "compilerOptions": {
+        // Output
         "target": "ES2020",
         "module": "ESNext",
         "moduleResolution": "Node",
-        "lib": ["DOM", "ES2020"],
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "outDir": "dist",
+        "rootDir": "src",
+
+        // Declarations
         "declaration": true,
         "declarationDir": "dist",
-        "rootDir": "src",
-        "outDir": "dist",
+        "emitDeclarationOnly": false,
+
+        // Decorators
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+
+        // Helpers
+        "importHelpers": true,
+        "noEmitHelpers": true,
+        "isolatedModules": true,
+
+        // Type checking
         "strict": true,
-        "sourceMap": false,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noUncheckedIndexedAccess": true,
+        "skipLibCheck": true,
+
+        // Source maps
+        "sourceMap": false
     },
     "include": ["src"],
     "exclude": [
