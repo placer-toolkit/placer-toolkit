@@ -1,6 +1,6 @@
-import { Decorator } from "@storybook/web-components";
-import { themes } from "@storybook/theming";
-import type { Preview } from "@storybook/web-components";
+import { Decorator } from "@storybook/web-components-vite";
+import { themes } from "storybook/theming";
+import type { Preview } from "@storybook/web-components-vite";
 import "./storybook-overrides.css";
 
 const prefersDark =
@@ -81,6 +81,8 @@ const preview: Preview = {
             },
         },
     },
+
+    tags: ["autodocs"]
 };
 
 export default preview;

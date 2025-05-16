@@ -5,19 +5,17 @@ const config: StorybookConfig = {
         "../src/components/**/*.mdx",
         "../src/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     ],
+
     addons: [
-        "@storybook/addon-essentials",
-        "@storybook/experimental-addon-test",
+        "@storybook/addon-vitest",
         "@storybook/addon-docs",
-        "@chromatic-com/storybook",
+        "@chromatic-com/storybook"
     ],
+
     framework: {
         name: "@storybook/web-components-vite",
         options: {},
-    },
-    docs: {
-        autodocs: true,
-    },
+    }
 };
 
 export default config;
