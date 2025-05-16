@@ -97,3 +97,174 @@ export const Default: Story = {
         </style>
     `,
 };
+
+export const Sizing: Story = {
+    args: {
+        disabled: false,
+        iconStyle: "solid",
+        label: "A large icon button with a gear icon",
+        library: "default",
+        name: "gear",
+        fontSize: "5rem",
+        colorRest: "var(--pc-color-neutral-600)",
+        colorHover: "var(--pc-color-primary-600)",
+        colorPressed: "var(--pc-color-primary-500)",
+    },
+
+    render: ({
+        disabled,
+        download,
+        href,
+        iconStyle,
+        label,
+        library,
+        name,
+        src,
+        target,
+        fontSize,
+        colorRest,
+        colorHover,
+        colorPressed,
+    }) => html`
+        <pc-icon-button
+            library=${library}
+            iconStyle=${iconStyle}
+            name=${name}
+            label=${label}
+            src=${src}
+            download=${download}
+            href=${href}
+            target=${target}
+            ?disabled=${disabled}
+        ></pc-icon-button>
+
+        <style>
+            pc-icon-button::part(base) {
+                color: ${colorRest};
+                font-size: ${fontSize};
+            }
+
+            pc-icon-button::part(base):hover {
+                color: ${colorHover};
+            }
+
+            pc-icon-button::part(base):hover:active {
+                color: ${colorPressed};
+            }
+        </style>
+    `,
+};
+
+export const Colour: Story = {
+    args: {
+        disabled: false,
+        iconStyle: "solid",
+        label: "An icon button with a warning icon",
+        library: "default",
+        name: "triangle-exclamation",
+        fontSize: "1rem",
+        colorRest: "var(--pc-color-neutral-600)",
+        colorHover: "var(--pc-color-warning-600)",
+        colorPressed: "var(--pc-color-warning-500)",
+    },
+
+    render: ({
+        disabled,
+        download,
+        href,
+        iconStyle,
+        label,
+        library,
+        name,
+        src,
+        target,
+        fontSize,
+        colorRest,
+        colorHover,
+        colorPressed,
+    }) => html`
+        <pc-icon-button
+            library=${library}
+            iconStyle=${iconStyle}
+            name=${name}
+            label=${label}
+            src=${src}
+            download=${download}
+            href=${href}
+            target=${target}
+            ?disabled=${disabled}
+        ></pc-icon-button>
+
+        <style>
+            pc-icon-button::part(base) {
+                color: ${colorRest};
+                font-size: ${fontSize};
+            }
+
+            pc-icon-button::part(base):hover {
+                color: ${colorHover};
+            }
+
+            pc-icon-button::part(base):hover:active {
+                color: ${colorPressed};
+            }
+        </style>
+    `,
+};
+
+export const Disabled: Story = {
+    args: {
+        disabled: true,
+        iconStyle: "solid",
+        label: "A disabled icon button with a gear icon",
+        library: "default",
+        name: "gear",
+        fontSize: "1rem",
+        colorRest: "var(--pc-color-neutral-600)",
+        colorHover: "var(--pc-color-primary-600)",
+        colorPressed: "var(--pc-color-primary-500)",
+    },
+
+    render: ({
+        disabled,
+        download,
+        href,
+        iconStyle,
+        label,
+        library,
+        name,
+        src,
+        target,
+        fontSize,
+        colorRest,
+        colorHover,
+        colorPressed,
+    }) => html`
+        <pc-icon-button
+            library=${library}
+            iconStyle=${iconStyle}
+            name=${name}
+            label=${label}
+            src=${src}
+            download=${download}
+            href=${href}
+            target=${target}
+            ?disabled=${disabled}
+        ></pc-icon-button>
+
+        <style>
+            pc-icon-button::part(base) {
+                color: ${colorRest};
+                font-size: ${fontSize};
+            }
+
+            pc-icon-button::part(base):hover {
+                color: ${colorHover};
+            }
+
+            pc-icon-button::part(base):hover:active {
+                color: ${colorPressed};
+            }
+        </style>
+    `,
+};

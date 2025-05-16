@@ -26,7 +26,6 @@
         "strict": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "noUncheckedIndexedAccess": true,
         "skipLibCheck": true,
 
         // Source maps
