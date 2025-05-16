@@ -1,0 +1,99 @@
+import { html } from "lit";
+import type { Meta, StoryObj } from "@storybook/web-components";
+import "./icon-button.js";
+
+const meta: Meta = {
+    title: "Components/IconButton",
+    component: "pc-icon-button",
+    argTypes: {
+        disabled: { control: "boolean" },
+        download: { control: "text" },
+        href: { control: "text" },
+        iconStyle: {
+            control: "select",
+            options: ["solid", "regular", "brands"],
+        },
+        label: { control: "text" },
+        library: { control: "text" },
+        name: { control: "text" },
+        src: { control: "text" },
+        target: {
+            control: "select",
+            options: ["_blank", "_parent", "_self"],
+        },
+
+        // CSS styles
+        fontSize: { control: "text" },
+        colorRest: { control: "color" },
+        colorHover: { control: "color" },
+        colorPressed: { control: "color" },
+    },
+    args: {
+        disabled: false,
+        download: undefined,
+        href: undefined,
+        iconStyle: "solid",
+        label: "An icon button with a gear icon",
+        library: "default",
+        name: "gear",
+        src: undefined,
+        target: undefined,
+
+        // CSS styles
+        fontSize: "1rem",
+        colorRest: "var(--pc-color-neutral-600)",
+        colorHover: "var(--pc-color-primary-600)",
+        colorPressed: "var(--pc-color-primary-500)",
+    },
+};
+
+export default meta;
+
+type Story = StoryObj;
+
+export const Default: Story = {
+    render: ({
+        disabled,
+        download,
+        href,
+        iconStyle,
+        label,
+        library,
+        name,
+        src,
+        target,
+
+        // CSS styles
+        fontSize,
+        colorRest,
+        colorHover,
+        colorPressed,
+    }) => html`
+        <pc-icon-button
+            library=${library}
+            iconStyle=${iconStyle}
+            name=${name}
+            label=${label}
+            src=${src}
+            download=${download}
+            href=${href}
+            target=${target}
+            ?disabled=${disabled}
+        ></pc-icon-button>
+
+        <style>
+            pc-icon-button::part(base) {
+                color: ${colorRest};
+                font-size: ${fontSize};
+            }
+
+            pc-icon-button::part(base):hover {
+                color: ${colorHover};
+            }
+
+            pc-icon-button::part(base):hover:active {
+                color: ${colorPressed};
+            }
+        </style>
+    `,
+};

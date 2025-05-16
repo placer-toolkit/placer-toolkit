@@ -37,10 +37,6 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
-    args: {
-        fontSize: "1rem",
-    },
-
     render: ({
         iconStyle,
         label,

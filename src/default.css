@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap");
-
 :root,
 .pc-theme-light {
     color-scheme: light;
@@ -392,10 +390,12 @@
 
     --pc-input-background-color: var(--pc-color-neutral-300);
     --pc-input-background-color-hover: var(--pc-input-background-color);
+    --pc-input-background-color-active: var(--pc-color-neutral-200);
     --pc-input-background-color-focus: var(--pc-input-background-color);
     --pc-input-background-color-disabled: var(--pc-color-neutral-100);
     --pc-input-border-color: var(--pc-color-neutral-300);
     --pc-input-border-color-hover: var(--pc-color-neutral-400);
+    --pc-input-border-color-active: var(--pc-color-neutral-200);
     --pc-input-border-color-active: var(--pc-color-neutral-200);
     --pc-input-border-color-focus: var(--pc-color-primary-600);
     --pc-input-border-color-disabled: var(--pc-color-neutral-400);
@@ -872,10 +872,12 @@
 
     --pc-input-background-color: var(--pc-color-neutral-300);
     --pc-input-background-color-hover: var(--pc-input-background-color);
+    --pc-input-background-color-active: var(--pc-color-neutral-200);
     --pc-input-background-color-focus: var(--pc-input-background-color);
     --pc-input-background-color-disabled: var(--pc-color-neutral-100);
     --pc-input-border-color: var(--pc-color-neutral-300);
     --pc-input-border-color-hover: var(--pc-color-neutral-400);
+    --pc-input-border-color-active: var(--pc-color-neutral-200);
     --pc-input-border-color-active: var(--pc-color-neutral-200);
     --pc-input-border-color-focus: var(--pc-color-primary-600);
     --pc-input-border-color-disabled: var(--pc-color-neutral-400);

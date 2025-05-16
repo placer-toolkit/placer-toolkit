@@ -7,12 +7,16 @@ const config: StorybookConfig = {
     ],
     addons: [
         "@storybook/addon-essentials",
-        "@chromatic-com/storybook",
         "@storybook/experimental-addon-test",
+        "@storybook/addon-docs",
+        "@chromatic-com/storybook",
     ],
     framework: {
         name: "@storybook/web-components-vite",
         options: {},
+    },
+    docs: {
+        autodocs: true,
     },
 };
 

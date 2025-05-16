@@ -2,7 +2,7 @@
     "name": "placer-toolkit",
     "type": "module",
     "private": "true",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "main": "dist/placer.js",
     "module": "dist/placer.js",
     "exports": {
@@ -30,6 +30,7 @@
         "@rollup/plugin-commonjs": "^28.0.3",
         "@rollup/plugin-node-resolve": "^16.0.1",
         "@rollup/plugin-typescript": "^11.1.2",
+        "@storybook/addon-docs": "^8.6.12",
         "@storybook/addon-essentials": "^8.6.12",
         "@storybook/blocks": "^8.6.12",
         "@storybook/experimental-addon-test": "^8.6.12",

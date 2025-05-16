@@ -18,7 +18,7 @@ export const styles = css`
         padding: var(--pc-spacing-xs);
         cursor: pointer;
         -webkit-appearance: none;
-        transition: all var(--pc-transition-extra-fast) ease-in-out;
+        transition: all var(--pc-transition-fast) ease-in-out;
     }
 
     .icon-button:hover:not(.icon-button.disabled),
