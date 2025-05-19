@@ -2,7 +2,7 @@
     "name": "placer-toolkit",
     "type": "module",
     "private": "true",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "main": "dist/placer.js",
     "module": "dist/placer.js",
     "exports": {
