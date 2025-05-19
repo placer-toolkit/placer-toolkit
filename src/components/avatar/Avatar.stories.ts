@@ -117,8 +117,9 @@ export const Square: Story = {
     `,
 };
 
-export const Lazy: Story = {
+export const LazyLoaded: Story = {
     args: {
+        image: "/avatar.png",
         label: "Lazy‐loaded user avatar",
         loading: "lazy",
         shape: "circle",

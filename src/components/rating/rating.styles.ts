@@ -34,6 +34,10 @@ export const styles = css`
         cursor: pointer;
     }
 
+    .rating-icons > * {
+        padding: 0.0625rem;
+    }
+
     .rating-icon-active,
     .rating-partial-filled {
         color: var(--icon-color-active);
@@ -45,8 +49,8 @@ export const styles = css`
 
     .rating-partial-filled {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: 0.0625rem;
+        left: 0.0625rem;
     }
 
     .rating-icon {
@@ -54,8 +58,12 @@ export const styles = css`
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
+    .rating-icon pc-icon::part(svg) {
+        overflow: visible;
+    }
+
     .rating-icon-hover {
-        scale: 1.1;
+        scale: 1.15;
     }
 
     .rating-disabled .rating-icons,

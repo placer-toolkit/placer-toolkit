@@ -37,17 +37,7 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
-    render: ({
-        iconStyle,
-        label,
-        library,
-        name,
-        src,
-
-        /* CSS styles */
-        fontSize,
-        color,
-    }) => html`
+    render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
             iconStyle=${iconStyle}

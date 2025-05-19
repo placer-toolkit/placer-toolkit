@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import "./icon-button.js";
 
 const meta: Meta = {
-    title: "Components/IconButton",
+    title: "Components/Icon Button",
     component: "pc-icon-button",
     argTypes: {
         disabled: { control: "boolean" },
@@ -83,16 +83,16 @@ export const Default: Story = {
 
         <style>
             pc-icon-button::part(base) {
-                color: ${colorRest};
-                font-size: ${fontSize};
+                color: ${colorRest} !important;
+                font-size: ${fontSize} !important;
             }
 
             pc-icon-button::part(base):hover {
-                color: ${colorHover};
+                color: ${colorHover} !important;
             }
 
             pc-icon-button::part(base):hover:active {
-                color: ${colorPressed};
+                color: ${colorPressed} !important;
             }
         </style>
     `,
@@ -140,16 +140,16 @@ export const Sizing: Story = {
 
         <style>
             pc-icon-button::part(base) {
-                color: ${colorRest};
-                font-size: ${fontSize};
+                color: ${colorRest} !important;
+                font-size: ${fontSize} !important;
             }
 
             pc-icon-button::part(base):hover {
-                color: ${colorHover};
+                color: ${colorHover} !important;
             }
 
             pc-icon-button::part(base):hover:active {
-                color: ${colorPressed};
+                color: ${colorPressed} !important;
             }
         </style>
     `,
@@ -197,16 +197,16 @@ export const Colour: Story = {
 
         <style>
             pc-icon-button::part(base) {
-                color: ${colorRest};
-                font-size: ${fontSize};
+                color: ${colorRest} !important;
+                font-size: ${fontSize} !important;
             }
 
             pc-icon-button::part(base):hover {
-                color: ${colorHover};
+                color: ${colorHover} !important;
             }
 
             pc-icon-button::part(base):hover:active {
-                color: ${colorPressed};
+                color: ${colorPressed} !important;
             }
         </style>
     `,
@@ -254,16 +254,16 @@ export const Disabled: Story = {
 
         <style>
             pc-icon-button::part(base) {
-                color: ${colorRest};
-                font-size: ${fontSize};
+                color: ${colorRest} !important;
+                font-size: ${fontSize} !important;
             }
 
             pc-icon-button::part(base):hover {
-                color: ${colorHover};
+                color: ${colorHover} !important;
             }
 
             pc-icon-button::part(base):hover:active {
-                color: ${colorPressed};
+                color: ${colorPressed} !important;
             }
         </style>
     `,

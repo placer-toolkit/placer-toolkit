@@ -37,7 +37,7 @@ export class PcSwitch extends LitElement {
 
     @property({ reflect: true }) form = "";
 
-    @property({ attribute: "hint" }) hint = "";
+    @property() hint = "";
 
     @property() name = "";
 

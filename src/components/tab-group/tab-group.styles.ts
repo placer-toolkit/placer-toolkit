@@ -33,7 +33,8 @@ export const styles = css`
         pointer-events: none;
     }
 
-    .tab-group-navigation-container {
+    .tab-group-navigation-container,
+    .tab-group-navigation {
         outline: none;
     }
 
@@ -192,7 +193,7 @@ export const styles = css`
 
     .tab-group-end .tab-group-indicator {
         left: 0;
-        min-height: var(--track-width);
+        min-width: var(--track-width);
         background-color: var(--indicator-color);
         border-radius: var(--pc-border-radius-pill);
     }

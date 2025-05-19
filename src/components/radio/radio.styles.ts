@@ -37,8 +37,14 @@ export const styles = css`
 
     .checked-icon {
         display: inline-flex;
-        width: calc(var(--toggle-size) * 0.5);
-        height: calc(var(--toggle-size) * 0.5);
+        width: var(--toggle-size);
+        height: var(--toggle-size);
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
+    }
+
+    .radio-checked .checked-icon {
+        opacity: 1;
     }
 
     .radio-control {
@@ -51,7 +57,7 @@ export const styles = css`
         height: var(--toggle-size);
         border: var(--pc-input-border-width) solid var(--pc-input-border-color);
         border-radius: var(--pc-border-radius-circle);
-        background-color: var(--pc-input-background-color);
+        background-color: transparent;
         color: transparent;
         transition: all var(--pc-transition-fast) ease-in-out;
     }
@@ -66,13 +72,11 @@ export const styles = css`
     }
 
     .radio:not(.radio-checked):not(.radio-disabled) .radio-control:hover {
-        background-color: var(--pc-input-background-color-hover);
         border-color: var(--pc-input-border-color-hover);
     }
 
     .radio:not(.radio-checked):not(.radio-disabled)
         .radio-control:hover:active {
-        background-color: var(--pc-input-background-color-active);
         border-color: var(--pc-input-border-color-active);
     }
 
@@ -103,7 +107,7 @@ export const styles = css`
     }
 
     /* If the radio isn’t checked, hide the circle icon in High Contrast mode on Windows */
-    .radio:not(.radio-checked) pc-icon {
+    .radio:not(.radio-checked) svg {
         opacity: 0;
     }
 

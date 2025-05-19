@@ -1,6 +1,10 @@
-import { Decorator } from "@storybook/web-components-vite";
+import {
+    Decorator,
+    setCustomElementsManifest,
+} from "@storybook/web-components-vite";
 import { themes } from "storybook/theming";
 import type { Preview } from "@storybook/web-components-vite";
+import CustomElementManifest from "../custom-elements.json";
 import "./storybook-overrides.css";
 
 const prefersDark =
@@ -59,30 +63,40 @@ const withTheme: Decorator = (Story, context) => {
 
 export const decorators = [withTheme];
 
-export const parameters = {
-    docs: {
-        theme: themes.dark,
-    },
-    backgrounds: {
-        default: "dark",
-        values: [
-            { name: "light", value: "#ffffff" },
-            { name: "dark", value: "#222222" },
-        ],
-    },
-};
+const prefersDarkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+const getSystemTheme = () =>
+    prefersDarkMediaQuery.matches ? themes.dark : themes.light;
 
 const preview: Preview = {
     parameters: {
+        docs: {
+            theme: getSystemTheme(),
+            toc: true,
+        },
         controls: {
             matchers: {
                 color: /(background|color)$/i,
                 date: /Date$/i,
             },
         },
+        options: {
+            storySort: {
+                method: "alphabetical",
+                locales: "en-GB",
+            },
+        },
     },
-
-    tags: ["autodocs"]
+    tags: ["autodocs"],
 };
+
+prefersDarkMediaQuery.addEventListener("change", () => {
+    const docsTheme = getSystemTheme();
+    if (preview.parameters && preview.parameters.docs) {
+        preview.parameters.docs.theme = docsTheme;
+    }
+});
+
+setCustomElementsManifest(CustomElementManifest);
 
 export default preview;

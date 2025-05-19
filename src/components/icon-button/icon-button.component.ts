@@ -102,8 +102,8 @@ export class PcIconButton extends LitElement {
                           part="base"
                           class=${classMap({
                               "icon-button": true,
-                              "icon-button-disabled": this.disabled,
-                              "icon-button-focused": this.hasFocus,
+                              "icon-button-disabled": this.disabled === true,
+                              "icon-button-focused": this.hasFocus === true,
                           })}
                           type="button"
                           ?disabled=${this.disabled}

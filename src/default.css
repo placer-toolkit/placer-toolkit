@@ -134,7 +134,7 @@
 
     /* Sky */
     --pc-color-sky-50: hsl(186, 100%, 95.5%);
-    --pc-color-sky-100: hsl(198.5, 100%, 89.9%);
+    --pc-color-sky-100: lch(92.42% 14.26 234.41);
     --pc-color-sky-200: hsl(198.8, 100%, 82.5%);
     --pc-color-sky-300: hsl(198.7, 100%, 70.5%);
     --pc-color-sky-400: hsl(198.7, 97.9%, 57.2%);
@@ -602,7 +602,7 @@
     --pc-color-teal-950: hsl(180, 100%, 95.5%);
 
     /* Cyan */
-    --pc-color-cyan-50: hsl(197.1, 53.8%, 20.3%);
+    --pc-color-cyan-50: #184050;
     --pc-color-cyan-100: hsl(196.8, 57.3%, 27.2%);
     --pc-color-cyan-200: hsl(195.3, 62.7%, 29.4%);
     --pc-color-cyan-300: hsl(193.5, 71.3%, 34.1%);

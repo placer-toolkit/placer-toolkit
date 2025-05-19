@@ -253,6 +253,34 @@ export const styles = css`
         background: transparent !important;
     }
 
+    .radio.outlined:not(.button[disabled]) {
+    }
+
+    .radio.outlined:hover:not(.button[disabled]) {
+        background-color: var(--pc-color-neutral-100) !important;
+    }
+
+    .radio.outlined:hover:active:not(.button[disabled]) {
+        background-color: var(--pc-color-neutral-50) !important;
+    }
+
+    .radio.outlined.checked:not(.button[disabled]) {
+        background-color: var(--pc-color-primary-500) !important;
+        border-color: var(--pc-color-primary-500);
+        color: var(--pc-color-neutral-0);
+    }
+
+    .radio.outlined.checked:hover:not(.button[disabled]) {
+        background-color: var(--pc-color-primary-600) !important;
+        border-color: var(--pc-color-primary-600);
+    }
+
+    .radio.outlined.checked:hover:active:not(.button[disabled]) {
+        background-color: var(--pc-color-primary-400) !important;
+        border-color: var(--pc-color-primary-400);
+        color: var(--pc-color-neutral-0);
+    }
+
     .button.pill {
         border-radius: var(--pc-border-radius-pill);
     }
@@ -306,11 +334,11 @@ export const styles = css`
         mix-blend-mode: multiply;
     }
 
-    :host([data-pc-button-group-button-hover]) {
+    :host([data-pc-button-group-button-hover]),
+    :host([data-pc-button-group-button-focus]) {
         z-index: 1;
     }
 
-    :host([data-pc-button-group-button-focus]),
     :host([data-pc-button-group-button][checked]) {
         z-index: 2;
     }

@@ -37,7 +37,7 @@ export class PcRating extends LitElement {
 
     @property({ type: Number }) value = 0;
 
-    @property() getSymbol: (value: number) => string = () =>
+    @property() getIcon: (value: number) => string = () =>
         `
             <pc-icon library="default" iconStyle="solid" name="star"></pc-icon>
         `;
@@ -261,7 +261,7 @@ export class PcRating extends LitElement {
                                                   }%)`,
                                         })}
                                     >
-                                        ${unsafeHTML(this.getSymbol(index + 1))}
+                                        ${unsafeHTML(this.getIcon(index + 1))}
                                     </div>
                                     <div
                                         class="rating-partial-filled"
@@ -279,7 +279,7 @@ export class PcRating extends LitElement {
                                                   }% 0 0)`,
                                         })}
                                     >
-                                        ${unsafeHTML(this.getSymbol(index + 1))}
+                                        ${unsafeHTML(this.getIcon(index + 1))}
                                     </div>
                                 </span>
                             `;
@@ -297,7 +297,7 @@ export class PcRating extends LitElement {
                                 })}
                                 role="presentation"
                             >
-                                ${unsafeHTML(this.getSymbol(index + 1))}
+                                ${unsafeHTML(this.getIcon(index + 1))}
                             </span>
                         `;
                     })}

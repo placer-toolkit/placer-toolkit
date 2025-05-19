@@ -1,34 +1,12 @@
 import { CSSResultGroup, LitElement, html } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
-import PcIconButton from "../icon-button/icon-button.js";
+import { watch } from "../../internal/watch.js";
+import { emit } from "../../internal/emit.js";
+import { PcIconButton } from "../icon-button/icon-button.js";
 import { styles } from "./tab.styles.js";
 
 let id = 0;
-
-function watch(
-    propName: string,
-    options: { waitUntilFirstUpdate?: boolean } = {}
-) {
-    return (protoOrDescriptor: any, name: string): void => {
-        const { update } = protoOrDescriptor;
-
-        protoOrDescriptor.update = function (
-            changedProps: Map<string, unknown>
-        ) {
-            if (changedProps.has(propName)) {
-                const oldValue = changedProps.get(propName);
-                const newValue = (this as any)[propName];
-
-                if (!options.waitUntilFirstUpdate || this.hasUpdated) {
-                    (this as any)[name].call(this, oldValue, newValue);
-                }
-            }
-
-            update.call(this, changedProps);
-        };
-    };
-}
 
 @customElement("pc-tab")
 export class PcTab extends LitElement {
@@ -57,21 +35,7 @@ export class PcTab extends LitElement {
 
     private handleCloseClick(event: Event) {
         event.stopPropagation();
-        this.emit("pc-close");
-    }
-
-    private emit<T>(
-        eventName: string,
-        detail: T = {} as T,
-        options: CustomEventInit = {}
-    ) {
-        const event = new CustomEvent<T>(eventName, {
-            detail,
-            bubbles: options.bubbles ?? true,
-            composed: options.composed ?? true,
-            cancelable: options.cancelable ?? true,
-        });
-        this.dispatchEvent(event);
+        emit(this, "pc-close");
     }
 
     @watch("active")

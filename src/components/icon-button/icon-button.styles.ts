@@ -21,7 +21,7 @@ export const styles = css`
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    .icon-button:hover:not(.icon-button.disabled),
+    .icon-button:hover:not(.icon-button-disabled),
     .icon-button:focus-visible:not(.icon-button-disabled) {
         color: var(--pc-color-primary-600);
     }

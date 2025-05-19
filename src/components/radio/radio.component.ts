@@ -3,13 +3,11 @@ import { customElement, property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { watch } from "../../internal/watch.js";
 import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
 import { styles } from "./radio.styles.js";
 
 @customElement("pc-radio")
 export class PcRadio extends LitElement {
     static styles: CSSResultGroup = styles;
-    static dependencies = { "pc-icon": PcIcon };
 
     @state() checked = false;
     @state() protected hasFocus = false;
@@ -34,7 +32,7 @@ export class PcRadio extends LitElement {
     }
 
     private handleClick() {
-        if (!this.disabled) {
+        if (!this.disabled && !this.checked) {
             this.checked = true;
         }
     }
@@ -72,7 +70,7 @@ export class PcRadio extends LitElement {
                 part="base"
                 class=${classMap({
                     "radio": true,
-                    "radio-checked": this.checked === true,
+                    "radio-checked": this.checked,
                     "radio-disabled": this.disabled === true,
                     "radio-focused": this.hasFocus,
                     "radio-small": this.size === "small",
@@ -84,17 +82,19 @@ export class PcRadio extends LitElement {
                     class="radio-control"
                     part="${`control ${this.checked ? "control-checked" : ""}`}"
                 >
-                    ${this.checked
-                        ? html`
-                              <pc-icon
-                                  class="checked-icon"
-                                  part="checked-icon"
-                                  library="default"
-                                  iconStyle="solid"
-                                  name="circle"
-                              ></pc-icon>
-                          `
-                        : ""}
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="checked-icon"
+                        part="checked-icon"
+                        viewBox="0 0 16 16"
+                    >
+                        <circle
+                            cx="8"
+                            cy="8"
+                            r="4.5"
+                            fill="currentColor"
+                        ></circle>
+                    </svg>
                 </span>
 
                 <slot class="label" part="label"></slot>

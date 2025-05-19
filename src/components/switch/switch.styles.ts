@@ -48,7 +48,7 @@ export const styles = css`
         height: var(--height);
         background-color: var(--pc-color-neutral-200);
         border: var(--pc-input-border-width) solid var(--pc-color-neutral-200);
-        border-radius: var(--height);
+        border-radius: var(--pc-border-radius-pill);
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
@@ -56,7 +56,7 @@ export const styles = css`
         background-color: hsl(220, 25%, 96%);
         width: var(--thumb-size);
         height: var(--thumb-size);
-        border-radius: 50%;
+        border-radius: var(--pc-border-radius-circle);
         translate: calc((var(--width) - var(--height)) / -2);
         box-shadow: var(--pc-shadow-xs);
         transition: outline var(--pc-transition-fast) ease-in-out,
