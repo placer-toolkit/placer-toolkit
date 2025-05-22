@@ -36,14 +36,14 @@ export class PcIcon extends LitElement {
 
     private async resolveIcon(
         url: string,
-        library?: IconLibrary
+        library?: IconLibrary,
     ): Promise<SVGResult> {
         let fileData: Response;
 
         if (library?.spriteSheet) {
             this.svg = html`
                 <svg part="svg">
-                    <use part="use" href="${url}"></use>
+                    <use part="use" href=${url}></use>
                 </svg>
             `;
 
@@ -90,7 +90,7 @@ export class PcIcon extends LitElement {
 
     @state() private svg: SVGElement | HTMLTemplateResult | null = null;
 
-    @property({ reflect: true }) iconStyle?: string;
+    @property({ attribute: "icon-style", reflect: true }) iconStyle?: string;
 
     @property() label = "";
 

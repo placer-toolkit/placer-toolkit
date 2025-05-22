@@ -71,7 +71,7 @@ export const Default: Story = {
     }) => html`
         <pc-icon-button
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             label=${label}
             src=${src}
@@ -128,7 +128,7 @@ export const Sizing: Story = {
     }) => html`
         <pc-icon-button
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             label=${label}
             src=${src}
@@ -185,7 +185,7 @@ export const Colour: Story = {
     }) => html`
         <pc-icon-button
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             label=${label}
             src=${src}
@@ -242,7 +242,7 @@ export const Disabled: Story = {
     }) => html`
         <pc-icon-button
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             label=${label}
             src=${src}

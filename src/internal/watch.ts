@@ -19,7 +19,7 @@ export function watch(propertyName: string | string[], options?: WatchOptions) {
     };
     return <ElemClass extends LitElement>(
         proto: ElemClass,
-        decoratedFnName: UpdateHandlerFunctionKeys<ElemClass>
+        decoratedFnName: UpdateHandlerFunctionKeys<ElemClass>,
     ) => {
         // @ts-expect-error — “update” is a protected property
         const { update } = proto;
@@ -30,7 +30,7 @@ export function watch(propertyName: string | string[], options?: WatchOptions) {
         // @ts-expect-error — “update” is a protected property
         proto.update = function (
             this: ElemClass,
-            changedProps: Map<keyof ElemClass, ElemClass[keyof ElemClass]>
+            changedProps: Map<keyof ElemClass, ElemClass[keyof ElemClass]>,
         ) {
             watchedProperties.forEach((property) => {
                 const key = property as keyof ElemClass;
@@ -45,7 +45,7 @@ export function watch(propertyName: string | string[], options?: WatchOptions) {
                         ) {
                             (this[decoratedFnName] as unknown as UpdateHandler)(
                                 oldValue,
-                                newValue
+                                newValue,
                             );
                         }
                     }

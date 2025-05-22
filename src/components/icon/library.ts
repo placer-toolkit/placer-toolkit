@@ -31,7 +31,7 @@ export function getIconLibrary(name?: string) {
 
 export function registerIconLibrary(
     name: string,
-    options: Omit<IconLibrary, "name">
+    options: Omit<IconLibrary, "name">,
 ) {
     unregisterIconLibrary(name);
     registry.push({

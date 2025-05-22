@@ -51,14 +51,14 @@ export class HasSlotController implements ReactiveController {
     hostConnected() {
         this.host.shadowRoot!.addEventListener(
             "slotchange",
-            this.handleSlotChange
+            this.handleSlotChange,
         );
     }
 
     hostDisconnected() {
         this.host.shadowRoot!.removeEventListener(
             "slotchange",
-            this.handleSlotChange
+            this.handleSlotChange,
         );
     }
 
@@ -92,7 +92,7 @@ export function getInnerHTML(slot: HTMLSlotElement): string {
 }
 
 export function getTextContent(
-    slot: HTMLSlotElement | undefined | null
+    slot: HTMLSlotElement | undefined | null,
 ): string {
     if (!slot) {
         return "";

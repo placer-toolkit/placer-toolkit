@@ -4,7 +4,7 @@ export const debounce = (delay: number) => {
     return <T>(
         _target: T,
         _propertyKey: string,
-        descriptor: PropertyDescriptor
+        descriptor: PropertyDescriptor,
     ) => {
         const fn = descriptor.value as (
             this: T & { [TIMER_ID_KEY]: number },

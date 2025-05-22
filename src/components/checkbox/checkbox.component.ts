@@ -206,7 +206,7 @@ export class PcCheckbox extends LitElement {
                             ? html`
                                   <pc-icon
                                       library="default"
-                                      family="solid"
+                                      icon-style="solid"
                                       name="check"
                                       part="icon-checked"
                                   ></pc-icon>
@@ -216,7 +216,7 @@ export class PcCheckbox extends LitElement {
                             ? html`
                                   <pc-icon
                                       library="default"
-                                      family="solid"
+                                      icon-style="solid"
                                       name="minus"
                                       part="icon-indeterminate"
                                   ></pc-icon>

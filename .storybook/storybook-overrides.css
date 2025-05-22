@@ -2,9 +2,17 @@ button,
 input,
 select,
 textarea {
-    font-family: "Nunito Sans", -apple-system, ".SFNSText-Regular",
-        "San Francisco", BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-        Helvetica, Arial, sans-serif;
+    font-family:
+        "Nunito Sans",
+        -apple-system,
+        ".SFNSText-Regular",
+        "San Francisco",
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
 }
 
 input[type="file"]::file-selector-button {
@@ -30,7 +38,9 @@ input[type="file"]::file-selector-button {
     box-shadow: inset 0 0 0 1px #d9e8f2;
     position: relative;
     flex-shrink: 0;
-    transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+    transition:
+        background-color 0.15s ease-out,
+        box-shadow 0.15s ease-out;
 }
 
 input[type="file"]::file-selector-button:is(:hover, :active) {

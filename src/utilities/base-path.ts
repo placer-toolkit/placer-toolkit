@@ -10,7 +10,7 @@ export function getBasePath(subpath = "") {
             ...Array.from(document.getElementsByTagName("script")),
         ] as HTMLScriptElement[];
         const configScript = scripts.find((script) =>
-            script.hasAttribute("data-placer")
+            script.hasAttribute("data-placer"),
         );
 
         if (configScript) {

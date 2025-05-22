@@ -147,7 +147,7 @@ export const styles = css`
     :host([required]) .label::after {
         content: var(--pc-input-required-content);
         color: var(--pc-input-required-content-color);
-        margn-inline-start: var(--pc-input-required-content-offset);
+        margin-inline-start: var(--pc-input-required-content-offset);
     }
 
     .hint {

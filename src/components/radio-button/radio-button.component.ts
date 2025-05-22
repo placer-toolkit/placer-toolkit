@@ -15,7 +15,7 @@ export class PcRadioButton extends LitElement {
         this,
         "[default]",
         "prefix",
-        "suffix"
+        "suffix",
     );
 
     @query(".button") input!: HTMLInputElement;

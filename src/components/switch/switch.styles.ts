@@ -59,7 +59,8 @@ export const styles = css`
         border-radius: var(--pc-border-radius-circle);
         translate: calc((var(--width) - var(--height)) / -2);
         box-shadow: var(--pc-shadow-xs);
-        transition: outline var(--pc-transition-fast) ease-in-out,
+        transition:
+            outline var(--pc-transition-fast) ease-in-out,
             translate var(--pc-transition-medium)
                 cubic-bezier(0.34, 1.35, 0.64, 1);
     }

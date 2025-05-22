@@ -32,7 +32,7 @@ export class FormControlController implements ReactiveController {
 
     constructor(
         host: ReactiveControllerHost & HTMLInputElement,
-        options?: Partial<FormControlControllerOptions>
+        options?: Partial<FormControlControllerOptions>,
     ) {
         (this.host = host).addController(this);
         this.options = {
@@ -104,7 +104,7 @@ export class FormControlController implements ReactiveController {
             } else {
                 formCollections.set(
                     this.form,
-                    new Set<HTMLInputElement>([this.host])
+                    new Set<HTMLInputElement>([this.host]),
                 );
             }
 
@@ -115,7 +115,7 @@ export class FormControlController implements ReactiveController {
             if (!reportValidityOverloads.has(this.form)) {
                 reportValidityOverloads.set(
                     this.form,
-                    this.form.reportValidity
+                    this.form.reportValidity,
                 );
                 this.form.reportValidity = () => this.reportFormValidity();
             }
@@ -149,14 +149,14 @@ export class FormControlController implements ReactiveController {
 
             if (reportValidityOverloads.has(this.form)) {
                 this.form.reportValidity = reportValidityOverloads.get(
-                    this.form
+                    this.form,
                 )!;
                 reportValidityOverloads.delete(this.form);
             }
 
             if (checkValidityOverloads.has(this.form)) {
                 this.form.checkValidity = checkValidityOverloads.get(
-                    this.form
+                    this.form,
                 )!;
                 checkValidityOverloads.delete(this.form);
             }
@@ -181,13 +181,13 @@ export class FormControlController implements ReactiveController {
                 (value as unknown[]).forEach((val) => {
                     event.formData.append(
                         name,
-                        (val as string | number | boolean).toString()
+                        (val as string | number | boolean).toString(),
                     );
                 });
             } else {
                 event.formData.append(
                     name,
-                    (value as string | number | boolean).toString()
+                    (value as string | number | boolean).toString(),
                 );
             }
         }
@@ -299,7 +299,7 @@ export class FormControlController implements ReactiveController {
                     if (submitter.hasAttribute(attr)) {
                         button.setAttribute(
                             attr,
-                            submitter.getAttribute(attr)!
+                            submitter.getAttribute(attr)!,
                         );
                     }
                 });
@@ -349,7 +349,7 @@ export class FormControlController implements ReactiveController {
                 composed: false,
                 cancelable: true,
                 detail: {},
-            }
+            },
         );
 
         if (!originalInvalidEvent) {

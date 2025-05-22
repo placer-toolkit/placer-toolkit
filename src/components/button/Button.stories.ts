@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import type { Meta, StoryObj } from "@storybook/web-components-vite";
 import "./button.js";
 
@@ -133,8 +134,13 @@ export const Default: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -202,8 +208,13 @@ export const Primary: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -271,8 +282,13 @@ export const Large: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -340,8 +356,13 @@ export const Small: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -411,8 +432,13 @@ export const Link: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -480,8 +506,13 @@ export const Disabled: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -549,8 +580,13 @@ export const Outlined: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };
@@ -618,8 +654,13 @@ export const Pill: Story = {
             ?pill=${pill}
             ?disabled=${disabled}
         >
-            ${prefix ? html`<span slot="prefix">${prefix}</span>` : ""} ${label}
-            ${suffix ? html`<span slot="suffix">${suffix}</span>` : ""}
+            ${prefix
+                ? html`<span slot="prefix">${unsafeHTML(prefix)}</span>`
+                : ""}
+            ${label}
+            ${suffix
+                ? html`<span slot="suffix">${unsafeHTML(suffix)}</span>`
+                : ""}
         </pc-button>
     `,
 };

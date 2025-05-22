@@ -40,7 +40,7 @@ export const Default: Story = {
     render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             src=${src}
             label=${label}
@@ -62,7 +62,7 @@ export const Colour: Story = {
     render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             src=${src}
             label=${label}
@@ -84,7 +84,7 @@ export const Sizing: Story = {
     render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             src=${src}
             label=${label}
@@ -106,7 +106,7 @@ export const Label: Story = {
     render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             src=${src}
             label=${label}
@@ -129,7 +129,7 @@ export const Custom: Story = {
     render: ({ iconStyle, label, library, name, src, fontSize, color }) => html`
         <pc-icon
             library=${library}
-            iconStyle=${iconStyle}
+            icon-style=${iconStyle}
             name=${name}
             src=${src}
             label=${label}

@@ -21,7 +21,7 @@ export class PcResizeObserver extends LitElement {
                 emit(this, "pc-resize", {
                     detail: { entries },
                 });
-            }
+            },
         );
 
         if (!this.disabled) {
@@ -49,7 +49,7 @@ export class PcResizeObserver extends LitElement {
             }) as HTMLElement[];
 
             this.observedElements.forEach((element) =>
-                this.resizeObserver.unobserve(element)
+                this.resizeObserver.unobserve(element),
             );
             this.observedElements = [];
 

@@ -39,7 +39,7 @@ export class PcRating extends LitElement {
 
     @property() getIcon: (value: number) => string = () =>
         `
-            <pc-icon library="default" iconStyle="solid" name="star"></pc-icon>
+            <pc-icon library="default" icon-style="solid" name="star"></pc-icon>
         `;
 
     private getValueFromMousePosition(event: MouseEvent) {
@@ -56,11 +56,11 @@ export class PcRating extends LitElement {
         const value = isRTL
             ? this.roundToPrecision(
                   ((right - coordinate) / width) * this.max,
-                  this.precision
+                  this.precision,
               )
             : this.roundToPrecision(
                   ((coordinate - left) / width) * this.max,
-                  this.precision
+                  this.precision,
               );
 
         return clamp(value, 0, this.max);

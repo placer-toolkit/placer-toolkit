@@ -18,7 +18,7 @@ const debounce = <T extends GenericCallback>(fn: T, delay: number) => {
 const decorate = <T, M extends keyof T>(
     proto: T,
     method: M,
-    decorateFn: (this: T, superFn: T[M], ...args: unknown[]) => unknown
+    decorateFn: (this: T, superFn: T[M], ...args: unknown[]) => unknown,
 ) => {
     const superFn = proto[method] as MethodOf<T, M>;
 
@@ -76,7 +76,7 @@ const decorate = <T, M extends keyof T>(
                     passive: true,
                 });
                 scrollHandlers.set(this, handleScrollEnd);
-            }
+            },
         );
 
         decorate(
@@ -91,7 +91,7 @@ const decorate = <T, M extends keyof T>(
                         passive: true,
                     } as unknown as EventListenerOptions);
                 }
-            }
+            },
         );
     }
 })();

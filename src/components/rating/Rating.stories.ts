@@ -28,7 +28,7 @@ const meta: Meta = {
         precision: 1,
         readonly: false,
         value: 0,
-        getIcon: `<pc-icon library="default" iconStyle="solid" name="star"></pc-icon>`,
+        getIcon: `<pc-icon library="default" ="solid" name="star"></pc-icon>`,
 
         // CSS styles
         iconSize: "1.2rem",
@@ -191,8 +191,7 @@ export const CustomIcon: Story = {
         precision: 1,
         readonly: false,
         value: 0,
-        getIcon:
-            '<pc-icon library="default" iconStyle="solid" name="heart"></pc-icon>',
+        getIcon: '<pc-icon library="default" ="solid" name="heart"></pc-icon>',
         iconSize: "1rem",
     },
 

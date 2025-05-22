@@ -12,7 +12,7 @@ export class PcCard extends LitElement {
         this,
         "image",
         "header",
-        "footer"
+        "footer",
     );
 
     render() {

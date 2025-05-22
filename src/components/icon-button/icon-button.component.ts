@@ -21,7 +21,7 @@ export class PcIconButton extends LitElement {
 
     @property() href?: string;
 
-    @property() iconStyle?: string;
+    @property({ attribute: "icon-style" }) iconStyle?: string;
 
     @property() label = "";
 
@@ -79,7 +79,7 @@ export class PcIconButton extends LitElement {
                           target=${ifDefined(this.target)}
                           download=${ifDefined(this.download)}
                           rel=${ifDefined(
-                              this.target ? "noreferrer noopener" : undefined
+                              this.target ? "noreferrer noopener" : undefined,
                           )}
                           aria-label=${this.label}
                           tabindex=${this.disabled ? "-1" : "0"}
@@ -90,7 +90,7 @@ export class PcIconButton extends LitElement {
                           <pc-icon
                               class="icon"
                               library=${ifDefined(this.library)}
-                              iconStyle=${ifDefined(this.iconStyle)}
+                              icon-style=${ifDefined(this.iconStyle)}
                               name=${ifDefined(this.name)}
                               src=${ifDefined(this.src)}
                               aria-hidden="true"
@@ -117,7 +117,7 @@ export class PcIconButton extends LitElement {
                           <pc-icon
                               class="icon"
                               library=${ifDefined(this.library)}
-                              iconStyle=${ifDefined(this.iconStyle)}
+                              icon-style=${ifDefined(this.iconStyle)}
                               name=${ifDefined(this.name)}
                               src=${ifDefined(this.src)}
                               aria-hidden="true"

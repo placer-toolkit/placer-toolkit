@@ -29,7 +29,7 @@ export class PcRadioGroup extends LitElement {
     private readonly hasSlotController = new HasSlotController(
         this,
         "hint",
-        "label"
+        "label",
     );
     private customValidityMessage = "";
     private validationTimeout!: number;
@@ -93,7 +93,7 @@ export class PcRadioGroup extends LitElement {
     private getAllRadios() {
         return [
             ...this.querySelectorAll<PcRadio | PcRadioButton>(
-                "pc-radio, pc-radio-button"
+                "pc-radio, pc-radio-button",
             ),
         ];
     }
@@ -121,7 +121,7 @@ export class PcRadioGroup extends LitElement {
     private handleKeyDown(event: KeyboardEvent) {
         if (
             !["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(
-                event.key
+                event.key,
             )
         ) {
             return;
@@ -133,8 +133,8 @@ export class PcRadioGroup extends LitElement {
             event.key === " "
                 ? 0
                 : ["ArrowUp", "ArrowLeft"].includes(event.key)
-                ? -1
-                : 1;
+                  ? -1
+                  : 1;
         const oldValue = this.value;
         let index = radios.indexOf(checkedRadio) + increment;
 
@@ -189,11 +189,11 @@ export class PcRadioGroup extends LitElement {
                 await radio.updateComplete;
                 radio.checked = radio.value === this.value;
                 radio.size = this.size;
-            })
+            }),
         );
 
         this.hasButtonGroup = radios.some(
-            (radio) => radio.tagName.toLowerCase() === "pc-radio-button"
+            (radio) => radio.tagName.toLowerCase() === "pc-radio-button",
         );
 
         if (radios.length > 0 && !radios.some((radio) => radio.checked)) {
@@ -296,7 +296,7 @@ export class PcRadioGroup extends LitElement {
             this.validationInput.reportValidity();
             this.validationTimeout = setTimeout(
                 () => (this.validationInput.hidden = true),
-                10000
+                10000,
             ) as unknown as number;
         }
 

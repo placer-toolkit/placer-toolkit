@@ -12,7 +12,7 @@ export const defaultValue =
             this: ReactiveElement & { [name: string]: unknown },
             name,
             old,
-            value
+            value,
         ) {
             const options = ctor.getPropertyOptions(propertyName);
             const attributeName =
@@ -25,8 +25,8 @@ export const defaultValue =
                 const fromAttribute =
                     typeof converter === "function"
                         ? converter
-                        : converter?.fromAttribute ??
-                          defaultConverter.fromAttribute;
+                        : (converter?.fromAttribute ??
+                          defaultConverter.fromAttribute);
 
                 const newValue: unknown = fromAttribute!(value, options.type);
 

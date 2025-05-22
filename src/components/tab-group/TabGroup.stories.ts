@@ -252,7 +252,7 @@ export const Closable: Story = {
             tabGroup.addEventListener("pc-close", async (event) => {
                 const tab = event.target;
                 const panel = tabGroup.querySelector(
-                    'pc-tab-panel[name="\${tab.panel}"]'
+                    'pc-tab-panel[name="\${tab.panel}"]',
                 );
 
                 if (tab.active) {

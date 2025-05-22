@@ -51,19 +51,19 @@ export class PcButtonGroup extends LitElement {
                 button.toggleAttribute("data-pc-button-group-button", true);
                 button.toggleAttribute(
                     "data-pc-button-group-button-first",
-                    index === 0
+                    index === 0,
                 );
                 button.toggleAttribute(
                     "data-pc-button-group-button-inner",
-                    index > 0 && index < slottedElements.length - 1
+                    index > 0 && index < slottedElements.length - 1,
                 );
                 button.toggleAttribute(
                     "data-pc-button-group-button-last",
-                    index === slottedElements.length - 1
+                    index === slottedElements.length - 1,
                 );
                 button.toggleAttribute(
                     "data-pc-button-group-button-radio",
-                    button.tagName.toLowerCase() === "pc-radio-button"
+                    button.tagName.toLowerCase() === "pc-radio-button",
                 );
             }
         });

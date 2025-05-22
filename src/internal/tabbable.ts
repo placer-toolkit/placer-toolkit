@@ -78,7 +78,7 @@ function isTabbable(element: HTMLElement) {
         const rootNode = element.getRootNode() as HTMLElement;
 
         const findRadios = `input[type='radio'][name="${element.getAttribute(
-            "name"
+            "name",
         )}"]`;
         const firstChecked = rootNode.querySelector(`${findRadios}:checked`);
 
@@ -143,7 +143,7 @@ export function getTabbableBoundary(root: HTMLElement | ShadowRoot) {
 
 function getSlottedChildrenOutsideRootElement(
     slotElement: HTMLSlotElement,
-    root: HTMLElement | ShadowRoot
+    root: HTMLElement | ShadowRoot,
 ) {
     return (
         (slotElement.getRootNode({ composed: true }) as ShadowRoot | null)

@@ -13,8 +13,7 @@ export const styles = css`
         align-items: stretch;
         justify-content: center;
         width: auto;
-        max-width: 100%;
-        height: auto;
+        min-width: 100%;
         border: none;
         border-radius: var(--pc-border-radius-s);
         padding: 0;
@@ -53,8 +52,9 @@ export const styles = css`
         pointer-events: none;
     }
 
-    .label::slotted(pc-icon) {
-        vertical-align: -2px;
+    .prefix::slotted(*),
+    .suffix::slotted(*) {
+        transform: translateY(1px);
     }
 
     .label {
@@ -253,9 +253,6 @@ export const styles = css`
         background: transparent !important;
     }
 
-    .radio.outlined:not(.button[disabled]) {
-    }
-
     .radio.outlined:hover:not(.button[disabled]) {
         background-color: var(--pc-color-neutral-100) !important;
     }
@@ -315,23 +312,6 @@ export const styles = css`
                 )
         ) {
         margin-inline-start: calc(-1 * var(--pc-input-border-width));
-    }
-
-    :host(
-            [data-pc-button-group-button]:not(
-                    [data-pc-button-group-button-first],
-                    [data-pc-button-group-button-radio],
-                    [appearance="default"]
-                ):not(:hover)
-        )
-        .button::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        inset-inline-start: 0;
-        bottom: 0;
-        border-left: 1px solid rgba(112, 120, 128, 0.33);
-        mix-blend-mode: multiply;
     }
 
     :host([data-pc-button-group-button-hover]),

@@ -1,10 +1,23 @@
 {
     "name": "placer-toolkit",
     "type": "module",
-    "private": "true",
-    "version": "0.3.0",
-    "main": "dist/placer.js",
-    "module": "dist/placer.js",
+    "private": true,
+    "version": "0.4.0",
+    "description": "The go‐to web component library with somewhat reasonable default styling that’s easy to tweak! 🛠️",
+    "keywords": [
+        "components",
+        "custom-elements",
+        "lit",
+        "litelement",
+        "placer",
+        "toolkit",
+        "web-components"
+    ],
+    "main": "./dist/placer.js",
+    "module": "./dist/placer.js",
+    "types": "./dist/placer.d.ts",
+    "author": "randomguy-2650",
+    "license": "MIT",
     "exports": {
         ".": {
             "import": "./dist/placer.js",
@@ -15,12 +28,28 @@
         "dist"
     ],
     "scripts": {
-        "build": "rollup -c",
-        "clean": "rm -rf dist",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build": "rollup -c",
+        "build-storybook": "storybook build",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "lint": "eslint src",
+        "prepublish-only": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/randomguy-2650/placer-toolkit.git"
+    },
+    "bugs": {
+        "url": "https://github.com/randomguy-2650/placer-toolkit/issues"
+    },
+    "engines": {
+        "node": ">=18.0.0"
     },
     "dependencies": {
+        "@ctrl/tinycolor": "^4.1.0",
+        "@floating-ui/dom": "^1.7.0",
+        "composed-offset-position": "^0.0.6",
         "lit": "^3.3.0",
         "qr-creator": "^1.0.0",
         "tslib": "^2.8.1"
@@ -30,17 +59,19 @@
         "@custom-elements-manifest/analyzer": "^0.10.4",
         "@rollup/plugin-commonjs": "^28.0.3",
         "@rollup/plugin-node-resolve": "^16.0.1",
-        "@rollup/plugin-typescript": "^11.1.2",
+        "@rollup/plugin-typescript": "^12.1.2",
         "@storybook/addon-actions": "^9.0.0-alpha.3",
         "@storybook/addon-docs": "^9.0.0-rc.2",
         "@storybook/addon-vitest": "^9.0.0-rc.2",
-        "@storybook/blocks": "^9.0.0-alpha.3",
+        "@storybook/blocks": "^9.0.0-alpha.17",
         "@storybook/web-components-vite": "^9.0.0-rc.2",
         "chromatic": "^11.28.2",
+        "eslint": "^9.27.0",
         "eslint-plugin-storybook": "^9.0.0-rc.2",
-        "rollup": "^4.40.2",
+        "rollup": "^4.41.0",
         "storybook": "^9.0.0-rc.2",
-        "typescript": "^5.8.3"
+        "typescript": "^5.8.3",
+        "vitest": "^3.1.4"
     },
     "overrides": {
         "storybook": "$storybook"

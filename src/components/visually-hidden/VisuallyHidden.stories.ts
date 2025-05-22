@@ -27,7 +27,7 @@ export const Default: Story = {
             ${content}
             <pc-icon
                 library="default"
-                iconStyle="solid"
+                icon-style="solid"
                 name="arrow-up-right-from-square"
                 style="font-size: 0.75rem; vertical-align: 0.25rem"
                 aria-hidden="true"

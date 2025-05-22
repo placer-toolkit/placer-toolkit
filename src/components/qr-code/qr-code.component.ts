@@ -48,7 +48,7 @@ export class PcQrCode extends LitElement {
                 size: this.size * 2,
                 text: this.value,
             },
-            this.canvas
+            this.canvas,
         );
     }
 

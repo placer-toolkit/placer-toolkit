@@ -343,7 +343,7 @@
     --pc-font-sans: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI Variable", "Segoe UI", "Roboto", "Open Sans", "Helvetica Neue",
         sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    --pc-font-serif: Georgia, "Times New Roman", serif;
+    --pc-font-serif: "Playfair Display", "Georgia", "Times New Roman", serif;
 
     --pc-font-size-xxs: 0.625rem; /* 10px */
     --pc-font-size-xs: 0.75rem; /* 12px */
@@ -357,6 +357,7 @@
 
     --pc-font-weight-light: 300;
     --pc-font-weight-normal: 400;
+    --pc-font-weight-medium: 500;
     --pc-font-weight-semibold: 600;
     --pc-font-weight-bold: 700;
 
@@ -388,16 +389,13 @@
     --pc-input-height-m: 2.25rem; /* 36px */
     --pc-input-height-l: 3rem; /* 48px */
 
-    --pc-input-background-color: var(--pc-color-neutral-300);
-    --pc-input-background-color-hover: var(--pc-input-background-color);
-    --pc-input-background-color-active: var(--pc-color-neutral-200);
-    --pc-input-background-color-focus: var(--pc-input-background-color);
+    --pc-input-background-color: var(--pc-color-neutral-50);
+    --pc-input-background-color-hover: var(--pc-color-neutral-100);
+    --pc-input-background-color-focus: var(--pc-color-neutral-50);
     --pc-input-background-color-disabled: var(--pc-color-neutral-100);
     --pc-input-border-color: var(--pc-color-neutral-300);
     --pc-input-border-color-hover: var(--pc-color-neutral-400);
     --pc-input-border-color-active: var(--pc-color-neutral-200);
-    --pc-input-border-color-active: var(--pc-color-neutral-200);
-    --pc-input-border-color-focus: var(--pc-color-primary-600);
     --pc-input-border-color-disabled: var(--pc-color-neutral-400);
     --pc-input-border-width: 1px;
     --pc-input-required-content: "*";
@@ -421,15 +419,13 @@
     --pc-input-color-disabled: var(--pc-color-neutral-900);
     --pc-input-icon-color: var(--pc-color-neutral-500);
     --pc-input-icon-color-hover: var(--pc-color-neutral-600);
+    --pc-input-icon-color-active: var(--pc-color-neutral-400);
     --pc-input-icon-color-focus: var(--pc-color-neutral-600);
     --pc-input-placeholder-color: var(--pc-color-neutral-500);
     --pc-input-placeholder-color-disabled: var(--pc-color-neutral-600);
     --pc-input-spacing-s: var(--pc-spacing-s);
     --pc-input-spacing-m: var(--pc-spacing-m);
     --pc-input-spacing-l: var(--pc-spacing-l);
-
-    --pc-input-focus-ring-color: hsla(198.6, 88.7%, 48.4%, 40%);
-    --pc-input-focus-ring-offset: 0;
 
     --pc-input-filled-background-color: var(--pc-color-neutral-100);
     --pc-input-filled-background-color-hover: var(--pc-color-neutral-100);
@@ -463,9 +459,9 @@
     --pc-panel-border-width: 1px;
 
     /* Tooltips */
-    --pc-tooltip-border-radius: var(--pc-border-radius-m);
-    --pc-tooltip-background-color: var(--pc-color-neutral-800);
-    --pc-tooltip-color: var(--pc-color-neutral-0);
+    --pc-tooltip-border-radius: var(--pc-border-radius-s);
+    --pc-tooltip-background-color: var(--pc-color-neutral-200);
+    --pc-tooltip-color: var(--pc-color-neutral-1000);
     --pc-tooltip-font-family: var(--pc-font-sans);
     --pc-tooltip-font-weight: var(--pc-font-weight-normal);
     --pc-tooltip-font-size: var(--pc-font-size-s);
@@ -825,7 +821,7 @@
     --pc-font-sans: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI Variable", "Segoe UI", "Roboto", "Open Sans", "Helvetica Neue",
         sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    --pc-font-serif: Georgia, "Times New Roman", serif;
+    --pc-font-serif: "Playfair Display", "Georgia", "Times New Roman", serif;
 
     --pc-font-size-xxs: 0.625rem; /* 10px */
     --pc-font-size-xs: 0.75rem; /* 12px */
@@ -839,6 +835,7 @@
 
     --pc-font-weight-light: 300;
     --pc-font-weight-normal: 400;
+    --pc-font-weight-medium: 500;
     --pc-font-weight-semibold: 600;
     --pc-font-weight-bold: 700;
 
@@ -870,16 +867,13 @@
     --pc-input-height-m: 2.25rem; /* 36px */
     --pc-input-height-l: 3rem; /* 48px */
 
-    --pc-input-background-color: var(--pc-color-neutral-300);
-    --pc-input-background-color-hover: var(--pc-input-background-color);
-    --pc-input-background-color-active: var(--pc-color-neutral-200);
-    --pc-input-background-color-focus: var(--pc-input-background-color);
+    --pc-input-background-color: var(--pc-color-neutral-50);
+    --pc-input-background-color-hover: var(--pc-color-neutral-100);
+    --pc-input-background-color-focus: var(--pc-color-neutral-50);
     --pc-input-background-color-disabled: var(--pc-color-neutral-100);
     --pc-input-border-color: var(--pc-color-neutral-300);
     --pc-input-border-color-hover: var(--pc-color-neutral-400);
     --pc-input-border-color-active: var(--pc-color-neutral-200);
-    --pc-input-border-color-active: var(--pc-color-neutral-200);
-    --pc-input-border-color-focus: var(--pc-color-primary-600);
     --pc-input-border-color-disabled: var(--pc-color-neutral-400);
     --pc-input-border-width: 1px;
     --pc-input-required-content: "*";
@@ -903,6 +897,7 @@
     --pc-input-color-disabled: var(--pc-color-neutral-900);
     --pc-input-icon-color: var(--pc-color-neutral-500);
     --pc-input-icon-color-hover: var(--pc-color-neutral-600);
+    --pc-input-icon-color-active: var(--pc-color-neutral-400);
     --pc-input-icon-color-focus: var(--pc-color-neutral-600);
     --pc-input-placeholder-color: var(--pc-color-neutral-500);
     --pc-input-placeholder-color-disabled: var(--pc-color-neutral-600);
@@ -910,11 +905,8 @@
     --pc-input-spacing-m: var(--pc-spacing-m);
     --pc-input-spacing-l: var(--pc-spacing-l);
 
-    --pc-input-focus-ring-color: hsla(199, 89%, 48%, 0.4);
-    --pc-input-focus-ring-offset: 0;
-
     --pc-input-filled-background-color: var(--pc-color-neutral-100);
-    --pc-input-filled-background-color-hover: var(--pc-color-neutral-100);
+    --pc-input-filled-background-color-hover: var(--pc-color-neutral-200);
     --pc-input-filled-background-color-focus: var(--pc-color-neutral-100);
     --pc-input-filled-background-color-disabled: var(--pc-color-neutral-100);
     --pc-input-filled-color: var(--pc-color-neutral-800);
@@ -945,14 +937,14 @@
     --pc-panel-border-width: 1px;
 
     /* Tooltips */
-    --pc-tooltip-border-radius: var(--pc-border-radius-m);
-    --pc-tooltip-background-color: var(--pc-color-neutral-800);
-    --pc-tooltip-color: var(--pc-color-neutral-0);
+    --pc-tooltip-border-radius: var(--pc-border-radius-s);
+    --pc-tooltip-background-color: var(--pc-color-neutral-200);
+    --pc-tooltip-color: var(--pc-color-neutral-1000);
     --pc-tooltip-font-family: var(--pc-font-sans);
-    --pc-tooltip-font-weight: var(--pc-font-weight-normal);
+    --pc-tooltip-font-weight: var(--pc-font-weight-medium);
     --pc-tooltip-font-size: var(--pc-font-size-s);
     --pc-tooltip-line-height: var(--pc-line-height-dense);
-    --pc-tooltip-padding: var(--pc-spacing-xxs) var(--pc-spacing-xs);
+    --pc-tooltip-padding: var(--pc-spacing-xs) var(--pc-spacing-s);
     --pc-tooltip-arrow-size: 6px;
 
     /* Z‐index */
@@ -986,25 +978,27 @@ body {
     -moz-text-size-adjust: none;
 }
 
-address:has(+ *),
-audio:has(+ *),
-blockquote:has(+ *),
-dd:has(+ *),
-details:has(+ *),
-dl:has(+ *),
-figure:has(+ *),
-h1:has(+ *),
-h2:has(+ *),
-h3:has(+ *),
-h4:has(+ *),
-h5:has(+ *),
-h6:has(+ *),
-iframe:has(+ *),
-ol:has(+ *),
-p:has(+ *),
-pre:has(+ *),
-table:has(+ *),
-ul:has(+ *),
-video:has(+ *) {
+:is(
+        address,
+        audio,
+        blockquote,
+        dd,
+        details,
+        dl,
+        figure,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        iframe,
+        ol,
+        p,
+        pre,
+        table,
+        ul,
+        video
+    ):has(+ *) {
     margin: 0 0 var(--pc-spacing-xl) 0;
 }

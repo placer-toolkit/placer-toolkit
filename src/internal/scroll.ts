@@ -9,7 +9,7 @@ function getScrollbarWidth() {
 
 function getExistingBodyPadding() {
     const padding = Number(
-        getComputedStyle(document.body).paddingRight.replace(/px/, "")
+        getComputedStyle(document.body).paddingRight.replace(/px/, ""),
     );
 
     if (isNaN(padding) || !padding) {
@@ -26,7 +26,7 @@ export function lockBodyScrolling(lockingElement: HTMLElement) {
         const scrollbarWidth = getScrollbarWidth() + getExistingBodyPadding();
 
         let scrollbarGutterProperty = getComputedStyle(
-            document.documentElement
+            document.documentElement,
         ).scrollbarGutter;
 
         if (!scrollbarGutterProperty || scrollbarGutterProperty === "auto") {
@@ -38,12 +38,12 @@ export function lockBodyScrolling(lockingElement: HTMLElement) {
         }
         document.documentElement.style.setProperty(
             "--pc-scroll-lock-gutter",
-            scrollbarGutterProperty
+            scrollbarGutterProperty,
         );
         document.documentElement.classList.add("pc-scroll-lock");
         document.documentElement.style.setProperty(
             "--pc-scroll-lock-size",
-            `${scrollbarWidth}px`
+            `${scrollbarWidth}px`,
         );
     }
 }
@@ -61,7 +61,7 @@ export function scrollIntoView(
     element: HTMLElement,
     container: HTMLElement,
     direction: "horizontal" | "vertical" | "both" = "vertical",
-    behavior: "smooth" | "auto" = "smooth"
+    behavior: "smooth" | "auto" = "smooth",
 ) {
     const offset = getOffset(element, container);
     const offsetTop = offset.top + container.scrollTop;

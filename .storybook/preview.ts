@@ -20,7 +20,8 @@ const applyTheme = (theme: string) => {
     docsStory.forEach((docStory: Element) => {
         docStory.classList.remove("pc-theme-light", "pc-theme-dark");
         docStory.classList.add(
-            theme === "light" ? "pc-theme-light" : "pc-theme-dark"
+            theme === "light" ? "pc-theme-light" : "pc-theme-dark",
+            "pc-cloak",
         );
 
         (docStory as HTMLElement).style.backgroundColor =
@@ -35,7 +36,10 @@ const applyTheme = (theme: string) => {
     });
 
     html.classList.remove("pc-theme-light", "pc-theme-dark");
-    html.classList.add(theme === "light" ? "pc-theme-light" : "pc-theme-dark");
+    html.classList.add(
+        theme === "light" ? "pc-theme-light" : "pc-theme-dark",
+        "pc-cloak",
+    );
 };
 
 export const globalTypes = {

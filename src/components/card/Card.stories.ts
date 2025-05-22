@@ -32,7 +32,7 @@ const meta: Meta = {
         image: `<img src="https://placehold.co/300x200" alt="Placeholder image" />`,
         header: `<strong>Lorem ipsum</strong>`,
         body: `<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
-        footer: `<pc-button appearance="primary" pill><pc-icon slot="prefix" library="default" iconStyle="solid" name="cart-shopping"></pc-icon>Buy</pc-button><pc-button appearance="text" pill>More info</pc-button>`,
+        footer: `<pc-button appearance="primary" pill><pc-icon slot="prefix" library="default" ="solid" name="cart-shopping"></pc-icon>Buy</pc-button><pc-button appearance="text" pill>More info</pc-button>`,
     },
 };
 
@@ -99,7 +99,7 @@ export const BasicCard: Story = {
 export const WithHeader: Story = {
     args: {
         image: "",
-        header: '<strong>Header title</strong><pc-icon-button library="default" iconStyle="solid" name="gear"></pc-icon-button>',
+        header: '<strong>Header title</strong><pc-icon-button library="default" ="solid" name="gear"></pc-icon-button>',
         body: "<p>This card has a header. You can put all sorts of things in it!</p>",
         footer: "",
     },

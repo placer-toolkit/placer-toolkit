@@ -87,8 +87,8 @@ export class PcTabGroup extends LitElement {
                 instanceMutations.some(
                     (mutation) =>
                         !["aria-labelledby", "aria-controls"].includes(
-                            mutation.attributeName!
-                        )
+                            mutation.attributeName!,
+                        ),
                 )
             ) {
                 setTimeout(() => this.setAriaLabels());
@@ -96,13 +96,13 @@ export class PcTabGroup extends LitElement {
 
             if (
                 instanceMutations.some(
-                    (mutation) => mutation.attributeName === "disabled"
+                    (mutation) => mutation.attributeName === "disabled",
                 )
             ) {
                 this.syncTabsAndPanels();
             } else if (
                 instanceMutations.some(
-                    (mutation) => mutation.attributeName === "active"
+                    (mutation) => mutation.attributeName === "active",
                 )
             ) {
                 const tabs = instanceMutations
@@ -111,7 +111,7 @@ export class PcTabGroup extends LitElement {
                             mutation.attributeName === "active" &&
                             (
                                 mutation.target as HTMLElement
-                            ).tagName.toLowerCase() === "pc-tab"
+                            ).tagName.toLowerCase() === "pc-tab",
                     )
                     .map((mutation) => mutation.target as PcTab);
                 const newActiveTab = tabs.find((tab) => tab.active);
@@ -141,11 +141,11 @@ export class PcTabGroup extends LitElement {
                             this.setAriaLabels();
                             this.setActiveTab(
                                 this.getActiveTab() ?? this.tabs[0],
-                                { emitEvents: false }
+                                { emitEvents: false },
                             );
                             observer.unobserve(entries[0].target);
                         }
-                    }
+                    },
                 );
                 intersectionObserver.observe(this.tabGroup);
             });
@@ -163,7 +163,7 @@ export class PcTabGroup extends LitElement {
 
     private getAllTabs() {
         const slot = this.shadowRoot!.querySelector<HTMLSlotElement>(
-            'slot[name="navigation"]'
+            'slot[name="navigation"]',
         )!;
 
         return slot.assignedElements() as PcTab[];
@@ -171,7 +171,7 @@ export class PcTabGroup extends LitElement {
 
     private getAllPanels() {
         return [...this.body.assignedElements()].filter(
-            (element) => element.tagName.toLowerCase() === "pc-tab-panel"
+            (element) => element.tagName.toLowerCase() === "pc-tab-panel",
         ) as [PcTabPanel];
     }
 
@@ -220,7 +220,7 @@ export class PcTabGroup extends LitElement {
             ].includes(event.key)
         ) {
             const activeElement = this.tabs.find((tab) =>
-                tab.matches(":focus")
+                tab.matches(":focus"),
             );
             const isRTL = document.documentElement.dir === "rtl";
             let nextTab: null | PcTab = null;
@@ -237,11 +237,11 @@ export class PcTabGroup extends LitElement {
                         event.key === "ArrowUp")
                 ) {
                     const currentIndex = this.tabs.findIndex(
-                        (element) => element === activeElement
+                        (element) => element === activeElement,
                     );
                     nextTab = this.findNextFocusableTab(
                         currentIndex,
-                        "backward"
+                        "backward",
                     );
                 } else if (
                     (["top", "bottom"].includes(this.placement) &&
@@ -250,11 +250,11 @@ export class PcTabGroup extends LitElement {
                         event.key === "ArrowDown")
                 ) {
                     const currentIndex = this.tabs.findIndex(
-                        (element) => element === activeElement
+                        (element) => element === activeElement,
                     );
                     nextTab = this.findNextFocusableTab(
                         currentIndex,
-                        "forward"
+                        "forward",
                     );
                 }
 
@@ -304,7 +304,7 @@ export class PcTabGroup extends LitElement {
 
     private setActiveTab(
         tab: PcTab,
-        options?: { emitEvents?: boolean; scrollBehavior?: "auto" | "smooth" }
+        options?: { emitEvents?: boolean; scrollBehavior?: "auto" | "smooth" },
     ) {
         options = {
             emitEvents: true,
@@ -322,7 +322,7 @@ export class PcTabGroup extends LitElement {
             });
             this.panels.forEach(
                 (element) =>
-                    (element.active = element.name === this.activeTab?.panel)
+                    (element.active = element.name === this.activeTab?.panel),
             );
             this.syncIndicator();
 
@@ -331,7 +331,7 @@ export class PcTabGroup extends LitElement {
                     this.activeTab,
                     this.navigation,
                     "horizontal",
-                    options.scrollBehavior
+                    options.scrollBehavior,
                 );
             }
 
@@ -352,7 +352,7 @@ export class PcTabGroup extends LitElement {
     private setAriaLabels() {
         this.tabs.forEach((tab) => {
             const panel = this.panels.find(
-                (element) => element.name === tab.panel
+                (element) => element.name === tab.panel,
             );
             if (panel) {
                 tab.setAttribute("aria-controls", panel.getAttribute("id")!);
@@ -379,7 +379,7 @@ export class PcTabGroup extends LitElement {
                 left: previous.left + current.clientWidth,
                 top: previous.top + current.clientHeight,
             }),
-            { left: 0, top: 0 }
+            { left: 0, top: 0 },
         );
 
         switch (this.placement) {
@@ -413,7 +413,7 @@ export class PcTabGroup extends LitElement {
 
     private findNextFocusableTab(
         currentIndex: number,
-        direction: "forward" | "backward"
+        direction: "forward" | "backward",
     ) {
         let nextTab = null;
         const iterator = direction === "forward" ? 1 : -1;
@@ -528,7 +528,7 @@ export class PcTabGroup extends LitElement {
                                           this.shouldHideScrollStartButton,
                                   })}
                                   library="default"
-                                  iconStyle="solid"
+                                  ="solid"
                                   name=${isRTL
                                       ? "chevron-right"
                                       : "chevron-left"}
@@ -572,7 +572,7 @@ export class PcTabGroup extends LitElement {
                                           this.shouldHideScrollEndButton,
                                   })}
                                   library="default"
-                                  iconStyle="solid"
+                                  ="solid"
                                   name=${isRTL
                                       ? "chevron-left"
                                       : "chevron-right"}

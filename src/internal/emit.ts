@@ -1,15 +1,19 @@
 export function emit(
     target: EventTarget,
     eventName: string,
-    eventDetail?: CustomEventInit
+    eventDetail?: CustomEventInit,
 ) {
     target.dispatchEvent(
         new CustomEvent(eventName, {
             bubbles: true,
+            cancelable: false,
             composed: true,
+            detail: {},
             ...eventDetail,
-        })
+        }),
     );
+
+    return target;
 }
 
 export function bindEmit(context: EventTarget) {

@@ -268,21 +268,19 @@ export const Required: Story = {
         name: "options",
         required: true,
         size: "medium",
-        value: "1"
+        value: "1",
     },
 
-    render: (
-        {
-            disabled,
-            form,
-            hint,
-            label,
-            name,
-            required,
-            size,
-            value
-        }
-    ) => html`
+    render: ({
+        disabled,
+        form,
+        hint,
+        label,
+        name,
+        required,
+        size,
+        value,
+    }) => html`
         <pc-radio-group
             form=${form}
             hint=${hint}
@@ -296,5 +294,5 @@ export const Required: Story = {
             <pc-radio value="2" ?disabled=${disabled}>Option 2</pc-radio>
             <pc-radio value="3">Option 3</pc-radio>
         </pc-radio-group>
-    `
+    `,
 };

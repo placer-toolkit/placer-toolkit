@@ -27,7 +27,7 @@ export const Default: Story = {
 
         <script>
             const container = document.querySelector(
-                ".resize-observer-overview"
+                ".resize-observer-overview",
             );
             const resizeObserver =
                 container.querySelector("pc-resize-observer");

@@ -1,14 +1,14 @@
 export function animateTo(
-    el: HTMLElement,
+    element: HTMLElement,
     keyframes: Keyframe[],
-    options?: KeyframeAnimationOptions
+    options?: KeyframeAnimationOptions,
 ) {
     return new Promise((resolve) => {
         if (options?.duration === Infinity) {
             throw new Error("Promise‐based animations must be finite.");
         }
 
-        const animation = el.animate(keyframes, {
+        const animation = element.animate(keyframes, {
             ...options,
             duration: prefersReducedMotion() ? 0 : options!.duration,
         });
@@ -37,20 +37,20 @@ export function prefersReducedMotion() {
     return query.matches;
 }
 
-export function stopAnimations(el: HTMLElement) {
+export function stopAnimations(element: HTMLElement) {
     return Promise.all(
-        el.getAnimations().map((animation) => {
+        element.getAnimations().map((animation) => {
             return new Promise((resolve) => {
                 animation.cancel();
                 requestAnimationFrame(resolve);
             });
-        })
+        }),
     );
 }
 
 export function shimKeyframesHeightAuto(
     keyframes: Keyframe[],
-    calculatedHeight: number
+    calculatedHeight: number,
 ) {
     return keyframes.map((keyframe) => ({
         ...keyframe,

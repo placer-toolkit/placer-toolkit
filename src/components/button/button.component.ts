@@ -26,7 +26,7 @@ export class PcButton extends LitElement {
         this,
         "[default]",
         "prefix",
-        "suffix"
+        "suffix",
     );
 
     @query(".button") button!: HTMLButtonElement | HTMLLinkElement;

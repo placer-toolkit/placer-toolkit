@@ -58,7 +58,7 @@ export class PcAvatar extends LitElement {
                     <slot name="icon">
                         <pc-icon
                             library="default"
-                            iconStyle="solid"
+                            ="solid"
                             name="user"
                         ></pc-icon>
                     </slot>

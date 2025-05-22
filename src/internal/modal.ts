@@ -70,7 +70,7 @@ export default class Modal {
     private possiblyHasTabbableChildren(element: HTMLElement) {
         return (
             this.elementsWithTabbableControls.includes(
-                element.tagName.toLowerCase()
+                element.tagName.toLowerCase(),
             ) || element.hasAttribute("controls")
         );
     }
@@ -102,7 +102,7 @@ export default class Modal {
         const tabbableElements = getTabbableElements(this.element);
 
         let currentFocusIndex: number = tabbableElements.findIndex(
-            (element: HTMLElement) => element === currentActiveElement
+            (element: HTMLElement) => element === currentActiveElement,
         );
 
         this.previousFocus = this.currentFocus;
