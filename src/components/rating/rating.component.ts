@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import {
     customElement,
     eventOptions,
@@ -39,7 +40,7 @@ export class PcRating extends LitElement {
 
     @property() getIcon: (value: number) => string = () =>
         `
-            <pc-icon library="default" icon-style="solid" name="star"></pc-icon>
+            <pc-icon library="system" icon-style="solid" name="star"></pc-icon>
         `;
 
     private getValueFromMousePosition(event: MouseEvent) {
@@ -51,7 +52,10 @@ export class PcRating extends LitElement {
     }
 
     private getValueFromXCoordinate(coordinate: number) {
-        const isRTL = document.documentElement.dir === "rtl";
+        const isRTL =
+            document.documentElement.dir === "rtl" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "rtl");
         const { left, right, width } = this.rating.getBoundingClientRect();
         const value = isRTL
             ? this.roundToPrecision(
@@ -86,9 +90,13 @@ export class PcRating extends LitElement {
 
     private handleKeyDown(event: KeyboardEvent) {
         const isLTR =
-            !document.documentElement.hasAttribute("dir") ||
-            document.documentElement.dir === "ltr";
-        const isRTL = document.documentElement.dir === "rtl";
+            document.documentElement.dir === "ltr" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "ltr");
+        const isRTL =
+            document.documentElement.dir === "rtl" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "rtl");
         const oldValue = this.value;
 
         if (this.disabled || this.readonly) {
@@ -197,7 +205,10 @@ export class PcRating extends LitElement {
     }
 
     render() {
-        const isRTL = document.documentElement.dir === "rtl";
+        const isRTL =
+            document.documentElement.dir === "rtl" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "rtl");
         const counter = Array.from(Array(this.max).keys());
         let displayValue = 0;
 

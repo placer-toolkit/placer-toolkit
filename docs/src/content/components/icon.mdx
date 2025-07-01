@@ -1,0 +1,364 @@
+---
+title: Icon
+description: Icons are visual symbols that represent actions, objects or ideas.
+---
+
+import CodeBlock from "../../components/CodeBlock.astro";
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Icons are visual symbols that represent actions, objects or ideas.
+
+Placer Toolkit comes bundled with over 2,000 free icons courtesy of [Font Awesome](https://fontawesome.com). These icons are part of the `default` icon library. If you prefer, you can register [custom icon libraries](#defining-a-custom-icon-library) as well as Font Awesome Pro.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-question"
+        slot="icon"
+    ></pc-icon>
+    Not sure which icon to use? Find the perfect icon over at [Font Awesome](https://fontawesome.com/search/?o=r&ic=free&ip=brands%2Cclassic)!
+</pc-callout>
+
+## Demos
+
+### Icon styles
+
+The default icon library uses Font Awesome Free, which comes with three icon styles: Solid, Regular and Brands. Font Awesome Pro is available by creating a custom icon library dedicated to [Font Awesome Pro](#font-awesome-pro).
+
+<CodeDemo>
+{`<pc-icon
+    library="default"
+    icon-style="solid"
+    name="circle-info"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="fire"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="dumpster-fire"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="brands"
+    name="github"
+></pc-icon>`}
+</CodeDemo>
+
+### Colours
+
+Icons inherit their colour from the current text colour. Thus, you can set the `color` property on the `<pc-icon>` element or an ancestor to change the colour.
+
+<CodeDemo>
+{`<div style="color: var(--pc-color-primary-500)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="box-archive"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="battery-three-quarters"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="bell"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-violet-500)">
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="clock"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="cloud"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="download"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="file"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-success-500)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="flag-checkered"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="heart"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="image"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="bolt"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-warning-500)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="microphone"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="magnifying-glass"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="star"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="dumpster-fire"
+    ></pc-icon>
+</div>`}
+</CodeDemo>
+
+### Sizes
+
+Icons are sized relative to the current font size. To change the size of an icon, set the `font-size` property on the icon itself or on a parent element as shown below.
+
+<CodeDemo>
+{`<div style="font-size: var(--pc-font-size-xxl)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="box-archive"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="battery-three-quarters"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="bell"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="clock"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="cloud"
+    ></pc-icon>
+</div>`}
+</CodeDemo>
+
+### Labels
+
+For non‐decorative icons, use the `label` attribute to announce the label’s content to assistive devices.
+
+<CodeDemo>
+{`<pc-icon
+    library="default"
+    icon-style="solid"
+    name="star"
+    label="Add to favourites"
+></pc-icon>`}
+</CodeDemo>
+
+### Fixed‐width icons
+
+By default, Font Awesome icons have a pixel grid of 16×16px with the width having an extra 4px overflow to account for wider icons. To make icons have a fixed width, use the `fixed-width` attribute to render the icon in a 20×20px grid.
+
+<CodeDemo>
+{`<pc-icon
+    library="default"
+    icon-style="solid"
+    name="triangle-exclamation"
+    fixed-width
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="cloud"
+    fixed-width
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="user"
+    fixed-width
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="truck"
+    fixed-width
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="file"
+    fixed-width
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="snowplow"
+    fixed-width
+></pc-icon>`}
+</CodeDemo>
+
+### Images
+
+Images that are supposed to act like icons can be loaded individually with the `src` attribute. Only SVGs on a local or CORS‐enabled endpoint are supported. If you’re using more than one custom icon, it might make sense to register a [custom icon library](#defining-a-custom-icon-library) instead.
+
+<CodeDemo>
+{`<pc-icon src="/logo.svg" style="font-size: 8rem"></pc-icon>`}
+</CodeDemo>
+
+## Defining a custom icon library
+
+You can register additional icons to use with the `<pc-icon>` component through custom icon libraries. Icon files can exist locally or on a CORS‐enabled endpoint (e.g., a CDN). There is no limit to how many custom icon libraries you can register and there is no cost associated with registering them, as individual icons are only requested when they’re used.
+
+Placer Toolkit ships with two built‐in icon libraries, `default` and `system`. The [default icon library](#customising-the-default-library) contains all icons in Font Awesome Free. The [system icon library](#customising-the-system-library) only contains a subset of icons in Font Awesome Free that are used internally by Placer Toolkit components.
+
+To register a custom icon library, use the `registerIconLibrary()` function exported from `utilities/icon-library.js`. At a minimum, you must provide a name and a resolver function. The resolver function translates an icon name to a URL where the corresponding SVG file exists. Refer to the examples below to better understand how it works.
+
+Here’s an example that registers an icon library located in the `/assets/icons` directory.
+
+<CodeBlock language="html">
+{`<script type="module">
+    import { registerIconLibrary } from "https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/utilities/icon-library.js";
+
+    registerIconLibrary("custom-icon-library", {
+        resolver: (name) => \`/assets/icons/\${name}.svg\`,
+    });
+</script>`}
+</CodeBlock>
+
+To display an icon, set the `library` and `name` attributes of a `<pc-icon>` element. The `icon-style` attribute is not set up for custom icon libraries by default, as it’s designed for the default icon library.
+
+<CodeBlock language="html">
+{`<!-- This will show the icon located at /assets/icons/face-smile.svg -->
+<pc-icon library="custom-icon-library" name="face-smile"></pc-icon>`}
+</CodeBlock>
+
+If an icon is used, before registration occurs, it will be initially empty, but shown when it gets registered.
+
+The following examples demonstrate how to register a number of popular, open‐source icon libraries via the CDN. Feel free to adapt the code as you see fit to use your own origin or naming conventions.
+
+### Font Awesome Pro
+
+This sets up the Font Awesome icon library using a Kit. Head over to [Font Awesome](https://fontawesome.com/kits) to create one, then swap out `42deadbeef` with your own Kit code. Double‐check if your Kit is set to use Font Awesome Pro to use Pro icons and features.
+
+<CodeBlock language="html">
+{`<div style="font-size: var(--pc-font-size-xl)">
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="robot"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="cookie-bite"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="gamepad-modern"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="floppy-disk"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="server"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="solid"
+        name="wine-glass"
+    ></pc-icon>
+
+    <br />
+
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="robot"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="cookie-bite"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="gamepad-modern"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="floppy-disk"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="server"
+    ></pc-icon>
+    <pc-icon
+        library="fa-pro"
+        icon-style="regular"
+        name="wine-glass"
+    ></pc-icon>
+    <!-- More icons still need to be added! -->
+</div>
+
+<script type="module">
+    import { registerIconLibrary } from "https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/utilities/icon-library.js";
+
+    registerIconLibrary("fa-pro", {
+        resolver: (name, iconStyle = "solid") => {
+            return \`https://ka-p.fontawesome.com/releases/v6.7.2/svgs/\${iconStyle}/\${name}.svg/?token=42deadbeef\`;
+        },
+    });
+</script>`}
+</CodeBlock>
+
+_This page will include a bunch of icon libraries and will take a few versions to complete. Please be patient!_

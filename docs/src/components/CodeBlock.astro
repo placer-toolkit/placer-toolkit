@@ -1,0 +1,94 @@
+---
+import "highlight.js/styles/github-dark.min.css";
+
+import hljs from "highlight.js/lib/core";
+import xml from "highlight.js/lib/languages/xml";
+import css from "highlight.js/lib/languages/css";
+import javascript from "highlight.js/lib/languages/javascript";
+import typescript from "highlight.js/lib/languages/typescript";
+import bash from "highlight.js/lib/languages/bash";
+
+hljs.registerLanguage("html", xml);
+hljs.registerLanguage("css", css);
+hljs.registerLanguage("javascript", javascript);
+hljs.registerLanguage("js", javascript);
+hljs.registerLanguage("typescript", typescript);
+hljs.registerLanguage("ts", typescript);
+hljs.registerLanguage("bash", bash);
+hljs.registerLanguage("shell", bash);
+hljs.registerLanguage("sh", bash);
+
+const uid =  `code-${Math.random().toString(36).slice(2, 9)}`;
+const language = Astro.props.language ?? undefined;
+---
+
+<div class="code-block">
+    <pc-copy-button from={uid}></pc-copy-button>
+    <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uid}><slot /></code></pre>
+</div>
+
+<script>
+    import hljs from "highlight.js";
+
+    const blocks = document.querySelectorAll(".code-block pre code.hljs");
+
+    blocks.forEach((block) => {
+        hljs.highlightElement(block as HTMLElement);
+    });
+</script>
+
+<style>
+    .code-block {
+        position: relative;
+        background-color: oklch(26.1% 0.015 264.3);
+        border: 1px solid oklch(29% 0.019 264.2);
+        border-radius: var(--pc-border-radius-m);
+        width: 100%;
+        margin-bottom: var(--pc-spacing-xl);
+        overflow: visible;
+        max-height: max-content;
+    }
+
+    .code-block :is(pre, code) {
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .code-block .hljs {
+        padding: var(--pc-spacing-l) !important;
+        background-color: transparent;
+        line-height: var(--pc-line-height-normal);
+        font-size: var(--pc-font-size-xs);
+    }
+
+    .code-block pc-copy-button {
+        position: absolute;
+        top: var(--pc-spacing-s);
+        right: var(--pc-spacing-s);
+        z-index: 1;
+    }
+
+    .code-block pc-copy-button::part(button) {
+        background-color: oklch(26.1% 0.015 264.3);
+        color: oklch(96.7% 0.005 264.5);
+    }
+
+    .code-block pc-copy-button::part(button):hover,
+    .code-block pc-copy-button::part(button):focus-visible {
+        background-color: oklch(32.8% 0.024 264.2);
+    }
+
+    .code-block pc-copy-button::part(button):active {
+        background-color: oklch(29% 0.019 264.2);
+    }
+
+    .code-block pc-copy-button::part(success-icon) {
+        color: var(--success-color) !important;
+    }
+
+    .code-block pc-copy-button::part(error-icon) {
+        color: var(--error-color) !important;
+    }
+</style>

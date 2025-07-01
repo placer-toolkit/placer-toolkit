@@ -1,0 +1,1230 @@
+---
+title: Colour
+description: Colour tokens help maintain consistent use of colour throughout your app. Placer Toolkit provides palettes for theme colours and primitives that you can use as a foundation for your design system.
+---
+
+Colour tokens help maintain consistent use of colour throughout your app. Placer Toolkit provides palettes for theme colours and primitives that you can use as a foundation for your design system.
+
+Colour tokens are referenced using the `--pc-color-{name}-{n}` CSS custom property, where `{name}` is the name of the palette and `{n}` is the numeric value of the desired swatch.
+
+## Theme tokens
+
+Theme tokens give you a semantic way to reference colours in your app. The primary palette is typically based on an accent colour, whereas the success, neutral, warning and danger palettes are used to visualise actions that correspond to their respective meanings.
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Neutral</span>
+        <br />
+        <span>`--pc-color-neutral-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Primary</span>
+        <br />
+        <span>`--pc-color-primary-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-primary-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Success</span>
+        <br />
+        <span>`--pc-color-success-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-success-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Warning</span>
+        <br />
+        <span>`--pc-color-warning-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-warning-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Danger</span>
+        <br />
+        <span>`--pc-color-danger-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-danger-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>One‐offs</span>
+        <br />
+        <span>`--pc-color-neutral-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div
+            class="color-palette-swatch color-palette-swatch-with-border" style="background-color: var(--pc-color-neutral-0)"
+        ></div>
+        <span>0</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-neutral-1000)"></div>
+        <span>1000</span>
+    </div>
+</div>
+
+## Colour primitives
+
+Additional palettes are provided in the form of colour primitives. Use these when you need arbitrary colours that don’t have semantic meaning.
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Grey</span>
+        <br />
+        <span>`--pc-color-grey-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-grey-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Red</span>
+        <br />
+        <span>`--pc-color-red-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-red-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Orange</span>
+        <br />
+        <span>`--pc-color-orange-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-orange-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Amber</span>
+        <br />
+        <span>`--pc-color-amber-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-amber-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Yellow</span>
+        <br />
+        <span>`--pc-color-yellow-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-yellow-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Lime</span>
+        <br />
+        <span>`--pc-color-lime-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-lime-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Green</span>
+        <br />
+        <span>`--pc-color-green-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-green-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Emerald</span>
+        <br />
+        <span>`--pc-color-emerald-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-emerald-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Teal</span>
+        <br />
+        <span>`--pc-color-teal-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-teal-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Cyan</span>
+        <br />
+        <span>`--pc-color-cyan-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-cyan-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Sky</span>
+        <br />
+        <span>`--pc-color-sky-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-sky-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Blue</span>
+        <br />
+        <span>`--pc-color-blue-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-blue-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Indigo</span>
+        <br />
+        <span>`--pc-color-indigo-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-indigo-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Violet</span>
+        <br />
+        <span>`--pc-color-violet-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-violet-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Purple</span>
+        <br />
+        <span>`--pc-color-purple-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-purple-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Fuchsia</span>
+        <br />
+        <span>`--pc-color-fuchsia-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-fuchsia-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Pink</span>
+        <br />
+        <span>`--pc-color-pink-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-pink-950)"></div>
+        <span>950</span>
+    </div>
+</div>
+
+<div class="color-palette">
+    <div class="color-palette-name">
+        <span>Rose</span>
+        <br />
+        <span>`--pc-color-rose-{n}`</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-50)"></div>
+        <span>50</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-100)"></div>
+        <span>100</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-200)"></div>
+        <span>200</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-300)"></div>
+        <span>300</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-400)"></div>
+        <span>400</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-500)"></div>
+        <span>500</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-600)"></div>
+        <span>600</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-700)"></div>
+        <span>700</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-800)"></div>
+        <span>800</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-900)"></div>
+        <span>900</span>
+    </div>
+    <div class="color-palette-swatch-container">
+        <div class="color-palette-swatch" style="background-color: var(--pc-color-rose-950)"></div>
+        <span>950</span>
+    </div>
+</div>

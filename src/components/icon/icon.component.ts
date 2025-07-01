@@ -1,9 +1,5 @@
-import {
-    getIconLibrary,
-    type IconLibrary,
-    unwatchIcon,
-    watchIcon,
-} from "./library.js";
+import { getIconLibrary, unwatchIcon, watchIcon } from "./library.js";
+import type { IconLibrary } from "./library.js";
 import { LitElement, html } from "lit";
 import type { CSSResultGroup, HTMLTemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
@@ -28,6 +24,22 @@ interface IconSource {
     fromLibrary: boolean;
 }
 
+/**
+ * @summary Icons are visual symbols that represent actions, objects or ideas.
+ * @status experimental
+ * @since 0.1.0
+ *
+ * @event pc-load — Emitted when the icon has loaded. When using `spriteSheet: true`, this will not emit.
+ * @event pc-error — Emitted when the icon fails to load due to an error. When using `spriteSheet: true`, this will not emit.
+ *
+ * @csspart svg — The component’s internal SVG element.
+ * @csspart use — The `<use>` element generated when using `spriteSheet: true`.
+ *
+ * @cssproperty --fa-primary-color — The primary colour for the primary layer in duotone icons.
+ * @cssproperty --fa-secondary-color — The secondary colour for the secondary layer in duotone icons.
+ * @cssproperty --fa-primary-opacity — The primary opacity for the primary layer in duotone icons.
+ * @cssproperty --fa-secondary-opacity — The secondary opacity for the secondary layer in duotone icons.
+ */
 @customElement("pc-icon")
 export class PcIcon extends LitElement {
     static styles: CSSResultGroup = styles;
@@ -90,15 +102,28 @@ export class PcIcon extends LitElement {
 
     @state() private svg: SVGElement | HTMLTemplateResult | null = null;
 
-    @property({ attribute: "icon-style", reflect: true }) iconStyle?: string;
-
-    @property() label = "";
-
-    @property({ reflect: true }) library = "default";
-
+    /** The name of the icon to render. Available names depend on the icon library being used. */
     @property({ reflect: true }) name?: string;
 
+    /** The icon style to use for the icon. If not configured, this only works for the default and Font Awesome Pro icon libraries. */
+    @property({ attribute: "icon-style", reflect: true }) iconStyle?: string;
+
+    /** Sets the width of the icon to 1.25em (20px) and centres it. It’s similar to the Font Awesome class `fa-fw`. */
+    @property({ attribute: "fixed-width", type: Boolean, reflect: true })
+    fixedWidth = false;
+
+    /** Swaps the opacity of duotone icons. Has no effect on icon libraries that aren’t the default one or Font Awesome Pro one. */
+    @property({ attribute: "swap-opacity", type: Boolean, reflect: true })
+    swapOpacity = false;
+
+    /** The external URL of an SVG file. Make sure you trust the content you are included, as it will be executed as code and can result in XSS attacks. */
     @property() src?: string;
+
+    /** A label to include for assistive devices. If omitted, the icon will be considered presentational and ignored by assistive devices. */
+    @property() label = "";
+
+    /** The name of a registered icon library. */
+    @property({ reflect: true }) library = "default";
 
     connectedCallback() {
         super.connectedCallback();
@@ -130,6 +155,7 @@ export class PcIcon extends LitElement {
         };
     }
 
+    /** @internal This is an internal property. */
     @watch("label")
     handleLabelChange() {
         const hasLabel =
@@ -146,6 +172,7 @@ export class PcIcon extends LitElement {
         }
     }
 
+    /** @internal This is an internal property. */
     @watch(["library", "iconStyle", "name", "src"])
     async setIcon() {
         const { url, fromLibrary } = this.getIconSource();

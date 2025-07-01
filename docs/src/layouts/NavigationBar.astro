@@ -1,0 +1,105 @@
+---
+import { Image } from "astro:assets";
+
+import SocialIcons from "../components/SocialIcons.astro";
+import ThemeSelector from "../components/ThemeSelector.astro";
+
+import logo from "../assets/logo.svg";
+---
+
+<header role="banner" class="navbar">
+    <nav class="navigation-bar" aria-label="Main navigation">
+        <section class="left">
+            <pc-icon-button
+                class="sidebar-toggle pc-mobile-only"
+                library="default"
+                icon-style="solid"
+                name="bars"
+                label="Open sidebar"
+            ></pc-icon-button>
+            <a href="/">
+                <Image
+                    src={logo}
+                    width={36}
+                    height={36}
+                    style="transform: translateY(-2px)"
+                    loading="eager"
+                    alt=""
+                />
+                <span class="pc-desktop-only">Placer Toolkit</span>
+            </a>
+            <small class="pc-desktop-only">0.5.0</small>
+            <pc-tag
+                class="pc-desktop-only"
+                appearance="warning"
+                size="small"
+            >
+                Pre‐release
+            </pc-tag>
+        </section>
+        <section class="right">
+            <SocialIcons />
+            <ThemeSelector />
+            <pc-button id="open-search-dialog">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="magnifying-glass"
+                    slot="prefix"
+                    aria-hidden="true"></pc-icon>
+                Search
+            </pc-button>
+        </section>
+    </nav>
+</header>
+
+<style>
+    .navbar {
+        grid-area: navbar;
+        background-color: var(--pc-color-neutral-50);
+        border-bottom: 1px solid var(--pc-color-neutral-100);
+        z-index: 10;
+    }
+
+    .navigation-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--pc-spacing-l) var(--pc-spacing-m);
+        height: 100%;
+    }
+
+    .navigation-bar section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-m);
+    }
+
+    .navigation-bar section.left .sidebar-toggle {
+        transform: scale(1.1);
+    }
+
+    .navigation-bar section.left a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-s);
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .navigation-bar section.left span {
+        font-weight: var(--pc-font-weight-semibold);
+    }
+
+    .navigation-bar section.left small {
+        color: var(--pc-color-neutral-600);
+    }
+
+    .navigation-bar section.right pc-select {
+        transform: translateY(-12px);
+        max-width: 30vw;
+    }
+</style>
+

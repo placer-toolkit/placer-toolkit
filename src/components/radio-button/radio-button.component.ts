@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -79,23 +80,27 @@ export class PcRadioButton extends LitElement {
                     class=${classMap({
                         "radio": true,
                         "button": true,
-                        "appearance-default": true,
-                        "size-small": this.size === "small",
-                        "size-medium": this.size === "medium",
-                        "size-large": this.size === "large",
-                        "checked": this.checked === true,
-                        "focused": this.hasFocus === true,
-                        "outlined": true,
-                        "pill": this.pill === true,
-                        "has-label": this.hasSlotController.test("[default]"),
-                        "has-prefix": this.hasSlotController.test("prefix"),
-                        "has-suffix": this.hasSlotController.test("suffix"),
+                        "button-default": true,
+                        "button-small": this.size === "small",
+                        "button-medium": this.size === "medium",
+                        "button-large": this.size === "large",
+                        "button-checked": this.checked === true,
+                        "button-disabled": this.disabled === true,
+                        "button-focused": this.hasFocus === true,
+                        "button-outlined": true,
+                        "button-pill": this.pill === true,
+                        "button-has-label":
+                            this.hasSlotController.test("[default]"),
+                        "button-has-prefix":
+                            this.hasSlotController.test("prefix"),
+                        "button-has-suffix":
+                            this.hasSlotController.test("suffix"),
                     })}
                     part="button ${this.checked ? "button-checked" : ""}"
                     type="button"
                     role="radio"
-                    ?disabled=${this.disabled}
                     aria-checked=${this.checked}
+                    aria-disabled=${this.disabled}
                     value=${ifDefined(this.value)}
                     @click=${this.handleClick}
                     @focus=${this.handleFocus}

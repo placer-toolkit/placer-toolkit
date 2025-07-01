@@ -1,0 +1,151 @@
+---
+title: Visually Hidden
+description: This utility makes content accessible to assistive devices without displaying it on the screen.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+import CodeBlock from "../../components/CodeBlock.astro";
+
+This utility makes content accessible to assistive devices without displaying it on the screen.
+
+<blockquote>
+    “There are real world situations where visually hiding content may be appropriate, while to content should remain available to assistive technologies, such as screen readers. For instance, hiding a search field’s `label` as a common magnifying glass icon is used in its stead.”
+    <footer>— <cite>The A11Y Project, How‐to: Hide content</cite></footer>
+</blockquote>
+
+Since visually hidden content can receive focus when tabbing, the element will become visible when something inside receives focus. This behaviour is intentional, as otherwise sighted keyboard users wouldn’t be able to determine where the focus indicator is.
+
+<CodeDemo>
+{`<div style="min-height: 1.875rem">
+    <a href="#" class="pc-visually-hidden">Skip to main content</a>
+</div>`}
+</CodeDemo>
+
+## Demos
+
+### Links that open in new windows
+
+In this demo, the link will open in a new window. Screen readers will announce it as “opens in a new window” even though the text content isn’t visible to sighted users.
+
+<CodeDemo>
+{`<a href="https://example.com" target="_blank" rel="noreferrer noopener">
+    Link to example.com
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="arrow-up-right-from-square"
+        style="font-size: 0.75rem; vertical-align: 0.25rem"
+        aria-hidden="true"
+    ></pc-icon>
+    <span class="pc-visually-hidden">opens in a new window</span>
+</a>`}
+</CodeDemo>
+
+### Content conveyed by context
+
+Adding a label may seem redundant at times, but they’re very helpful for unsighted users. Rather than omit them, you can provide context to unsighted users with visually hidden content that will be announced by assistive devices such as screen readers.
+
+<CodeDemo>
+{`<pc-card style="width: 100%; max-width: 360px;">
+    <header class="pc-visually-hidden">
+        Personal info
+    </header>
+    <pc-input label="Name" style="margin-bottom: var(--pc-spacing-s)"></pc-input>
+    <pc-input label="Email" type="email"></pc-input>
+</pc-card>`}
+</CodeDemo>
+
+### Force visually hidden
+
+There are cases where you want to _always_ visually hide certain content, even when it’s focused. For example when hiding a native checkbox to render a custom one:
+
+<CodeDemo>
+{`<label>
+    <span class="checkbox">
+        <input type="checkbox" class="pc-visually-hidden-force" />
+        <span class="checkbox-tick">
+            <pc-icon library="default" icon-style="solid" name="check"></pc-icon>
+        </span>
+    </span>
+    I have read the Terms of Service
+</label>
+
+<style>
+    .checkbox {
+        display: inline-flex;
+        vertical-align: middle;
+        width: var(--pc-font-size-l);
+        height: var(--pc-font-size-l);
+        color: var(--pc-color-neutral-0);
+        border: 1px solid var(--pc-color-neutral-200);
+        border-radius: var(--pc-border-radius-s);
+        margin-inline-end: var(--pc-spacing-s);
+        cursor: pointer;
+        transform: translateY(-2px);
+        outline: none;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    .checkbox-tick {
+        transform: translate(2px, -2px);
+        font-size: var(--pc-font-size-s);
+        transition: opacity var(--pc-transition-fast) ease-in-out;
+    }
+
+    .checkbox:hover {
+        border-color: var(--pc-color-neutral-300);
+    }
+
+    .checkbox:active {
+        border-color: var(--pc-color-neutral-100);
+    }
+
+    .checkbox:focus-within {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+    }
+
+    .checkbox:has(:checked) {
+        background-color: var(--pc-color-primary-400);
+        border-color: var(--pc-color-primary-400);
+    }
+
+    .checkbox:not(:has(:checked)) .checkbox-tick {
+        opacity: 0;
+    }
+
+    .checkbox:has(:checked):hover {
+        background-color: var(--pc-color-primary-500);
+        border-color: var(--pc-color-primary-500);
+    }
+
+    .checkbox:has(:checked):active {
+        background-color: var(--pc-color-primary-300);
+        border-color: var(--pc-color-primary-300);
+    }
+</style>`}
+</CodeDemo>
+
+## Importing
+
+If you’re using the autoloader or the standard loader, you can ignore this section. If you’re cherry picking, you can use any of the following snippets to import this utility.
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="in-html">In HTML</pc-tab>
+    <pc-tab slot="navigation" panel="in-css">In CSS</pc-tab>
+
+    <pc-tab-panel name="in-html">
+        To import this utility from the CDN with a link tag, copy this snippet and paste it in your HTML:
+
+        <CodeBlock language="html">
+        {`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/visually-hidden.css" />`}
+        </CodeBlock>
+    </pc-tab-panel>
+    <pc-tab-panel name="in-css">
+        To import this utility with an `@import` at‐rule, copy this snippet and paste it in your global CSS file:
+
+        <CodeBlock language="css">
+        {`@import url("https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/visually-hidden.css");`}
+        </CodeBlock>
+    </pc-tab-panel>
+</pc-tab-group>

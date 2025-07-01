@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import {
     customElement,
     eventOptions,
@@ -222,7 +223,11 @@ export class PcTabGroup extends LitElement {
             const activeElement = this.tabs.find((tab) =>
                 tab.matches(":focus"),
             );
-            const isRTL = document.documentElement.dir === "rtl";
+            const isRTL =
+                document.documentElement.dir === "rtl" ||
+                (!document.documentElement.dir &&
+                    getComputedStyle(document.documentElement).direction ===
+                        "rtl");
             let nextTab: null | PcTab = null;
 
             if (activeElement?.tagName.toLowerCase() === "pc-tab") {
@@ -370,7 +375,10 @@ export class PcTabGroup extends LitElement {
 
         const width = currentTab.clientWidth;
         const height = currentTab.clientHeight;
-        const isRTL = document.documentElement.dir === "rtl";
+        const isRTL =
+            document.documentElement.dir === "rtl" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "rtl");
 
         const allTabs = this.getAllTabs();
         const precedingTabs = allTabs.slice(0, allTabs.indexOf(currentTab));
@@ -391,7 +399,6 @@ export class PcTabGroup extends LitElement {
                     ? `${-1 * offset.left}px`
                     : `${offset.left}px`;
                 break;
-
             case "start":
             case "end":
                 this.indicator.style.width = "auto";
@@ -499,7 +506,10 @@ export class PcTabGroup extends LitElement {
     }
 
     render() {
-        const isRTL = document.documentElement.dir === "rtl";
+        const isRTL =
+            document.documentElement.dir === "rtl" ||
+            (!document.documentElement.dir &&
+                getComputedStyle(document.documentElement).direction === "rtl");
 
         return html`
             <div
@@ -527,8 +537,8 @@ export class PcTabGroup extends LitElement {
                                       "tab-group-scroll-button-start-hidden":
                                           this.shouldHideScrollStartButton,
                                   })}
-                                  library="default"
-                                  ="solid"
+                                  library="system"
+                                  icon-style="solid"
                                   name=${isRTL
                                       ? "chevron-right"
                                       : "chevron-left"}
@@ -536,7 +546,7 @@ export class PcTabGroup extends LitElement {
                                   aria-hidden="true"
                                   label="Scroll left"
                                   @click=${this.handleScrollToStart}
-                                  exportparts="base:scroll-button-base"
+                                  exportparts="base:scroll-button__base"
                               ></pc-icon-button>
                           `
                         : ""}
@@ -571,8 +581,8 @@ export class PcTabGroup extends LitElement {
                                       "tab-group-scroll-button-end-hidden":
                                           this.shouldHideScrollEndButton,
                                   })}
-                                  library="default"
-                                  ="solid"
+                                  library="system"
+                                  icon-style="solid"
                                   name=${isRTL
                                       ? "chevron-left"
                                       : "chevron-right"}
@@ -580,7 +590,7 @@ export class PcTabGroup extends LitElement {
                                   aria-hidden="true"
                                   label="Scroll right"
                                   @click=${this.handleScrollToEnd}
-                                  exportparts="base:scroll-button-base"
+                                  exportparts="base:scroll-button__base"
                               ></pc-icon-button>
                           `
                         : ""}

@@ -1,0 +1,101 @@
+---
+title: Callout
+description: Callouts are used to display important messages inline.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Callouts are used to display important messages inline.
+
+<CodeDemo open>
+{`<pc-callout>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    This is a standard callout. You can customise its content and even the icon.
+</pc-callout>`}
+</CodeDemo>
+
+## Demos
+
+### Appearances
+
+Set the `appearance` attribute to change the callout’s appearance.
+
+<CodeDemo>
+{`<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    <strong>This is super informative</strong><br />
+    You can tell by how pretty the callout is.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="success">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-check"
+        slot="icon"
+    ></pc-icon>
+    <strong>Your changes have been saved</strong><br />
+    You can safely exit the app now.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="neutral">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="gear"
+        slot="icon"
+    ></pc-icon>
+    <strong>Your settings have been updated</strong><br />
+    Settings will take effect on next login.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    <strong>Your session has ended</strong><br />
+    Please login again to continue.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="danger">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    <strong>Your account has been deleted</strong><br />
+    We’re very sorry to see you go!
+</pc-callout>`}
+</CodeDemo>
+
+### Without icons
+
+Icons are optional. Simply omit the `icon` slot if you don’t want them.
+
+<CodeDemo>
+{`<pc-callout appearance="primary">
+    Nothing fancy here, just a simple callout.
+</pc-callout>`}
+</CodeDemo>

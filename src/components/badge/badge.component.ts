@@ -1,12 +1,23 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { styles } from "./badge.styles.js";
 
+/**
+ * @summary Badges are used to draw attention and display statuses or counts.
+ * @status experimental
+ * @since 0.1.0
+ *
+ * @slot — The badge’s content.
+ *
+ * @csspart base — The component’s base wrapper.
+ */
 @customElement("pc-badge")
 export class PcBadge extends LitElement {
     static styles: CSSResultGroup = styles;
 
+    /** The badge’s appearance. */
     @property({ reflect: true }) appearance:
         | "primary"
         | "success"
@@ -14,8 +25,10 @@ export class PcBadge extends LitElement {
         | "warning"
         | "danger" = "primary";
 
+    /** Gives the badge a rounded rectangle shape. */
     @property({ type: Boolean, reflect: true }) rounded = false;
 
+    /** Makes the badge pulsate to draw attention. */
     @property({ type: Boolean, reflect: true }) pulse = false;
 
     render() {
@@ -23,13 +36,14 @@ export class PcBadge extends LitElement {
             <span
                 part="base"
                 class=${classMap({
-                    "appearance-primary": this.appearance === "primary",
-                    "appearance-success": this.appearance === "success",
-                    "appearance-neutral": this.appearance === "neutral",
-                    "appearance-warning": this.appearance === "warning",
-                    "appearance-danger": this.appearance === "danger",
-                    "rounded": this.rounded === true,
-                    "pulse": this.pulse === true,
+                    "badge": true,
+                    "badge-primary": this.appearance === "primary",
+                    "badge-success": this.appearance === "success",
+                    "badge-neutral": this.appearance === "neutral",
+                    "badge-warning": this.appearance === "warning",
+                    "badge-danger": this.appearance === "danger",
+                    "badge-rounded": this.rounded === true,
+                    "badge-pulse": this.pulse === true,
                 })}
                 role="status"
             >

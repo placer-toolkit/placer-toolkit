@@ -168,12 +168,12 @@ export const styles = css`
 
     .input-small .prefix ::slotted(*) {
         margin-inline-start: var(--pc-input-spacing-s);
-        transform: translateY(1px);
+        translate: 0 1px;
     }
 
     .input-small .suffix ::slotted(*) {
         margin-inline-end: var(--pc-input-spacing-s);
-        transform: translateY(1px);
+        translate: 0 1px;
     }
 
     .input-medium {
@@ -196,12 +196,12 @@ export const styles = css`
 
     .input-medium .prefix ::slotted(*) {
         margin-inline-start: var(--pc-input-spacing-m);
-        transform: translateY(1px);
+        translate: 0 1px;
     }
 
     .input-medium .suffix ::slotted(*) {
         margin-inline-end: var(--pc-input-spacing-m);
-        transform: translateY(1px);
+        translate: 0 1px;
     }
 
     .input-large {
@@ -224,12 +224,12 @@ export const styles = css`
 
     .input-large .prefix ::slotted(*) {
         margin-inline-start: var(--pc-input-spacing-l);
-        transform: translateY(2px);
+        translate: 0 2px;
     }
 
     .input-large .suffix ::slotted(*) {
         margin-inline-end: var(--pc-input-spacing-l);
-        transform: translateY(2px);
+        translate: 0 2px;
     }
 
     .input-pill {
@@ -255,8 +255,8 @@ export const styles = css`
         color: var(--pc-input-icon-color-hover);
     }
 
-    .clear-input-button:hover:active,
-    .password-toggle-button:hover:active {
+    .clear-input-button:active,
+    .password-toggle-button:active {
         color: var(--pc-input-icon-color-active);
     }
 
@@ -279,7 +279,12 @@ export const styles = css`
         display: none;
     }
 
-    .label {
+    .form-control .label,
+    .form-control .hint {
+        display: none;
+    }
+
+    .form-control-has-label .label {
         display: inline-block;
         color: var(--pc-input-label-color);
         line-height: var(--pc-line-height-normal);
@@ -293,8 +298,8 @@ export const styles = css`
         margin-inline-start: var(--pc-input-required-content-offset);
     }
 
-    .hint {
-        color: var(--pc-input-hint-text-color);
+    .form-control-has-hint .hint {
+        color: var(--pc-input-hint-color);
         font-family: var(--pc-input-font-family);
         margin-top: var(--pc-spacing-xs);
     }

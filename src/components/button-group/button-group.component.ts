@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { styles } from "./button-group.styles.js";
 
@@ -8,14 +9,26 @@ function findButton(element: HTMLElement) {
     return element.closest(selector) ?? element.querySelector(selector);
 }
 
+/**
+ * @summary Button groups can be used to group related buttons into groups.
+ * @status experimental
+ * @since 0.3.0
+ *
+ * @slot — One or more `<pc-button>` elements to display in the button group.
+ *
+ * @csspart base — The component’s base wrapper.
+ */
 @customElement("pc-button-group")
 export class PcButtonGroup extends LitElement {
     static styles: CSSResultGroup = styles;
 
+    /** @internal This is an internal property. */
     @query("slot") defaultSlot!: HTMLSlotElement;
 
+    /** @internal This is an internal property. */
     @state() disableRole = false;
 
+    /** A label to use for the button group. This won’t be displayed on the screen, but it will be announced by assistive devices when interacting with the control and is highly recommended. */
     @property() label = "";
 
     private handleFocus(event: Event) {

@@ -12,8 +12,18 @@ export const styles = css`
         padding: 0;
     }
 
-    .label {
+    .form-control .label,
+    .form-control .hint {
+        display: none;
+    }
+
+    .form-control-has-label .label {
+        display: inline-block;
+        color: var(--pc-input-label-color);
+        line-height: var(--pc-line-height-normal);
+        margin-bottom: var(--pc-spacing-xs);
         padding: 0;
+        transition: color var(--pc-transition-fast) ease-in-out;
     }
 
     :host([required]) .label::after {
@@ -22,8 +32,9 @@ export const styles = css`
         margin-inline-start: var(--pc-input-required-content-offset);
     }
 
-    .hint {
-        color: var(--pc-input-hint-text-color);
+    .form-control-has-hint .hint {
+        color: var(--pc-input-hint-color);
         font-family: var(--pc-input-font-family);
+        margin-top: var(--pc-spacing-xs);
     }
 `;

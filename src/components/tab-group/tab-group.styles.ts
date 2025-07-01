@@ -24,13 +24,14 @@ export const styles = css`
 
     .tab-group-has-scroll-controls .tab-group-navigation-container {
         position: relative;
-        padding: 0 var(--pc-spacing-xl);
+        padding: 0 var(--pc-spacing-xxxl);
     }
 
     .tab-group-has-scroll-controls .tab-group-scroll-button-start-hidden,
     .tab-group-has-scroll-controls .tab-group-scroll-button-end-hidden {
         opacity: 0;
         pointer-events: none;
+        visibility: hidden;
     }
 
     .tab-group-navigation-container,
@@ -50,10 +51,12 @@ export const styles = css`
         justify-content: center;
         top: 0;
         bottom: 0;
-        width: var(--pc-spacing-xl);
+        width: var(--pc-spacing-xxxl);
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
-        transition: opacity var(--pc-transition-fast) ease-in-out;
+        transition: opacity var(--pc-transition-fast) ease-in-out,
+            visibility 0s ease-in-out var(--pc-transition-fast);
     }
 
     .tab-group-scroll-button-start {

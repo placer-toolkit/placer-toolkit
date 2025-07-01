@@ -5,8 +5,8 @@ export const styles = css`
         display: inline-flex;
     }
 
-    span {
-        padding: var(--pc-spacing-xs) var(--pc-spacing-s);
+    .badge {
+        padding: var(--pc-spacing-xxxs) 0.625rem;
         font-family: var(--pc-font-sans);
         font-size: var(--pc-font-size-xs);
         font-weight: var(--pc-font-weight-bold);
@@ -19,42 +19,42 @@ export const styles = css`
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    span,
-    span.appearance-primary {
+    .badge,
+    .badge-primary {
         --pulse-color: var(--pc-color-primary-600);
         background-color: var(--pc-color-primary-500);
         border: 1px solid var(--pc-color-primary-400);
     }
 
-    span.appearance-success {
+    .badge.badge-success {
         --pulse-color: var(--pc-color-success-600);
         background-color: var(--pc-color-success-500);
         border: 1px solid var(--pc-color-success-400);
     }
 
-    span.appearance-neutral {
+    .badge.badge-neutral {
         --pulse-color: var(--pc-color-neutral-600);
         background-color: var(--pc-color-neutral-500);
         border: 1px solid var(--pc-color-neutral-400);
     }
 
-    span.appearance-warning {
+    .badge.badge-warning {
         --pulse-color: var(--pc-color-warning-600);
         background-color: var(--pc-color-warning-500);
         border: 1px solid var(--pc-color-warning-400);
     }
 
-    span.appearance-danger {
+    .badge.badge-danger {
         --pulse-color: var(--pc-color-danger-600);
         background-color: var(--pc-color-danger-500);
         border: 1px solid var(--pc-color-danger-400);
     }
 
-    span.rounded {
+    .badge-rounded {
         border-radius: var(--pc-border-radius-s);
     }
 
-    span.pulse {
+    .badge-pulse {
         animation: pulse 1.5s cubic-bezier(0, 0.55, 0.45, 1) infinite;
     }
 

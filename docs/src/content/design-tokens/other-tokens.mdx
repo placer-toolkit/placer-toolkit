@@ -1,0 +1,155 @@
+---
+title: Other tokens
+description: All of the design tokens described herein are considered relatively stable. However, some changes might occur in future versions to address mission critical bugs or improvements. If such changes occur, they will not be considered breaking changes and will be clearly documented in the changelog.
+---
+
+All of the design tokens described herein are considered relatively stable. However, some changes might occur in future versions to address mission critical bugs or improvements. If such changes occur, they _will not_ be considered breaking changes and will be clearly documented in the [changelog](/resources/changelog).
+
+Most design tokens are consistent across the light and dark theme. Those that vary will show both values.
+
+## Focus rings
+
+Focus rings show what item is selected when tabbing with the keyboard or when an input is focused.
+
+| Design token             | Default value                                                                      |
+| ------------------------ | ---------------------------------------------------------------------------------- |
+| `--pc-focus-ring-width`  | `3px`                                                                              |
+| `--pc-focus-ring-style`  | `solid`                                                                            |
+| `--pc-focus-ring-color`  | `var(--pc-color-primary-600)`                                                      |
+| `--pc-focus-ring`        | `var(--pc-focus-ring-width) var(--pc-focus-ring-style) var(--pc-focus-ring-color)` |
+| `--pc-focus-ring-offset` | `1px`                                                                              |
+
+## Buttons
+
+These tokens below control the appearance of buttons. In addition, buttons also use some form input tokens such as `--pc-input-height-*` and `--pc-input-border-*`, as they’re also form controls.
+
+| Design token              | Default value            |
+| ------------------------- | ------------------------ |
+| `--pc-button-font-size-s` | `var(--pc-font-size-xs)` |
+| `--pc-button-font-size-m` | `var(--pc-font-size-s)`  |
+| `--pc-button-font-size-l` | `var(--pc-font-size-m)`  |
+
+## Form controls
+
+These tokens are used to style form controls, such as [Input](/components/input) and [Select](/components/select).
+
+| Default token                           | Default value                     |
+| --------------------------------------- | --------------------------------- |
+| `--pc-input-height-s`                   | `1.75rem` (28px @ 16px base)      |
+| `--pc-input-height-m`                   | `2.25rem` (36px @ 16px base)      |
+| `--pc-input-height-l`                   | `3rem` (48px @ 16px base)         |
+| `--pc-input-background-color`           | `var(--pc-color-neutral-50)`      |
+| `--pc-input-background-color-hover`     | `var(--pc-color-neutral-50)`      |
+| `--pc-input-background-color-focus`     | `var(--pc-color-neutral-0)`       |
+| `--pc-input-background-color-disabled`  | `var(--pc-color-neutral-100)`     |
+| `--pc-input-border-color`               | `var(--pc-color-neutral-300)`     |
+| `--pc-input-border-color-hover`         | `var(--pc-color-neutral-400)`     |
+| `--pc-input-border-color-active`        | `var(--pc-color-neutral-200)`     |
+| `--pc-input-border-color-disabled`      | `var(--pc-color-neutral-400)`     |
+| `--pc-input-border-width`               | `1px`                             |
+| `--pc-input-required-content`           | `"*"`                             |
+| `--pc-input-required-content-offset`    | `-2px`                            |
+| `--pc-input-required-content-color`     | `var(--pc-color-danger-600)`      |
+| `--pc-input-border-radius-s`            | `var(--pc-border-radius-m)`       |
+| `--pc-input-border-radius-m`            | `var(--pc-border-radius-m)`       |
+| `--pc-input-border-radius-l`            | `var(--pc-border-radius-l)`       |
+| `--pc-input-font-family`                | `var(--pc-font-sans)`             |
+| `--pc-input-font-weight`                | `var(--pc-font-weight-normal)`    |
+| `--pc-input-font-size-s`                | `var(--pc-font-size-s)`           |
+| `--pc-input-font-size-m`                | `var(--pc-font-size-m)`           |
+| `--pc-input-font-size-l`                | `var(--pc-font-size-l)`           |
+| `--pc-input-letter-spacing`             | `var(--pc-letter-spacing-normal)` |
+| `--pc-input-color`                      | `var(--pc-color-neutral-700)`     |
+| `--pc-input-color-hover`                | `var(--pc-color-neutral-900)`     |
+| `--pc-input-color-focus`                | `var(--pc-color-neutral-900)`     |
+| `--pc-input-color-disabled`             | `var(--pc-color-neutral-700)`     |
+| `--pc-input-icon-color`                 | `var(--pc-color-neutral-600)`     |
+| `--pc-input-icon-color-hover`           | `var(--pc-color-neutral-700)`     |
+| `--pc-input-icon-color-active`          | `var(--pc-color-neutral-500)`     |
+| `--pc-input-icon-color-focus`           | `var(--pc-color-neutral-700)`     |
+| `--pc-input-placeholder-color`          | `var(--pc-color-neutral-500)`     |
+| `--pc-input-placeholder-color-disabled` | `var(--pc-color-neutral-600)`     |
+| `--pc-input-spacing-s`                  | `var(--pc-spacing-s)`             |
+| `--pc-input-spacing-m`                  | `var(--pc-spacing-m)`             |
+| `--pc-input-spacing-l`                  | `var(--pc-spacing-l)`             |
+
+## Filled form controls
+
+These tokens are used to style form controls with the filled style enabled, i.e. with the `filled` attribute.
+
+| Default token                                 | Default value                 |
+| --------------------------------------------- | ----------------------------- |
+| `--pc-input-filled-background-color`          | `var(--pc-color-neutral-100)` |
+| `--pc-input-filled-background-color-hover`    | `var(--pc-color-neutral-200)` |
+| `--pc-input-filled-background-color-focus`    | `var(--pc-color-neutral-100)` |
+| `--pc-input-filled-background-color-disabled` | `var(--pc-color-neutral-100)` |
+| `--pc-input-filled-color`                     | `var(--pc-color-neutral-900)` |
+| `--pc-input-filled-color-hover`               | `var(--pc-color-neutral-900)` |
+| `--pc-input-filled-color-focus`               | `var(--pc-color-neutral-900)` |
+| `--pc-input-filled-color-disabled`            | `var(--pc-color-neutral-800)` |
+
+## Labels
+
+These control the appearance of labels in form controls.
+
+| Design token                   | Default value           |
+| ------------------------------ | ----------------------- |
+| `--pc-input-label-font-size-s` | `var(--pc-font-size-s)` |
+| `--pc-input-label-font-size-m` | `var(--pc-font-size-m)` |
+| `--pc-input-label-font-size-l` | `var(--pc-font-size-l)` |
+| `--pc-input-label-color`       | `inherit`               |
+
+## Hints
+
+These tokens control the appearances of hints in form controls.
+
+| Design token                  | Default value                 |
+| ----------------------------- | ----------------------------- |
+| `--pc-input-hint-font-size-s` | `var(--pc-font-size-xs)`      |
+| `--pc-input-hint-font-size-m` | `var(--pc-font-size-s)`       |
+| `--pc-input-hint-font-size-l` | `var(--pc-font-size-m)`       |
+| `--pc-input-hint-color`       | `var(--pc-color-neutral-600)` |
+
+## Toggles
+
+These tokens control the appearance of toggles, such as [Checkbox](/components/checkbox), [Radio](/components/radio) and [Switch](/components/switch).
+
+| Design token         | Default value                 |
+| -------------------- | ----------------------------- |
+| `--pc-toggle-size-s` | `0.875rem` (14px @ 16px base) |
+| `--pc-toggle-size-m` | `1.125rem` (18px @ 16px base) |
+| `--pc-toggle-size-l` | `1.375rem` (22px @ 16px base) |
+
+## Overlays
+
+This controls the appearance of overlays used in components such as [Dialog](/components/dialog) and [Drawer](/components/drawer).
+
+| Design token                    | Default value                                                                |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `--pc-overlay-background-color` | `rgb(220 220 220 / 70%)` (light mode)<br />`rgb(27 31 36 / 70%)` (dark mode) |
+
+## Panels
+
+These control the appearance of panels used in components such as [Dialog](/components/dialog), [Drawer](/components/drawer) and [Menu](/components/menu).
+
+| Default token                 | Default value                 |
+| ----------------------------- | ----------------------------- |
+| `--pc-panel-background-color` | `var(--pc-color-neutral-50)`  |
+| `--pc-panel-border-color`     | `var(--pc-color-neutral-200)` |
+| `--pc-panel-border-width`     | `1px`                         |
+
+## Tooltips
+
+These tokens control the appearance of tooltips. This includes the [Tooltip](/components/tooltip) component.
+
+| Default token                   | Default value                              |
+| ------------------------------- | ------------------------------------------ |
+| `--pc-tooltip-border-radius`    | `var(--pc-border-radius-s)`                |
+| `--pc-tooltip-background-color` | `var(--pc-color-neutral-200)`              |
+| `--pc-tooltip-color`            | `var(--pc-color-neutral-950)`              |
+| `--pc-tooltip-font-family`      | `var(--pc-font-sans)`                      |
+| `--pc-tooltip-font-weight`      | `var(--pc-font-weight-medium)`             |
+| `--pc-tooltip-font-size`        | `var(--pc-font-size-s)`                    |
+| `--pc-tooltip-line-height`      | `var(--pc-line-height-dense)`              |
+| `--pc-tooltip-padding`          | `var(--pc-spacing-xs) var(--pc-spacing-s)` |
+| `--pc-tooltip-arrow-size`       | `6px`                                      |

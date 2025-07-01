@@ -1,0 +1,227 @@
+/* Global styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout container — Main grid */
+.layout-container {
+    display: grid;
+    grid-template-areas:
+        "navbar navbar"
+        "sidebar main";
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 3.5rem 1fr;
+    height: 100dvh;
+    overflow: hidden;
+}
+
+/* Skip links */
+.skip-to-main-content {
+    position: fixed;
+    top: var(--pc-spacing-l);
+    left: var(--pc-spacing-l);
+    z-index: 1000;
+}
+
+.skip-to-toc {
+    position: absolute;
+    top: calc(-1 * var(--pc-spacing-m));
+    left: calc(-6.5 * var(--pc-spacing-m));
+    z-index: 100;
+}
+
+.return-to-main-content {
+    position: absolute;
+    top: var(--pc-spacing-m);
+    left: var(--pc-spacing-m);
+    z-index: 100;
+}
+
+/* Main content area */
+main {
+    grid-area: main;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxxl);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+main.no-overflow {
+    overflow: hidden;
+}
+
+main:not(main.hero) header {
+    max-width: 80ch;
+}
+
+main header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    margin-bottom: var(--pc-spacing-xl);
+}
+
+main:not(main.hero) article {
+    min-width: 80ch;
+    width: 80ch;
+    max-width: 80ch;
+}
+
+main:not(main.hero) article pc-callout:not(.code-demo pc-callout) {
+    display: block;
+    margin-bottom: var(--pc-spacing-xl);
+}
+
+main:not(main.hero) article .reflects {
+    color: var(--pc-color-success-500);
+}
+
+main:not(main.hero) article .does-not-reflect {
+    color: var(--pc-color-danger-500);
+}
+
+.content-layout {
+    display: grid;
+    position: relative;
+    grid-template-columns: 1fr 250px;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Table of contents */
+.toc {
+    position: sticky;
+    top: var(--pc-spacing-xl);
+    line-height: 1.4;
+    border-left: 2px solid var(--pc-color-neutral-200);
+    padding-left: var(--pc-spacing-xl);
+    overflow-y: hidden;
+}
+
+.toc-heading:not(.toc-mobile .toc-heading) {
+    margin-bottom: 0;
+}
+
+.toc-ul {
+    padding-left: var(--pc-spacing-xs);
+    font-size: var(--pc-font-size-s);
+    list-style: none;
+}
+
+.toc-item {
+    margin: 0.25rem 0;
+}
+
+.toc-item.depth-3 {
+    margin-left: var(--pc-spacing-l);
+}
+
+.toc-item a {
+    color: var(--pc-color-neutral-600);
+    text-decoration: none;
+    transition: color var(--pc-transition-fast) ease-in-out;
+}
+
+.toc-item a:hover {
+    color: var(--pc-color-neutral-700);
+}
+
+.toc-item a:active {
+    color: var(--pc-color-neutral-500);
+}
+
+.toc-item a.active {
+    color: var(--pc-color-primary-600);
+    font-weight: var(--pc-font-weight-semibold);
+}
+
+.toc-desktop {
+    display: block;
+}
+
+.toc-desktop .toc-ul {
+    overflow: visible;
+}
+
+.toc-scroll-fade {
+    position: relative;
+    max-height: 70dvh;
+    overflow: auto;
+    scrollbar-color: var(--pc-color-neutral-600) transparent;
+    scrollbar-width: thin;
+    mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        var(--pc-color-neutral-0) 1rem,
+        var(--pc-color-neutral-0) calc(100% - 1rem),
+        transparent
+    );
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    will-change: scroll-position;
+}
+
+/* Desktop styles */
+@media screen and (min-width: 1441px) {
+    .pc-mobile-only,
+    .toc-mobile {
+        display: none;
+    }
+}
+
+/* Mobile styles */
+@media screen and (max-width: 1440px) {
+    .pc-desktop-only,
+    .toc-desktop {
+        display: none;
+    }
+
+    .layout-container {
+        grid-template-areas:
+            "navbar"
+            "main";
+        grid-template-columns: 1fr;
+        grid-template-rows: 3.5rem 1fr;
+    }
+
+    main {
+        padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxl);
+    }
+
+    main .content-layout {
+        grid-template-columns: 1fr;
+    }
+
+    main:not(main.hero) article {
+        min-width: 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .toc-mobile {
+        display: block;
+        margin-bottom: var(--pc-spacing-xl);
+    }
+
+    .toc-mobile::part(summary) {
+        font-weight: var(--pc-font-weight-bold);
+    }
+
+    .toc-mobile ul {
+        margin-top: -16px;
+    }
+}

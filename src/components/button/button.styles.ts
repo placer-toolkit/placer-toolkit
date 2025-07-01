@@ -15,7 +15,6 @@ export const styles = css`
         width: auto;
         min-width: 100%;
         border: none;
-        border-radius: var(--pc-border-radius-s);
         padding: 0;
         box-sizing: border-box;
         color: var(--pc-color-neutral-900);
@@ -52,233 +51,229 @@ export const styles = css`
         pointer-events: none;
     }
 
-    .prefix::slotted(*),
-    .suffix::slotted(*) {
-        transform: translateY(1px);
-    }
-
     .label {
         display: inline-block;
         transition: color var(--pc-transition-fast) ease-in-out;
     }
 
-    .button[disabled],
-    .button[aria-disabled="true"] {
+    .button-disabled {
         opacity: 0.6;
         cursor: not-allowed;
     }
 
-    .button[disabled] *,
-    .button[aria-disabled="true"] * {
+    .button-disabled * {
         pointer-events: none;
     }
 
     .button,
-    .button.appearance-default {
+    .button.button-default {
         background-color: var(--pc-color-neutral-200);
         border: var(--pc-input-border-width) solid var(--pc-color-neutral-100);
     }
 
-    .button:hover:not(.button[disabled]),
-    .button.appearance-default:hover:not(.button[disabled]) {
+    .button:hover:not(.button-disabled),
+    .button.button-default:hover:not(.button-disabled) {
         background-color: var(--pc-color-neutral-300);
         border: var(--pc-input-border-width) solid var(--pc-color-neutral-200);
     }
 
-    .button:hover:active:not(.button[disabled]),
-    .button.appearance-default:hover:active:not(.button[disabled]) {
+    .button:active:not(.button-disabled),
+    .button.button-default:active:not(.button-disabled) {
         background-color: var(--pc-color-neutral-100);
         border: var(--pc-input-border-width) solid var(--pc-color-neutral-100);
         color: var(--pc-color-neutral-800);
     }
 
-    .button.appearance-primary {
+    .button.button-primary {
         background-color: var(--pc-color-primary-200);
         border: var(--pc-input-border-width) solid var(--pc-color-primary-100);
     }
 
-    .button.appearance-primary:hover:not(.button[disabled]) {
+    .button.button-primary:hover:not(.button-disabled) {
         background-color: var(--pc-color-primary-300);
         border: var(--pc-input-border-width) solid var(--pc-color-primary-200);
     }
 
-    .button.appearance-primary:hover:active:not(.button[disabled]) {
+    .button.button-primary:active:not(.button-disabled) {
         background-color: var(--pc-color-primary-100);
         border: var(--pc-input-border-width) solid var(--pc-color-primary-100);
         color: var(--pc-color-primary-800);
     }
 
-    .button.appearance-success {
+    .button.button-success {
         background-color: var(--pc-color-success-200);
         border: var(--pc-input-border-width) solid var(--pc-color-success-100);
     }
 
-    .button.appearance-success:hover:not(.button[disabled]) {
+    .button.button-success:hover:not(.button-disabled) {
         background-color: var(--pc-color-success-300);
         border: var(--pc-input-border-width) solid var(--pc-color-success-200);
     }
 
-    .button.appearance-success:hover:active:not(.button[disabled]) {
+    .button.button-success:active:not(.button-disabled) {
         background-color: var(--pc-color-success-100);
         border: var(--pc-input-border-width) solid var(--pc-color-success-100);
         color: var(--pc-color-success-800);
     }
 
-    .button.appearance-warning {
+    .button.button-warning {
         background-color: var(--pc-color-warning-200);
         border: var(--pc-input-border-width) solid var(--pc-color-warning-100);
     }
 
-    .button.appearance-warning:hover:not(.button[disabled]) {
+    .button.button-warning:hover:not(.button-disabled) {
         background-color: var(--pc-color-warning-300);
         border: var(--pc-input-border-width) solid var(--pc-color-warning-200);
     }
 
-    .button.appearance-warning:hover:active:not(.button[disabled]) {
+    .button.button-warning:active:not(.button-disabled) {
         background-color: var(--pc-color-warning-100);
         border: var(--pc-input-border-width) solid var(--pc-color-warning-100);
         color: var(--pc-color-warning-800);
     }
 
-    .button.appearance-danger {
+    .button.button-danger {
         background-color: var(--pc-color-danger-200);
         border: var(--pc-input-border-width) solid var(--pc-color-danger-100);
     }
 
-    .button.appearance-danger:hover:not(.button[disabled]) {
+    .button.button-danger:hover:not(.button-disabled) {
         background-color: var(--pc-color-danger-300);
         border: var(--pc-input-border-width) solid var(--pc-color-danger-200);
     }
 
-    .button.appearance-danger:hover:active:not(.button[disabled]) {
+    .button.button-danger:active:not(.button-disabled) {
         background-color: var(--pc-color-danger-100);
         border: var(--pc-input-border-width) solid var(--pc-color-danger-100);
         color: var(--pc-color-danger-800);
     }
 
-    .button.appearance-text {
+    .button.button-text {
         background-color: transparent;
         border: 1px solid transparent;
     }
 
-    .button.appearance-text:hover:not(.button[disabled]) {
+    .button.button-text:hover:not(.button-disabled) {
         background-color: var(--pc-color-neutral-200);
         border: 1px solid var(--pc-color-neutral-200);
         color: var(--pc-color-sky-600);
     }
 
-    .button.appearance-text:hover:active:not(.button[disabled]) {
+    .button.button-text:active:not(.button-disabled) {
         background-color: var(--pc-color-neutral-100);
         border: 1px solid var(--pc-color-neutral-100);
         color: var(--pc-color-sky-500);
     }
 
-    .button.size-small.has-prefix {
+    .button.button-small.button-has-prefix {
         padding-inline-start: var(--pc-spacing-s);
     }
 
-    .button.size-small.has-suffix {
+    .button.button-small.button-has-suffix {
         padding-inline-end: var(--pc-spacing-s);
     }
 
-    .button.size-medium.has-prefix {
+    .button.button-medium.button-has-prefix {
         padding-inline-start: var(--pc-spacing-m);
     }
 
-    .button.size-medium.has-suffix {
+    .button.button-medium.button-has-suffix {
         padding-inline-end: var(--pc-spacing-m);
     }
 
-    .button.size-large.has-prefix {
+    .button.button-large.button-has-prefix {
         padding-inline-start: var(--pc-spacing-l);
     }
 
-    .button.size-large.has-suffix {
+    .button.button-large.button-has-suffix {
         padding-inline-end: var(--pc-spacing-l);
     }
 
-    .button.has-prefix.has-label .label {
+    .button.button-has-prefix.button-has-label .label {
         padding-left: var(--pc-spacing-s);
     }
 
-    .button.has-suffix.has-label .label {
+    .button.button-has-suffix.button-has-label .label {
         padding-right: var(--pc-spacing-s);
     }
 
-    .button.size-small.has-label .label {
+    .button.button-small.button-has-label .label {
         padding: 0 var(--pc-spacing-s);
     }
 
-    .button.size-medium.has-label .label {
+    .button.button-medium.button-has-label .label {
         padding: 0 var(--pc-spacing-m);
     }
 
-    .button.size-large.has-label .label {
+    .button.button-large.button-has-label .label {
         padding: 0 var(--pc-spacing-l);
     }
 
-    .button.has-prefix.has-label .label {
+    .button.button-has-prefix.button-has-label .label {
         padding-left: var(--pc-spacing-s);
     }
 
-    .button.has-suffix.has-label .label {
+    .button.button-has-suffix.button-has-label .label {
         padding-right: var(--pc-spacing-s);
     }
 
-    .button.size-small {
+    .button.button-small {
         font-size: var(--pc-button-font-size-s);
+        border-radius: var(--pc-border-radius-m);
         line-height: calc(
             var(--pc-input-height-s) - var(--pc-input-border-width) * 2
         );
     }
 
-    .button.size-medium {
+    .button.button-medium {
         min-height: var(--pc-input-height-m);
         font-size: var(--pc-button-font-size-m);
+        border-radius: var(--pc-border-radius-m);
         line-height: calc(
             var(--pc-input-height-m) - var(--pc-input-border-width) * 2
         );
     }
 
-    .button.size-large {
+    .button.button-large {
         font-size: var(--pc-button-font-size-l);
+        border-radius: var(--pc-border-radius-m);
         line-height: calc(
             var(--pc-input-height-l) - var(--pc-input-border-width) * 2
         );
     }
 
-    .button.outlined,
-    .button.outlined:hover,
-    .button.outlined:hover:active {
+    .button.button-outlined,
+    .button.button-outlined:hover,
+    .button.button-outlined:active {
         background: transparent !important;
     }
 
-    .radio.outlined:hover:not(.button[disabled]) {
+    .radio.button-outlined:hover:not(.button-disabled) {
         background-color: var(--pc-color-neutral-100) !important;
     }
 
-    .radio.outlined:hover:active:not(.button[disabled]) {
+    .radio.button-outlined:active:not(.button-disabled) {
         background-color: var(--pc-color-neutral-50) !important;
     }
 
-    .radio.outlined.checked:not(.button[disabled]) {
+    .radio.button-outlined.checked:not(.button-disabled) {
         background-color: var(--pc-color-primary-500) !important;
         border-color: var(--pc-color-primary-500);
         color: var(--pc-color-neutral-0);
     }
 
-    .radio.outlined.checked:hover:not(.button[disabled]) {
+    .radio.button-outlined.checked:hover:not(.button-disabled) {
         background-color: var(--pc-color-primary-600) !important;
         border-color: var(--pc-color-primary-600);
     }
 
-    .radio.outlined.checked:hover:active:not(.button[disabled]) {
+    .radio.button-outlined.checked:active:not(.button-disabled) {
         background-color: var(--pc-color-primary-400) !important;
         border-color: var(--pc-color-primary-400);
         color: var(--pc-color-neutral-0);
     }
 
-    .button.pill {
+    .button.button-pill {
         border-radius: var(--pc-border-radius-pill);
     }
 

@@ -1,0 +1,187 @@
+---
+import crypto from "node:crypto";
+
+const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
+---
+
+<button
+    id="theme-toggle"
+    aria-label="Toggle theme"
+    aria-live="polite"
+>
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24">
+        <mask class="moon" id={id}>
+            <rect x="0" y="0" width="100%" height="100%" fill="#fff"></rect>
+            <circle cx="24" cy="10" r="6" fill="#000"></circle>
+        </mask>
+        <circle class="sun" cx="12" cy="12" r="6" mask={`url(#${id})`}></circle>
+        <g class="sun-beams" stroke="currentColor">
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </g>
+    </svg>
+</button>
+
+<script>
+    const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+    const getPreferred = () => (prefersLight.matches ? "light" : "dark");
+
+    function parseTheme(value: string) {
+        return ["light", "dark", "auto"].includes(value) ? value : "auto";
+    }
+
+    function getStoredTheme() {
+        return parseTheme(localStorage.getItem("saved-theme") ?? "");
+    }
+
+    function applyTheme(theme: string) {
+        const effectiveTheme = theme === "auto" ? getPreferred() : theme;
+        const root = document.documentElement;
+
+        root.classList.remove("pc-theme-light", "pc-theme-dark");
+
+        root.classList.add(`pc-theme-${effectiveTheme}`);
+
+        localStorage.setItem("saved-theme", theme);
+    }
+
+    function cycleTheme(current: string) {
+        switch (current) {
+            case "dark":
+                return "light";
+            case "light":
+                return "auto";
+            default:
+                return "dark";
+        }
+    }
+
+    const button = document.getElementById("theme-toggle");
+    let currentTheme = getStoredTheme();
+    applyTheme(currentTheme);
+
+    button?.addEventListener("click", () => {
+        currentTheme = cycleTheme(currentTheme);
+        applyTheme(currentTheme);
+        button.setAttribute("aria-label", `${currentTheme} theme`);
+    });
+
+    prefersLight.addEventListener("change", () => {
+        if (getStoredTheme() === "auto") {
+            applyTheme("auto");
+        }
+    });
+</script>
+
+<style>
+    #theme-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        border: none;
+        padding: var(--pc-spacing-xs);
+        border-radius: var(--pc-border-radius-m);
+        height: 100%;
+        cursor: pointer;
+        transition: outline var(--pc-transition-fast) ease-in-out;
+    }
+
+    #theme-toggle:focus-visible {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+    }
+
+    svg {
+        stroke-linecap: round;
+    }
+
+    svg .moon,
+    svg .sun,
+    svg .sun-beams {
+        transform-origin: center;
+    }
+
+    svg .moon,
+    svg .sun {
+        fill: var(--pc-color-neutral-950);
+    }
+
+    svg .sun-beams {
+        stroke: var(--pc-color-neutral-950);
+        stroke-width: 2px;
+    }
+
+    button:hover svg :is(.moon, .sun),
+    button:focus-visible svg :is(.moon, .sun) {
+        fill: var(--pc-color-primary-800);
+    }
+
+    button:hover svg .sun-beams,
+    button:focus-visible svg .sun-beams {
+        stroke: var(--pc-color-primary-800);
+    }
+
+    :global(.pc-theme-dark) svg .sun {
+        transform: scale(1.75);
+    }
+
+    :global(.pc-theme-dark) svg .sun-beams {
+        opacity: 0;
+    }
+
+    :global(.pc-theme-dark) svg .moon circle {
+        transform: translateX(-7px);
+    }
+
+    @supports (cx: 1) {
+        :global(.pc-theme-dark) svg .moon circle {
+            cx: 17;
+            transform: translateX(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        svg .sun {
+            transition: transform var(--pc-transition-slow) cubic-bezier(0.5, 1, 0.75, 1);
+        }
+
+        svg .sun-beams {
+            transition:
+                opacity var(--pc-transition-slow) ease-in-out,
+                transform var(--pc-transition-slow) cubic-bezier(0.5, 1, 0.75, 1);
+        }
+
+        svg .moon circle {
+            transition: transform var(--pc-transition-fast) ease-out;
+        }
+
+        @supports (cx: 1) {
+            svg .moon circle {
+                transition: cx var(--pc-transition-fast) ease-out;
+            }
+        }
+
+        :global(.pc-theme-dark) svg .sun {
+            transform: scale(1.75);
+            transition-duration: var(--pc-transition-fast);
+            transition-timing-function: ease-in-out;
+        }
+
+        :global(.pc-theme-dark) svg .sun-beams {
+            transform: rotateZ(-25deg);
+            transition-duration: var(--pc-transition-extra-fast);
+        }
+
+        :global(.pc-theme-dark) svg .moon circle {
+            transition-delay: var(--pc-transition-extra-fast);
+            transition-duration: var(--pc-transition-slow);
+        }
+    }
+</style>

@@ -71,12 +71,13 @@ export const styles = css`
         transition: opacity var(--pc-transition-fast) ease-in-out;
     }
 
-    .radio:not(.radio-checked):not(.radio-disabled) .radio-control:hover {
+    .radio:not(.radio-checked):not(.radio-disabled) .radio-control:hover,
+    .radio:not(.radio-checked):not(.radio-disabled)
+        .radio-control:focus-visible {
         border-color: var(--pc-input-border-color-hover);
     }
 
-    .radio:not(.radio-checked):not(.radio-disabled)
-        .radio-control:hover:active {
+    .radio:not(.radio-checked):not(.radio-disabled) .radio-control:active {
         border-color: var(--pc-input-border-color-active);
     }
 
@@ -86,12 +87,13 @@ export const styles = css`
         border-color: var(--pc-color-primary-500);
     }
 
-    .radio.radio-checked:not(.radio-disabled) .radio-control:hover {
+    .radio.radio-checked:not(.radio-disabled) .radio-control:hover,
+    .radio.radio-checked:not(.radio-disabled) .radio-control:focus-visible {
         background-color: var(--pc-color-primary-600);
         border-color: var(--pc-color-primary-600);
     }
 
-    .radio.radio-checked:not(.radio-disabled) .radio-control:hover:active {
+    .radio.radio-checked:not(.radio-disabled) .radio-control:active {
         background-color: var(--pc-color-primary-400);
         border-color: var(--pc-color-primary-400);
     }
@@ -118,5 +120,11 @@ export const styles = css`
         margin-inline-start: 0.5em;
         user-select: none;
         -webkit-user-select: none;
+    }
+
+    :host([required]) .label::after {
+        content: var(--pc-input-required-content);
+        color: var(--pc-input-required-content-color);
+        margin-inline-start: var(--pc-input-required-content-offset);
     }
 `;

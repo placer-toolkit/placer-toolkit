@@ -1,17 +1,17 @@
 {
     "name": "placer-toolkit",
     "type": "module",
-    "private": true,
-    "version": "0.4.0",
-    "description": "The go‐to web component library with somewhat reasonable default styling that’s easy to tweak! 🛠️",
+    "version": "0.5.1",
+    "description": "The go‐to web component library for the web! 🛠️",
     "keywords": [
-        "components",
-        "custom-elements",
         "lit",
-        "litelement",
         "placer",
         "toolkit",
-        "web-components"
+        "litelement",
+        "components",
+        "placer-toolkit",
+        "web-components",
+        "custom-elements"
     ],
     "main": "./dist/placer.js",
     "module": "./dist/placer.js",
@@ -22,18 +22,31 @@
         ".": {
             "import": "./dist/placer.js",
             "types": "./dist/placer.d.ts"
-        }
+        },
+        "./dist/custom-elements.json": "./dist/custom-elements.json",
+        "./dist/default.css": "./dist/default.css",
+        "./dist/native-styles.css": "./dist/native-styles.css",
+        "./dist/global-shims.js": "./dist/global-shims.js",
+        "./dist/placer.js": "./dist/placer.js",
+        "./dist/placer-autoloader.js": "./dist/placer-autoloader.js",
+        "./dist/components": "./dist/components",
+        "./dist/components/*": "./dist/components/*",
+        "./dist/style-utilities": "./dist/style-utilities",
+        "./dist/style-utilities/*": "./dist/style-utilities/*",
+        "./dist/utilities": "./dist/utilities",
+        "./dist/utilities/*": "./dist/utilities/*"
     },
     "files": [
-        "dist"
+        "dist",
+        "src",
+        "LICENSE.md",
+        "README.md"
     ],
     "scripts": {
-        "storybook": "storybook dev -p 6006",
         "build": "rollup -c",
-        "build-storybook": "storybook build",
-        "test": "vitest run",
-        "test:watch": "vitest",
-        "lint": "eslint src",
+        "analyze": "cem analyze --litelement --outdir ./docs",
+        "lint": "tsc --noEmit",
+        "format": "prettier --check .",
         "prepublish-only": "npm run build"
     },
     "repository": {
@@ -48,32 +61,22 @@
     },
     "dependencies": {
         "@ctrl/tinycolor": "^4.1.0",
-        "@floating-ui/dom": "^1.7.0",
+        "@floating-ui/dom": "^1.7.2",
         "composed-offset-position": "^0.0.6",
+        "glob": "^11.0.3",
         "lit": "^3.3.0",
         "qr-creator": "^1.0.0",
         "tslib": "^2.8.1"
     },
     "devDependencies": {
-        "@chromatic-com/storybook": "^4.0.0-next.6",
         "@custom-elements-manifest/analyzer": "^0.10.4",
-        "@rollup/plugin-commonjs": "^28.0.3",
+        "@rollup/plugin-commonjs": "^28.0.6",
         "@rollup/plugin-node-resolve": "^16.0.1",
-        "@rollup/plugin-typescript": "^12.1.2",
-        "@storybook/addon-actions": "^9.0.0-alpha.3",
-        "@storybook/addon-docs": "^9.0.0-rc.2",
-        "@storybook/addon-vitest": "^9.0.0-rc.2",
-        "@storybook/blocks": "^9.0.0-alpha.17",
-        "@storybook/web-components-vite": "^9.0.0-rc.2",
-        "chromatic": "^11.28.2",
-        "eslint": "^9.27.0",
-        "eslint-plugin-storybook": "^9.0.0-rc.2",
-        "rollup": "^4.41.0",
-        "storybook": "^9.0.0-rc.2",
-        "typescript": "^5.8.3",
-        "vitest": "^3.1.4"
-    },
-    "overrides": {
-        "storybook": "$storybook"
+        "@rollup/plugin-typescript": "^12.1.4",
+        "command-line-args": "^6.0.1",
+        "comment-parser": "^1.4.1",
+        "rollup": "^4.44.1",
+        "rollup-plugin-copy": "^3.5.0",
+        "typescript": "^5.8.3"
     }
 }

@@ -1,0 +1,331 @@
+---
+import "highlight.js/styles/github-dark.min.css";
+
+// Fix: Handle the open attribute properly
+const { open } = Astro.props;
+const isOpen = open !== undefined && open !== false;
+const uniqueId = Math.random().toString(36).slice(2, 11);
+---
+
+<section class="code-demo" data-open={isOpen} data-unique-id={uniqueId}>
+    <div class="preview-block" id={`preview-block-${uniqueId}`}>
+        <!-- The resize handle should NOT be able to be focused with keyboard navigation -->
+        <div class="resize-handle" id={`resize-handle-${uniqueId}`} tabindex="-1">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <g transform="rotate(90 8 8)" fill="var(--pc-color-neutral-500)">
+                    <circle cx="3" cy="3" r="1" />
+                    <circle cx="8" cy="8" r="1" />
+                    <circle cx="13" cy="13" r="1" />
+                    <circle cx="8" cy="3" r="1" />
+                    <circle cx="13" cy="8" r="1" />
+                    <circle cx="13" cy="3" r="1" />
+                </g>
+            </svg>
+        </div>
+        <div class="preview-content-container">
+            <div id={`preview-content-${uniqueId}`}></div>
+        </div>
+    </div>
+
+    <!-- Fix: Set initial state based on isOpen -->
+    <div class="code-block" id={`code-block-${uniqueId}`} class:list={[{ open: isOpen }]} aria-hidden={!isOpen} inert={!isOpen || undefined}>
+        <pc-copy-button from={`code-content-${uniqueId}`} hoist></pc-copy-button>
+        <pre><code class="hljs language-html" id={`code-content-${uniqueId}`}><slot /></code></pre>
+    </div>
+
+    <div class="toggle-block">
+        <pc-button appearance="text" id={`toggle-button-${uniqueId}`} aria-expanded={isOpen}>
+            Code
+            <pc-icon
+                id={`chevron-${uniqueId}`}
+                library="default"
+                icon-style="solid"
+                name="chevron-down"
+                style={isOpen ? "transform: rotate(180deg)" : "transform: rotate(0deg)"}
+                slot="suffix"></pc-icon>
+        </pc-button>
+    </div>
+</section>
+
+<script>
+    import hljs from "highlight.js";
+    import html from "highlight.js/lib/languages/xml";
+
+    hljs.registerLanguage("html", html);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".code-demo").forEach((demoElement) => {
+            const uniqueId = (demoElement as HTMLElement).dataset.uniqueId;
+
+            const codeElement = demoElement.querySelector(`#code-content-${uniqueId}`) as HTMLElement | null;
+            const previewTargetElement = demoElement.querySelector(`#preview-content-${uniqueId}`) as HTMLElement | null;
+            const toggleButton = demoElement.querySelector(`#toggle-button-${uniqueId}`);
+            const codeBlock = demoElement.querySelector(`#code-block-${uniqueId}`);
+            const chevron = demoElement.querySelector(`#chevron-${uniqueId}`) as HTMLElement;
+            const previewBlock = demoElement.querySelector(`#preview-block-${uniqueId}`) as HTMLElement | null;
+            const resizeHandle = demoElement.querySelector(`#resize-handle-${uniqueId}`) as HTMLElement | null;
+
+            if (!codeElement || !previewTargetElement || !previewBlock || !resizeHandle) {
+                console.error("[Code Demo]: Required elements are missing.");
+                return;
+            }
+
+            hljs.highlightElement(codeElement);
+
+            function renderPreview() {
+                const rawHTMLText = codeElement?.textContent ?? "";
+
+                const textarea = document.createElement("textarea");
+                textarea.innerHTML = rawHTMLText;
+                const unescapedHTML = textarea.value;
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(unescapedHTML, "text/html");
+
+                const scripts = Array.from(doc.querySelectorAll("script"));
+
+                scripts.forEach((script) => script.remove());
+
+                if (!previewTargetElement) return;
+
+                previewTargetElement.innerHTML = doc.body.innerHTML;
+
+                scripts.forEach((script) => {
+                    let scriptCode = script.textContent || "";
+
+                    scriptCode = scriptCode
+                        .replace(
+                            /^\s*import\s+\*\s+as\s+(\w+)\s+from\s+[""](.+?)[""];?/gm,
+                            `const $1 = await import("$2");`
+                        )
+                        .replace(
+                            /^\s*import\s+{([^}]+)}\s+from\s+[""](.+?)[""];?/gm,
+                            `const { $1 } = await import("$2");`
+                        )
+                        .replace(
+                            /^\s*import\s+(\w+)\s+from\s+[""](.+?)[""];?/gm,
+                            `const $1 = (await import("$2")).default;`
+                        )
+                        .replace(
+                            /^\s*import\s+[""](.+?)[""];?/gm,
+                            `await import("$1");`
+                        );
+
+                    try {
+                        const isAsync = /\bawait\b/.test(scriptCode);
+
+                        const scopedFunction = isAsync
+                            ? new Function(
+                                "root",
+                                `return (async () => { ${scriptCode} }).call(root);`
+                            )
+                            : new Function(
+                                "root",
+                                `(() => { ${scriptCode} }).call(root);`
+                            );
+
+                        const result = scopedFunction(previewTargetElement);
+
+                        if (isAsync && result instanceof Promise) {
+                            result.catch((error) => {
+                                console.error(`[Code Demo]: An asynchronous script error occurred. ${error}`);
+                            });
+                        }
+                    } catch (error) {
+                        console.error(`[Code Demo]: An error executing the script. ${error}`);
+                    }
+                });
+            }
+
+            let codeVisible = demoElement.getAttribute("data-open") === "true";
+
+            if (toggleButton && codeBlock && chevron) {
+                toggleButton.addEventListener("click", () => {
+                    codeVisible = !codeVisible;
+
+                    codeBlock.classList.toggle("open", codeVisible);
+                    toggleButton.setAttribute("aria-expanded", String(codeVisible));
+                    codeBlock.setAttribute("aria-hidden", String(!codeVisible));
+
+                    if (codeVisible) {
+                        codeBlock.removeAttribute("inert");
+                    } else {
+                        codeBlock.setAttribute("inert", "");
+                    }
+
+                    chevron.style.transform = codeVisible ? "rotate(180deg)" : "rotate(0deg)";
+                });
+            } else {
+                console.error("[Code Demo]: Toggle setup failed.");
+            }
+
+            let isResizing = false;
+            let startX = 0;
+            let startWidth = 0;
+
+            resizeHandle.addEventListener("mousedown", (e) => {
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = previewBlock.offsetWidth;
+
+                document.body.style.cursor = "ew-resize";
+                document.body.style.userSelect = "none";
+
+                e.preventDefault();
+            });
+
+            document.addEventListener("mousemove", (e) => {
+                if (!isResizing) return;
+
+                const deltaX = e.clientX - startX;
+                const newWidth = Math.max(160, startWidth + deltaX);
+
+                previewBlock.style.width = `${newWidth}px`;
+            });
+
+            document.addEventListener("mouseup", () => {
+                if (isResizing) {
+                    isResizing = false;
+                    document.body.style.cursor = "";
+                    document.body.style.userSelect = "";
+                }
+            });
+
+            renderPreview();
+        });
+    });
+</script>
+
+<style>
+    .code-demo {
+        position: relative;
+        border: 1px solid var(--pc-color-neutral-100);
+        border-radius: var(--pc-border-radius-m);
+        width: 100%;
+        margin-bottom: var(--pc-spacing-xl);
+        overflow: visible;
+    }
+
+    :global(.pc-theme-dark) .code-demo {
+        background-color: color-mix(in oklch, var(--pc-color-neutral-0) 90%, oklch(0% 0 0) 10%);
+    }
+
+    :global(.pc-theme-light) .code-demo {
+        background-color: color-mix(in oklch, var(--pc-color-neutral-0) 95%, oklch(0% 0 0) 5%);
+    }
+
+    .preview-block {
+        position: relative;
+        background-color: var(--pc-color-neutral-0);
+        border-radius: var(--pc-border-radius-m) var(--pc-border-radius-m) 0 0;
+        min-width: 15em;
+        max-width: 100%;
+        overflow: visible;
+    }
+
+    .resize-handle {
+        position: absolute;
+        bottom: 4px;
+        right: 0;
+        width: 16px;
+        height: 16px;
+        cursor: ew-resize;
+        z-index: 1;
+    }
+
+    .preview-content-container {
+        padding: var(--pc-spacing-l);
+        overflow: visible;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    .code-block {
+        position: relative;
+        background-color: oklch(26.1% 0.015 264.3);
+        border-top: 1px solid var(--pc-color-neutral-100);
+        overflow: auto;
+        max-height: 0;
+        /* 🧪 interpolate-size is an experimental property (✓ Chrome 129, Edge 129) */
+        interpolate-size: allow-keywords;
+        transition: max-height var(--pc-transition-fast) ease-out;
+    }
+
+    .code-block.open {
+        max-height: max-content;
+        transition: max-height var(--pc-transition-fast) ease-in;
+    }
+
+    .code-block :is(pre, code) {
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .code-block .hljs {
+        padding: var(--pc-spacing-l) !important;
+        background-color: transparent;
+        line-height: var(--pc-line-height-normal);
+        font-size: var(--pc-font-size-xs);
+    }
+
+    .code-block pc-copy-button {
+        position: absolute;
+        top: var(--pc-spacing-s);
+        right: var(--pc-spacing-s);
+        z-index: 1;
+    }
+
+    .code-block pc-copy-button::part(button) {
+        background-color: oklch(26.1% 0.015 264.3);
+        color: oklch(96.7% 0.005% 264.5%);
+    }
+
+    .code-block pc-copy-button::part(button):hover,
+    .code-block pc-copy-button::part(button):focus-visible {
+        background-color: oklch(32.8% 0.024 264.2);
+    }
+
+    .code-block pc-copy-button::part(button):active {
+        background-color: oklch(29% 0.019 264.2);
+    }
+
+    .code-block pc-copy-button::part(success-icon) {
+        color: var(--success-color) !important;
+    }
+
+    .code-block pc-copy-button::part(error-icon) {
+        color: var(--error-color) !important;
+    }
+
+    .code-block.open + .toggle-block {
+        border-top: 1px solid var(--pc-color-neutral-100);
+    }
+
+    .toggle-block {
+        background-color: var(--pc-color-neutral-0);
+        border-radius: 0 0 var(--pc-border-radius-m) var(--pc-border-radius-m);
+    }
+
+    .toggle-block pc-button {
+        width: 100%;
+    }
+
+    .toggle-block pc-button::part(base) {
+        border-radius: 0 0 var(--pc-border-radius-m) var(--pc-border-radius-m);
+    }
+
+    .toggle-block pc-button pc-icon {
+        transition: transform var(--pc-transition-fast) ease-in-out;
+        transition-delay: var(--pc-transition-medium);
+    }
+
+    /* Disable the resize handle for mobile devices */
+    @media (hover: none) {
+        .resize-handle {
+            display: none;
+        }
+    }
+</style>

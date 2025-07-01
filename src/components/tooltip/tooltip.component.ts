@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import {
@@ -21,7 +22,7 @@ setDefaultAnimation("tooltip.show", {
         { opacity: 0, scale: 0.8 },
         { opacity: 1, scale: 1 },
     ],
-    options: { duration: 150, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
+    options: { duration: 150, easing: "ease-out" },
 });
 
 setDefaultAnimation("tooltip.hide", {
@@ -29,7 +30,7 @@ setDefaultAnimation("tooltip.hide", {
         { opacity: 1, scale: 1 },
         { opacity: 0, scale: 0.8 },
     ],
-    options: { duration: 150, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+    options: { duration: 150, easing: "ease-in" },
 });
 
 @customElement("pc-tooltip")
@@ -38,7 +39,7 @@ export class PcTooltip extends LitElement {
     static dependencies = { "pc-popup": PcPopup };
 
     private hoverTimeout!: number;
-    private closeWatcher!: any | null;
+    private closeWatcher!: CloseWatcher | null;
 
     @query("slot:not([name])") defaultSlot!: HTMLSlotElement;
     @query(".tooltip-body") body!: HTMLElement;
@@ -162,7 +163,7 @@ export class PcTooltip extends LitElement {
 
             if ("CloseWatcher" in window) {
                 this.closeWatcher?.destroy();
-                this.closeWatcher = new (window as any).CloseWatcher();
+                this.closeWatcher = new CloseWatcher();
                 this.closeWatcher.onclose = () => {
                     this.hide();
                 };
@@ -256,7 +257,7 @@ export class PcTooltip extends LitElement {
                 shift=""
                 arrow=""
                 hover-bridge=""
-                exportparts="popup:base-popup, arrow:base-arrow"
+                exportparts="popup:base__popup, arrow:base__arrow"
             >
                 <slot slot="anchor" aria-describedby="tooltip"></slot>
 

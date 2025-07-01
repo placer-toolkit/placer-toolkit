@@ -1,0 +1,256 @@
+---
+import Page from "../layouts/Page.astro";
+
+// Note: / is excluded in this “I’m feeling lucky” list
+const sidebarLinks = [
+    "/get-started/installation",
+    "/get-started/usage",
+    "/get-started/customisation",
+    "/get-started/form-controls",
+    "/design-tokens",
+    "/design-tokens/borders",
+    "/design-tokens/colour",
+    "/design-tokens/spacing",
+    "/design-tokens/shadows",
+    "/design-tokens/border-radius",
+    "/design-tokens/transitions",
+    "/design-tokens/z-index",
+    "/design-tokens/typography",
+    "/design-tokens/other-tokens",
+    "/components",
+    "/components/animation",
+    "/components/avatar",
+    "/components/badge",
+    "/components/button",
+    "/components/button-group",
+    "/components/callout",
+    "/components/card",
+    "/components/checkbox",
+    "/components/comparer",
+    "/components/copy-button",
+    "/components/details",
+    "/components/dialog",
+    "/components/divider",
+    "/components/drawer",
+    "/components/dropdown",
+    "/components/icon",
+    "/components/icon-button",
+    "/components/input",
+    "/components/menu",
+    "/components/menu-item",
+    "/components/option",
+    "/components/popup",
+    "/components/qr-code",
+    "/components/radio-group",
+    "/components/radio",
+    "/components/radio-button",
+    "/components/rating",
+    "/components/resize-observer",
+    "/components/select",
+    "/components/spinner",
+    "/components/switch",
+    "/components/tab-group",
+    "/components/tab",
+    "/components/tab-panel",
+    "/components/tag",
+    "/components/tooltip",
+    "/style-utilities",
+    "/style-utilities/reduce-fouce",
+    "/style-utilities/visually-hidden",
+    "/resources/community",
+    "/resources/contributing",
+    "/resources/accessibility",
+    "/resources/changelog",
+];
+
+const randomLink =
+    sidebarLinks[Math.floor(Math.random() * sidebarLinks.length)];
+---
+
+<Page title="404 – Page not found" hero overflow={false} data-pagefind-ignore>
+    <div class="notfound-container">
+        <h1>404</h1>
+
+        <p>
+            Oops! This page has gone on an unexpected adventure. Even our best
+            search dogs came back empty‐pawed.<br />
+            Maybe it’s moved, maybe it never existed or maybe it’s just hiding really
+            well.<br />
+            Want to try sniffing around the homepage or double‐checking that URL?
+        </p>
+
+        <footer>
+            <pc-button appearance="primary" size="large" href="/" pill>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="house"
+                    slot="prefix"></pc-icon>
+                Home
+            </pc-button>
+            <pc-button
+                appearance="default"
+                size="large"
+                onclick="location.href = this.dataset.href"
+                data-href={randomLink}
+                pill
+            >
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="dice-six"
+                    slot="prefix"></pc-icon>
+                I’m feeling lucky
+            </pc-button>
+        </footer>
+
+        <span class="orb3"></span>
+        <span class="orb4"></span>
+    </div>
+</Page>
+
+<style>
+    .notfound-container {
+        min-width: 100% !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        position: relative;
+        z-index: 0;
+    }
+
+    .notfound-container::before {
+        content: "";
+        position: absolute;
+        left: -7vw;
+        bottom: -7vw;
+        width: 18vw;
+        height: 18vw;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 60% 40%,
+            var(--pc-color-purple-400),
+            var(--pc-color-purple-600)
+        );
+        filter: blur(18px);
+        opacity: 0.55;
+        z-index: -1;
+        pointer-events: none;
+        animation: orb-float-1 7s ease-in-out infinite alternate;
+    }
+
+    .notfound-container::after {
+        content: "";
+        position: absolute;
+        right: -8vw;
+        top: -6vw;
+        width: 14vw;
+        height: 14vw;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 40% 60%,
+            var(--pc-color-primary-300),
+            var(--pc-color-primary-500)
+        );
+        filter: blur(14px);
+        opacity: 0.45;
+        z-index: -1;
+        pointer-events: none;
+        animation: orb-float-2 9s ease-in-out infinite alternate;
+    }
+
+    .notfound-container .orb3 {
+        content: "";
+        position: absolute;
+        left: 8vw;
+        top: 38vh;
+        width: 10vw;
+        height: 10vw;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 60% 60%,
+            var(--pc-color-pink-300),
+            var(--pc-color-pink-500)
+        );
+        filter: blur(12px);
+        opacity: 0.38;
+        z-index: -1;
+        pointer-events: none;
+        animation: orb-float-3 11s ease-in-out infinite alternate;
+    }
+
+    .notfound-container .orb4 {
+        content: "";
+        position: absolute;
+        right: 6vw;
+        bottom: 10vh;
+        width: 8vw;
+        height: 8vw;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 40% 60%,
+            var(--pc-color-yellow-200),
+            var(--pc-color-yellow-400)
+        );
+        filter: blur(10px);
+        opacity: 0.32;
+        z-index: -1;
+        pointer-events: none;
+        animation: orb-float-4 13s ease-in-out infinite alternate;
+    }
+
+    h1 {
+        font-size: 4rem;
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-m);
+    }
+
+    @keyframes orb-float-1 {
+        0% {
+            transform: translateY(0) scale(1);
+        }
+
+        100% {
+            transform: translateY(-2vw) scale(1.08);
+        }
+    }
+
+    @keyframes orb-float-2 {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        100% {
+            transform: translate(-2vw, 2vw) scale(1.12);
+        }
+    }
+
+    @keyframes orb-float-3 {
+        0% {
+            transform: translateX(0) scale(1);
+        }
+
+        100% {
+            transform: translateX(3vw) scale(0.95);
+        }
+    }
+
+    @keyframes orb-float-4 {
+        0% {
+            transform: translateY(0) scale(1);
+        }
+
+        100% {
+            transform: translateY(-3vw) scale(1.1);
+        }
+    }
+</style>

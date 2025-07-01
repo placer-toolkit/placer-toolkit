@@ -4,3 +4,9 @@ import { PcPopup } from "./popup.component.js";
 
 export * from "./popup.component.js";
 export default PcPopup;
+
+declare global {
+    interface HTMLElementTagNameMap {
+        "pc-popup": PcPopup;
+    }
+}

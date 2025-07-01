@@ -6,23 +6,23 @@ export const styles = css`
     }
 
     :host([size="small"]) {
+        --width: calc(var(--height) * 1.75);
         --height: var(--pc-toggle-size-s);
         --thumb-size: calc(var(--pc-toggle-size-s) - 2px);
-        --width: calc(var(--height) * 1.75);
         font-size: var(--pc-input-font-size-s);
     }
 
     :host([size="medium"]) {
+        --width: calc(var(--height) * 1.75);
         --height: var(--pc-toggle-size-m);
         --thumb-size: calc(var(--pc-toggle-size-m) - 2px);
-        --width: calc(var(--height) * 1.75);
         font-size: var(--pc-input-font-size-m);
     }
 
     :host([size="large"]) {
+        --width: calc(var(--height) * 1.75);
         --height: var(--pc-toggle-size-l);
         --thumb-size: calc(var(--pc-toggle-size-l) - 2px);
-        --width: calc(var(--height) * 1.75);
         font-size: var(--pc-input-font-size-l);
     }
 
@@ -59,8 +59,7 @@ export const styles = css`
         border-radius: var(--pc-border-radius-circle);
         translate: calc((var(--width) - var(--height)) / -2);
         box-shadow: var(--pc-shadow-xs);
-        transition:
-            outline var(--pc-transition-fast) ease-in-out,
+        transition: outline var(--pc-transition-fast) ease-in-out,
             translate var(--pc-transition-medium)
                 cubic-bezier(0.34, 1.35, 0.64, 1);
     }
@@ -73,12 +72,13 @@ export const styles = css`
         pointer-events: none;
     }
 
-    .switch:not(.switch-checked):not(.switch-disabled) .control:hover {
+    .switch:not(.switch-checked):not(.switch-disabled) .control:hover,
+    .switch:not(.switch-checked):not(.switch-disabled) .control:focus-visible {
         background-color: var(--pc-color-neutral-300);
         border-color: var(--pc-color-neutral-300);
     }
 
-    .switch:not(.switch-checked):not(.switch-disabled) .control:hover:active {
+    .switch:not(.switch-checked):not(.switch-disabled) .control:active {
         background-color: var(--pc-color-neutral-100);
         border-color: var(--pc-color-neutral-100);
     }
@@ -100,12 +100,13 @@ export const styles = css`
         translate: calc((var(--width) - var(--height)) / 2);
     }
 
-    .switch.switch-checked:not(.switch-disabled) .control:hover {
+    .switch.switch-checked:not(.switch-disabled) .control:hover,
+    .switch.switch-checked:not(.switch-disabled) .control:focus-visible {
         background-color: var(--pc-color-primary-500);
         border-color: var(--pc-color-primary-500);
     }
 
-    .switch.switch-checked:not(.switch-disabled) .control:hover:active {
+    .switch.switch-checked:not(.switch-disabled) .control:active {
         background-color: var(--pc-color-primary-300);
         border-color: var(--pc-color-primary-300);
     }
@@ -146,13 +147,18 @@ export const styles = css`
         margin-inline-start: var(--pc-input-required-content-offset);
     }
 
-    .hint {
-        color: var(--pc-input-hint-text-color);
+    .form-control .hint {
+        display: none;
+    }
+
+    .form-control-has-hint .hint {
+        color: var(--pc-input-hint-color);
         font-family: var(--pc-input-font-family);
     }
 
     @media (forced-colors: active) {
         .switch:not(.switch-disabled) .control:hover .thumb,
+        .switch:not(.switch-disabled) .control:focus-visible .thumb,
         .switch .control .thumb {
             border: 1px solid ButtonText;
             width: calc(var(--thumb-size) - 2px);
@@ -160,6 +166,9 @@ export const styles = css`
         }
 
         .switch.switch-checked:not(.switch-disabled) .control:hover .thumb,
+        .switch.switch-checked:not(.switch-disabled)
+            .control:focus-visible
+            .thumb,
         .switch-checked .control .thumb {
             background-color: ButtonText;
         }

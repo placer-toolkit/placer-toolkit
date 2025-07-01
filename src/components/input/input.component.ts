@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -411,7 +412,7 @@ export class PcInput extends LitElement {
                             pattern=${ifDefined(this.pattern)}
                             enterkeyhint=${ifDefined(this.enterkeyhint)}
                             inputmode=${ifDefined(this.inputmode)}
-                            aria-describedby="hint-text"
+                            aria-describedby="hint"
                             @focus=${this.handleFocus}
                             @blur=${this.handleBlur}
                             @change=${this.handleChange}
@@ -432,8 +433,8 @@ export class PcInput extends LitElement {
                                   >
                                       <slot name="clear-icon">
                                           <pc-icon
-                                              library="default"
-                                              icon-style="solid"
+                                              library="system"
+                                              icon-style="regular"
                                               name="circle-xmark"
                                           ></pc-icon>
                                       </slot>
@@ -456,8 +457,8 @@ export class PcInput extends LitElement {
                                           ? html`
                                                 <slot name="show-password-icon">
                                                     <pc-icon
-                                                        library="default"
-                                                        icon-style="solid"
+                                                        library="system"
+                                                        icon-style="regular"
                                                         name="eye-slash"
                                                     ></pc-icon>
                                                 </slot>
@@ -465,8 +466,8 @@ export class PcInput extends LitElement {
                                           : html`
                                                 <slot name="hide-password-icon">
                                                     <pc-icon
-                                                        library="default"
-                                                        icon-style="solid"
+                                                        library="system"
+                                                        icon-style="regular"
                                                         name="eye"
                                                     ></pc-icon>
                                                 </slot>
@@ -484,7 +485,7 @@ export class PcInput extends LitElement {
                 <div
                     part="hint"
                     class="hint"
-                    id="hint-text"
+                    id="hint"
                     aria-hidden=${hasHint ? "false" : "true"}
                 >
                     <slot name="hint">${this.hint}</slot>

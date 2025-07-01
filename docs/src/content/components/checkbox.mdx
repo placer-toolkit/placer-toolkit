@@ -1,0 +1,102 @@
+---
+title: Checkbox
+description: Checkboxes allow the user to toggle an option on or off.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Checkboxes allow the user to toggle an option on or off.
+
+<CodeDemo open>
+{`<pc-checkbox>Checkbox</pc-checkbox>`}
+</CodeDemo>
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    This component works well with standard `<form>` elements. Please refer to the [form controls](/get-started/form-controls) page to learn more about form submission and client‐side validation.
+</pc-callout>
+
+## Demos
+
+### Checked
+
+Use the `checked` attribute to enable the checkbox.
+
+<CodeDemo>
+{`<pc-checkbox checked>Checked</pc-checkbox>`}
+</CodeDemo>
+
+### Indeterminate
+
+Use the `indeterminate` attribute to make the checkbox indeterminate.
+
+<CodeDemo>
+{`<pc-checkbox indeterminate>Indeterminate</pc-checkbox>`}
+</CodeDemo>
+
+### Disabled
+
+Use the `disabled` attribute to disable the checkbox.
+
+<CodeDemo>
+{`<pc-checkbox disabled>Disabled</pc-checkbox>`}
+</CodeDemo>
+
+### Sizes
+
+Use the `size` attribute to change the checkbox’s size.
+
+<CodeDemo>
+{`<pc-checkbox size="small">Small</pc-checkbox>
+<br />
+<pc-checkbox size="medium">Medium</pc-checkbox>
+<br />
+<pc-checkbox size="large">Large</pc-checkbox>`}
+</CodeDemo>
+
+### Hint
+
+Add a hint to a checkbox with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
+
+<CodeDemo>
+{`<pc-checkbox hint="What should the user know about the checkbox?">
+    Label
+</pc-checkbox>`}
+</CodeDemo>
+
+### Custom validity
+
+Use the `setCustomValidity()` method to set a custom validation message. This will prevent the form from submitting and make the browser display the error message you provide. To clear the error, call this function with an empty string.
+
+<CodeDemo>
+{`<form class="custom-validity">
+    <pc-checkbox>Check me</pc-checkbox>
+    <br /><br />
+    <pc-button appearance="primary" type="submit">Submit</pc-button>
+</form>
+
+<script>
+    const form = document.querySelector(".custom-validity");
+    const checkbox = form.querySelector("pc-checkbox");
+
+    // Set initial validity as soon as the element is defined
+    customElements.whenDefined("pc-checkbox").then(async () => {
+        await checkbox.updateComplete;
+        checkbox.setCustomValidity("Don’t forget to check me!");
+    });
+
+    checkbox.addEventListener("pc-change", () => {
+        checkbox.setCustomValidity(checkbox.checked ? "" : "Don’t forget to check me!");
+    });
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("All fields are valid!");
+    });
+</script>`}
+</CodeDemo>

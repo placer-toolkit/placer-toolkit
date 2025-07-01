@@ -3,9 +3,10 @@ import { css } from "lit";
 export const styles = css`
     :host {
         --track-width: 0.125rem;
-        --track-color: rgba(112, 120, 128, 0.25);
+        --track-color: rgb(112 120 128 / 25%);
         --indicator-color: var(--pc-color-primary-600);
         --speed: 2s;
+
         display: inline-flex;
         width: 1em;
         height: 1em;
@@ -43,15 +44,15 @@ export const styles = css`
 
     @keyframes spin {
         0% {
-            transform: rotate(0deg);
+            rotate: 0deg;
             stroke-dasharray: 0% 314.159%;
         }
         50% {
-            transform: rotate(450deg);
+            rotate: 450deg;
             stroke-dasharray: 157.08% 157.08%;
         }
         100% {
-            transform: rotate(1080deg);
+            rotate: 1080deg;
             stroke-dasharray: 0% 314.159%;
         }
     }

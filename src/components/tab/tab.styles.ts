@@ -33,11 +33,12 @@ export const styles = css`
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    .tab:hover:not(.tab-disabled, .tab-active) {
+    .tab:hover:not(.tab-disabled, .tab-active),
+    .tab:focus-visible:not(.tab-disabled, .tab-active) {
         color: var(--pc-color-neutral-700);
     }
 
-    .tab:hover:active:not(.tab-disabled, .tab-active) {
+    .tab:active:not(.tab-disabled, .tab-active) {
         color: var(--pc-color-neutral-500);
     }
 
@@ -61,6 +62,16 @@ export const styles = css`
 
     .close-button::part(base) {
         padding: var(--pc-spacing-xxxs);
+    }
+
+    .close-button::part(base):hover {
+        background-color: transparent;
+        color: var(--pc-color-neutral-700);
+    }
+
+    .close-button::part(base):active {
+        background-color: transparent;
+        color: var(--pc-color-neutral-500);
     }
 
     @media (forced-colors: active) {

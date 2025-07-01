@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import {
@@ -13,7 +14,6 @@ import { emit } from "../../internal/emit.js";
 import type { PcRadio } from "../radio/radio.js";
 import type { PcRadioButton } from "../radio-button/radio-button.js";
 import { PcButtonGroup } from "../button-group/button-group.js";
-import { PcVisuallyHidden } from "../visually-hidden/visually-hidden.js";
 import { styles } from "./radio-group.styles.js";
 
 @customElement("pc-radio-group")
@@ -21,7 +21,6 @@ export class PcRadioGroup extends LitElement {
     static styles: CSSResultGroup = styles;
     static dependencies = {
         "pc-button-group": PcButtonGroup,
-        "pc-visually-hidden": PcVisuallyHidden,
     };
 
     // @ts-expect-error
@@ -133,8 +132,8 @@ export class PcRadioGroup extends LitElement {
             event.key === " "
                 ? 0
                 : ["ArrowUp", "ArrowLeft"].includes(event.key)
-                  ? -1
-                  : 1;
+                ? -1
+                : 1;
         const oldValue = this.value;
         let index = radios.indexOf(checkedRadio) + increment;
 
@@ -362,7 +361,7 @@ export class PcRadioGroup extends LitElement {
                 </label>
 
                 <div class="form-control-input" part="form-control-input">
-                    <pc-visually-hidden>
+                    <div class="pc-visually-hidden">
                         <div id="error-message" aria-live="assertive">
                             ${this.errorMessage}
                         </div>
@@ -376,14 +375,14 @@ export class PcRadioGroup extends LitElement {
                                 @invalid=${this.handleInvalid}
                             />
                         </label>
-                    </pc-visually-hidden>
+                    </div>
 
                     ${this.hasButtonGroup
                         ? html`
                               <pc-button-group
                                   part="button-group"
                                   role="presentation"
-                                  exportparts="base:button-group-base"
+                                  exportparts="base:button-group__base"
                               >
                                   ${defaultSlot}
                               </pc-button-group>

@@ -1,9 +1,19 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { watch } from "../../internal/watch.js";
 import { emit } from "../../internal/emit.js";
 import { styles } from "./resize-observer.styles.js";
 
+/**
+ * @summary The Resize Observer component offers a thin, declarative interface to the [`ResizeObserver` API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
+ * @status experimental
+ * @since 0.1.0
+ *
+ * @slot — One or more elements to watch for resizing.
+ *
+ * @event {{ entries: ResizeObserverEntry[] }} pc-resize — Emitted when the element is resized.
+ */
 @customElement("pc-resize-observer")
 export class PcResizeObserver extends LitElement {
     static styles: CSSResultGroup = styles;
@@ -11,6 +21,7 @@ export class PcResizeObserver extends LitElement {
     private resizeObserver!: ResizeObserver;
     private observedElements: HTMLElement[] = [];
 
+    /** Disables the resize observer. */
     @property({ type: Boolean, reflect: true }) disabled = false;
 
     connectedCallback() {
@@ -64,6 +75,7 @@ export class PcResizeObserver extends LitElement {
         this.resizeObserver.disconnect();
     }
 
+    /** @internal This is an internal property. */
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
         if (this.disabled) {

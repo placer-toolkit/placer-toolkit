@@ -1,0 +1,78 @@
+---
+title: Tag
+description: Tags are used as labels to organise things or to indicate a selection.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Tags are used as labels to organise things or to indicate a selection.
+
+<CodeDemo open>
+{`<pc-tag appearance="primary">Primary</pc-tag>
+<pc-tag appearance="success">Success</pc-tag>
+<pc-tag appearance="neutral">Neutral</pc-tag>
+<pc-tag appearance="warning">Warning</pc-tag>
+<pc-tag appearance="danger">Danger</pc-tag>`}
+</CodeDemo>
+
+### Sizes
+
+Use the `size` attribute to change the tag’s size.
+
+<CodeDemo>
+{`<pc-tag size="small">Small</pc-tag>
+<pc-tag size="medium">Medium</pc-tag>
+<pc-tag size="large">Large</pc-tag>`}
+</CodeDemo>
+
+### Outlined
+
+Use the `outlined` attribute to draw outlined tags with transparent backgrounds.
+
+<CodeDemo>
+{`<pc-tag appearance="primary" outlined>Primary</pc-tag>
+<pc-tag appearance="success" outlined>Success</pc-tag>
+<pc-tag appearance="neutral" outlined>Neutral</pc-tag>
+<pc-tag appearance="warning" outlined>Warning</pc-tag>
+<pc-tag appearance="danger" outlined>Danger</pc-tag>`}
+</CodeDemo>
+
+### Pill
+
+Use the `pill` attribute to give tags a pill‐shaped look.
+
+<CodeDemo>
+{`<pc-tag size="small" pill>Small</pc-tag>
+<pc-tag size="medium" pill>Medium</pc-tag>
+<pc-tag size="large" pill>Large</pc-tag>`}
+</CodeDemo>
+
+### Removable
+
+Use the `removable` attribute to add a remove button to the tag.
+
+<CodeDemo>
+{`<div class="tags-removable">
+    <pc-tag size="small" removable>Small</pc-tag>
+    <pc-tag size="medium" removable>Medium</pc-tag>
+    <pc-tag size="large" removable>Large</pc-tag>
+</div>
+
+<script>
+    const tags = document.querySelector(".tags-removable");
+
+    tags.addEventListener("pc-remove", (event) => {
+        const tag = event.target;
+        tag.style.opacity = "0";
+        setTimeout(() => {
+            tag.style.opacity = "1";
+        }, 2000);
+    });
+</script>
+
+<style>
+    .tags-removable pc-tag {
+        transition: opacity var(--pc-transition-fast) ease-in-out;
+    }
+</style>`}
+</CodeDemo>

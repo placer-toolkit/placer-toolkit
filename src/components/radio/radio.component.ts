@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { watch } from "../../internal/watch.js";
@@ -88,12 +89,7 @@ export class PcRadio extends LitElement {
                         part="checked-icon"
                         viewBox="0 0 16 16"
                     >
-                        <circle
-                            cx="8"
-                            cy="8"
-                            r="4.5"
-                            fill="currentColor"
-                        ></circle>
+                        <circle cx="8" cy="8" r="4.5" fill="currentColor" />
                     </svg>
                 </span>
 

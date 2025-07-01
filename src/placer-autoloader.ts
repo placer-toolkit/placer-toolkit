@@ -40,8 +40,7 @@ function register(tagName: string): Promise<void> {
     );
 
     return new Promise((resolve, reject) => {
-        /* @vite-ignore */
-        import(path)
+        import(/* @vite-ignore */ path)
             .then(() => resolve())
             .catch((error) => {
                 reject(new Error(`Unable to auto‐load <${tagName}>: ${error}`));

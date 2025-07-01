@@ -1,0 +1,94 @@
+---
+title: Details
+description: Details show a brief summary and expand to show additional content.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Details show a brief summary and expand to show additional content.
+
+<CodeDemo open>
+{`<pc-details summary="Toggle me">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</pc-details>`}
+</CodeDemo>
+
+## Demos
+
+### Disabled
+
+Use the `disabled` attribute to disable the details component.
+
+<CodeDemo>
+{`<pc-details summary="Disabled" disabled>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</pc-details>`}
+</CodeDemo>
+
+### Customise the summary icon
+
+Use the `expand-icon` and `collapse-icon` slots to change the expand and collapse icons, respectively. To disable the animation, override the `rotate` property on the `summary-icon` part as shown below.
+
+<CodeDemo>
+{`<pc-details summary="Toggle me" class="custom-icons">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="plus"
+        slot="expand-icon"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="minus"
+        slot="collapse-icon"
+    ></pc-icon>
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</pc-details>
+
+<style>
+    pc-details.custom-icons::part(summary-icon) {
+        rotate: none;
+    }
+</style>`}
+</CodeDemo>
+
+### Group details
+
+Details are designed to function independently, but you can simulate a group or “accordion” where only one is shown at a time by listening for the `pc-show` event.
+
+<CodeDemo>
+{`<div class="details-group">
+    <pc-details summary="First" open>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+
+    <pc-details summary="Second">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+
+    <pc-details summary="Third">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+</div>
+
+<script type="module">
+    const container = document.querySelector(".details-group");
+
+    container.addEventListener("pc-show", (event) => {
+        if (event.target.localName === "pc-details") {
+            [...container.querySelectorAll("pc-details")].map((details) => {
+                details.open = event.target === details;
+            });
+        }
+    });
+</script>
+
+<style>
+    .details-group pc-details:not(:last-of-type) {
+        margin-bottom: var(--pc-spacing-s);
+    }
+</style>`}
+</CodeDemo>

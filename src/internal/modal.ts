@@ -3,12 +3,12 @@ import { getTabbableElements } from "./tabbable.js";
 
 let activeModals: HTMLElement[] = [];
 
-export default class Modal {
+export class Modal {
     element: HTMLElement;
-    isExternalActivated!: boolean;
+    isExternalActivated?: boolean;
     tabDirection: "forward" | "backward" = "forward";
-    currentFocus!: HTMLElement | null;
-    previousFocus!: HTMLElement | null;
+    currentFocus?: HTMLElement | null;
+    previousFocus?: HTMLElement | null;
     elementsWithTabbableControls: string[];
 
     constructor(element: HTMLElement) {
@@ -79,6 +79,7 @@ export default class Modal {
         if (event.key !== "Tab" || this.isExternalActivated) {
             return;
         }
+
         if (!this.isActive()) {
             return;
         }
@@ -101,8 +102,8 @@ export default class Modal {
 
         const tabbableElements = getTabbableElements(this.element);
 
-        let currentFocusIndex: number = tabbableElements.findIndex(
-            (element: HTMLElement) => element === currentActiveElement,
+        let currentFocusIndex = tabbableElements.findIndex(
+            (element) => element === currentActiveElement,
         );
 
         this.previousFocus = this.currentFocus;
@@ -140,8 +141,7 @@ export default class Modal {
 
             const allActiveElements = [...activeElements()];
             if (
-                (this.currentFocus &&
-                    allActiveElements.includes(this.currentFocus)) ||
+                allActiveElements.includes(this.currentFocus) ||
                 !allActiveElements.includes(this.previousFocus!)
             ) {
                 break;

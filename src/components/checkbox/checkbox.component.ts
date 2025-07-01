@@ -152,23 +152,24 @@ export class PcCheckbox extends LitElement {
         return html`
             <div
                 class=${classMap({
-                    "size-small": this.size === "small",
-                    "size-medium": this.size === "medium",
-                    "size-large": this.size === "large",
+                    "form-control": true,
+                    "form-control-small": this.size === "small",
+                    "form-control-medium": this.size === "medium",
+                    "form-control-large": this.size === "large",
                 })}
             >
                 <label
                     part="base"
                     class=${classMap({
                         "checkbox": true,
-                        "size-small": this.size === "small",
-                        "size-medium": this.size === "medium",
-                        "size-large": this.size === "large",
-                        "has-focus": this.hasFocus,
-                        "is-invalid": this.invalid,
-                        "is-disabled": this.disabled,
-                        "is-checked": this.checked && !this.isFadingOut,
-                        "is-indeterminate": this.indeterminate,
+                        "checkbox-small": this.size === "small",
+                        "checkbox-medium": this.size === "medium",
+                        "checkbox-large": this.size === "large",
+                        "checkbox-invalid": this.invalid === true,
+                        "checkbox-checked": this.checked && !this.isFadingOut,
+                        "checkbox-indeterminate": this.indeterminate,
+                        "checkbox-disabled": this.disabled === true,
+                        "checkbox-has-focus": this.hasFocus === true,
                     })}
                 >
                     <input
@@ -197,7 +198,7 @@ export class PcCheckbox extends LitElement {
                             ? "checkbox-indeterminate"
                             : ""}"
                         class=${classMap({
-                            "checkbox-control": true,
+                            "control": true,
                             "fade-in": this.checked && !this.isFadingOut,
                             "fade-out": this.isFadingOut,
                         })}
@@ -205,7 +206,7 @@ export class PcCheckbox extends LitElement {
                         ${this.checked || this.isFadingOut
                             ? html`
                                   <pc-icon
-                                      library="default"
+                                      library="system"
                                       icon-style="solid"
                                       name="check"
                                       part="icon-checked"
@@ -215,7 +216,7 @@ export class PcCheckbox extends LitElement {
                         ${this.indeterminate
                             ? html`
                                   <pc-icon
-                                      library="default"
+                                      library="system"
                                       icon-style="solid"
                                       name="minus"
                                       part="icon-indeterminate"

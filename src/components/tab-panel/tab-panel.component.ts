@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { watch } from "../../internal/watch.js";
@@ -34,7 +35,7 @@ export class PcTabPanel extends LitElement {
                 part="base"
                 class=${classMap({
                     "tab-panel": true,
-                    "tab-panel-active": this.active,
+                    "tab-panel-active": this.active === true,
                 })}
             ></slot>
         `;

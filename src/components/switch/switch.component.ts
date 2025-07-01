@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -10,6 +11,30 @@ import { watch } from "../../internal/watch.js";
 import { emit } from "../../internal/emit.js";
 import { styles } from "./switch.styles.js";
 
+/**
+ * @summary Switches allow the user to toggle an option on or off.
+ * @status experimental
+ * @since 0.1.0
+ *
+ * @slot — The switch’s label.
+ * @slot hint — Text that describes how to use the switch. Alternatively, you can use the `hint` attribute.
+ *
+ * @event pc-change — Emitted when the switch’s state changes.
+ * @event pc-focus — Emitted when the switch gains focus.
+ * @event pc-blur — Emitted when the switch loses focus (i.e. is blurred).
+ * @event pc-input — Emitted when the switch receives input.
+ * @event pc-invalid — Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
+ *
+ * @csspart base — The component’s base wrapper.
+ * @csspart control — The control that houses the switch’s thumb.
+ * @csspart thumb — The switch’s thumb.
+ * @csspart label — The switch’s label.
+ * @csspart hint — The hint’s wrapper.
+ *
+ * @cssproperty --width — The width of the switch.
+ * @cssproperty --height — The height of the switch.
+ * @cssproperty --thumb-size — The size of the thumb.
+ */
 @customElement("pc-switch")
 export class PcSwitch extends LitElement {
     static styles: CSSResultGroup = styles;
@@ -24,33 +49,46 @@ export class PcSwitch extends LitElement {
     });
     private readonly hasSlotController = new HasSlotController(this, "hint");
 
+    /** @internal This is an internal property. */
     @query("input[type='checkbox']") input!: HTMLInputElement;
 
     @state() private hasFocus = false;
+    /** @internal This is an internal property. */
     @property() title = "";
 
-    @property({ type: Boolean, reflect: true }) checked = false;
-
-    @defaultValue("checked") defaultChecked = false;
-
-    @property({ type: Boolean, reflect: true }) disabled = false;
-
-    @property({ reflect: true }) form = "";
-
-    @property() hint = "";
-
+    /** The name of the switch, submitted as a name/value pair with form data. */
     @property() name = "";
 
-    @property({ type: Boolean, reflect: true }) required = false;
-
-    @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
-
+    /** The current value of the switch, submitted as a name/value pair with form data. */
     @property() value?: string;
 
+    /** The switch’s size. */
+    @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
+
+    /** Disables the switch. */
+    @property({ type: Boolean, reflect: true }) disabled = false;
+
+    /** Enables the switch. */
+    @property({ type: Boolean, reflect: true }) checked = false;
+
+    /** The default value of the switch. Primarily used for resetting the switch. */
+    @defaultValue("checked") defaultChecked = false;
+
+    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
+    @property({ reflect: true }) form = "";
+
+    /** Makes the switch a required field. */
+    @property({ type: Boolean, reflect: true }) required = false;
+
+    /** The switch’s hint. if you need to display HTML, use the `hint` slot instead. */
+    @property() hint = "";
+
+    /** Gets the validity state object. */
     get validity() {
         return this.input.validity;
     }
 
+    /** Gets the validation message. */
     get validationMessage() {
         return this.input.validationMessage;
     }
@@ -97,41 +135,50 @@ export class PcSwitch extends LitElement {
         }
     }
 
+    /** @internal This is an internal property. */
     @watch("checked", { waitUntilFirstUpdate: true })
     handleCheckedChange() {
         this.input.checked = this.checked;
         this.formControlController.updateValidity();
     }
 
+    /** @internal This is an internal property. */
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
         this.formControlController.setValidity(true);
     }
 
+    /** Simulates a click on the switch. */
     click() {
         this.input.click();
     }
 
+    /** Focuses the switch. */
     focus(options?: FocusOptions) {
         this.input.focus(options);
     }
 
+    /** Unfocuses/blurs the switch. */
     blur() {
         this.input.blur();
     }
 
+    /** Checks for validity but doesn’t show a validation message. Returns `true` when valid and `false` when invalid. */
     checkValidity() {
         return this.input.checkValidity();
     }
 
+    /** Gets the associated form if one exists. */
     getForm(): HTMLFormElement | null {
         return this.formControlController.getForm();
     }
 
+    /** Checks for validity and shows the browser’s validation message if the control is invalid. */
     reportValidity() {
         return this.input.reportValidity();
     }
 
+    /** Sets a custom validation message. Pass an empty string to restore validity. */
     setCustomValidity(message: string) {
         this.input.setCustomValidity(message);
         this.formControlController.updateValidity();
@@ -144,11 +191,11 @@ export class PcSwitch extends LitElement {
         return html`
             <div
                 class=${classMap({
-                    "container": true,
-                    "container-small": this.size === "small",
-                    "container-medium": this.size === "medium",
-                    "container-large": this.size === "large",
-                    "container-has-hint": hasHint,
+                    "form-control": true,
+                    "form-control-small": this.size === "small",
+                    "form-control-medium": this.size === "medium",
+                    "form-control-large": this.size === "large",
+                    "form-control-has-hint": hasHint,
                 })}
             >
                 <label

@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -72,8 +73,8 @@ export class PcIconButton extends LitElement {
                           part="base"
                           class=${classMap({
                               "icon-button": true,
-                              "icon-button-disabled": false,
-                              "icon-button-focused": this.hasFocus,
+                              "icon-button-disabled": this.disabled === true,
+                              "icon-button-focused": this.hasFocus === true,
                           })}
                           href=${ifDefined(this.href)}
                           target=${ifDefined(this.target)}
@@ -106,7 +107,6 @@ export class PcIconButton extends LitElement {
                               "icon-button-focused": this.hasFocus === true,
                           })}
                           type="button"
-                          ?disabled=${this.disabled}
                           aria-label=${this.label}
                           aria-disabled=${this.disabled ? "true" : "false"}
                           tabindex=${this.disabled ? "-1" : "0"}

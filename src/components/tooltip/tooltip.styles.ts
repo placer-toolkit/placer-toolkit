@@ -19,19 +19,19 @@ export const styles = css`
         z-index: var(--pc-z-index-tooltip);
     }
 
-    .tooltip[placement^="top"]::part(popup) {
+    .tooltip[data-current-placement^="top"]::part(popup) {
         transform-origin: bottom;
     }
 
-    .tooltip[placement^="bottom"]::part(popup) {
+    .tooltip[data-current-placement^="bottom"]::part(popup) {
         transform-origin: top;
     }
 
-    .tooltip[placement^="left"]::part(popup) {
+    .tooltip[data-current-placement^="left"]::part(popup) {
         transform-origin: right;
     }
 
-    .tooltip[placement^="right"]::part(popup) {
+    .tooltip[data-current-placement^="right"]::part(popup) {
         transform-origin: left;
     }
 

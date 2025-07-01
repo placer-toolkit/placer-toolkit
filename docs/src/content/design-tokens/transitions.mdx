@@ -1,0 +1,24 @@
+---
+title: Transitions
+description: Transitions make your app more lively and expressive, guiding users through changes and highlighting important elements with fluid animations.
+---
+
+Transitions make your app more lively and expressive, guiding users through changes and highlighting important elements with fluid animations.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    Internally, we may use other durations like 0.2s and 0.25s in our components with the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
+</pc-callout>
+
+| Design token                 | Default value | Example                                                                                          |
+| ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------ |
+| `--pc-transition-extra-fast` | 0.1s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-fast)"></div> |
+| `--pc-transition-fast`       | 0.15s         | <div class="transition-demo" style="transition-duration: var(--pc-transition-fast)"></div>       |
+| `--pc-transition-medium`     | 0.3s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-medium)"></div>     |
+| `--pc-transition-slow`       | 0.5s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-slow)"></div>       |
+| `--pc-transition-extra-slow` | 0.75s         | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-slow)"></div> |

@@ -1,0 +1,139 @@
+---
+title: Icon Button
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Icon buttons are simple, icon‐only buttons that can be used for actions and in toolbars.
+
+For a full list of icons that come bundled in with Placer Toolkit, see the [Icon](/components/icon) component docs.
+
+<CodeDemo open>
+{`<pc-icon-button
+    library="default"
+    icon-style="solid"
+    name="gear"
+    label="Settings"
+></pc-icon-button>`}
+</CodeDemo>
+
+## Demos
+
+### Sizes
+
+Icon buttons are sized based on the current font size. To change their size, set the `font-size` property on the icon button itself as shown below or on a parent element.
+
+<CodeDemo>
+{`<pc-icon-button
+    library="default"
+    icon-style="solid"
+    name="pencil"
+    label="Edit"
+    style="font-size: 1.5rem"
+></pc-icon-button>
+<pc-icon-button
+    library="default"
+    icon-style="solid"
+    name="pencil"
+    label="Edit"
+    style="font-size: 2rem"
+></pc-icon-button>
+<pc-icon-button
+    library="default"
+    icon-style="solid"
+    name="pencil"
+    label="Edit"
+    style="font-size: 2.5rem"
+></pc-icon-button>`}
+</CodeDemo>
+
+### Colours
+
+Icon buttons are designed to have a uniform appearance, so their colour is not inherited. However, you can still customise them by styling the `base` part.
+
+<CodeDemo>
+{`<div class="icon-button-color">
+    <pc-icon-button
+        library="default"
+        icon-style="solid"
+        name="bold"
+        label="Bold"
+    ></pc-icon-button>
+    <pc-icon-button
+        library="default"
+        icon-style="solid"
+        name="italic"
+        label="Italic"
+    ></pc-icon-button>
+    <pc-icon-button
+        library="default"
+        icon-style="solid"
+        name="underline"
+        label="Underline"
+    ></pc-icon-button>
+</div>
+
+<style>
+    .icon-button-color pc-icon-button::part(base) {
+        color: var(--pc-color-primary-600);
+    }
+
+    .icon-button-color pc-icon-button::part(base):active {
+        color: var(--pc-color-primary-500);
+    }
+</style>`}
+</CodeDemo>
+
+### Link buttons
+
+Use the `href` attribute to convert the button to a link.
+
+<CodeDemo>
+{`<pc-icon-button
+    href="https://example.com"
+    library="default"
+    icon-style="solid"
+    name="gear"
+    label="Settings"
+    target="_blank"
+></pc-icon-button>`}
+</CodeDemo>
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    When using `target="_blank"`, the component automatically adds `rel="noreferrer noopener"` for [security reasons](https://mathiasbynens.github.io/rel-noopener).
+</pc-callout>
+
+### Icon button with tooltip
+
+Wrap a tooltip around an icon button to provide contextual information to the user.
+
+<CodeDemo>
+{`<pc-tooltip content="Settings">
+    <pc-icon-button
+        library="default"
+        icon-style="solid"
+        name="gear"
+        label="Settings"
+    ></pc-icon-button>
+</pc-tooltip>`}
+</CodeDemo>
+
+### Disabled
+
+Use the `disabled` attribute to disable the icon button.
+
+<CodeDemo>
+{`<pc-icon-button
+    library="default"
+    icon-style="solid"
+    name="gear"
+    label="Settings"
+    disabled
+></pc-icon-button>`}
+</CodeDemo>

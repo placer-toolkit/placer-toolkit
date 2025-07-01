@@ -25,12 +25,14 @@ export const styles = css`
         overflow: hidden;
     }
 
-    .image::slotted(img) {
+    .image::slotted(img),
+    .image::slotted(video) {
         display: block;
         width: 100%;
+        border-radius: 0;
     }
 
-    .card:not(.has-image) .image {
+    .card:not(.card-has-image) .image {
         display: none;
     }
 
@@ -40,7 +42,7 @@ export const styles = css`
         padding: calc(var(--padding) / 2) var(--padding);
     }
 
-    .card:not(.has-header) .header {
+    .card:not(.card-has-header) .header {
         display: none;
     }
 
@@ -49,13 +51,13 @@ export const styles = css`
         padding: var(--padding);
     }
 
-    .has-footer .footer {
+    .card-has-footer .footer {
         display: block;
         border-top: var(--border-width) solid var(--border-color);
         padding: var(--padding);
     }
 
-    .card:not(.has-footer) .footer {
+    .card:not(.card-has-footer) .footer {
         display: none;
     }
 `;

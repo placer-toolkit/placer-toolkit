@@ -38,7 +38,7 @@ export const styles = css`
         width: calc(var(--arrow-size-diagonal) * 2);
         height: calc(var(--arrow-size-diagonal) * 2);
         background-color: var(--arrow-color);
-        transform: rotate(45deg);
+        rotate: 45deg;
         z-index: 1;
     }
 

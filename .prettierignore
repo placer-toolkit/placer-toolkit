@@ -1,4 +1,11 @@
+# Auto‐generated folders
 .cache
 .github
 dist
 node_modules
+
+# MDX files — Prettier doesn’t support MDX 2 and 3, please format MDX files with another formatter
+*.mdx
+
+# Astro files — Prettier breaks Astro code when it formats it
+*.astro

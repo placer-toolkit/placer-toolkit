@@ -1,4 +1,5 @@
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { watch } from "../../internal/watch.js";
@@ -70,12 +71,13 @@ export class PcTab extends LitElement {
                     ? html`
                           <pc-icon-button
                               class="close-button"
-                              library="default"
+                              library="system"
+                              icon-style="solid"
                               name="xmark"
                               label="Close tab"
                               @click=${this.handleCloseClick}
                               tabindex="-1"
-                              exportparts="base:close-button-base"
+                              exportparts="base:close-button__base"
                           ></pc-icon-button>
                       `
                     : ""}

@@ -10,12 +10,12 @@ export const styles = css`
         display: flex;
         align-items: center;
         flex: 0 0 auto;
-        background: none;
+        background: transparent;
         border: none;
         border-radius: var(--pc-border-radius-m);
         font-size: inherit;
         color: inherit;
-        padding: var(--pc-spacing-xs);
+        padding: var(--pc-spacing-s);
         cursor: pointer;
         -webkit-appearance: none;
         transition: all var(--pc-transition-fast) ease-in-out;
@@ -23,11 +23,12 @@ export const styles = css`
 
     .icon-button:hover:not(.icon-button-disabled),
     .icon-button:focus-visible:not(.icon-button-disabled) {
-        color: var(--pc-color-primary-600);
+        background-color: var(--pc-color-neutral-200);
     }
 
-    .icon-button:hover:active:not(.icon-button-disabled) {
-        color: var(--pc-color-primary-500);
+    .icon-button:active:not(.icon-button-disabled) {
+        background-color: var(--pc-color-neutral-100);
+        color: var(--pc-color-neutral-500);
     }
 
     .icon-button:focus {

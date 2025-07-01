@@ -1,0 +1,30 @@
+.spacing-demo {
+    --dot-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 2rem;
+    background-color: var(--pc-color-neutral-300);
+    border-radius: var(--pc-border-radius-s);
+    margin-inline: var(--dot-size);
+}
+
+.spacing-demo::before {
+    content: "";
+    aspect-ratio: 1 / 1;
+    width: var(--dot-size);
+    height: var(--dot-size);
+    background-color: var(--pc-color-neutral-700);
+    border-radius: var(--pc-border-radius-circle);
+    margin-inline-start: calc(var(--dot-size) * -1);
+}
+
+.spacing-demo::after {
+    content: "";
+    aspect-ratio: 1 / 1;
+    width: var(--dot-size);
+    height: var(--dot-size);
+    background-color: var(--pc-color-neutral-700);
+    border-radius: var(--pc-border-radius-circle);
+    margin-inline-end: calc(var(--dot-size) * -1);
+}

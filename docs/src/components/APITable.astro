@@ -1,0 +1,584 @@
+---
+import CodeBlock from "./CodeBlock.astro";
+
+export interface Props {
+    componentName: string;
+}
+
+interface CEMType {
+    text?: string;
+}
+
+interface CEMParameter {
+    name: string;
+    type: CEMType | string;
+}
+
+interface CEMProperty {
+    name: string;
+    attribute?: string;
+    description?: string;
+    type?: CEMType | string;
+    reflects?: boolean;
+    default?: string;
+    kind: string;
+    privacy?: string;
+}
+
+interface CEMMethod {
+    name: string;
+    description?: string;
+    parameters?: CEMParameter[];
+    kind: string;
+    privacy?: string;
+}
+
+interface CEMEvent {
+    name: string;
+    description?: string;
+    type?: CEMType | string;
+}
+
+interface CEMSlot {
+    name: string;
+    description?: string;
+}
+
+interface CEMCSSProperty {
+    name: string;
+    description?: string;
+    default?: string;
+}
+
+interface CEMCSSPart {
+    name: string;
+    description?: string;
+}
+
+interface CEMAnimation {
+    name: string;
+    description?: string;
+}
+
+interface CEMDeclaration {
+    name: string;
+    tagName?: string;
+    members?: (CEMProperty | CEMMethod)[];
+    events?: CEMEvent[];
+    slots?: CEMSlot[];
+    cssProperties?: CEMCSSProperty[];
+    cssParts?: CEMCSSPart[];
+    animations?: CEMAnimation[];
+    dependencies?: string[];
+}
+
+interface CEMModule {
+    declarations?: CEMDeclaration[];
+}
+
+interface CEMManifest {
+    modules?: CEMModule[];
+}
+
+interface ReflectsIconProps {
+    attribute?: string;
+    reflects?: boolean;
+}
+
+const { componentName } = Astro.props;
+
+const packageVersion = "0.5.0";
+const cdnBaseURL = "https://cdn.jsdelivr.net/npm/placer-toolkit@" + packageVersion;
+
+const loadManifest = async (): Promise<CEMManifest | null> => {
+    try {
+        // @ts-expect-error — This is not a module. This is a JSON file.
+        const manifest = await import("/custom-elements.json");
+        return manifest as CEMManifest;
+    } catch (error) {
+        console.error(`Could not load the CEM file: ${error}`);
+        return null;
+    }
+};
+
+const findComponentData = (manifest: CEMManifest, componentName: string): CEMDeclaration | null => {
+    if (!manifest.modules) {
+        return null;
+    }
+
+    for (const module of manifest.modules) {
+        const declaration = module.declarations?.find(
+            (decl) => decl.name === componentName || decl.tagName === componentName
+        );
+        if (declaration) {
+            return declaration;
+        }
+    }
+    return null;
+};
+
+const formatType = (type: CEMType | string | undefined): string => {
+    if (!type) {
+        return "";
+    }
+
+    if (typeof type === "string") {
+        return type.replace(/^\|\s/, "");
+    }
+
+    if (typeof type === "object" && type.text) {
+        return type.text.replace(/^\|\s/, "");
+    }
+
+    return JSON.stringify(type);
+};
+
+const getReflectsIcon = ({ attribute, reflects }: ReflectsIconProps): string => {
+    const hasReflection = attribute || reflects;
+    const iconName = hasReflection ? "check" : "xmark";
+    const className = hasReflection ? "reflects" : "does-not-reflect";
+
+    return `<pc-icon class="${className}" library="default" icon-style="solid" name="${iconName}"></pc-icon>`;
+};
+
+const escapeHTML = (text: string): string => text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
+const renderMarkdown = (text: string): string => {
+    if (!text) return "";
+
+    return text
+        // Inline code (``)
+        .replace(/`([^`]+?)`/g, (_, code) => `<code>${escapeHTML(code)}</code>`)
+        // Links ([text](url))
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, linkText, url) =>
+            `<a href="${escapeHTML(url)}">${escapeHTML(linkText)}</a>`
+        )
+        // Bold text (**bold** or __bold__)
+        .replace(/(\*\*|__)(.*?)\1/g, (_, __, content) =>
+            `<strong>${escapeHTML(content)}</strong>`
+        )
+        // Italic text (*italic* or _italic_)
+        .replace(/(\*|_)(.*?)\1/g, (_, __, content) =>
+            `<em>${escapeHTML(content)}</em>`
+        );
+};
+
+const convertComponentNameToPath = (componentName: string): string => {
+    return componentName
+        .substring(2)
+        .replace(/^./, (match) => match.toLowerCase())
+        .replace(/([A-Z])/g, "-$1")
+        .toLowerCase();
+};
+
+const formatComponentDisplayName = (dependency: string): string => {
+    return dependency
+        .replace(/^pc-/i, "")
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+};
+
+const cleanDescription = (description: string | undefined): string => {
+    return description?.replace(/^—\s*/, "") || "";
+};
+
+// Main logic
+const manifest = await loadManifest();
+const componentData = manifest ? findComponentData(manifest, componentName) : null;
+
+// Filter and organise data
+const properties = componentData?.members?.filter(
+    (member): member is CEMProperty =>
+        member.kind === "field" && member.privacy !== "private"
+) || [];
+
+const methods = componentData?.members?.filter(
+    (member): member is CEMMethod =>
+        member.kind === "method" && member.privacy !== "private"
+) || [];
+
+const events = componentData?.events || [];
+const slots = componentData?.slots || [];
+const cssProperties = componentData?.cssProperties || [];
+const cssParts = componentData?.cssParts || [];
+const animations = componentData?.animations || [];
+const dependencies = componentData?.dependencies || [];
+
+// Generate import paths
+const componentPath = convertComponentNameToPath(componentName);
+const cdnScriptUrl = `${cdnBaseURL}/dist/components/${componentPath}/${componentPath}.js`;
+const importPath = `placer-toolkit/dist/components/${componentPath}/${componentPath}.js`;
+---
+
+{componentData && (
+    <div class="api-documentation">
+        {properties.length > 0 && (
+            <section class="api-section">
+                <h2 id="properties">Properties</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th style="text-align: center">Reflects</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {properties.map((property) => (
+                                <tr>
+                                    <td>
+                                        <code>{property.name}</code>
+                                        {property.attribute && property.attribute !== property.name && (
+                                            <>
+                                                <br />
+                                                <code style="font-size: var(--pc-font-size-xxs)">
+                                                    {property.attribute}
+                                                </code>
+                                            </>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {property.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(property.description))} />
+                                        )}{" "}
+                                        {property.type && (
+                                            <span class="type-info">
+                                                <code>{formatType(property.type)}</code>
+                                            </span>
+                                        )}
+                                    </td>
+                                    <td
+                                        style="text-align: center"
+                                        set:html={getReflectsIcon({
+                                            attribute: property.attribute,
+                                            reflects: property.reflects,
+                                        })}
+                                    />
+                                    <td>
+                                        {property.default ? (
+                                            <code>{property.default}</code>
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                            <tr>
+                                <td><code>updateComplete</code></td>
+                                <td>
+                                    A read‐only promise that resolves when the component has
+                                    <a href="/get-started/usage/#component-rendering-and-updating">finished updating</a>.
+                                </td>
+                                <td style="text-align: center">
+                                    <pc-icon
+                                        class="does-not-reflect"
+                                        library="default"
+                                        icon-style="solid"
+                                        name="xmark"
+                                    ></pc-icon>
+                                </td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/usage/#attributes-and-properties">attributes and properties</a>.
+                </p>
+            </section>
+        )}
+
+        {slots.length > 0 && (
+            <section class="api-section">
+                <h2 id="slots">Slots</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {slots.map((slot) => (
+                                <tr>
+                                    <td>
+                                        {slot.name && slot.name !== "—" ? (
+                                            <code>{slot.name}</code>
+                                        ) : (
+                                            "(default)"
+                                        )}
+                                    </td>
+                                    <td>
+                                        {slot.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(slot.description))} />
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/usage/#slots">using slots</a>.
+                </p>
+            </section>
+        )}
+
+        {methods.length > 0 && (
+            <section class="api-section">
+                <h2 id="methods">Methods</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Arguments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {methods.map((method) => (
+                                <tr>
+                                    <td><code>{method.name}()</code></td>
+                                    <td>
+                                        {method.description && (
+                                            <span set:html={renderMarkdown(method.description)} />
+                                        )}
+                                    </td>
+                                    <td>
+                                        {method.parameters?.length ? (
+                                            method.parameters.map((param, index) => (
+                                                <>
+                                                    <code>{param.name}: {formatType(param.type)}</code>
+                                                    {index < method.parameters!.length - 1 && ", "}
+                                                </>
+                                            ))
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/usage/#methods">methods</a>.
+                </p>
+            </section>
+        )}
+
+        {events.length > 0 && (
+            <section class="api-section">
+                <h2 id="events">Events</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Event detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {events.map((event) => (
+                                <tr>
+                                    <td><code>{event.name}</code></td>
+                                    <td>
+                                        {event.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(event.description))} />
+                                        )}
+                                    </td>
+                                    <td>
+                                        {event.type ? (
+                                            <code>{formatType(event.type)}</code>
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/usage/#events">events</a>.
+                </p>
+            </section>
+        )}
+
+        {cssProperties.length > 0 && (
+            <section class="api-section">
+                <h2 id="custom-properties">Custom properties</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Default</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cssProperties.map((property) => (
+                                <tr>
+                                    <td><code>{property.name}</code></td>
+                                    <td>
+                                        {property.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(property.description))} />
+                                        )}
+                                    </td>
+                                    <td>
+                                        {property.default ? (
+                                            <code>{property.default}</code>
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/customisation/#custom-properties">customising custom properties</a>.
+                </p>
+            </section>
+        )}
+
+        {cssParts.length > 0 && (
+            <section class="api-section">
+                <h2 id="parts">Parts</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {cssParts.map((part) => (
+                                <tr>
+                                    <td><code>{part.name}</code></td>
+                                    <td>
+                                        {part.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(part.description))} />
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/customisation/#css-parts">customising CSS parts</a>.
+                </p>
+            </section>
+        )}
+
+        {animations.length > 0 && (
+            <section class="api-section">
+                <h2 id="animations">Animations</h2>
+                <div class="table-wrapper">
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {animations.map((animation) => (
+                                <tr>
+                                    <td><code>{animation.name}</code></td>
+                                    <td>
+                                        {animation.description && (
+                                            <span set:html={renderMarkdown(cleanDescription(animation.description))} />
+                                        )}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <p>
+                    Learn more about <a href="/get-started/customisation/#animations">customising animations</a>.
+                </p>
+            </section>
+        )}
+
+        <section class="api-section">
+            <h2 id="importing">Importing</h2>
+            <p>
+                If you’re using the autoloader or the standard loader, you can ignore this section.
+                If you’re cherry picking, you can use any of the following snippets to import this component.
+            </p>
+
+            <pc-tab-group>
+                <pc-tab slot="navigation" panel="script">Script</pc-tab>
+                <pc-tab slot="navigation" panel="import">Import</pc-tab>
+                <pc-tab slot="navigation" panel="bundler">Bundler</pc-tab>
+
+                <pc-tab-panel name="script">
+                    <p>
+                        To import this component from the CDN with a script tag, copy this snippet and paste it in your HTML.
+                    </p>
+                    <CodeBlock language="html">
+                        {`<script type="module" src="${cdnScriptUrl}"></script>`}
+                    </CodeBlock>
+                </pc-tab-panel>
+
+                <pc-tab-panel name="import">
+                    <p>
+                        To import this component from the CDN using a JavaScript import, copy this snippet and paste it in your JavaScript:
+                    </p>
+                    <CodeBlock language="javascript">
+                        {`import "${cdnScriptUrl}";`}
+                    </CodeBlock>
+                </pc-tab-panel>
+
+                <pc-tab-panel name="bundler">
+                    <p>
+                        To import this component with a bundler using a JavaScript import, copy this snippet and paste it in your JavaScript:
+                    </p>
+                    <CodeBlock language="javascript">
+                        {`import "${importPath}";`}
+                    </CodeBlock>
+                </pc-tab-panel>
+            </pc-tab-group>
+        </section>
+
+        {dependencies.length > 0 && (
+            <section class="api-section">
+                <h2 id="dependencies">Dependencies</h2>
+                <p>This component automatically imports these components:</p>
+                <ul>
+                    {dependencies.map((dependency) => (
+                        <li>
+                            <a href={`/components/${dependency.substring(3).toLowerCase()}`}>
+                                {formatComponentDisplayName(dependency)}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        )}
+    </div>
+)}
+
+<style>
+    .table-wrapper {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+</style>

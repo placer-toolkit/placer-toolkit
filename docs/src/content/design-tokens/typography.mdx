@@ -1,0 +1,67 @@
+---
+title: Typography
+---
+
+Typography is used to maintain a consistent set of font styles throughout your app.
+
+## Font family
+
+The default font stack is simple and elegant, and has a lot of fallbacks if the main font isn’t available.
+
+| Design token      | Default value                                                                                                                                                                                               | Example                                                                                      |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `--pc-font-sans`  | `"Quicksand", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", "Roboto", "Open Sans", "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"` | <span style="font-family: var(--pc-font-sans)">Sphinx of black quartz, judge my vow.</span>  |
+| `--pc-font-serif` | `"Playfair Display", "Georgia", "Times New Roman", serif`                                                                                                                                                   | <span style="font-family: var(--pc-font-serif)">Sphinx of black quartz, judge my vow.</span> |
+| `--pc-font-mono`  | `"JetBrains Mono", "Source Code Pro", "IBM Plex Mono", "Consolas", "Menlo", monospace`                                                                                                                      | <span style="font-family: var(--pc-font-mono)">Sphinx of black quartz, judge my vow.</span>  |
+
+## Font size
+
+Font sizes use `rem` units so they scale with the base font size. The `px` values displayed are based on a 16px root font size.
+
+| Design token           | Default value   | Example                                                      |
+| ---------------------- | --------------- | ------------------------------------------------------------ |
+| `--pc-font-size-xxs`   | 0.625rem (10px) | <span style="font-size: var(--pc-font-size-xxs)">Aa</span>   |
+| `--pc-font-size-xs`    | 0.75rem (12px)  | <span style="font-size: var(--pc-font-size-xs)">Aa</span>    |
+| `--pc-font-size-s`     | 0.875rem (14px) | <span style="font-size: var(--pc-font-size-s)">Aa</span>     |
+| `--pc-font-size-m`     | 1rem (16px)     | <span style="font-size: var(--pc-font-size-m)">Aa</span>     |
+| `--pc-font-size-l`     | 1.25rem (20px)  | <span style="font-size: var(--pc-font-size-l)">Aa</span>     |
+| `--pc-font-size-xl`    | 1.5rem (24px)   | <span style="font-size: var(--pc-font-size-xl)">Aa</span>    |
+| `--pc-font-size-xxl`   | 2rem (32px)     | <span style="font-size: var(--pc-font-size-xxl)">Aa</span>   |
+| `--pc-font-size-xxxl`  | 2.5rem (40px)   | <span style="font-size: var(--pc-font-size-xxxl)">Aa</span>  |
+| `--pc-font-size-xxxxl` | 4rem (64px)     | <span style="font-size: var(--pc-font-size-xxxxl)">Aa</span> |
+
+## Font weights
+
+Font weights range from 300 (Light) to 700 (Bold), letting you fine‐tune emphasis. Our default variable fonts support any value in this range, while other non‐variable fallbacks may use standard weight tokens.
+
+| Design token                | Default value | Example                                                                                                |
+| --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------ |
+| `--pc-font-weight-light`    | 300           | <span style="font-weight: var(--pc-font-weight-light)">Sphinx of black quartz, judge my vow.</span>    |
+| `--pc-font-weight-normal`   | 400           | <span style="font-weight: var(--pc-font-weight-normal)">Sphinx of black quartz, judge my vow.</span>   |
+| `--pc-font-weight-medium`   | 500           | <span style="font-weight: var(--pc-font-weight-medium)">Sphinx of black quartz, judge my vow.</span>   |
+| `--pc-font-weight-semibold` | 600           | <span style="font-weight: var(--pc-font-weight-semibold)">Sphinx of black quartz, judge my vow.</span> |
+| `--pc-font-weight-bold`     | 700           | <span style="font-weight: var(--pc-font-weight-bold)">Sphinx of black quartz, judge my vow.</span>     |
+
+## Letter spacing
+
+Letter spacing is set to enhance readability and balance, adjusting naturally across different font sizes and weights.
+
+| Design token                 | Default value | Example                                                                                                    |
+| ---------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------- |
+| `--pc-letter-spacing-denser` | −0.03em       | <span style="letter-spacing: var(--pc-letter-spacing-denser)">Sphinx of black quartz, judge my vow.</span> |
+| `--pc-letter-spacing-dense`  | −0.015em      | <span style="letter-spacing: var(--pc-letter-spacing-dense)">Sphinx of black quartz, judge my vow.</span>  |
+| `--pc-letter-spacing-normal` | normal        | <span style="letter-spacing: var(--pc-letter-spacing-normal)">Sphinx of black quartz, judge my vow.</span> |
+| `--pc-letter-spacing-loose`  | 0.075em       | <span style="letter-spacing: var(--pc-letter-spacing-loose)">Sphinx of black quartz, judge my vow.</span>  |
+| `--pc-letter-spacing-looser` | 0.15em        | <span style="letter-spacing: var(--pc-letter-spacing-looser)">Sphinx of black quartz, judge my vow.</span> |
+
+## Line height
+
+Line heights improve text flow and legibility, adapting smoothly to different font sizes for a comfortable reading experience.
+
+| Design token              | Default value | Example                                                                                                                                                                                                                                        |
+| ------------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-line-height-denser` | 1             | <div style="line-height: var(--pc-line-height-denser)">Sphinx of black quartz, judge my vow.<br />Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis.<br />Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.</div> |
+| `--pc-line-height-dense`  | 1.4           | <div style="line-height: var(--pc-line-height-dense)">Sphinx of black quartz, judge my vow.<br />Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis.<br />Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.</div>  |
+| `--pc-line-height-normal` | 1.8           | <div style="line-height: var(--pc-line-height-normal)">Sphinx of black quartz, judge my vow.<br />Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis.<br />Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.</div> |
+| `--pc-line-height-loose`  | 2.2           | <div style="line-height: var(--pc-line-height-loose)">Sphinx of black quartz, judge my vow.<br />Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis.<br />Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.</div>  |
+| `--pc-line-height-looser` | 2.6           | <div style="line-height: var(--pc-line-height-looser)">Sphinx of black quartz, judge my vow.<br />Voix ambiguë d’un cœur qui au zéphyr préfère les jattes de kiwis.<br />Victor jagt zwölf Boxkämpfer quer über den großen Sylter Deich.</div> |

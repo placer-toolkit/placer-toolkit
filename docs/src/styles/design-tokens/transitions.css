@@ -1,0 +1,27 @@
+.transition-demo {
+    position: relative;
+    background-color: var(--pc-color-neutral-200);
+    border-radius: var(--pc-border-radius-m);
+    width: 8rem;
+    height: 2.25rem;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.transition-demo::after {
+    content: "";
+    position: absolute;
+    background-color: var(--pc-color-primary-400);
+    border-radius: var(--pc-border-radius-m);
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    transition-property: width;
+    transition-duration: inherit;
+    transition-timing-function: ease-in-out;
+}
+
+.transition-demo:hover::after {
+    width: 100%;
+}

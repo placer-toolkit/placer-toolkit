@@ -1,8 +1,11 @@
 import typescript from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import { globSync } from "glob";
+import copy from "rollup-plugin-copy";
 import { createRequire } from "module";
 
+const inputs = globSync("src/**/*.ts", { ignore: ["**/*.d.ts"] });
 const require = createRequire(import.meta.url);
 const pkg = require("./package.json");
 
@@ -12,11 +15,7 @@ const externalPackages = [
 ];
 
 export default {
-    input: [
-        "src/placer-autoloader.ts",
-        "src/placer.ts",
-        "src/utilities/icon-library.ts",
-    ],
+    input: inputs,
     output: [
         {
             dir: "dist",
@@ -35,10 +34,19 @@ export default {
             declarationDir: "dist",
             rootDir: "src",
         }),
+        copy({
+            targets: [
+                { src: "src/*.css", dest: "dist" },
+                {
+                    src: "src/style-utilities/*.css",
+                    dest: "dist/style-utilities",
+                },
+            ],
+        }),
     ],
     external: (id) => {
         return externalPackages.some(
-            (pkgName) => id === pkgName || id.startsWith(`${pkgName}/`)
+            (pkgName) => id === pkgName || id.startsWith(`${pkgName}/`),
         );
     },
 };

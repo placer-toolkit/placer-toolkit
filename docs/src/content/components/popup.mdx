@@ -1,0 +1,483 @@
+---
+title: Popup
+description: Popup is a utility that lets you declaratively anchor “popup” containers to another element.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Popup is a utility that lets you declaratively anchor “popup” containers to another element.
+
+This component’s name is inspired by [`<popup>`](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Popup/explainer.md). It uses [Floating UI](https://floating-ui.com) under the hood to provide a well‐tested, lightweight and fully declarative positioning utility for tooltips, dropdowns and more.
+
+Popup doesn’t provide any styles—just positioning! The popup’s preferred placement, distance and skidding (offset) can be configured using attributes. An arrow that points to the anchor can be shown and customised to your liking. Additional positioning options are available and described in more detail below.
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    Popup is a low‐level utility built specifically for positioning elements. Do not mistake it for a tooltip or similar because _it does not facilitate an accessible experience_ ! Almost every correct usage of it will involve building other components. It should rarely, if ever, occur directly in your HTML.
+</pc-callout>
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    A popup’s anchor should not be styled with `display: contents` since the coordinates will not be eligible for calculation. However, if the anchor is a `<slot>` element, the Popup component will use the first assigned element as the anchor. This behaviour allows other components to pass anchors through more easily via composition.
+</pc-callout>
+
+<CodeDemo open>
+{`<div class="popup-overview">
+    <pc-popup placement="top" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <div class="popup-overview-options">
+        <pc-select
+            class="popup-overview-select"
+            label="Placement"
+            name="placement"
+            value="top"
+        >
+            <pc-option value="top">top</pc-option>
+            <pc-option value="top-start">top-start</pc-option>
+            <pc-option value="top-end">top-end</pc-option>
+            <pc-option value="bottom">bottom</pc-option>
+            <pc-option value="bottom-start">bottom-start</pc-option>
+            <pc-option value="bottom-end">bottom-end</pc-option>
+            <pc-option value="right">right</pc-option>
+            <pc-option value="right-start">right-start</pc-option>
+            <pc-option value="right-end">right-end</pc-option>
+            <pc-option value="left">left</pc-option>
+            <pc-option value="left-start">left-start</pc-option>
+            <pc-option value="left-end">left-end</pc-option>
+        </pc-select>
+        <pc-input
+            label="Distance"
+            type="number"
+            name="distance"
+            value="0"
+        ></pc-input>
+        <pc-input
+            label="Skidding"
+            type="number"
+            name="skidding"
+            value="0"
+        ></pc-input>
+    </div>
+
+    <div class="popup-overview-options">
+        <pc-switch name="active" checked>Active</pc-switch>
+        <pc-switch name="arrow">Arrow</pc-switch>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-overview");
+    const popup = container.querySelector("pc-popup");
+    const select = container.querySelector('pc-select[name="placement"]');
+    const distance = container.querySelector('pc-input[name="distance"]');
+    const skidding = container.querySelector('pc-input[name="skidding"]');
+    const active = container.querySelector('pc-switch[name="active"]');
+    const arrow = container.querySelector('pc-switch[name="arrow"]');
+
+    select.addEventListener("pc-change", () => (popup.placement = select.value));
+    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
+    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+    active.addEventListener("pc-change", () => (popup.active = active.checked));
+    arrow.addEventListener("pc-change", () => (popup.arrow = arrow.checked));
+</script>
+
+<style>
+    .popup-overview pc-popup {
+        --arrow-color: var(--pc-color-primary-400);
+    }
+
+    .popup-overview span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-overview .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-overview-options {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: var(--pc-spacing-s);
+    }
+
+    .popup-overview-options pc-select {
+        width: 200px;
+    }
+
+    .popup-overview-options pc-input {
+        width: 100px;
+    }
+
+    .popup-overview-options + .popup-overview-options {
+        margin-top: var(--pc-spacing-s);
+    }
+</style>`}
+</CodeDemo>
+
+## Demos
+
+### Activation
+
+Popups are inactive and hidden until the `active` attribute is applied. Removing the attribute will tear down all positioning logic and event listeners, meaning you can have many idle popups on the page without affecting performance.
+
+<CodeDemo>
+{`<div class="popup-active">
+    <pc-popup placement="top" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <br />
+
+    <pc-switch checked>Active</pc-switch>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-active");
+    const popup = container.querySelector("pc-popup");
+    const active = container.querySelector("pc-switch");
+
+    active.addEventListener("pc-change", () => (popup.active = active.checked));
+</script>
+
+<style>
+    .popup-active span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-active .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>`}
+</CodeDemo>
+
+### External anchors
+
+By default, anchors are slotted into the popup using the `anchor` slot. If your anchor needs to live outside of the popup, you can pass the anchor’s `id` to the `anchor` attribute. Alternatively, you can pass an element reference to the `anchor` property to achieve the same effect without using an `id`.
+
+<CodeDemo>
+{`<span id="external-anchor"></span>
+
+<pc-popup placement="top" anchor="external-anchor" active>
+    <div class="box"></div>
+</pc-popup>
+
+<style>
+    #external-anchor {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl) 0 0 var(--pc-spacing-xxxxl);
+    }
+
+    #external-anchor ~ pc-popup .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>`}
+</CodeDemo>
+
+### Placement
+
+Use the `placement` attribute to tell the popup the preferred placement of the popup. The actual position will vary to ensure the panel remains in the viewport if you’re using positioning features like `flip` or `shift`.
+
+Since placement is preferred when using `flip`, you can observe the popup’s current placement when it’s active by looking at the `data-current-placement` attribute. This attribute will update as the popup flips to find available space and will be removed when the popup is deactivated.
+
+<CodeDemo>
+{`<div class="popup-placement">
+    <pc-popup placement="top" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <pc-select label="Placement" value="top">
+        <pc-option value="top">top</pc-option>
+        <pc-option value="top-start">top-start</pc-option>
+        <pc-option value="top-end">top-end</pc-option>
+        <pc-option value="bottom">bottom</pc-option>
+        <pc-option value="bottom-start">bottom-start</pc-option>
+        <pc-option value="bottom-end">bottom-end</pc-option>
+        <pc-option value="right">right</pc-option>
+        <pc-option value="right-start">right-start</pc-option>
+        <pc-option value="right-end">right-end</pc-option>
+        <pc-option value="left">left</pc-option>
+        <pc-option value="left-start">left-start</pc-option>
+        <pc-option value="left-end">left-end</pc-option>
+    </pc-select>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-placement");
+    const popup = container.querySelector("pc-popup");
+    const placement = container.querySelector("pc-select");
+
+    placement.addEventListener("pc-change", () => (popup.placement = placement.value));
+</script>
+
+<style>
+    .popup-placement span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-placement .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-placement pc-select {
+        max-width: 280px;
+    }
+</style>`}
+</CodeDemo>
+
+### Distance
+
+Use the `distance` attribute to change the distance between the popup and its anchor. A positive value will move the popup further away and a negative value will move it closer to the anchor.
+
+<CodeDemo>
+{`<div class="popup-distance">
+    <pc-popup placement="top" distance="0" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <pc-input
+        label="Distance"
+        type="number"
+        name="distance"
+        min="-50"
+        max="50"
+        value="0"
+    ></pc-input>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-distance");
+    const popup = container.querySelector("pc-popup");
+    const distance = container.querySelector("pc-input");
+
+    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
+</script>
+
+<style>
+    .popup-distance span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-distance .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-distance pc-input {
+        max-width: 280px;
+    }
+</style>`}
+</CodeDemo>
+
+### Skidding
+
+The `skidding` attribute is similar to `distance`, but instead allows you to offset the popup along the anchor’s axis. Both positive and negative values are allowed.
+
+<CodeDemo>
+{`<div class="popup-skidding">
+    <pc-popup placement="top" skidding="0" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <pc-input
+        label="Skidding"
+        type="number"
+        name="skidding"
+        min="-50"
+        max="50"
+        value="0"
+    ></pc-input>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-skidding");
+    const popup = container.querySelector("pc-popup");
+    const skidding = container.querySelector("pc-input");
+
+    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+</script>
+
+<style>
+    .popup-skidding span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-skidding .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-skidding pc-input {
+        max-width: 280px;
+    }
+</style>`}
+</CodeDemo>
+
+### Arrows
+
+Add an arrow to your popup with the `arrow` attribute. It’s usually a good idea to set a `distance` to make room for the arrow. To adjust the arrow’s colour and size, use the `--arrow-color` and `--arrow-size` custom properties, respectively. You can also target the `arrow` part to add additional styles such as shadows and borders.
+
+By default, the arrow will be aligned as close to the centre of the anchor as possible, considering available space and `arrow-padding`. You can the `arrow-placement` attribute to force the arrow to align to the start, centre or end of the popup instead.
+
+<CodeDemo>
+{`<div class="popup-arrow">
+    <pc-popup
+        placement="top"
+        arrow-placement="anchor"
+        distance="8"
+        arrow
+        active
+    >
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <div class="popup-arrow-options">
+        <pc-select
+            class="popup-overview-select"
+            label="Placement"
+            name="placement"
+            value="top"
+        >
+            <pc-option value="top">top</pc-option>
+            <pc-option value="top-start">top-start</pc-option>
+            <pc-option value="top-end">top-end</pc-option>
+            <pc-option value="bottom">bottom</pc-option>
+            <pc-option value="bottom-start">bottom-start</pc-option>
+            <pc-option value="bottom-end">bottom-end</pc-option>
+            <pc-option value="right">right</pc-option>
+            <pc-option value="right-start">right-start</pc-option>
+            <pc-option value="right-end">right-end</pc-option>
+            <pc-option value="left">left</pc-option>
+            <pc-option value="left-start">left-start</pc-option>
+            <pc-option value="left-end">left-end</pc-option>
+        </pc-select>
+
+        <pc-select label="Arrow placement" name="arrow-placement" value="anchor">
+            <pc-option value="anchor">anchor</pc-option>
+            <pc-option value="start">start</pc-option>
+            <pc-option value="center">center</pc-option>
+            <pc-option value="end">end</pc-option>
+        </pc-select>
+    </div>
+
+    <div class="popup-arrow-options">
+        <pc-switch name="arrow" checked>Arrow</pc-switch>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-arrow");
+    const popup = container.querySelector("pc-popup");
+    const placement = container.querySelector('pc-select[name="placement"]');
+    const arrowPlacement = container.querySelector('pc-select[name="arrow-placement"]');
+    const arrow = container.querySelector('pc-switch[name="arrow"]');
+
+    placement.addEventListener("pc-change", () => (popup.placement = placement.value));
+    arrowPlacement.addEventListener("pc-change", () => (popup.arrowPlacement = arrowPlacement.value));
+    arrow.addEventListener("pc-change", () => (popup.arrow = arrow.checked));
+</script>
+
+<style>
+    .popup-arrow pc-popup {
+        --arrow-color: var(--pc-color-primary-400);
+    }
+
+    .popup-arrow span[slot="anchor"] {
+        display: inline-block;
+        width: 150px;
+        height: 150px;
+        border: 2px dashed var(--pc-color-neutral-400);
+        border-radius: var(--pc-border-radius-l);
+        margin: var(--pc-spacing-xxxxl);
+    }
+
+    .popup-arrow .box {
+        width: 100px;
+        height: 55px;
+        background-color: var(--pc-color-primary-400);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-arrow-options {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--pc-spacing-s);
+        flex-wrap: wrap;
+    }
+
+    .popup-arrow-options pc-select {
+        width: 160px;
+    }
+
+    .popup-arrow-options + .popup-arrow-options {
+        margin-top: var(--pc-spacing-s);
+    }
+</style>`}
+</CodeDemo>
+
+_This page takes a long time to complete, please be patient!_

@@ -1,0 +1,41 @@
+/* This file contains utility classes that can’t be contained in a component
+   and must be applied to the light DOM. None of the rules in this stylesheet
+   should target component tags or HTML tags, and all classes must start with
+   “.pc-” to reduce the possibility of collisions. */
+
+.pc-toast-stack {
+    position: fixed;
+    top: 0;
+    inset-inline-end: 0;
+    z-index: var(--pc-z-index-toast);
+    width: 28rem;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: auto;
+}
+
+.pc-toast-stack pc-alert {
+    margin: var(--pc-spacing-l);
+}
+
+.pc-toast-stack pc-alert::part(base) {
+    box-shadow: var(--pc-shadow-l);
+}
+
+@supports (scrollbar-gutter: stable) {
+    .pc-scroll-lock {
+        scrollbar-gutter: var(--pc-scroll-lock-gutter) !important;
+    }
+
+    .pc-scroll-lock body {
+        overflow: hidden !important;
+    }
+}
+
+/* This at‐rule will stay until more people are on the latest version of Safari (18.2+) */
+@supports not (scrollbar-gutter: stable) {
+    .pc-scroll-lock body {
+        padding-right: var(--pc-scroll-lock-size) !important;
+        overflow: hidden !important;
+    }
+}

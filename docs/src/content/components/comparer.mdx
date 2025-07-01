@@ -1,0 +1,46 @@
+---
+title: Comparer
+description: Compare visual differences between similar content with a sliding panel.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Compare visual differences between similar content with a sliding panel.
+
+For best results, use images that share the same dimensions. The slider can be controlled by dragging or pressing the <kbd aria-label="Left">←</kbd> and <kbd aria-label="Right">→</kbd> arrow keys. **Tip:** Press <kbd>Shift</kbd> + Arrow keys to move the slider in intervals of 10, or <kbd>Home</kbd> + <kbd>End</kbd> to jump to the beginning or the end.
+
+<CodeDemo open>
+{`<pc-comparer>
+    <img
+        slot="before"
+        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+        alt="Colour version of a fantasy desert that’s all blue"
+    />
+    <img
+        slot="after"
+        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&sat=-100&bri=-5"
+        alt="Greyscale version of a fantasy desert that’s all blue"
+    />
+</pc-comparer>`}
+</CodeDemo>
+
+## Demos
+
+### Initial position
+
+Use the `position` attribute to set the initial position of the slider. This is a percentage from `0` to `100`.
+
+<CodeDemo>
+{`<pc-comparer position="25">
+    <img
+        slot="before"
+        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+        alt="Colour version of a fantasy desert that’s all blue"
+    />
+    <img
+        slot="after"
+        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&sat=-100&bri=-5"
+        alt="Greyscale version of a fantasy desert that’s all blue"
+    />
+</pc-comparer>`}
+</CodeDemo>

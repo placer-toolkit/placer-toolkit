@@ -1,5 +1,6 @@
 import defaultLibrary from "./library.default.js";
-import type PcIcon from "./icon.js";
+import systemLibrary from "./library.system.js";
+import type { PcIcon } from "./icon.js";
 
 export type IconLibraryResolver = (name: string, iconStyle?: string) => string;
 export type IconLibraryMutator = (svg: SVGElement) => void;
@@ -11,7 +12,7 @@ export interface IconLibrary {
     spriteSheet?: boolean;
 }
 
-let registry: IconLibrary[] = [defaultLibrary];
+let registry: IconLibrary[] = [defaultLibrary, systemLibrary];
 let watchedIcons: PcIcon[] = [];
 
 export function watchIcon(icon: PcIcon) {

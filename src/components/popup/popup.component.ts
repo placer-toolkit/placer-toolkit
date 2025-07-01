@@ -10,7 +10,8 @@ import {
     shift,
     size,
 } from "@floating-ui/dom";
-import { CSSResultGroup, LitElement, html } from "lit";
+import { LitElement, html } from "lit";
+import type { CSSResultGroup } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
 import { classMap } from "lit/directives/class-map.js";
 import { offsetParent } from "composed-offset-position";
@@ -326,7 +327,11 @@ export class PcPopup extends LitElement {
                 getOffsetParent,
             },
         }).then(({ x, y, middlewareData, placement }) => {
-            const isRTL = document.documentElement.dir === "rtl";
+            const isRTL =
+                document.documentElement.dir === "rtl" ||
+                (!document.documentElement.dir &&
+                    getComputedStyle(document.documentElement).direction ===
+                        "rtl");
             const staticSide = {
                 top: "bottom",
                 right: "left",
@@ -521,11 +526,13 @@ export class PcPopup extends LitElement {
             >
                 <slot></slot>
                 ${this.arrow
-                    ? html`<div
-                          part="arrow"
-                          class="popup-arrow"
-                          role="presentation"
-                      ></div>`
+                    ? html`
+                          <div
+                              part="arrow"
+                              class="popup-arrow"
+                              role="presentation"
+                          ></div>
+                      `
                     : ""}
             </div>
         `;

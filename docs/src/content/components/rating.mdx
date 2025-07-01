@@ -1,0 +1,163 @@
+---
+title: Rating
+description: Ratings give users a way to quickly view and provide feedback.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Ratings give users a way to quickly view and provide feedback.
+
+<CodeDemo open>
+{`<pc-rating label="Rating"></pc-rating>`}
+</CodeDemo>
+
+## Demos
+
+### Labels
+
+Ratings are commonly identified contextually, so labels aren’t displayed. However, you should always provide one for assistive devices using the `label` attribute.
+
+<CodeDemo>
+{`<pc-rating label="Rate this component"></pc-rating>`}
+</CodeDemo>
+
+### Maximum value
+
+The rating’s maximum value is 5 by default. To change the maximum value, use the `max` attribute.
+
+<CodeDemo>
+{`<pc-rating label="Rating" max="3"></pc-rating>`}
+</CodeDemo>
+
+### Precision
+
+Use the `precision` attribute to let users select fractional ratings.
+
+<CodeDemo>
+{`<pc-rating label="Rating" precision="0.5" value="2.5"></pc-rating>`}
+</CodeDemo>
+
+### Icon size
+
+Set the `--icon-size` custom property to adjust the size.
+
+<CodeDemo>
+{`<pc-rating label="Rating" style="--icon-size: 2rem"></pc-rating>`}
+</CodeDemo>
+
+### Read‐only
+
+Use the `readonly` attribute to display a rating that users can’t change.
+
+<CodeDemo>
+{`<pc-rating label="Rating" value="3" readonly></pc-rating>`}
+</CodeDemo>
+
+### Disabled
+
+Use the `disabled` attribute to disable the rating.
+
+<CodeDemo>
+{`<pc-rating label="Rating" value="3" disabled></pc-rating>`}
+</CodeDemo>
+
+### Detecting hover
+
+Use the `pc-hover` event ot detect when the user hovers over (or touches and drags) the rating. This lets you hook into values as the user interacts with the rating before they select a value.
+
+This event has a payload with `phase` and `value` properties. The `phase` property tells when hovering starts, moves to a new value and ends. The `value` property tells what the rating’s value would be if the user were to commit to the hovered value.
+
+<CodeDemo>
+{`<div class="detect-hover">
+    <pc-rating label="Rating"></pc-rating>
+    <span></span>
+</div>
+
+<script>
+    const rating = document.querySelector(".detect-hover > pc-rating");
+    const span = rating.nextElementSibling;
+    const terms = ["No rating", "Terrible", "Bad", "OK", "Good", "Excellent"];
+
+    rating.addEventListener("pc-hover", event => {
+        span.textContent = terms[event.detail.value];
+
+        // Clear the feedback when hovering stops
+        if (event.detail.phase === "end") {
+            span.textContent = "";
+        }
+    });
+</script>
+
+<style>
+    .detect-hover span {
+        position: relative;
+        top: -4px;
+        left: 8px;
+        padding: var(--pc-spacing-xs) var(--pc-spacing-s);
+        text-align: center;
+        border-radius: var(--pc-border-radius-s);
+        background-color: var(--pc-color-neutral-200);
+        color: var(--pc-color-neutral-950);
+        box-shadow: var(--pc-shadow-xs);
+    }
+
+    .detect-hover span:empty {
+        display: none;
+    }
+</style>`}
+</CodeDemo>
+
+### Custom icons
+
+You can provide custom icons by passing a function to the `getIcon` property.
+
+<CodeDemo>
+{`<pc-rating
+    class="rating-hearts"
+    label="Rating"
+    style="--icon-color-active: var(--pc-color-red-500)"
+></pc-rating>
+
+<script>
+    const rating = document.querySelector(".rating-hearts");
+
+    rating.getIcon = () => \`
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="heart"
+        ></pc-icon>
+    \`;
+</script>`}
+</CodeDemo>
+
+### Value‐based icons
+
+You can also use the `getIcon` property to render different icons based on the value chosen on the rating.
+
+<CodeDemo>
+{`<pc-rating label="Rating" class="rating-emojis"></pc-rating>
+
+<script>
+    const rating = document.querySelector(".rating-emojis");
+
+    rating.getIcon = (value) => {
+        const icons = [
+            "face-angry",
+            "face-frown",
+            "face-meh",
+            "face-smile",
+            "face-laugh",
+        ];
+
+        return \`
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="\${icons[value - 1]}"
+            ></pc-icon>
+        \`;
+    };
+</script>
+`}
+</CodeDemo>

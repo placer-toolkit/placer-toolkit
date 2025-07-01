@@ -1,0 +1,97 @@
+---
+title: QR Code
+description: Generate a QR code and render it using the Canvas API.
+---
+
+import CodeDemo from "../../components/CodeDemo.astro";
+
+Generate a [QR code](https://www.qrcode.com) and render it using the [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
+
+QR codes are useful for providing small pieces of information to users who can quickly scan them with a smartphone. Most smartphones have built‐in QR code scanners, so simply pointing the camera at a QR code will decode it and allow the user to visit a website, dial a phone number, log into a Wi-Fi network and so on.
+
+<CodeDemo open>
+{`<div class="qr-code-overview">
+    <pc-qr-code
+        value="https://example.com"
+        label="Scan this QR code to visit example.com."
+    ></pc-qr-code>
+
+    <br />
+
+    <pc-input label="Value" maxlength="255" clearable></pc-input>
+</div>
+
+<script>
+    const container = document.querySelector(".qr-code-overview");
+    const qrCode = container.querySelector("pc-qr-code");
+    const input = container.querySelector("pc-input");
+
+    customElements.whenDefined("pc-qr-code").then(() => {
+        input.value = qrCode.value;
+        input.addEventListener("pc-input", () => {
+            qrCode.value = input.value;
+        });
+    });
+</script>
+
+<style>
+    .qr-code-overview {
+        max-width: 256px;
+    }
+
+    .qr-code-overview pc-input {
+        margin-top: var(--pc-spacing-l);
+    }
+</style>`}
+</CodeDemo>
+
+## Demos
+
+### Colours
+
+Use the `fill` and `background` attributes to modify the QR code’s colours. You should always ensure at least a contrast ratio of 4.5∶1 to ensure that QR code scanners read the QR code properly.
+
+<CodeDemo>
+{`<pc-qr-code
+    value="https://example.com"
+    background="white"
+    fill="indigo"
+></pc-qr-code>`}
+</CodeDemo>
+
+### Size
+
+Use the `size` attribute to change the size of the QR code.
+
+<CodeDemo>
+{`<pc-qr-code value="https://example.com" size="64"></pc-qr-code>`}
+</CodeDemo>
+
+### Radius
+
+Use the `radius` attribute to round the corners of the QR code data.
+
+<CodeDemo>
+{`<pc-qr-code value="https://example.com" radius="0.5"></pc-qr-code>`}
+</CodeDemo>
+
+### Error correction
+
+QR codes can be rendered with various levels of [error correction](https://www.qrcode.com/en/about/error_correction.html) that can be set using the `error-correction` attribute. This example generates four codes with the same value using different error correction levels.
+
+<CodeDemo>
+{`<div class="qr-error-correction">
+    <pc-qr-code value="https://example.com" error-correction="L"></pc-qr-code>
+    <pc-qr-code value="https://example.com" error-correction="M"></pc-qr-code>
+    <pc-qr-code value="https://example.com" error-correction="Q"></pc-qr-code>
+    <pc-qr-code value="https://example.com" error-correction="H"></pc-qr-code>
+</div>
+
+<style>
+    .qr-error-correction {
+        display: flex;
+        gap: var(--pc-spacing-l);
+        flex-wrap: wrap;
+    }
+</style>`}
+</CodeDemo>
