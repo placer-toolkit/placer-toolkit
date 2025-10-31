@@ -90,13 +90,9 @@ interface ReflectsIconProps {
 
 const { componentName } = Astro.props;
 
-<<<<<<< Updated upstream
-const packageVersion = "0.5.0";
-const cdnBaseURL = "https://cdn.jsdelivr.net/npm/placer-toolkit@" + packageVersion;
-
-const loadManifest = async (): Promise<CEMManifest | null> => {
-=======
->>>>>>> Stashed changes
+const loadManifest = async (): Promise<
+    (CEMManifest & { package?: { version?: string } }) | null
+> => {
     try {
         const manifestModule = await import("placer-toolkit/dist/custom-elements.json", {
             assert: { type: "json" }
