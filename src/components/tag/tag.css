@@ -1,0 +1,53 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding-inline: 0.75em;
+    background-color: var(--pc-color-fill-quiet);
+    color: var(--pc-color-on-quiet);
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-border-normal);
+    border-radius: var(--pc-border-radius-m);
+    block-size: calc(var(--pc-form-control-height) * 0.8);
+    line-height: calc(
+        var(--pc-form-control-height) - var(--pc-form-control-border-width) * 2
+    );
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+:host([variant~="accent"]) {
+    background-color: var(--pc-color-fill-loud);
+    color: var(--pc-color-on-loud);
+    border-color: transparent;
+}
+
+:host([variant~="outlined"]) {
+    background-color: transparent;
+    color: var(--pc-color-on-quiet);
+    border-color: var(--pc-color-border-loud);
+}
+
+:host([variant~="filled"]) {
+    background-color: var(--pc-color-fill-quiet);
+    color: var(--pc-color-on-quiet);
+    border-color: transparent;
+}
+
+:host([variant~="filled"][variant~="outlined"]) {
+    border-color: var(--pc-color-border-normal);
+}
+
+:host([pill]) {
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.remove-tag-button::part(base) {
+    padding: 0;
+    inline-size: 0.75em;
+    block-size: 0.75em;
+    background-color: transparent;
+    color: var(--pc-color-on-quiet);
+    font-size: var(--pc-font-size-smaller);
+}

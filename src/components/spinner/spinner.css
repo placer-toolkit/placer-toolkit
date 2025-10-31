@@ -1,0 +1,57 @@
+:host {
+    --track-width: 0.125rem;
+    --track-color: var(--pc-color-neutral-fill-normal);
+    --indicator-color: var(--pc-color-primary-fill-loud);
+    --speed: 2s;
+
+    display: inline-flex;
+    inline-size: 1em;
+    block-size: 1em;
+    flex: none;
+}
+
+.spinner {
+    flex: 1 1 auto;
+    inline-size: 100%;
+    block-size: 100%;
+    overflow: visible;
+}
+
+.track,
+.indicator {
+    fill: none;
+    stroke-width: var(--track-width);
+    r: calc(0.5em - var(--track-width) / 2);
+    cx: 0.5em;
+    cy: 0.5em;
+    transform-origin: 50% 50%;
+}
+
+.track {
+    stroke: var(--track-color);
+    transform-origin: 0% 0%;
+}
+
+.indicator {
+    stroke: var(--indicator-color);
+    stroke-linecap: round;
+    stroke-dasharray: 150% 75%;
+    animation: spin var(--speed) linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        rotate: 0deg;
+        stroke-dasharray: 0% 314.159%;
+    }
+
+    50% {
+        rotate: 450deg;
+        stroke-dasharray: 157.08% 157.08%;
+    }
+
+    100% {
+        rotate: 1080deg;
+        stroke-dasharray: 0% 314.159%;
+    }
+}

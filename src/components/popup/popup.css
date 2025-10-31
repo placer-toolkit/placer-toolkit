@@ -1,0 +1,87 @@
+/*! Popup is a low‐level utility built specifically for positioning elements. Do not mistake it for a tooltip or similar because it does not facilitate an accessible experience! Almost every correct usage of it will involve building other components. It should rarely, if ever, occur directly in your HTML. */
+
+:host {
+    --arrow-color: var(--pc-color-neutral-fill-normal);
+    --arrow-size: var(--pc-tooltip-arrow-size);
+
+    /* These properties are computed to account for the arrow’s dimensions
+       after being rotated 45°. The constant 0,7071 is derived from sin(45°),
+       which is the diagonal size of the arrow’s container after rotating. */
+    --arrow-size-diagonal: calc(var(--arrow-size) * 0.7071);
+    --arrow-padding-offset: calc(
+        var(--arrow-size-diagonal) - var(--arrow-size)
+    );
+
+    display: contents;
+}
+
+.popup {
+    position: absolute;
+    isolation: isolate;
+    max-inline-size: var(--auto-size-available-width, none);
+    max-block-size: var(--auto-size-available-height, none);
+    will-change: transform, top, left;
+
+    /* Reset user agent styles for the popover attribute. */
+    :where(&) {
+        inset: unset;
+        margin: unset;
+        padding: unset;
+        inline-size: unset;
+        block-size: unset;
+        /* inline-size and block-size do not affect the width and height
+           properties. This is redefined to be sure it is also unset. */
+        width: unset;
+        height: unset;
+        background: unset;
+        border: unset;
+        overflow: unset;
+    }
+}
+
+.fixed {
+    position: fixed;
+}
+
+.popup:not(.active) {
+    display: none;
+}
+
+.arrow {
+    position: absolute;
+    inline-size: calc(var(--arrow-size-diagonal) * 2);
+    block-size: calc(var(--arrow-size-diagonal) * 2);
+    background-color: var(--arrow-color);
+    rotate: 45deg;
+    z-index: 3;
+}
+
+:host([data-current-placement~="left"]) .arrow {
+    rotate: -45deg;
+}
+
+:host([data-current-placement~="right"]) .arrow {
+    rotate: 135deg;
+}
+
+:host([data-current-placement~="bottom"]) .arrow {
+    rotate: 225deg;
+}
+
+.hover-bridge:not(.hover-bridge-visible) {
+    display: none;
+}
+
+.hover-bridge {
+    position: fixed;
+    inset: 0;
+    clip-path: polygon(
+        var(--hover-bridge-top-left-x, 0) var(--hover-bridge-top-left-y, 0),
+        var(--hover-bridge-top-right-x, 0) var(--hover-bridge-top-right-y, 0),
+        var(--hover-bridge-bottom-right-x, 0)
+            var(--hover-bridge-bottom-right-y, 0),
+        var(--hover-bridge-bottom-left-x, 0)
+            var(--hover-bridge-bottom-left-y, 0)
+    );
+    z-index: 899;
+}

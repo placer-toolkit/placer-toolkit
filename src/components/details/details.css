@@ -1,0 +1,126 @@
+:host {
+    display: block;
+}
+
+.details {
+    background-color: var(--pc-color-surface-default);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+        var(--pc-color-surface-border);
+    border-radius: var(--pc-border-radius-l);
+    overflow-anchor: none;
+}
+
+:host([variant~="outlined"]) .details {
+    background-color: var(--pc-color-surface-default);
+    border-color: var(--pc-color-surface-border);
+}
+
+:host([variant~="filled"]) .details {
+    background-color: var(--pc-color-neutral-fill-quiet);
+    border-color: transparent;
+}
+
+:host([variant~="filled"][variant~="outlined"]) .details {
+    border-color: var(--pc-color-neutral-border-quiet);
+}
+
+:host([variant~="plain"]) .details {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.disabled {
+    opacity: 0.5;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    border-radius: var(--pc-border-radius-l);
+    padding: var(--pc-spacing-m);
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    transition: border-radius var(--pc-transition-fast)
+        cubic-bezier(0.55, 0, 0.55, 0.2);
+}
+
+.open .header {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.header::-webkit-details-marker {
+    display: none;
+}
+
+.header:focus {
+    outline: none;
+}
+
+.header:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: calc(var(--pc-focus-ring-offset) + 0.0625rem);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.disabled .header {
+    cursor: not-allowed;
+}
+
+.disabled .header:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+.summary {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+}
+
+.summary-icon {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    transition: rotate var(--pc-transition-fast) ease-in-out;
+}
+
+.open .summary-icon {
+    rotate: 90deg;
+}
+
+.open.is-rtl .summary-icon {
+    rotate: -90deg;
+}
+
+.open slot[name="expand-icon"],
+.details:not(.open) slot[name="collapse-icon"] {
+    display: none;
+}
+
+.body {
+    overflow: hidden;
+}
+
+.content {
+    display: block;
+    padding: var(--pc-spacing-m);
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

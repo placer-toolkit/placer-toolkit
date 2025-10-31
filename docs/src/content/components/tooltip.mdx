@@ -1,0 +1,225 @@
+---
+title: Tooltip
+description: Tooltips display additional information based on a specific action.
+---
+
+Tooltips display additional information based on a specific action.
+
+A tooltip’s target is its _first child element_, so you should only wrap one element inside the tooltip. If you need the tooltip to show up for multiple elements, nest them inside a container first.
+
+```demo
+<pc-tooltip content="This is a tooltip!">
+    <pc-button>Hover me</pc-button>
+</pc-tooltip>
+```
+
+## Demos
+
+### Placement
+
+Use the `placement` attribute to set the preferred placement of the tooltip.
+
+```demo
+<div class="tooltip-placement">
+    <div class="tooltip-placement-row">
+        <pc-tooltip content="top-start" placement="top-start">
+            <pc-button></pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="top" placement="top">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-up"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="top-end" placement="top-end">
+            <pc-button></pc-button>
+        </pc-tooltip>
+    </div>
+
+    <div class="tooltip-placement-row">
+        <pc-tooltip content="left-start" placement="left-start">
+            <pc-button></pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="right-start" placement="right-start">
+            <pc-button></pc-button>
+        </pc-tooltip>
+    </div>
+
+    <div class="tooltip-placement-row">
+        <pc-tooltip content="left" placement="left">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-left"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="right" placement="right">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-right"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+    </div>
+
+    <div class="tooltip-placement-row">
+        <pc-tooltip content="left-end" placement="left-end">
+            <pc-button></pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="right-end" placement="right-end">
+            <pc-button></pc-button>
+        </pc-tooltip>
+    </div>
+
+    <div class="tooltip-placement-row">
+        <pc-tooltip content="bottom-start" placement="bottom-start">
+            <pc-button></pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="bottom" placement="bottom">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-down"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+
+        <pc-tooltip content="bottom-end" placement="bottom-end">
+            <pc-button></pc-button>
+        </pc-tooltip>
+    </div>
+
+</div>
+
+<style>
+    .tooltip-placement {
+        margin: 1rem;
+        inline-size: 250px;
+    }
+
+    .tooltip-placement-row::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .tooltip-placement pc-button {
+        float: left;
+        margin-inline-end: 0.25rem;
+        margin-block-end: 0.25rem;
+        inline-size: 2.5rem;
+    }
+
+    .tooltip-placement-row:nth-child(1)
+        pc-tooltip:first-child
+        pc-button,
+    .tooltip-placement-row:nth-child(5)
+        pc-tooltip:first-child
+        pc-button {
+        margin-inline-start: calc(40px + 0.25rem);
+    }
+
+    .tooltip-placement-row:nth-child(2)
+        pc-tooltip:nth-child(2)
+        pc-button,
+    .tooltip-placement-row:nth-child(3)
+        pc-tooltip:nth-child(2)
+        pc-button,
+    .tooltip-placement-row:nth-child(4)
+        pc-tooltip:nth-child(2)
+        pc-button {
+        margin-inline-start: calc((40px * 3) + (0.25rem * 3));
+    }
+</style>
+```
+
+### Click trigger
+
+Set the `trigger` attribute to `click` to toggle the tooltip on click instead of hover.
+
+```demo
+<pc-tooltip content="Click again to dismiss" trigger="click">
+    <pc-button>Click to toggle</pc-button>
+</pc-tooltip>
+```
+
+### Manual trigger
+
+Tooltips can be controlled programmatically by setting the `trigger` attribute to `manual`. Use the `open` attribute to control when the tooltip is shown.
+
+```demo
+<pc-button style="margin-inline-end: 4rem">Toggle manually</pc-button>
+
+<pc-tooltip class="tooltip-manual" content="This is an avatar" trigger="manual">
+    <pc-avatar label="User"></pc-avatar>
+</pc-tooltip>
+
+<script>
+    const tooltip = document.querySelector(".tooltip-manual");
+    const toggle = tooltip.previousElementSibling;
+
+    toggle.addEventListener("click", () => (tooltip.open = !tooltip.open));
+</script>
+```
+
+### Removing arrows
+
+You can control the size of tooltip arrows by overriding the `--pc-tooltip-arrow-size` custom property. To remove them, set the value to `0` as shown below.
+
+```demo
+<pc-tooltip
+    content="This is a tooltip without an arrow."
+    style="--pc-tooltip-arrow-size: 0"
+>
+    <pc-button>No arrow</pc-button>
+</pc-tooltip>
+```
+
+To override it globally, set it in a root block in your styles after the Placer Toolkit styles are loaded.
+
+```css
+:root {
+    --pc-tooltip-arrow-size: 0;
+}
+```
+
+### HTML in tooltips
+
+Use the `content` slot to create tooltips with HTML content. Tooltips are designed only for text and presentational elements. Avoid placing interactive content, such as buttons, links and form controls, in a tooltip.
+
+```demo
+<pc-tooltip>
+    <div slot="content">
+        I’m not <strong>just</strong> a tooltip, I’m a <em>tooltip</em> with HTML!
+    </div>
+
+    <pc-button>Hover me</pc-button>
+</pc-tooltip>
+```
+
+### Set a maximum width
+
+Use the `--max-width` custom property to change the width the tooltip can grow to before it wraps.
+
+```demo
+<pc-tooltip
+    content="This tooltip will wrap after 80 pixels."
+    style="--max-width: 80px"
+>
+    <pc-button>Hover me</pc-button>
+</pc-tooltip>
+```

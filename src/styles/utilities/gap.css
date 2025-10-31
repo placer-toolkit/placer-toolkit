@@ -1,0 +1,66 @@
+@layer pc-utilities {
+    :where(
+        .pc-gap-0,
+        .pc-gap-xxxs,
+        .pc-gap-xxs,
+        .pc-gap-xs,
+        .pc-gap-s,
+        .pc-gap-m,
+        .pc-gap-l,
+        .pc-gap-xl,
+        .pc-gap-xxl,
+        .pc-gap-xxxl,
+        .pc-gap-xxxxl,
+        .pc-gap-xxxxxl
+    ) {
+        display: flex;
+    }
+
+    .pc-gap-0 {
+        gap: 0;
+    }
+
+    .pc-gap-xxxs {
+        gap: var(--pc-spacing-xxxs);
+    }
+
+    .pc-gap-xxs {
+        gap: var(--pc-spacing-xxs);
+    }
+
+    .pc-gap-xs {
+        gap: var(--pc-spacing-xs);
+    }
+
+    .pc-gap-s {
+        gap: var(--pc-spacing-s);
+    }
+
+    .pc-gap-m {
+        gap: var(--pc-spacing-m);
+    }
+
+    .pc-gap-l {
+        gap: var(--pc-spacing-l);
+    }
+
+    .pc-gap-xl {
+        gap: var(--pc-spacing-xl);
+    }
+
+    .pc-gap-xxl {
+        gap: var(--pc-spacing-xxl);
+    }
+
+    .pc-gap-xxxl {
+        gap: var(--pc-spacing-xxxl);
+    }
+
+    .pc-gap-xxxxl {
+        gap: var(--pc-spacing-xxxxl);
+    }
+
+    .pc-gap-xxxxxl {
+        gap: var(--pc-spacing-xxxxxl);
+    }
+}

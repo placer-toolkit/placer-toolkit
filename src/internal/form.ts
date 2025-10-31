@@ -1,8 +1,10 @@
 import type { ReactiveController, ReactiveControllerHost } from "lit";
+import type { PlacerFormControl } from "./placer-form-control.js";
+import type { PcButton } from "../components/button/button.js";
 
 export const formCollections: WeakMap<
     HTMLFormElement,
-    Set<HTMLInputElement>
+    Set<PlacerFormControl>
 > = new WeakMap();
 
 const reportValidityOverloads: WeakMap<HTMLFormElement, () => boolean> =
@@ -10,37 +12,64 @@ const reportValidityOverloads: WeakMap<HTMLFormElement, () => boolean> =
 const checkValidityOverloads: WeakMap<HTMLFormElement, () => boolean> =
     new WeakMap();
 
-const userInteractedControls: WeakSet<HTMLInputElement> = new WeakSet();
-const interactions = new WeakMap<HTMLInputElement, string[]>();
+const userInteractedControls: WeakSet<PlacerFormControl> = new WeakSet();
+const interactions = new WeakMap<PlacerFormControl, string[]>();
 
 export interface FormControlControllerOptions {
-    form: (input: HTMLInputElement) => HTMLFormElement | null;
-    name: (input: HTMLInputElement) => string;
-    value: (input: HTMLInputElement) => unknown | unknown[];
-    defaultValue: (input: HTMLInputElement) => unknown | unknown[];
-    disabled: (input: HTMLInputElement) => boolean;
-    reportValidity: (input: HTMLInputElement) => boolean;
-    checkValidity: (input: HTMLInputElement) => boolean;
-    setValue: (input: HTMLInputElement, value: unknown) => void;
+    /** A function that returns the form containing the form control. */
+    form: (input: PlacerFormControl) => HTMLFormElement | null;
+    /** A function that returns the form control’s name, which will be submitted with the form data. */
+    name: (input: PlacerFormControl) => string;
+    /** A function that returns the form control’s current value. */
+    value: (input: PlacerFormControl) => unknown | unknown[];
+    /** A function that returns the form control’s default value. */
+    defaultValue: (input: PlacerFormControl) => unknown | unknown[];
+    /** A function that returns the form control’s current disabled state. If disabled, the value won’t be submitted. */
+    disabled: (input: PlacerFormControl) => boolean;
+
+    /** A function that maps to the form control’s `reportValidity()` function. When the form control is invalid, this will prevent submission and trigger the browser’s constraint validation warning. */
+    reportValidity: (input: PlacerFormControl) => boolean;
+    /** A function that maps to the form control’s `checkValidity()` function. When the form control is invalid, this will return `false`. This is helpful if you want to check validation without triggering the browser’s constraint validation warning. */
+    checkValidity: (input: PlacerFormControl) => boolean;
+    /** A function that sets the form control’s value. */
+    setValue: (input: PlacerFormControl, value: unknown) => void;
+    /** An array of event names to listen to. When all events in the list are emitted, the form control will receive validity states such as valid and invalid user‐interacted validity states. */
     assumeInteractionOn: string[];
 }
 
+/** A reactive controller to allow form controls to participate in form submission, validation, etc. */
 export class FormControlController implements ReactiveController {
-    host: HTMLInputElement & ReactiveControllerHost;
+    host: PlacerFormControl & ReactiveControllerHost;
     form?: HTMLFormElement | null;
     options: FormControlControllerOptions;
 
     constructor(
-        host: ReactiveControllerHost & HTMLInputElement,
+        host: ReactiveControllerHost & PlacerFormControl,
         options?: Partial<FormControlControllerOptions>,
     ) {
         (this.host = host).addController(this);
         this.options = {
-            form: (input) => input.closest("form"),
+            form: (input) => {
+                const formID = input.form;
+
+                if (formID) {
+                    const root = input.getRootNode() as
+                        | Document
+                        | ShadowRoot
+                        | HTMLElement;
+                    const form = root.querySelector(`#${formID}`);
+
+                    if (form) {
+                        return form as HTMLFormElement;
+                    }
+                }
+
+                return input.closest("form");
+            },
             name: (input) => input.name,
             value: (input) => input.value,
             defaultValue: (input) => input.defaultValue,
-            disabled: (input) => input.disabled,
+            disabled: (input) => input.disabled ?? false,
             reportValidity: (input) =>
                 typeof input.reportValidity === "function"
                     ? input.reportValidity()
@@ -51,7 +80,7 @@ export class FormControlController implements ReactiveController {
                     : true,
             setValue: (input, value: unknown) =>
                 (input.value = value as string),
-            assumeInteractionOn: ["input"],
+            assumeInteractionOn: ["pc-input"],
             ...options,
         };
     }
@@ -90,7 +119,7 @@ export class FormControlController implements ReactiveController {
             this.attachForm(form);
         }
 
-        if ("hasUpdated" in this.host && this.host.hasUpdated) {
+        if (this.host.hasUpdated) {
             this.setValidity(this.host.validity.valid);
         }
     }
@@ -104,7 +133,7 @@ export class FormControlController implements ReactiveController {
             } else {
                 formCollections.set(
                     this.form,
-                    new Set<HTMLInputElement>([this.host]),
+                    new Set<PlacerFormControl>([this.host]),
                 );
             }
 
@@ -170,9 +199,12 @@ export class FormControlController implements ReactiveController {
         const name = this.options.name(this.host);
         const value = this.options.value(this.host);
 
+        const isButton = this.host.tagName.toLowerCase() === "pc-button";
+
         if (
             this.host.isConnected &&
             !disabled &&
+            !isButton &&
             typeof name === "string" &&
             name.length > 0 &&
             typeof value !== "undefined"
@@ -236,7 +268,7 @@ export class FormControlController implements ReactiveController {
         if (this.form && !this.form.noValidate) {
             const elements = this.form.querySelectorAll<HTMLInputElement>("*");
 
-            for (const element of Array.from(elements)) {
+            for (const element of elements) {
                 if (typeof element.checkValidity === "function") {
                     if (!element.checkValidity()) {
                         return false;
@@ -252,7 +284,7 @@ export class FormControlController implements ReactiveController {
         if (this.form && !this.form.noValidate) {
             const elements = this.form.querySelectorAll<HTMLInputElement>("*");
 
-            for (const element of Array.from(elements)) {
+            for (const element of elements) {
                 if (typeof element.reportValidity === "function") {
                     if (!element.reportValidity()) {
                         return false;
@@ -264,21 +296,29 @@ export class FormControlController implements ReactiveController {
         return true;
     };
 
-    private setUserInteracted(el: HTMLInputElement, hasInteracted: boolean) {
+    private setUserInteracted(
+        element: PlacerFormControl,
+        hasInteracted: boolean,
+    ) {
         if (hasInteracted) {
-            userInteractedControls.add(el);
+            userInteractedControls.add(element);
         } else {
-            userInteractedControls.delete(el);
+            userInteractedControls.delete(element);
         }
 
-        el.dispatchEvent(new Event("update"));
+        element.requestUpdate();
     }
 
-    private doAction(type: "submit" | "reset", submitter?: HTMLInputElement) {
+    private doAction(
+        type: "submit" | "reset",
+        submitter?: HTMLInputElement | PcButton,
+    ) {
         if (this.form) {
             const button = document.createElement("button");
             button.type = type;
             button.style.position = "absolute";
+            button.style.inlineSize = "0";
+            button.style.blockSize = "0";
             button.style.width = "0";
             button.style.height = "0";
             button.style.clipPath = "inset(50%)";
@@ -295,11 +335,11 @@ export class FormControlController implements ReactiveController {
                     "formmethod",
                     "formnovalidate",
                     "formtarget",
-                ].forEach((attr) => {
-                    if (submitter.hasAttribute(attr)) {
+                ].forEach((attribute) => {
+                    if (submitter.hasAttribute(attribute)) {
                         button.setAttribute(
-                            attr,
-                            submitter.getAttribute(attr)!,
+                            attribute,
+                            submitter.getAttribute(attribute)!,
                         );
                     }
                 });
@@ -311,18 +351,22 @@ export class FormControlController implements ReactiveController {
         }
     }
 
+    /** Returns the associated `<form>` element, if one exists. */
     getForm() {
         return this.form ?? null;
     }
 
-    reset(submitter?: HTMLInputElement) {
+    /** Resets the form, restoring all form controls to their default value. */
+    reset(submitter?: HTMLInputElement | PcButton) {
         this.doAction("reset", submitter);
     }
 
-    submit(submitter?: HTMLInputElement) {
+    /** Submits the form, triggering validation and form data injection. */
+    submit(submitter?: HTMLInputElement | PcButton) {
         this.doAction("submit", submitter);
     }
 
+    /** Synchronously sets the form control’s validity. Call this when you know the future validity state but need to update the host element immediately (i.e., before Lit updates the component in the next update). */
     setValidity(isValid: boolean) {
         const host = this.host;
         const hasInteracted = Boolean(userInteractedControls.has(host));
@@ -336,11 +380,13 @@ export class FormControlController implements ReactiveController {
         host.toggleAttribute("data-user-valid", isValid && hasInteracted);
     }
 
+    /** Updates the form control’s validity based on the current value of `host.validity.valid`. Call this when anything that affects constraint validation changes so the component receives the correct validity states. */
     updateValidity() {
         const host = this.host;
         this.setValidity(host.validity.valid);
     }
 
+    /** Dispatches a non‐bubbling, cancellable custom event called `pc-invalid`. If the `pc-invalid` event will be cancelled, then the original `invalid` event (which may have been passed as an argument) will also be cancelled. If no original `invalid` event has been passed, then the `pc-invalid` event will be cancelled before being dispatched. */
     emitInvalidEvent(originalInvalidEvent?: Event) {
         const pcInvalidEvent = new CustomEvent<Record<PropertyKey, never>>(
             "pc-invalid",

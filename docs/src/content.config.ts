@@ -36,6 +36,18 @@ const components = defineCollection({
     }),
 });
 
+const layout = defineCollection({
+    loader: glob({
+        pattern: "**/*.{md,mdx}",
+        base: "./src/content/layout",
+    }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        slug: z.string().optional(),
+    }),
+});
+
 const styleUtilities = defineCollection({
     loader: glob({
         pattern: "**/*.{md,mdx}",
@@ -59,10 +71,23 @@ const resources = defineCollection({
     }),
 });
 
+const legal = defineCollection({
+    loader: glob({
+        pattern: "**/*.{md,mdx}",
+        base: "./src/content/legal",
+    }),
+    schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+    }),
+});
+
 export const collections = {
     getStarted,
     designTokens,
     components,
+    layout,
     styleUtilities,
     resources,
+    legal,
 };

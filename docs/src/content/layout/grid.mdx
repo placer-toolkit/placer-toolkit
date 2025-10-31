@@ -1,0 +1,270 @@
+---
+title: Grid
+description: Use the pc-grid class to create a responsive grid with even spacing, allowing the number of columns to adjust when space is limited.
+---
+
+Use the `pc-grid` class to create a responsive grid with even spacing, allowing the number of columns to adjust when space is limited.
+
+```demo:open
+<div class="grid-overview pc-grid">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+
+<style>
+    .grid-overview div:empty {
+        min-inline-size: 100%;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+## Demos
+
+### Card lists
+
+Clusters are great for inline lists and aligning items of varying sizes.
+
+```demo
+<div class="pc-grid">
+    <div class="pc-stack pc-gap-m">
+        <div class="pc-frame pc-border-radius-l">
+            <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?q=20" alt="" />
+        </div>
+        <h3 class="pc-heading-s">Tulip</h3>
+        <em>Tulipa gesneriana</em>
+    </div>
+    <div class="pc-stack pc-gap-m">
+        <div class="pc-frame pc-border-radius-l">
+            <img src="https://images.unsplash.com/photo-1591767134492-338e62f7b5a2?q=20" alt="" />
+        </div>
+        <h3 class="pc-heading-s">Peony</h3>
+        <em>Paeonia officinalis</em>
+    </div>
+    <div class="pc-stack pc-gap-m">
+        <div class="pc-frame pc-border-radius-l">
+            <img src="https://images.unsplash.com/photo-1590872000386-4348c6393115?q=20" alt="" />
+        </div>
+        <h3 class="pc-heading-s">Poppy</h3>
+        <em>Papaver rhoeas</em>
+    </div>
+    <div class="pc-stack pc-gap-m">
+        <div class="pc-frame pc-border-radius-l">
+            <img src="https://images.unsplash.com/photo-1516723338795-324c7c33f700?q=20" alt="" />
+        </div>
+        <h3 class="pc-heading-s">Sunflower</h3>
+        <em>Helianthus annuus</em>
+    </div>
+    <div class="pc-stack pc-gap-m">
+        <div class="pc-frame pc-border-radius-l">
+            <img src="https://images.unsplash.com/photo-1563601841845-74a0a8ab7c8a?q=20" alt="" />
+        </div>
+        <h3 class="pc-heading-s">Daisy</h3>
+        <em>Bellis perennis</em>
+    </div>
+</div>
+```
+
+```demo
+<div class="pc-grid" style="--min-column-size: 30ch">
+    <pc-card>
+        <div class="pc-flank">
+            <pc-avatar shape="rounded">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="globe"
+                    slot="icon"
+                ></pc-icon>
+            </pc-avatar>
+            <div class="pc-stack pc-gap-s">
+                <span class="pc-caption-s">Population (Germany)</span>
+                <span class="pc-cluster pc-gap-s">
+                    <span class="pc-heading-l">84 000 000</span>
+                    <pc-badge appearance="danger">
+                        −0,1 %  <pc-icon library="default" icon-style="solid" name="arrow-trend-down"></pc-icon>
+                    </pc-badge>
+                </span>
+            </div>
+        </div>
+    </pc-card>
+    <pc-card>
+        <div class="pc-flank">
+            <pc-avatar shape="rounded">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="language"
+                    slot="icon"
+                ></pc-icon>
+            </pc-avatar>
+            <div class="pc-stack pc-gap-s">
+                <span class="pc-caption-s">Official language</span>
+                <span class="pc-heading-l">German</span>
+            </div>
+        </div>
+    </pc-card>
+    <pc-card>
+        <div class="pc-flank">
+            <pc-avatar shape="rounded">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="landmark"
+                    slot="icon"
+                ></pc-icon>
+            </pc-avatar>
+            <div class="pc-stack pc-gap-s">
+                <span class="pc-caption-s">Capital city</span>
+                <span class="pc-heading-l">Berlin</span>
+            </div>
+        </div>
+    </pc-card>
+    <pc-card>
+        <div class="pc-flank">
+            <pc-avatar shape="rounded">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="coins"
+                    slot="icon"
+                ></pc-icon>
+            </pc-avatar>
+            <div class="pc-stack pc-gap-s">
+                <span class="pc-caption-s">Currency</span>
+                <span class="pc-heading-l">Euro (€)</span>
+            </div>
+        </div>
+    </pc-card>
+</div>
+
+<style>
+    pc-badge > pc-icon {
+        color: color-mix(in oklab, currentColor, transparent 40%);
+    }
+</style>
+```
+
+### Sizing
+
+By default, grid items will wrap when the grid’s column size is less than `20ch`, but you can set a custom minimum column size using the `--min-column-size` property.
+
+```demo
+<div class="grid-sizing pc-stack">
+    <div class="pc-grid" style="--min-column-size: 250px">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="pc-grid" style="--min-column-size: 7rem">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<style>
+    .grid-sizing > [class*="pc-grid"]:has(div:empty) {
+        padding: var(--pc-spacing-s);
+        border: var(--pc-border-width-s) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .grid-sizing div:empty {
+        min-inline-size: 100%;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+### Gap
+
+By default, the gap between grid items uses `--pc-spacing-m` from your theme. You can add any of the following [`pc-gap-*`](/layout/gap) classes to an element with `pc-grid` to specify the gap between items.
+
+- `pc-gap-0`
+- `pc-gap-xxxs`
+- `pc-gap-xxs`
+- `pc-gap-xs`
+- `pc-gap-s`
+- `pc-gap-m`
+- `pc-gap-l`
+- `pc-gap-xl`
+- `pc-gap-xxl`
+- `pc-gap-xxxl`
+- `pc-gap-xxxxl`
+- `pc-gap-xxxxxl`
+
+```demo
+<div class="grid-gap pc-stack">
+    <div class="pc-grid pc-gap-xs">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="pc-grid pc-gap-xxl">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<style>
+    .grid-gap > [class*="pc-grid"]:has(div:empty) {
+        padding: var(--pc-spacing-s);
+        border: var(--pc-border-width-s) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .grid-gap div:empty {
+        min-inline-size: 100%;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+### Span grid
+
+You can add the `pc-span-grid` class to any grid item to allow it to span all grid columns. With this, the grid item occupies its own grid row.
+
+```demo
+<div class="grid-span-grid pc-grid">
+    <div></div>
+    <div></div>
+    <div class="pc-span-grid"></div>
+    <div></div>
+    <div></div>
+</div>
+
+<style>
+    .grid-span-grid div:empty {
+        min-inline-size: 100%;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```

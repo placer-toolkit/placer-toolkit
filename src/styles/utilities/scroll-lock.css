@@ -1,0 +1,21 @@
+/* This is an internal utility only used by Placer Toolkit, hence it isn’t listed in any docs. */
+@layer pc-utilities {
+    @supports (scrollbar-gutter: stable) {
+        .pc-scroll-lock {
+            scrollbar-gutter: var(--pc-scroll-lock-gutter) !important;
+        }
+
+        .pc-scroll-lock body {
+            overflow: hidden !important;
+        }
+    }
+
+    /* This at‐rule will stay until more people are on later versions of Safari (18.2+). */
+    @supports not (scrollbar-gutter: stable) {
+        .pc-scroll-lock body {
+            /* This intentionally does not use CSS Logical Properties and Values Level 1. */
+            padding-right: var(--pc-scroll-lock-size) !important;
+            overflow: hidden !important;
+        }
+    }
+}

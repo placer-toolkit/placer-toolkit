@@ -3,17 +3,15 @@ title: Button Group
 description: Button groups can be sued to group related buttons into groups.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Button groups can be used to group related buttons into groups.
 
-<CodeDemo open>
-{`<pc-button-group label="Alignment">
+```demo:open
+<pc-button-group label="Alignment">
     <pc-button>Left</pc-button>
     <pc-button>Centre</pc-button>
     <pc-button>Right</pc-button>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ## Demos
 
@@ -21,14 +19,15 @@ Button groups can be used to group related buttons into groups.
 
 All button sizes are supported, but avoid mixing sizes within the same button group.
 
-<CodeDemo>
-{`<pc-button-group label="Alignment">
+```demo
+<pc-button-group label="Alignment">
     <pc-button size="small">Left</pc-button>
     <pc-button size="small">Centre</pc-button>
     <pc-button size="small">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button size="medium">Left</pc-button>
@@ -36,27 +35,29 @@ All button sizes are supported, but avoid mixing sizes within the same button gr
     <pc-button size="medium">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button size="large">Left</pc-button>
     <pc-button size="large">Centre</pc-button>
     <pc-button size="large">Right</pc-button>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Appearances
 
 Themed buttons are supported through the button’s `appearance` attribute.
 
-<CodeDemo>
-{`<pc-button-group label="Alignment">
-    <pc-button appearance="default">Left</pc-button>
-    <pc-button appearance="default">Centre</pc-button>
-    <pc-button appearance="default">Right</pc-button>
+```demo
+<pc-button-group label="Alignment">
+    <pc-button appearance="neutral">Left</pc-button>
+    <pc-button appearance="neutral">Centre</pc-button>
+    <pc-button appearance="neutral">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button appearance="primary">Left</pc-button>
@@ -64,7 +65,8 @@ Themed buttons are supported through the button’s `appearance` attribute.
     <pc-button appearance="primary">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button appearance="success">Left</pc-button>
@@ -72,7 +74,8 @@ Themed buttons are supported through the button’s `appearance` attribute.
     <pc-button appearance="success">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button appearance="warning">Left</pc-button>
@@ -80,49 +83,58 @@ Themed buttons are supported through the button’s `appearance` attribute.
     <pc-button appearance="warning">Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button appearance="danger">Left</pc-button>
     <pc-button appearance="danger">Centre</pc-button>
     <pc-button appearance="danger">Right</pc-button>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Pill shape
 
 Pill‐shaped buttons are supported through the button’s `pill` attribute.
 
-<CodeDemo>
-{`<pc-button-group label="Alignment">
+```demo
+<pc-button-group label="Alignment">
     <pc-button size="small" pill>Left</pc-button>
     <pc-button size="small" pill>Centre</pc-button>
     <pc-button size="small" pill>Right</pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
-    <pc-button size="medium" pill>Left</pc-button>
-    <pc-button size="medium" pill>Centre</pc-button>
-    <pc-button size="medium" pill>Right</pc-button>
+    <pc-button size="medium" pill>
+        Left
+    </pc-button>
+    <pc-button size="medium" pill>
+        Centre
+    </pc-button>
+    <pc-button size="medium" pill>
+        Right
+    </pc-button>
 </pc-button-group>
 
-<br /><br />
+<br />
+<br />
 
 <pc-button-group label="Alignment">
     <pc-button size="large" pill>Left</pc-button>
     <pc-button size="large" pill>Centre</pc-button>
     <pc-button size="large" pill>Right</pc-button>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Dropdowns in button groups
 
 Dropdowns can be placed inside button groups as long as the trigger is a `<pc-button>` element.
 
-<CodeDemo>
-{`<pc-button-group label="Example button group">
+```demo
+<pc-button-group label="Example button group">
     <pc-button>Left</pc-button>
     <pc-button>Centre</pc-button>
     <pc-dropdown>
@@ -135,21 +147,19 @@ Dropdowns can be placed inside button groups as long as the trigger is a `<pc-bu
                 slot="suffix"
             ></pc-icon>
         </pc-button>
-        <pc-menu>
-            <pc-menu-item>Item 1</pc-menu-item>
-            <pc-menu-item>Item 2</pc-menu-item>
-            <pc-menu-item>Item 3</pc-menu-item>
-        </pc-menu>
+        <pc-dropdown-item>Item 1</pc-dropdown-item>
+        <pc-dropdown-item>Item 2</pc-dropdown-item>
+        <pc-dropdown-item>Item 3</pc-dropdown-item>
     </pc-dropdown>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Split buttons
 
 Create a split button using a button and a dropdown. Use a [visually hidden](/style-utilities/visually-hidden) label to ensure the dropdown is accessible to users with assistive devices.
 
-<CodeDemo>
-{`<pc-button-group label="Example button group">
+```demo
+<pc-button-group label="Example button group">
     <pc-button appearance="primary">Save</pc-button>
     <pc-dropdown placement="bottom-end">
         <pc-button appearance="primary" slot="trigger">
@@ -160,21 +170,19 @@ Create a split button using a button and a dropdown. Use a [visually hidden](/st
                 name="chevron-down"
             ></pc-icon>
         </pc-button>
-        <pc-menu>
-            <pc-menu-item>Save</pc-menu-item>
-            <pc-menu-item>Save as…</pc-menu-item>
-            <pc-menu-item>Save all</pc-menu-item>
-        </pc-menu>
+        <pc-dropdown-item>Save</pc-dropdown-item>
+        <pc-dropdown-item>Save as…</pc-dropdown-item>
+        <pc-dropdown-item>Save all</pc-dropdown-item>
     </pc-dropdown>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Tooltips in button groups
 
 Buttons can be wrapped in tooltips to provide more detail when the user interacts with them.
 
-<CodeDemo>
-{`<pc-button-group label="Alignment">
+```demo
+<pc-button-group label="Alignment">
     <pc-tooltip content="I’m on the left!">
         <pc-button>Left</pc-button>
     </pc-tooltip>
@@ -184,15 +192,15 @@ Buttons can be wrapped in tooltips to provide more detail when the user interact
     <pc-tooltip content="I’m on the right!">
         <pc-button>Right</pc-button>
     </pc-tooltip>
-</pc-button-group>`}
-</CodeDemo>
+</pc-button-group>
+```
 
 ### Toolbar with button groups
 
 Create interactive toolbars with button groups.
 
-<CodeDemo>
-{`<div class="button-group-toolbar">
+```demo
+<div class="button-group-toolbar">
     <pc-button-group label="History">
         <pc-tooltip content="Undo">
             <pc-button>
@@ -285,7 +293,7 @@ Create interactive toolbars with button groups.
 
 <style>
     .button-group-toolbar pc-button-group:not(:last-of-type) {
-        margin-right: var(--pc-spacing-xs);
+        margin-inline-end: var(--pc-spacing-xs);
     }
-</style>`}
-</CodeDemo>
+</style>
+```

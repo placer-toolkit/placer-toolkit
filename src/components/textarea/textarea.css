@@ -1,0 +1,147 @@
+:host {
+    border-width: 0;
+}
+
+.textarea {
+    display: grid;
+    align-items: center;
+    margin: 0;
+    -webkit-appearance: none;
+    background-color: var(--pc-form-control-background-color);
+    border: var(--pc-form-control-border-width)
+        var(--pc-form-control-border-style) var(--pc-form-control-border-color);
+    border-radius: var(--pc-form-control-border-radius);
+    font: inherit;
+    outline: none;
+    cursor: inherit;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .textarea:not(:has(:disabled), :focus-within):hover {
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-border-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.textarea:focus-within {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+:host([filled]) .textarea {
+    background-color: var(--pc-color-neutral-fill-quiet);
+    border-color: var(--pc-color-neutral-fill-quiet);
+}
+
+@media (hover: hover) {
+    :host([filled]) .textarea:not(:has(:disabled), :focus-within):hover {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-quiet),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-quiet),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+textarea {
+    display: block;
+    margin: 0;
+    padding-block: calc(
+        (var(--pc-form-control-padding-block) * 1.25) - ((1lh - 1em) / 2)
+    );
+    padding-inline: calc(var(--pc-form-control-padding-inline) * 1.1765);
+    inline-size: 100%;
+    min-block-size: calc(
+        var(--pc-form-control-height) - var(--border-width) * 2
+    );
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    font: inherit;
+    box-shadow: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+textarea::placeholder {
+    color: var(--pc-form-control-placeholder-color);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+textarea:autofill,
+textarea:autofill:hover,
+textarea:autofill:active,
+textarea:autofill:focus {
+    caret-color: var(--pc-form-control-value-color);
+    box-shadow: none;
+}
+
+textarea::-webkit-search-decoration,
+textarea::-webkit-search-cancel-button,
+textarea::-webkit-search-results-button,
+textarea::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+}
+
+.control,
+.size-adjuster {
+    grid-area: 1 / 1 / 2 / 2;
+}
+
+.size-adjuster {
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+:host([resize="none"]) textarea {
+    resize: none;
+}
+
+textarea,
+:host([resize="vertical"]) textarea {
+    resize: vertical;
+}
+
+:host([resize="horizontal"]) textarea {
+    resize: horizontal;
+}
+
+:host([resize="both"]) textarea {
+    resize: both;
+}
+
+:host([resize="auto"]) textarea {
+    block-size: auto;
+    overflow-y: hidden;
+    resize: none;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

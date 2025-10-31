@@ -1,10 +1,7 @@
 ---
 title: Form controls
-description: Every Placer Toolkit component makes use of a shadow DOM to encapsulate markup, styles and behaviour. One caveat of this approach is that native `<form>` elements do not recognise form controls located inside a shadow root.
+description: Every Placer Toolkit component makes use of a shadow DOM to encapsulate markup, styles and behaviour. One caveat of this approach is that native <form> elements do not recognise form controls located inside a shadow root.
 ---
-
-import CodeDemo from "../../components/CodeDemo.astro";
-import CodeBlock from "../../components/CodeBlock.astro";
 
 Every Placer Toolkit component makes use of a [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) to encapsulate markup, styles and behaviour. One caveat of this approach is that native `<form>` elements do not recognise form controls located inside a shadow root.
 
@@ -14,35 +11,35 @@ Placer Toolkit solves this problem by using the [`formdata`](https://developer.m
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="clock"
         slot="icon"
     ></pc-icon>
-    Placer Toolkit uses event listeners to intercept the form’s `formdata` and `submit` events. This  allows it to inject data and trigger validation as necessary. If you’re also attaching an event listener to the form, _you must attach it after Placer form controls are connected to the DOM_, otherwise your logic will run before Placer Toolkit has a chance to inject form data and validate form controls.
+    Placer Toolkit uses event listeners to intercept the form’s `formdata` and `submit` events. This allows it to inject data and trigger validation as necessary. If you’re also attaching an event listener to the form, _you must attach it after Placer form controls are connected to the DOM_, otherwise your logic will run before Placer Toolkit has a chance to inject form data and validate form controls.
 </pc-callout>
 
 ## Data serialisation
 
-Serialisation is just a fancy word for collecting form data. If you’re relying on standard form submissions (i.e. `<form action="…">`), you can probably skip this section. However, most apps use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) or a library such as [Axios](https://github.com/axios/axios) to submit forms using JavaScript.
+Serialisation is just a fancy word for collecting form data. If you’re relying on standard form submissions (i.e., `<form action="…">`), you can probably skip this section. However, most apps use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) or a library such as [Axios](https://github.com/axios/axios) to submit forms using JavaScript.
 
 The [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface offers a standard way to serialise forms in the browser. You can create a `FormData` object from any `<form>` element like this.
 
-<CodeBlock language="javascript">
-{`const form = document.querySelector("form");
+```javascript
+const form = document.querySelector("form");
 const data = new FormData(form);
 
-// All form control data is available in a FormData object`}
-</CodeBlock>
+// All form control data is available in a FormData object
+```
 
 However, some people find `FormData` tricky to work wth or they need to pass a JSON payload to their server. To accommodate this, Placer Toolkit offers a serialisation utility that gathers form data and returns a simple JavaScript object instead.
 
-<CodeBlock language="javascript">
-{`import { serialize } from "placer-toolkit/dist/utilities/form.js";
+```javascript
+import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/form.js";
 
 const form = document.querySelector("form");
 const data = serialize(form);
 
-// All form control data is available in a JavaScript object`}
-</CodeBlock>
+// All form control data is available in a JavaScript object
+```
 
 This results in an object with name/value pairs that map to each form control. If more than one form control share the same name, the values will be passed as an array (e.g., `{ name: ["value1", "value2"] }`).
 
@@ -56,7 +53,7 @@ If you don’t want to use client‐side validation, you can suppress this behav
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="lightbulb"
         slot="icon"
     ></pc-icon>
     If this syntax looks unfamiliar, don’t worry! Most of what you’re learning on this page is platform knowledge that applies to regular form controls too.
@@ -66,7 +63,7 @@ If you don’t want to use client‐side validation, you can suppress this behav
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="server"
         slot="icon"
     ></pc-icon>
     Client‐side validation can be used to improve the UX of forms, but it is not a replacement for server‐side validation. **You should always validate and sanitise user input on the server!**
@@ -74,18 +71,54 @@ If you don’t want to use client‐side validation, you can suppress this behav
 
 ### Required fields
 
-To make a field required, use the `required` attribute. Required fields will automatically receive a * after their labels. This is configurable through the `--pc-input-required-content` custom property.
+To make a field required, use the `required` attribute. Required fields will automatically receive a \* after their labels. This is configurable through the `--pc-input-required-content` custom property.
 
 This form will not be submitted if a required field is incomplete.
 
-_This code demo is unavailable due to a missing component: Textarea_
+```demo
+<form class="input-validation-required">
+    <pc-input label="Name" name="name" required></pc-input>
+    <br />
+    <pc-select label="Favourite animal" clearable required>
+        <pc-option value="birds">Birds</pc-option>
+        <pc-option value="cats">Cats</pc-option>
+        <pc-option value="dogs">Dogs</pc-option>
+        <pc-option value="other">Other</pc-option>
+    </pc-select>
+    <br />
+    <pc-textarea label="Comment" name="comment" required></pc-textarea>
+    <br />
+    <pc-checkbox required>Check me before submitting</pc-checkbox>
+    <br /><br />
+    <pc-button appearance="primary" type="submit">Submit</pc-button>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-required");
+
+    // Wait for components to be defined before attaching the event listener to the form
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-checkbox"),
+        customElements.whenDefined("pc-input"),
+        customElements.whenDefined("pc-option"),
+        customElements.whenDefined("pc-select"),
+        customElements.whenDefined("pc-textarea"),
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("All fields are valid!");
+        });
+    });
+</script>
+```
 
 ### Input patterns
 
 To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern), use the `pattern` attribute. This example only allows the letters A–Z, so the form will not submit if a number or symbol is entered. This only works with `<pc-input>` elements.
 
-<CodeDemo>
-{`<form class="input-validation-pattern">
+```demo
+<form class="input-validation-pattern">
     <pc-input
         label="Letters"
         name="letters"
@@ -110,15 +143,15 @@ To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/
             alert("All fields are valid!");
         });
     });
-</script>`}
-</CodeDemo>
+</script>
+```
 
 ### Input types
 
 Some input types will automatically trigger constraints, such as `email` and `url`.
 
-<CodeDemo>
-{`<form class="input-validation-type">
+```demo
+<form class="input-validation-type">
     <pc-input
         label="E‐mail"
         type="email"
@@ -150,15 +183,15 @@ Some input types will automatically trigger constraints, such as `email` and `ur
             alert("All fields are valid!");
         });
     });
-</script>`}
-</CodeDemo>
+</script>
+```
 
 ### Custom validation errors
 
 To create a custom validation error, pass a non‐empty string to the `setCustomValidity()` method. This will override any existing validation constraints. The form will not be submitted when a custom validity is set and the browser will show a validation error when the containing form is submitted. To make the input valid again, call `setCustomValidity()` again with an empty string.
 
-<CodeDemo>
-{`<form class="input-validation-custom">
+```demo
+<form class="input-validation-custom">
     <pc-input label="Type “placer toolkit”" required></pc-input>
     <br />
     <pc-button appearance="primary" type="submit">Submit</pc-button>
@@ -187,14 +220,14 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
             }
         });
     });
-</script>`}
-</CodeDemo>
+</script>
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="puzzle-piece"
         slot="icon"
     ></pc-icon>
     Custom validation can be applied to any form control that supports the `setCustomValidity()` method. It is not limited to inputs and textareas.
@@ -204,12 +237,12 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
 
 Due to the many ways form controls are used, Placer Toolkit doesn’t provide out‐of‐the‐box validation styles for form controls as part of its default theme. Instead, the following attributes will be applied to reflect a control’s validity as users interact with it. You can use them to create custom styles for any of the validation states you’re interested in.
 
--   `data-required` — The form control is required.
--   `data-optional` — The form control is optional.
--   `data-invalid` — The form control is currently invalid.
--   `data-valid` — The form control is currently valid.
--   `data-user-invalid` — The form control is currently invalid and the user has interacted with it.
--   `data-user-valid` — The form control is currently valid and the user has interacted with it.
+- `data-required`: The form control is required.
+- `data-optional`: The form control is optional.
+- `data-invalid`: The form control is currently invalid.
+- `data-valid`: The form control is currently valid.
+- `data-user-invalid`: The form control is currently invalid and the user has interacted with it.
+- `data-user-valid`: The form control is currently valid and the user has interacted with it.
 
 The attributes map to the browser’s built‐in pseudo‐classes for validation: [`:required`](https://developer.mozilla.org/en-US/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/en-US/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) and [`:user-valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid).
 
@@ -217,10 +250,10 @@ The attributes map to the browser’s built‐in pseudo‐classes for validation
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="road"
         slot="icon"
     ></pc-icon>
-    In the future, data attributes will be replaced with custom pseudo‐classes should as `:--valid` and `:--invalid`. Placer Toolkit is using data attributes as a workaround until browsers support custom states through [`ElementInternals.states`](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/states).
+    In the future, data attributes will be replaced with custom pseudo‐classes such as `:--valid` and `:--invalid`. Placer Toolkit is using data attributes as a workaround until more browsers support custom states through [`ElementInternals.states`](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/states).
 </pc-callout>
 
 ### Styling invalid form controls
@@ -229,8 +262,8 @@ You can target validity using any of the aforementioned data attributes, but it�
 
 This example demonstrates custom validation styles using `data-user-invalid` and `data-user-valid`. Try typing in the fields to see how validity changes with user input.
 
-<CodeDemo>
-{`<form class="input-validation-custom-styles">
+```demo
+<form class="input-validation-custom-styles">
     <pc-input
         label="Name"
         name="name"
@@ -254,7 +287,7 @@ This example demonstrates custom validation styles using `data-user-invalid` and
     </pc-select>
 
     <pc-checkbox value="accept" required>
-        I have read and accept the Terms of Service
+        I have read and accepted the Terms of Service
     </pc-checkbox>
 
     <pc-button appearance="primary" type="submit">Submit</pc-button>
@@ -284,59 +317,59 @@ This example demonstrates custom validation styles using `data-user-invalid` and
     .input-validation-custom-styles pc-select,
     .input-validation-custom-styles pc-checkbox {
         display: block;
-        margin-bottom: var(--pc-spacing-l);
+        margin-block-end: var(--pc-spacing-l);
     }
 
     /* User invalid styles */
-    .input-validation-custom-styles pc-input[data-user-invalid]::part(base),
+    .input-validation-custom-styles pc-input[data-user-invalid]::part(input),
     .input-validation-custom-styles pc-select[data-user-invalid]::part(combobox),
     .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
-        border-color: var(--pc-color-danger-600);
+        border-color: var(--pc-color-danger-border-loud);
     }
 
     .input-validation-custom-styles [data-user-invalid]:not(pc-button)::part(label),
     .input-validation-custom-styles [data-user-invalid]::part(hint),
     .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(label) {
-        color: var(--pc-color-danger-700);
+        color: var(--pc-color-danger-on-quiet);
     }
 
     .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-invalid]::part(base),
+    .input-validation-custom-styles pc-input:focus-within[data-user-invalid]::part(input),
     .input-validation-custom-styles pc-select:focus-within[data-user-invalid]::part(combobox),
     .input-validation-custom-styles pc-checkbox:focus-within[data-user-invalid]::part(control) {
-        border-color: var(--pc-color-danger-600);
-        outline-color: var(--pc-color-danger-600);
+        border-color: var(--pc-color-danger-border-loud);
+        outline-color: var(--pc-color-danger-border-loud);
     }
 
     /* User valid styles */
-    .input-validation-custom-styles pc-input[data-user-valid]::part(base),
+    .input-validation-custom-styles pc-input[data-user-valid]::part(input),
     .input-validation-custom-styles pc-select[data-user-valid]::part(combobox),
     .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
-        border-color: var(--pc-color-success-600);
+        border-color: var(--pc-color-success-border-loud);
     }
 
     .input-validation-custom-styles [data-user-valid]:not(pc-button)::part(label),
     .input-validation-custom-styles [data-user-valid]::part(hint),
     .input-validation-custom-styles pc-checkbox[data-user-valid]::part(label) {
-        color: var(--pc-color-success-700);
+        color: var(--pc-color-success-on-quiet);
     }
 
     .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
-        background-color: var(--pc-color-success-600);
+        background-color: var(--pc-color-success-border-loud);
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-valid]::part(base),
+    .input-validation-custom-styles pc-input:focus-within[data-user-valid]::part(input),
     .input-validation-custom-styles pc-select:focus-within[data-user-valid]::part(combobox),
     .input-validation-custom-styles pc-checkbox:focus-within[data-user-valid]::part(control) {
-        border-color: var(--pc-color-success-600);
-        outline-color: var(--pc-color-success-600);
+        border-color: var(--pc-color-success-border-loud);
+        outline-color: var(--pc-color-success-border-loud);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ## Inline form validation
 
@@ -344,8 +377,8 @@ By default, Placer form controls use the browser’s tooltip‐style error messa
 
 To disable the browser’s error messages, you need to cancel the `pc-invalid` event. Then you can apply your own inline validation errors. This example demonstrates a primitive way to do this.
 
-<CodeDemo>
-{`<form class="input-validation-inline">
+```demo
+<form class="input-validation-inline">
     <pc-input
         label="Name"
         name="name"
@@ -404,50 +437,50 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 
     .input-validation-inline #name-error {
         font-size: var(--pc-input-hint-font-size-m);
-        color: var(--pc-color-danger-700);
+        color: var(--pc-color-danger-on-quiet);
     }
 
     .input-validation-inline #name-error ~ pc-button {
-        margin-top: var(--pc-spacing-l);
+        margin-block-start: var(--pc-spacing-l);
     }
 
     /* User invalid styles */
-    .input-validation-inline pc-input[data-user-invalid]::part(base) {
-        border-color: var(--pc-color-danger-600);
+    .input-validation-inline pc-input[data-user-invalid]::part(input) {
+        border-color: var(--pc-color-danger-border-loud);
     }
 
     .input-validation-inline pc-input[data-user-invalid]::part(label),
     .input-validation-inline pc-input[data-user-invalid]::part(hint) {
-        color: var(--pc-color-danger-700);
+        color: var(--pc-color-danger-on-quiet);
     }
 
-    .input-validation-inline pc-input:focus-within[data-user-invalid]::part(base) {
-        border-color: var(--pc-color-danger-600);
-        outline-color: var(--pc-color-danger-600);
+    .input-validation-inline pc-input:focus-within[data-user-invalid]::part(input) {
+        border-color: var(--pc-color-danger-border-loud);
+        outline-color: var(--pc-color-danger-border-loud);
     }
 
     /* User valid styles */
-    .input-validation-inline pc-input[data-user-valid]::part(base) {
-        border-color: var(--pc-color-success-600);
+    .input-validation-inline pc-input[data-user-valid]::part(input) {
+        border-color: var(--pc-color-success-border-loud);
     }
 
     .input-validation-inline pc-input[data-user-valid]::part(label),
     .input-validation-inline pc-input[data-user-valid]::part(hint) {
-        color: var(--pc-color-success-700);
+        color: var(--pc-color-success-on-quiet);
     }
 
-    .input-validation-inline pc-input:focus-within[data-user-valid]::part(base) {
-        border-color: var(--pc-color-success-600);
-        outline-color: var(--pc-color-success-600);
+    .input-validation-inline pc-input:focus-within[data-user-valid]::part(input) {
+        border-color: var(--pc-color-success-border-loud);
+        outline-color: var(--pc-color-success-border-loud);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 <pc-callout appearance="warning">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="hammer"
         slot="icon"
     ></pc-icon>
     This example is meant to demonstrate the concept of providing your own error messages inline. It is not intended to scale to more complex forms. Users who want this functionality are encouraged to build a more appropriate validation solution using the techniques shown below. Depending on how you implement this feature, custom error messages may affect the accessibility of your form controls.
@@ -457,22 +490,22 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 
 At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of return an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
 
-<CodeBlock language="javascript">
-{`import { getFormControls } from "placer-toolkit/dist/utilities/form.js";
+```javascript
+import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/form.js";
 
 const form = document.querySelector("#my-form");
 const formControls = getFormControls(form);
 
 // Example output: [input, pc-input, …]
-console.log(formControls);`}
-</CodeBlock>
+console.log(formControls);
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="route"
         slot="icon"
     ></pc-icon>
-    You probably don’t need this function! If you’re gathering form data for submission, you probably want to go to [data serialisation](#data-serialisation) instead.
+    You probably don’t need this function! If you’re gathering form data for submission, you probably want to scroll to [data serialisation](#data-serialisation) instead.
 </pc-callout>

@@ -1,75 +1,15 @@
 ---
 import Page from "../layouts/Page.astro";
-
-// Note: / is excluded in this “I’m feeling lucky” list
-const sidebarLinks = [
-    "/get-started/installation",
-    "/get-started/usage",
-    "/get-started/customisation",
-    "/get-started/form-controls",
-    "/design-tokens",
-    "/design-tokens/borders",
-    "/design-tokens/colour",
-    "/design-tokens/spacing",
-    "/design-tokens/shadows",
-    "/design-tokens/border-radius",
-    "/design-tokens/transitions",
-    "/design-tokens/z-index",
-    "/design-tokens/typography",
-    "/design-tokens/other-tokens",
-    "/components",
-    "/components/animation",
-    "/components/avatar",
-    "/components/badge",
-    "/components/button",
-    "/components/button-group",
-    "/components/callout",
-    "/components/card",
-    "/components/checkbox",
-    "/components/comparer",
-    "/components/copy-button",
-    "/components/details",
-    "/components/dialog",
-    "/components/divider",
-    "/components/drawer",
-    "/components/dropdown",
-    "/components/icon",
-    "/components/icon-button",
-    "/components/input",
-    "/components/menu",
-    "/components/menu-item",
-    "/components/option",
-    "/components/popup",
-    "/components/qr-code",
-    "/components/radio-group",
-    "/components/radio",
-    "/components/radio-button",
-    "/components/rating",
-    "/components/resize-observer",
-    "/components/select",
-    "/components/spinner",
-    "/components/switch",
-    "/components/tab-group",
-    "/components/tab",
-    "/components/tab-panel",
-    "/components/tag",
-    "/components/tooltip",
-    "/style-utilities",
-    "/style-utilities/reduce-fouce",
-    "/style-utilities/visually-hidden",
-    "/resources/community",
-    "/resources/contributing",
-    "/resources/accessibility",
-    "/resources/changelog",
-];
-
-const randomLink =
-    sidebarLinks[Math.floor(Math.random() * sidebarLinks.length)];
 ---
 
-<Page title="404 – Page not found" hero overflow={false} data-pagefind-ignore>
+<link
+    rel="stylesheet"
+    href="https://fonts.bunny.net/css?family=alfa-slab-one:400|amatic-sc:700|bebas-neue:400|bungee-shade:400|caveat:700|chewy:400|creepster:400|dotgothic16:400|indie-flower:400|luckiest-guy:400|michroma:400|permanent-marker:400|press-start-2p:400|special-elite:400|ultra:400"
+/>
+
+<Page title="404 – Page not found" hero overflow={false} pagefindIgnore>
     <div class="notfound-container">
-        <h1>404</h1>
+        <h1 class="notfound-font-switch">404</h1>
 
         <p>
             Oops! This page has gone on an unexpected adventure. Even our best
@@ -89,10 +29,11 @@ const randomLink =
                 Home
             </pc-button>
             <pc-button
-                appearance="default"
+                id="random-link"
+                appearance="neutral"
+                variant="filled"
                 size="large"
-                onclick="location.href = this.dataset.href"
-                data-href={randomLink}
+                href="/"
                 pill
             >
                 <pc-icon
@@ -109,98 +50,207 @@ const randomLink =
     </div>
 </Page>
 
+<script>
+    const notFoundFontSwitcher = document.querySelector(
+        ".notfound-font-switch",
+    ) as HTMLElement;
+
+    notFoundFontSwitcher?.addEventListener("click", () => {
+        const fontArray = [
+            "var(--pc-font-sans)",
+            "Alfa Slab One",
+            "Amatic SC",
+            "Bebas Neue",
+            "Bungee Shade",
+            "Caveat",
+            "Chewy",
+            "Creepster",
+            "DotGothic16",
+            "Indie Flower",
+            "Luckiest Guy",
+            "Michroma",
+            "Permanent Marker",
+            "Press Start 2P",
+            "Special Elite",
+            "Ultra",
+        ];
+
+        let lastRandomFontName = "var(--pc-font-sans)";
+
+        let randomIndex;
+        let randomFontName;
+
+        do {
+            randomIndex = Math.floor(Math.random() * fontArray.length);
+            randomFontName = fontArray[randomIndex];
+        } while (randomFontName === lastRandomFontName);
+
+        notFoundFontSwitcher.style.fontFamily = `${randomFontName}, var(--pc-font-sans)`;
+
+        lastRandomFontName = randomFontName;
+    });
+
+    function trySetRandomLink(attempts = 0) {
+        if (window.__sidebarLinks__ && window.__sidebarLinks__.length > 0) {
+            const links = window.__sidebarLinks__;
+            const randomLink = links[Math.floor(Math.random() * links.length)];
+            document
+                .getElementById("random-link")
+                ?.setAttribute("href", randomLink);
+            return;
+        }
+
+        if (attempts < 20) {
+            setTimeout(() => trySetRandomLink(attempts + 1), 100);
+        }
+    }
+
+    trySetRandomLink();
+</script>
+
 <style>
     .notfound-container {
-        min-width: 100% !important;
-        width: 100% !important;
-        max-width: 100% !important;
+        display: flex;
         position: relative;
+        flex-direction: column;
+        align-items: center;
+        min-inline-size: 100% !important;
+        inline-size: 100% !important;
+        max-inline-size: 100% !important;
         z-index: 0;
     }
 
     .notfound-container::before {
         content: "";
         position: absolute;
-        left: -7vw;
-        bottom: -7vw;
-        width: 18vw;
-        height: 18vw;
+        inset-inline-start: -7vw;
+        inset-block-end: -7vw;
+        inline-size: 18vw;
+        block-size: 18vw;
         border-radius: 50%;
-        background: radial-gradient(
+        background-image: radial-gradient(
             circle at 60% 40%,
-            var(--pc-color-purple-400),
-            var(--pc-color-purple-600)
+            var(--pc-color-purple-40),
+            var(--pc-color-purple-60)
         );
         filter: blur(18px);
         opacity: 0.55;
-        z-index: -1;
+        z-index: -2;
         pointer-events: none;
         animation: orb-float-1 7s ease-in-out infinite alternate;
+    }
+
+    :global(.pc-light) .notfound-container::before {
+        background-image: radial-gradient(
+            circle at 60% 40%,
+            var(--pc-color-purple-60),
+            var(--pc-color-purple-40)
+        );
     }
 
     .notfound-container::after {
         content: "";
         position: absolute;
-        right: -8vw;
-        top: -6vw;
-        width: 14vw;
-        height: 14vw;
+        inset-block-start: -6vw;
+        inset-inline-end: -8vw;
+        inline-size: 14vw;
+        block-size: 14vw;
         border-radius: 50%;
-        background: radial-gradient(
+        background-image: radial-gradient(
             circle at 40% 60%,
-            var(--pc-color-primary-300),
-            var(--pc-color-primary-500)
+            var(--pc-color-primary-30),
+            var(--pc-color-primary-50)
         );
         filter: blur(14px);
         opacity: 0.45;
-        z-index: -1;
+        z-index: -2;
         pointer-events: none;
         animation: orb-float-2 9s ease-in-out infinite alternate;
+    }
+
+    :global(.pc-light) .notfound-container::after {
+        background-image: radial-gradient(
+            circle at 60% 40%,
+            var(--pc-color-primary-70),
+            var(--pc-color-primary-50)
+        );
     }
 
     .notfound-container .orb3 {
         content: "";
         position: absolute;
-        left: 8vw;
-        top: 38vh;
-        width: 10vw;
-        height: 10vw;
+        inset-block-start: 38vh;
+        inset-inline-start: 8vw;
+        inline-size: 10vw;
+        block-size: 10vw;
         border-radius: 50%;
         background: radial-gradient(
             circle at 60% 60%,
-            var(--pc-color-pink-300),
-            var(--pc-color-pink-500)
+            var(--pc-color-pink-30),
+            var(--pc-color-pink-50)
         );
         filter: blur(12px);
         opacity: 0.38;
-        z-index: -1;
+        z-index: -2;
         pointer-events: none;
         animation: orb-float-3 11s ease-in-out infinite alternate;
+    }
+
+    :global(.pc-light) .notfound-container .orb3 {
+        background-image: radial-gradient(
+            circle at 60% 60%,
+            var(--pc-color-pink-70),
+            var(--pc-color-pink-50)
+        );
     }
 
     .notfound-container .orb4 {
         content: "";
         position: absolute;
-        right: 6vw;
-        bottom: 10vh;
-        width: 8vw;
-        height: 8vw;
+        inset-block-end: 10vh;
+        inset-inline-end: 6vw;
+        inline-size: 8vw;
+        block-size: 8vw;
         border-radius: 50%;
-        background: radial-gradient(
+        background-image: radial-gradient(
             circle at 40% 60%,
-            var(--pc-color-yellow-200),
-            var(--pc-color-yellow-400)
+            var(--pc-color-yellow-20),
+            var(--pc-color-yellow-40)
         );
         filter: blur(10px);
         opacity: 0.32;
-        z-index: -1;
+        z-index: -2;
         pointer-events: none;
         animation: orb-float-4 13s ease-in-out infinite alternate;
     }
 
+    :global(.pc-light) .orb4 {
+        background-image: radial-gradient(
+            circle at 40% 60%,
+            var(--pc-color-yellow-80),
+            var(--pc-color-yellow-60)
+        );
+    }
+
     h1 {
+        display: inline-block;
+        margin-block-start: var(--pc-spacing-xxl);
         font-size: 4rem;
         text-align: center;
+        user-select: none;
+        -webkit-user-select: none;
+        cursor: pointer;
+        transition: scale var(--pc-transition-medium) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        h1:hover {
+            scale: 1.05;
+        }
+    }
+
+    h1:active {
+        scale: 0.95;
     }
 
     p {

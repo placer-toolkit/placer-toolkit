@@ -1,86 +1,150 @@
 ---
 import { Image } from "astro:assets";
 
-import SocialIcons from "../components/SocialIcons.astro";
+import NavigationIcons from "../components/NavigationIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
 
 import logo from "../assets/logo.svg";
 ---
 
+<!-- Quicksand font — Bunny Fonts -->
+<link
+    rel="stylesheet"
+    href="https://fonts.bunny.net/css?family=quicksand:600&display=swap"
+/>
+
 <header role="banner" class="navbar">
     <nav class="navigation-bar" aria-label="Main navigation">
-        <section class="left">
-            <pc-icon-button
+        <div class="left-section">
+            <pc-button
                 class="sidebar-toggle pc-mobile-only"
-                library="default"
-                icon-style="solid"
-                name="bars"
-                label="Open sidebar"
-            ></pc-icon-button>
+                size="small"
+                variant="plain"
+            >
+                <pc-icon
+                    class="rest-only"
+                    library="default"
+                    icon-style="solid"
+                    name="bars"
+                    label="Open sidebar"></pc-icon>
+                <pc-icon
+                    class="hover-only"
+                    library="default"
+                    icon-style="solid"
+                    name="burger"
+                    label="Open sidebar"></pc-icon>
+            </pc-button>
             <a href="/">
                 <Image
                     src={logo}
                     width={36}
                     height={36}
-                    style="transform: translateY(-2px)"
+                    style="translate: 0 -0.125rem"
                     loading="eager"
                     alt=""
                 />
-                <span class="pc-desktop-only">Placer Toolkit</span>
+                <span class="logo-wordmark pc-desktop-only">
+                    Placer Toolkit
+                </span>
+                <span class="pc-mobile-only pc-visually-hidden">
+                    Placer Toolkit
+                </span>
             </a>
-            <small class="pc-desktop-only">0.5.0</small>
-            <pc-tag
+            <small class="pc-desktop-only">1.0.0-alpha.1</small>
+            <pc-badge
                 class="pc-desktop-only"
                 appearance="warning"
-                size="small"
+                variant="filled"
             >
-                Pre‐release
-            </pc-tag>
-        </section>
-        <section class="right">
-            <SocialIcons />
+                Alpha
+            </pc-badge>
+        </div>
+        <div class="right-section">
+            <div class="pc-not-992-size">
+                <NavigationIcons />
+                <pc-divider orientation="vertical"></pc-divider>
+            </div>
             <ThemeSelector />
-            <pc-button id="open-search-dialog">
+            <pc-divider class="pc-desktop-only" orientation="vertical"
+            ></pc-divider>
+            <pc-button
+                appearance="neutral"
+                variant="outlined"
+                size="small"
+                data-dialog="open search-dialog"
+                aria-keyshortcuts="Control+K"
+            >
                 <pc-icon
                     library="default"
                     icon-style="solid"
                     name="magnifying-glass"
-                    slot="prefix"
-                    aria-hidden="true"></pc-icon>
-                Search
+                    slot="prefix"></pc-icon>
+                <span class="label">Search</span>
+                <span slot="suffix">
+                    <kbd class="search-key">Ctrl</kbd>
+                    <kbd class="search-key">K</kbd>
+                </span>
             </pc-button>
-        </section>
+        </div>
     </nav>
 </header>
+
+<script>
+    const searchButton = document.querySelector(
+        'pc-button[data-dialog="open search-dialog"]',
+    );
+    const switchKey = searchButton?.querySelector("kbd:first-child");
+
+    if (
+        searchButton &&
+        switchKey &&
+        /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
+    ) {
+        switchKey.textContent = "⌘";
+        searchButton.setAttribute("aria-keyshortcuts", "Meta+K");
+    }
+</script>
 
 <style>
     .navbar {
         grid-area: navbar;
-        background-color: var(--pc-color-neutral-50);
-        border-bottom: 1px solid var(--pc-color-neutral-100);
-        z-index: 10;
+        position: sticky;
+        inset-block-start: 0;
+        inset-block: 0;
+        background-color: var(--pc-color-surface-default);
+        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        inline-size: 100vw;
+        block-size: 3.5rem;
+        z-index: 2;
+        pointer-events: auto;
     }
 
     .navigation-bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: var(--pc-spacing-l) var(--pc-spacing-m);
-        height: 100%;
+        padding-block: var(--pc-spacing-l);
+        padding-inline: var(--pc-spacing-m);
+        block-size: 100%;
     }
 
-    .navigation-bar section {
+    .navigation-bar pc-divider {
+        --spacing: var(--pc-spacing-xs);
+    }
+
+    .navigation-bar div {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: var(--pc-spacing-m);
     }
 
-    .navigation-bar section.left .sidebar-toggle {
-        transform: scale(1.1);
+    .navigation-bar div > * {
+        flex-shrink: 0;
     }
 
-    .navigation-bar section.left a {
+    .navigation-bar .left-section a {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -89,17 +153,34 @@ import logo from "../assets/logo.svg";
         text-decoration: none;
     }
 
-    .navigation-bar section.left span {
+    .navigation-bar .left-section a .logo-wordmark {
+        font-family: "Quicksand", var(--pc-font-sans);
         font-weight: var(--pc-font-weight-semibold);
+        user-select: none;
+        -webkit-user-select: none;
     }
 
-    .navigation-bar section.left small {
-        color: var(--pc-color-neutral-600);
+    .navigation-bar .left-section small {
+        color: var(--pc-color-text-quiet);
+        font-size: var(--pc-font-size-smaller);
+        translate: 0 0.0625rem;
+        vertical-align: bottom;
     }
 
-    .navigation-bar section.right pc-select {
-        transform: translateY(-12px);
-        max-width: 30vw;
+    .navigation-bar .right-section pc-button span[slot="suffix"] {
+        display: inline-block;
+        margin-block-end: 0.25rem;
+    }
+
+    .navigation-bar .right-section pc-button kbd {
+        padding-inline: 0.5em;
+        font-size: var(--pc-font-size-xxs);
+        line-height: var(--pc-form-control-value-line-height);
+    }
+
+    @media screen and (max-width: 992px) {
+        .navigation-bar .right-section pc-button span[slot="suffix"] {
+            display: none;
+        }
     }
 </style>
-

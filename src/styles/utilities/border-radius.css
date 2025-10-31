@@ -1,0 +1,29 @@
+@layer pc-utilities {
+    .pc-border-radius-s {
+        border-radius: var(--pc-border-radius-s);
+    }
+
+    .pc-border-radius-m {
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .pc-border-radius-l {
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .pc-border-radius-xl {
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    .pc-border-radius-square {
+        border-radius: var(--pc-border-radius-square);
+    }
+
+    .pc-border-radius-pill {
+        border-radius: var(--pc-border-radius-pill);
+    }
+
+    .pc-border-radius-circle {
+        border-radius: var(--pc-border-radius-circle);
+    }
+}

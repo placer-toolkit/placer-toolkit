@@ -1,0 +1,62 @@
+@layer pc-utilities {
+    :where(:root),
+    :host([appearance="neutral"]) {
+        --pc-color-fill-loud: var(--pc-color-neutral-fill-loud);
+        --pc-color-fill-normal: var(--pc-color-neutral-fill-normal);
+        --pc-color-fill-quiet: var(--pc-color-neutral-fill-quiet);
+        --pc-color-border-loud: var(--pc-color-neutral-border-loud);
+        --pc-color-border-normal: var(--pc-color-neutral-border-normal);
+        --pc-color-border-quiet: var(--pc-color-neutral-border-quiet);
+        --pc-color-on-loud: var(--pc-color-neutral-on-loud);
+        --pc-color-on-normal: var(--pc-color-neutral-on-normal);
+        --pc-color-on-quiet: var(--pc-color-neutral-on-quiet);
+    }
+
+    :host([appearance="primary"]) {
+        --pc-color-fill-loud: var(--pc-color-primary-fill-loud);
+        --pc-color-fill-normal: var(--pc-color-primary-fill-normal);
+        --pc-color-fill-quiet: var(--pc-color-primary-fill-quiet);
+        --pc-color-border-loud: var(--pc-color-primary-border-loud);
+        --pc-color-border-normal: var(--pc-color-primary-border-normal);
+        --pc-color-border-quiet: var(--pc-color-primary-border-quiet);
+        --pc-color-on-loud: var(--pc-color-primary-on-loud);
+        --pc-color-on-normal: var(--pc-color-primary-on-normal);
+        --pc-color-on-quiet: var(--pc-color-primary-on-quiet);
+    }
+
+    :host([appearance="success"]) {
+        --pc-color-fill-loud: var(--pc-color-success-fill-loud);
+        --pc-color-fill-normal: var(--pc-color-success-fill-normal);
+        --pc-color-fill-quiet: var(--pc-color-success-fill-quiet);
+        --pc-color-border-loud: var(--pc-color-success-border-loud);
+        --pc-color-border-normal: var(--pc-color-success-border-normal);
+        --pc-color-border-quiet: var(--pc-color-success-border-quiet);
+        --pc-color-on-loud: var(--pc-color-success-on-loud);
+        --pc-color-on-normal: var(--pc-color-success-on-normal);
+        --pc-color-on-quiet: var(--pc-color-success-on-quiet);
+    }
+
+    :host([appearance="warning"]) {
+        --pc-color-fill-loud: var(--pc-color-warning-fill-loud);
+        --pc-color-fill-normal: var(--pc-color-warning-fill-normal);
+        --pc-color-fill-quiet: var(--pc-color-warning-fill-quiet);
+        --pc-color-border-loud: var(--pc-color-warning-border-loud);
+        --pc-color-border-normal: var(--pc-color-warning-border-normal);
+        --pc-color-border-quiet: var(--pc-color-warning-border-quiet);
+        --pc-color-on-loud: var(--pc-color-warning-on-loud);
+        --pc-color-on-normal: var(--pc-color-warning-on-normal);
+        --pc-color-on-quiet: var(--pc-color-warning-on-quiet);
+    }
+
+    :host([appearance="danger"]) {
+        --pc-color-fill-loud: var(--pc-color-danger-fill-loud);
+        --pc-color-fill-normal: var(--pc-color-danger-fill-normal);
+        --pc-color-fill-quiet: var(--pc-color-danger-fill-quiet);
+        --pc-color-border-loud: var(--pc-color-danger-border-loud);
+        --pc-color-border-normal: var(--pc-color-danger-border-normal);
+        --pc-color-border-quiet: var(--pc-color-danger-border-quiet);
+        --pc-color-on-loud: var(--pc-color-danger-on-loud);
+        --pc-color-on-normal: var(--pc-color-danger-on-normal);
+        --pc-color-on-quiet: var(--pc-color-danger-on-quiet);
+    }
+}

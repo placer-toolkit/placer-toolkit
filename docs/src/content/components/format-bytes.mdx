@@ -1,0 +1,97 @@
+---
+title: Format Bytes
+description: Formats a number as a human‐readable byte value.
+---
+
+Formats a number as a human‐readable byte value.
+
+```demo:open
+<div class="format-bytes-overview">
+    <p>
+        The file is <pc-format-bytes value="1000"></pc-format-bytes> in size.
+    </p>
+
+    <pc-input
+        label="Number to format"
+        type="number"
+        value="1000"
+        style="max-inline-size: 180px"
+    ></pc-input>
+</div>
+
+<script>
+    const container = document.querySelector(".format-bytes-overview");
+    const formatter = container.querySelector("pc-format-bytes");
+    const input = container.querySelector("pc-input");
+
+    input.addEventListener("pc-input", () => (formatter.value = input.value || 0));
+</script>
+```
+
+## Demos
+
+### Formatting bytes
+
+Set the `value` attribute to a number to get the value in bytes.
+
+```demo
+<pc-format-bytes value="12"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000000"></pc-format-bytes>
+```
+
+### Formatting bits
+
+To get the value in bits, set the `unit` attribute to `bit`.
+
+```demo
+<pc-format-bytes value="12" unit="bit"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200" unit="bit"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000" unit="bit"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000000" unit="bit"></pc-format-bytes>
+```
+
+### Localisation
+
+Use the `lang` attribute to set the number formatting locale.
+
+```demo
+<pc-format-bytes value="12" lang="fr"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200" lang="fr"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000" lang="fr"></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000000" lang="fr"></pc-format-bytes>
+```
+
+### SI conventions <pc-icon library="default" icon-style="solid" name="flask" style="font-size: calc(var(--pc-font-size-smaller) * 0.9)"></pc-icon>
+
+Add the `use-si` attribute to change the formatting of the component to follow <abbr title="International System of Units">SI</abbr> conventions.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="globe"
+        slot="icon"
+    ></pc-icon>
+    This property is experimental and renders the byte/bit unit as `short` instead of `long`.
+</pc-callout>
+
+```demo
+<pc-format-bytes value="12" use-si></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200" use-si></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000" use-si></pc-format-bytes>
+<br />
+<pc-format-bytes value="1200000000" use-si></pc-format-bytes>
+```
