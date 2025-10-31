@@ -1,0 +1,651 @@
+---
+import "placer-toolkit/dist/styles/placer.css";
+import "placer-toolkit/dist/styles/themes/utility.css";
+import "placer-toolkit/dist/styles/themes/serene.css";
+---
+
+<!doctype html>
+<html lang="en-gb" class="pc-cloak" data-pagefind-ignore>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+        />
+        <script>
+            import "placer-toolkit";
+            import "placer-toolkit/dist/translations/en-gb.js";
+
+            const htmlElement = document.documentElement;
+
+            function applySettings(settings: {
+                "color-scheme": string;
+                "theme"?: string;
+                "palette"?: string;
+            }) {
+                const {
+                    "color-scheme": colorScheme,
+                    theme,
+                    palette,
+                } = settings;
+
+                if (colorScheme === "dark") {
+                    htmlElement.classList.add("pc-dark");
+                } else if (colorScheme === "light") {
+                    htmlElement.classList.remove("pc-dark");
+                }
+
+                if (theme) {
+                    htmlElement.classList.forEach((className) => {
+                        if (className.startsWith("pc-theme-")) {
+                            htmlElement.classList.remove(className);
+                        }
+                    });
+                    htmlElement.classList.add(`pc-theme-${theme}`);
+                }
+
+                if (palette) {
+                    htmlElement.classList.forEach((className) => {
+                        if (className.startsWith("pc-palette-")) {
+                            htmlElement.classList.remove(className);
+                        }
+                    });
+                    htmlElement.classList.add(`pc-palette-${palette}`);
+                }
+            }
+
+            const urlParameters = new URLSearchParams(window.location.search);
+            const initialSettings = {
+                "color-scheme": urlParameters.get("color-scheme") || "light",
+                "theme": urlParameters.get("theme") || undefined,
+                "palette": urlParameters.get("palette") || undefined,
+            };
+
+            applySettings(initialSettings);
+
+            window.addEventListener("message", (event) => {
+                if (event.data && event.data.source === "showcase-settings") {
+                    applySettings(event.data.settings);
+                }
+            });
+        </script>
+        <title>Theme Showcase | Placer Toolkit</title>
+    </head>
+    <body>
+        <div class="showcase-examples-wrapper">
+            <div class="showcase-examples">
+                <pc-card>
+                    <div class="pc-split" slot="header">
+                        <h3 class="pc-heading-s">Your cart</h3>
+                        <pc-button size="small" variant="plain">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="xmark"
+                                label="Close"></pc-icon>
+                        </pc-button>
+                    </div>
+                    <div class="pc-stack pc-gap-l">
+                        <div class="pc-flank">
+                            <pc-avatar shape="rounded">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="gun"
+                                    slot="icon"></pc-icon>
+                            </pc-avatar>
+                            <div class="pc-stack pc-gap-xs">
+                                <div class="pc-split pc-gap-xxxs">
+                                    <strong>SuperBlaster</strong>
+                                    <strong>27,49 €</strong>
+                                </div>
+                                <div class="pc-split pc-gap-xxxs pc-caption-m">
+                                    <span>Series 2000+</span>
+                                    <a href="#">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                        <pc-divider></pc-divider>
+                        <div class="pc-flank">
+                            <pc-avatar shape="rounded">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="robot"
+                                    slot="icon"></pc-icon>
+                            </pc-avatar>
+                            <div class="pc-stack pc-gap-xs">
+                                <div class="pc-split pc-gap-xxxs">
+                                    <strong>DroidCleaner</strong>
+                                    <strong>2 199,99 €</strong>
+                                </div>
+                                <div class="pc-split pc-gap-xxxs pc-caption-m">
+                                    <span>Series 5564X</span>
+                                    <a href="#">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pc-stack" slot="footer">
+                        <div class="pc-split">
+                            <strong>Subtotal</strong>
+                            <strong>2 227,48 €</strong>
+                        </div>
+                        <span class="pc-caption-m">
+                            Shipping and taxes are calculated at checkout.
+                        </span>
+                        <pc-button
+                            appearance="primary"
+                            style="inline-size: 100%"
+                        >
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="shopping-bag"
+                                slot="prefix"></pc-icon>
+                            Checkout
+                        </pc-button>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <pc-avatar
+                        shape="rounded"
+                        style="--size: 1.8lh; float: left; margin-inline-end: var(--pc-spacing-l)"
+                    >
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="quote-left"
+                            slot="icon"
+                            style="font-size: 1.75em"></pc-icon>
+                    </pc-avatar>
+                    <p
+                        class="pc-body-l"
+                        style="margin: 0; font-family: var(--pc-font-serif)"
+                    >
+                        “In the end, we will remember not the words of our
+                        enemies, but the silence of our friends.”
+                    </p>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <h3 class="pc-heading-m" style="text-align: center">
+                            Sign in
+                        </h3>
+
+                        <pc-input
+                            label="E‐mail"
+                            type="email"
+                            placeholder="example@email.com"
+                        >
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="envelope"
+                                slot="prefix"></pc-icon>
+                        </pc-input>
+                        <pc-input label="Password" type="password">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="lock"
+                                slot="prefix"></pc-icon>
+
+                            <a href="#" slot="hint">Forgot your password?</a>
+                        </pc-input>
+
+                        <pc-button appearance="primary">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="arrow-right-to-bracket"
+                                slot="prefix"></pc-icon>
+                            Sign in
+                        </pc-button>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <div class="pc-split">
+                            <h3 class="pc-heading-m">To‐do</h3>
+                            <div class="pc-cluster pc-gap-xs">
+                                <pc-button size="small" variant="plain">
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="list-check"
+                                        label="View all completed"></pc-icon>
+                                </pc-button>
+                                <pc-button size="small" variant="plain">
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="plus"
+                                        label="Add task"></pc-icon>
+                                </pc-button>
+                            </div>
+                        </div>
+
+                        <pc-checkbox checked>Feed the cat</pc-checkbox>
+                        <pc-checkbox checked>Water the plants</pc-checkbox>
+                        <pc-checkbox checked>
+                            Schedule dentist appointment
+                        </pc-checkbox>
+                        <pc-checkbox>Read a chapter of a book</pc-checkbox>
+                        <pc-checkbox>Do laundry</pc-checkbox>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <h3 class="pc-heading-m">Café du Marché</h3>
+
+                        <div class="pc-cluster pc-gap-xs">
+                            <pc-rating value="4.2" readonly></pc-rating>
+                            <strong>4,2</strong>
+                            <span class="pc-caption-l">(371 reviews)</span>
+                        </div>
+                        <div class="pc-cluster pc-gap-xs">
+                            <div class="pc-cluster pc-gap-xxs">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="dollar"
+                                    style="color: var(--pc-color-yellow-60)"
+                                    auto-width></pc-icon>
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="dollar"
+                                    style="color: var(--pc-color-yellow-60)"
+                                    auto-width></pc-icon>
+                            </div>
+                            <span
+                                class="pc-caption-m"
+                                style="margin-inline: var(--pc-spacing-xs)"
+                            >
+                                •
+                            </span>
+                            <pc-tag size="small">Café</pc-tag>
+                            <pc-tag size="small">Pastries</pc-tag>
+                            <pc-tag size="small">Brunch</pc-tag>
+                        </div>
+                        <div class="pc-flank pc-gap-s">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="location-dot"></pc-icon>
+                            <a class="pc-caption-m" href="#">
+                                12 Rue Lafayette, Lyon
+                            </a>
+                        </div>
+                    </div>
+                </pc-card>
+                <pc-card variant="plain" style="--spacing: 0">
+                    <div class="pc-stack pc-gap-m">
+                        <pc-callout appearance="success">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="check-circle"
+                                slot="icon"></pc-icon>
+                            <div class="pc-split">
+                                <span>Everything looks good.</span>
+                                <pc-button appearance="success" size="small">
+                                    Continue
+                                </pc-button>
+                            </div>
+                        </pc-callout>
+                        <pc-callout appearance="warning">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="triangle-exclamation"
+                                slot="icon"></pc-icon>
+                            <div class="pc-split">
+                                <span>Your attention is needed.</span>
+                                <pc-button appearance="warning" size="small">
+                                    Review
+                                </pc-button>
+                            </div>
+                        </pc-callout>
+                        <pc-callout appearance="danger">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="circle-xmark"
+                                slot="icon"></pc-icon>
+                            <div class="pc-split">
+                                <span>An error has occurred.</span>
+                                <pc-button appearance="danger" size="small">
+                                    Try again
+                                </pc-button>
+                            </div>
+                        </pc-callout>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <div class="pc-flank:end">
+                            <h3 class="pc-heading-m" id="odds-label">
+                                Check the weather
+                            </h3>
+                            <pc-switch
+                                checked
+                                size="large"
+                                aria-labelledby="odds-label"></pc-switch>
+                        </div>
+                        <p class="pc-body-s">
+                            Allow the system to provide probability forecasts,
+                            such as the chance of rain during your commute.
+                        </p>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <div class="pc-split pc-align-items-start">
+                            <dl class="pc-stack pc-gap-s">
+                                <dt class="pc-heading-s">Amount</dt>
+                                <dd class="pc-heading-l">1 784,54 €</dd>
+                            </dl>
+                            <pc-badge appearance="success" variant="filled">
+                                Paid
+                            </pc-badge>
+                        </div>
+                        <pc-divider></pc-divider>
+                        <dl class="pc-stack">
+                            <div class="pc-flank pc-align-items-center">
+                                <dt>
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="user"
+                                        label="Name"></pc-icon>
+                                </dt>
+                                <dd>Evan Cross</dd>
+                            </div>
+                            <div class="pc-flank pc-align-items-center">
+                                <dt>
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="calendar-days"
+                                        label="Date"></pc-icon>
+                                </dt>
+                                <dd>15 March 2025</dd>
+                            </div>
+                            <div class="pc-flank pc-align-items-center">
+                                <dt>
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="credit-card"
+                                        label="Payment method"></pc-icon>
+                                </dt>
+                                <dd>Credit/debit card</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    <div slot="footer">
+                        <pc-button
+                            appearance="primary"
+                            style="inline-size: 100%"
+                        >
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="file-arrow-down"
+                                slot="prefix"></pc-icon>
+                            Download receipt
+                        </pc-button>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-stack">
+                        <div class="pc-split">
+                            <div class="pc-cluster pc-heading-l">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="book"></pc-icon>
+                                <h3>Pro</h3>
+                            </div>
+                            <pc-badge>Popular</pc-badge>
+                        </div>
+                        <span class="pc-flank pc-align-items-baseline pc-gap-s">
+                            <span class="pc-heading-xl">8,33 €</span>
+                            <span class="pc-caption-l">per month</span>
+                        </span>
+                        <p class="pc-caption-l">
+                            Access to all premium features for your team.
+                        </p>
+                        <pc-button appearance="primary">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="money-check-dollar"
+                                slot="prefix"></pc-icon>
+                            Get Pro plan
+                        </pc-button>
+                    </div>
+                    <div class="pc-stack pc-gap-l" slot="footer">
+                        <h4 class="pc-heading-s">What you get</h4>
+                        <div class="pc-stack">
+                            <div class="pc-flank">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="user"></pc-icon>
+                                <span class="pc-caption-m">
+                                    10 user slots
+                                </span>
+                            </div>
+                            <div class="pc-flank">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="file-lines"></pc-icon>
+                                <span class="pc-caption-m">
+                                    No document limit
+                                </span>
+                            </div>
+                            <div class="pc-flank">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="coins"></pc-icon>
+                                <span class="pc-caption-m"> API credits </span>
+                            </div>
+                            <div class="pc-flank">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="headset"></pc-icon>
+                                <span class="pc-caption-m">
+                                    Priority support
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-flank:end">
+                        <div class="pc-stack pc-gap-s">
+                            <div class="pc-cluster pc-gap-s">
+                                <h3 class="pc-heading-s">randomguy-2650</h3>
+                                <pc-badge>Maintainer</pc-badge>
+                            </div>
+                            <span class="pc-caption-m">
+                                Front‐end developer
+                            </span>
+                        </div>
+                        <pc-avatar
+                            image="https://avatars.githubusercontent.com/u/150704902"
+                            label="@randomguy-2650’s GitHub avatar"></pc-avatar>
+                    </div>
+                    <div class="pc-gap-s" slot="footer">
+                        <pc-button variant="outlined" style="inline-size: 100%">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="envelope"
+                                slot="prefix"></pc-icon>
+                            E‐mail
+                        </pc-button>
+                        <pc-button variant="outlined" style="inline-size: 100%">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="phone"
+                                slot="prefix"></pc-icon>
+                            Phone
+                        </pc-button>
+                    </div>
+                </pc-card>
+                <pc-card>
+                    <div class="pc-flank:end">
+                        <a class="pc-flank pc-link-plain" href="#">
+                            <pc-avatar shape="rounded">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="egg"
+                                    slot="icon"></pc-icon>
+                            </pc-avatar>
+                            <div class="pc-stack pc-gap-xs">
+                                <span class="pc-heading-s">
+                                    Second breakfast
+                                </span>
+                                <span class="pc-caption-m"> 19 items </span>
+                            </div>
+                        </a>
+                        <pc-dropdown>
+                            <pc-button
+                                size="small"
+                                variant="plain"
+                                slot="trigger"
+                            >
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="ellipsis"
+                                    label="View menu"></pc-icon>
+                            </pc-button>
+
+                            <pc-dropdown-item>
+                                <pc-icon
+                                    library="default"
+                                    icon-style="regular"
+                                    name="copy"
+                                    slot="icon"></pc-icon>
+                                Copy link
+                            </pc-dropdown-item>
+                            <pc-dropdown-item>
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="pen-to-square"
+                                    slot="icon"></pc-icon>
+                                Rename
+                            </pc-dropdown-item>
+                            <pc-dropdown-item appearance="danger">
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="trash"
+                                    slot="icon"></pc-icon>
+                                Move to trash
+                            </pc-dropdown-item>
+                        </pc-dropdown>
+                    </div>
+                </pc-card>
+            </div>
+        </div>
+    </body>
+</html>
+
+<style>
+    html,
+    body,
+    .theme-showcase {
+        block-size: 100dvh;
+        background-color: var(--pc-color-surface-lowered);
+        /* overflow: hidden; */
+    }
+
+    .showcase-examples-wrapper {
+        box-sizing: border-box;
+        padding: 1.75rem;
+        inline-size: 100%;
+        min-block-size: 100%;
+        container-type: inline-size;
+        background-color: var(--pc-color-surface-lowered);
+    }
+
+    .showcase-examples {
+        column-count: 1;
+        column-gap: var(--pc-spacing-xl);
+
+        & pc-card {
+            inline-size: 100%;
+
+            &:has(+ pc-card) {
+                margin-block-end: var(--pc-spacing-xl);
+            }
+        }
+
+        @container (inline-size > 500px) {
+            column-count: 2;
+        }
+
+        @container (inline-size > 750px) {
+            column-count: 3;
+        }
+
+        @container (inline-size > 950px) {
+            column-count: auto;
+            column-width: 22rem;
+        }
+    }
+
+    .theme-showcase {
+        isolation: isolate;
+        background-color: var(--pc-color-surface-lowered);
+        border-radius: var(--pc-border-radius-l);
+        overflow: hidden;
+
+        @media screen and (width < 500px) {
+            flex-flow: column;
+        }
+
+        header {
+            box-sizing: border-box;
+            min-inline-size: min(25ch, 100vw);
+            padding: var(--pc-spacing-xxl);
+            align-self: center;
+
+            h1 {
+                margin-block-end: var(--pc-spacing-xs);
+            }
+
+            p:empty {
+                display: none;
+            }
+        }
+    }
+
+    pc-avatar:has(> pc-icon[name="gun"])::part(base) {
+        background-color: var(--pc-color-green-60);
+        color: var(--pc-color-green-95);
+    }
+
+    pc-avatar:has(> pc-icon[name="robot"])::part(base) {
+        background-color: var(--pc-color-cyan-60);
+        color: var(--pc-color-cyan-95);
+    }
+
+    pc-avatar:has(> pc-icon[name="egg"])::part(base) {
+        background-color: var(--pc-color-yellow-90);
+        color: var(--pc-color-yellow-50);
+    }
+</style>

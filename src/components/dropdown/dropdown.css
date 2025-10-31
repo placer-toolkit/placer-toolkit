@@ -1,0 +1,84 @@
+:host {
+    display: contents;
+}
+
+#menu {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0.25em;
+    inline-size: max-content;
+    max-inline-size: var(--auto-size-available-width) !important;
+    max-block-size: var(--auto-size-available-height) !important;
+    background-color: var(--pc-color-surface-raised);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-surface-border);
+    border-radius: calc(var(--pc-border-radius-m) + 0.25em);
+    text-align: start;
+    user-select: none;
+    overflow: auto;
+    box-shadow: var(--pc-shadow-m);
+}
+
+#menu ::slotted(h1),
+#menu ::slotted(h2),
+#menu ::slotted(h3),
+#menu ::slotted(h4),
+#menu ::slotted(h5),
+#menu ::slotted(h6) {
+    display: block !important;
+    margin-block: 0.25em !important;
+    margin-inline: 0 !important;
+    padding-block: 0.25em !important;
+    padding-inline: 1.1em !important;
+    color: var(--pc-color-text-quiet) !important;
+    font-family: var(--pc-font-sans) !important;
+    font-weight: var(--pc-font-weight-semibold) !important;
+    font-size: var(--pc-font-size-smaller) !important;
+}
+
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h1,
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h2,
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h3,
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h4,
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h5,
+#menu ::slotted(pc-dropdown-item[checkbox-adjacent]) h6 {
+    padding-inline: 2.25em !important;
+}
+
+#menu ::slotted(pc-divider) {
+    --spacing: 0.25em;
+}
+
+pc-popup[data-current-placement^="top"] #menu {
+    transform-origin: bottom;
+}
+
+pc-popup[data-current-placement^="bottom"] #menu {
+    transform-origin: top;
+}
+
+pc-popup[data-current-placement^="left"] #menu {
+    transform-origin: right;
+}
+
+pc-popup[data-current-placement^="right"] #menu {
+    transform-origin: left;
+}
+
+pc-popup[data-current-placement="left-start"] #menu {
+    transform-origin: right top;
+}
+
+pc-popup[data-current-placement="left-end"] #menu {
+    transform-origin: right bottom;
+}
+
+pc-popup[data-current-placement="right-start"] #menu {
+    transform-origin: left top;
+}
+
+pc-popup[data-current-placement="right-end"] #menu {
+    transform-origin: left bottom;
+}

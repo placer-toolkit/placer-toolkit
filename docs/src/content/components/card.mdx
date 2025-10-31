@@ -3,25 +3,20 @@ title: Card
 description: Cards can be used to group related subjects in a container.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Cards can be used to group related subjects in a container.
 
-<CodeDemo open>
-{`<pc-card class="card-overview">
+```demo:open
+<pc-card class="card-overview">
     <img
-        slot="image"
-        src="https://placehold.co/300x200"
+        slot="media"
+        src="https://placehold.co/300x200/?text=300×200&font=montserrat"
         alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
     />
 
     <strong slot="header">Lorem ipsum</strong>
 
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-        do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua.
-    </p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+    eiusmod tempor incididunt ut labore et dolore magna aliqua.
 
     <footer slot="footer">
         <pc-button appearance="primary" pill>
@@ -33,26 +28,70 @@ Cards can be used to group related subjects in a container.
             ></pc-icon>
             Buy
         </pc-button>
-        <pc-button appearance="text" pill>
-            More info
-            <span class="pc-visually-hidden">about this card</span>
-        </pc-button>
+
+        <pc-dropdown placement="bottom-end">
+            <pc-button appearance="neutral" variant="plain" slot="trigger" pill>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="ellipsis"
+                    label="More information"
+                ></pc-icon>
+            </pc-button>
+
+            <pc-dropdown-item value="view-details">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="circle-info"
+                    slot="icon"
+                ></pc-icon>
+                View details
+            </pc-dropdown-item>
+            <pc-dropdown-item value="favourite">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="heart"
+                    slot="icon"
+                ></pc-icon>
+                Favourite
+            </pc-dropdown-item>
+            <pc-dropdown-item value="share">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="share-nodes"
+                    slot="icon"
+                ></pc-icon>
+                Share
+            </pc-dropdown-item>
+            <pc-dropdown-item value="compare">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="scale-balanced"
+                    slot="icon"
+                ></pc-icon>
+                Compare
+            </pc-dropdown-item>
+        </pc-dropdown>
     </footer>
 </pc-card>
 
 <style>
     .card-overview {
-        max-width: 300px;
+        max-inline-size: 300px;
     }
 
     .card-overview footer {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: var(--pc-spacing-xs);
+        gap: var(--pc-spacing-s);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ## Demos
 
@@ -60,32 +99,34 @@ Cards can be used to group related subjects in a container.
 
 Basic cards aren’t very exciting, but they can display any content you want them to.
 
-<CodeDemo>
-{`<pc-card class="card-basic">
+```demo
+<pc-card class="card-basic">
     This is just a basic card. No image, no header and no footer. Just your content.
 </pc-card>
 
 <style>
     .card-basic {
-        max-width: 300px;
+        max-inline-size: 300px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### With header
 
 Headers can be used to display titles and more.
 
-<CodeDemo>
-{`<pc-card class="card-header">
+```demo
+<pc-card class="card-header">
     <header slot="header">
         <strong>Header title</strong>
-        <pc-icon-button
-            library="default"
-            icon-style="solid"
-            name="gear"
-            label="Settings"
-        ></pc-icon-button>
+        <pc-button size="small" variant="plain">
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="gear"
+                label="Settings"
+            ></pc-icon>
+        </pc-button>
     </header>
 
     This card has a header. You can put all sorts of things in it!
@@ -93,7 +134,7 @@ Headers can be used to display titles and more.
 
 <style>
     .card-header {
-        max-width: 300px;
+        max-inline-size: 300px;
     }
 
     .card-header header {
@@ -101,15 +142,15 @@ Headers can be used to display titles and more.
         align-items: center;
         justify-content: space-between;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### With footer
 
 Footers can be used to display actions, summaries or other relevant content.
 
-<CodeDemo>
-{`<pc-card class="card-footer">
+```demo
+<pc-card class="card-footer">
     This card has a footer. You can put all sorts of things in it!
 
     <footer slot="footer">
@@ -122,36 +163,80 @@ Footers can be used to display actions, summaries or other relevant content.
             ></pc-icon>
             Buy
         </pc-button>
-        <pc-button appearance="text" pill>
-            More info
-            <span class="pc-visually-hidden">about this card</span>
-        </pc-button>
+
+        <pc-dropdown placement="bottom-end">
+            <pc-button appearance="neutral" variant="plain" slot="trigger" pill>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="ellipsis"
+                    label="More information"
+                ></pc-icon>
+            </pc-button>
+
+            <pc-dropdown-item value="view-details">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="circle-info"
+                    slot="icon"
+                ></pc-icon>
+                View details
+            </pc-dropdown-item>
+            <pc-dropdown-item value="favourite">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="heart"
+                    slot="icon"
+                ></pc-icon>
+                Favourite
+            </pc-dropdown-item>
+            <pc-dropdown-item value="share">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="share-nodes"
+                    slot="icon"
+                ></pc-icon>
+                Share
+            </pc-dropdown-item>
+            <pc-dropdown-item value="compare">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="scale-balanced"
+                    slot="icon"
+                ></pc-icon>
+                Compare
+            </pc-dropdown-item>
+        </pc-dropdown>
     </footer>
 </pc-card>
 
 <style>
     .card-footer {
-        max-width: 300px;
+        max-inline-size: 300px;
     }
 
     .card-footer footer {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: var(--pc-spacing-xs);
+        gap: var(--pc-spacing-s);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
-### Images
+### Media
 
-Cards accept an `image` slot. The image is displayed at the top of the card and stretches to fit.
+Cards accept a `media` slot. The media is displayed at the top of the card and stretches to fit.
 
-<CodeDemo>
-{`<pc-card class="card-image">
+```demo
+<pc-card class="card-image">
     <img
-        slot="image"
-        src="https://placehold.co/300x200"
+        slot="media"
+        src="https://placehold.co/300x200/?text=300×200&font=montserrat"
         alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
     />
 
@@ -160,7 +245,61 @@ Cards accept an `image` slot. The image is displayed at the top of the card and 
 
 <style>
     .card-image {
-        max-width: 300px;
+        max-inline-size: 300px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
+
+### Variants
+
+Use the `variant` attribute to change the card’s variant.
+
+```demo
+<div class="pc-grid">
+    <pc-card variant="accent">
+        <img
+            slot="media"
+            src="https://placehold.co/300x200/?text=300×200&font=montserrat"
+            alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
+        />
+
+        Accent
+    </pc-card>
+    <pc-card variant="filled outlined">
+        <img
+            slot="media"
+            src="https://placehold.co/300x200/?text=300×200&font=montserrat"
+            alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
+        />
+
+        Filled + Outlined
+    </pc-card>
+    <pc-card variant="filled">
+        <img
+            slot="media"
+            src="https://placehold.co/300x200/?text=300×200&font=montserrat"
+            alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
+        />
+
+        Filled
+    </pc-card>
+    <pc-card variant="outlined">
+        <img
+            slot="media"
+            src="https://placehold.co/300x200/?text=300×200&font=montserrat"
+            alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
+        />
+
+        Outlined
+    </pc-card>
+    <pc-card variant="plain">
+        <img
+            slot="media"
+            src="https://placehold.co/300x200/?text=300×200&font=montserrat"
+            alt="A placeholder image with grey background and dark grey text in resolution 300 by 200 pixels"
+        />
+
+        Plain
+    </pc-card>
+</div>
+```

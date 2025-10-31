@@ -1,0 +1,82 @@
+:host {
+    display: inline-flex;
+    color: var(--pc-color-neutral-on-normal);
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    padding: var(--pc-spacing-s);
+    background-color: transparent;
+    color: inherit;
+    border: none;
+    border-radius: var(--pc-border-radius-m);
+    font-size: inherit;
+    cursor: pointer;
+    -webkit-appearance: none;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .icon-button:hover:not(.disabled) {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-hover)
+        );
+        color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
+    }
+}
+
+.icon-button:active:not(.disabled) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-fill-normal),
+        var(--pc-color-mix-active)
+    );
+    color: color-mix(in oklab, currentColor, var(--pc-color-mix-active));
+}
+
+.icon-button:focus-visible:not(.disabled) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-fill-normal),
+        var(--pc-color-mix-hover)
+    );
+    color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
+}
+
+.icon-button:focus {
+    outline: none;
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.icon-button:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.icon {
+    pointer-events: none;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

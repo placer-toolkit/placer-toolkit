@@ -1,0 +1,190 @@
+<div class="showcase">
+    <pc-comparer style="--divider-width: 0.25rem">
+        <iframe
+            id="before-frame"
+            src="/showcase"
+            tabindex="-1"
+            aria-hidden="true"
+            slot="before"></iframe>
+
+        <iframe
+            id="after-frame"
+            src="/showcase/?color-scheme=dark"
+            tabindex="-1"
+            aria-hidden="true"
+            slot="after"></iframe>
+    </pc-comparer>
+
+    <div class="showcase-controls">
+        <pc-tab-group>
+            <pc-tab slot="navigation" panel="before">Before</pc-tab>
+            <pc-tab slot="navigation" panel="after">After</pc-tab>
+
+            <pc-tab-panel name="before">
+                <div class="pc-stack">
+                    <pc-select name="theme" label="Theme" value="default">
+                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="utility">Utility</pc-option>
+                        <pc-option value="serene">Serene</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="palette"
+                        label="Colour palette"
+                        value="default"
+                    >
+                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="vibrant">Vibrant</pc-option>
+                        <pc-option value="muted">Muted</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="color-scheme"
+                        label="Colour scheme"
+                        value="light"
+                    >
+                        <pc-option value="light">Light</pc-option>
+                        <pc-option value="dark">Dark</pc-option>
+                    </pc-select>
+                </div>
+            </pc-tab-panel>
+            <pc-tab-panel name="after">
+                <div class="pc-stack">
+                    <pc-select name="theme" label="Theme" value="default">
+                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="utility">Utility</pc-option>
+                        <pc-option value="serene">Serene</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="palette"
+                        label="Colour palette"
+                        value="default"
+                    >
+                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="vibrant">Vibrant</pc-option>
+                        <pc-option value="muted">Muted</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="color-scheme"
+                        label="Colour scheme"
+                        value="dark"
+                    >
+                        <pc-option value="light">Light</pc-option>
+                        <pc-option value="dark">Dark</pc-option>
+                    </pc-select>
+                </div>
+            </pc-tab-panel>
+        </pc-tab-group>
+    </div>
+</div>
+
+<script>
+    import type { PcSelect } from "placer-toolkit/dist/components/select/select.js";
+
+    const beforeFrame = document.getElementById(
+        "before-frame",
+    ) as HTMLIFrameElement | null;
+    const afterFrame = document.getElementById(
+        "after-frame",
+    ) as HTMLIFrameElement | null;
+
+    function updateIframeSettings(
+        iframe: HTMLIFrameElement | null,
+        tabPanel: Element,
+    ) {
+        if (!iframe || !tabPanel || !iframe.contentWindow) {
+            return;
+        }
+
+        const selects = tabPanel.querySelectorAll("pc-select");
+        const settings: Record<string, string> = {};
+
+        selects.forEach((select: PcSelect) => {
+            const parameterName = select.getAttribute("name");
+            const parameterValue = select.value;
+
+            if (parameterName && parameterValue) {
+                settings[parameterName] = Array.isArray(parameterValue)
+                    ? parameterValue.join(",")
+                    : parameterValue;
+            }
+        });
+
+        iframe.contentWindow.postMessage(
+            { source: "showcase-settings", settings },
+            "*",
+        );
+    }
+
+    const beforePanel = document.querySelector('pc-tab-panel[name="before"]');
+
+    beforePanel?.querySelectorAll("pc-select").forEach((select) => {
+        select.addEventListener("pc-change", () => {
+            updateIframeSettings(beforeFrame, beforePanel);
+        });
+    });
+
+    const afterPanel = document.querySelector('pc-tab-panel[name="after"]');
+
+    afterPanel?.querySelectorAll("pc-select").forEach((select) => {
+        select.addEventListener("pc-change", () => {
+            updateIframeSettings(afterFrame, afterPanel);
+        });
+    });
+</script>
+
+<style>
+    .showcase {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: var(--pc-spacing-xl);
+        margin-block-end: var(--pc-spacing-xxl);
+    }
+
+    pc-comparer {
+        overflow: hidden;
+    }
+
+    pc-comparer,
+    pc-comparer > iframe {
+        inline-size: 100%;
+        block-size: 100%;
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    pc-comparer > iframe {
+        pointer-events: none;
+    }
+
+    .showcase-controls {
+        padding: var(--pc-spacing-l);
+        min-inline-size: 18rem;
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-raised),
+            transparent 40%
+        );
+        border-radius: var(--pc-border-radius-xl);
+        transition: box-shadow var(--pc-transition-slow) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        .showcase-controls:hover {
+            box-shadow: var(--pc-shadow-l);
+        }
+    }
+
+    pc-select::part(label) {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    @media screen and (max-width: 992px) {
+        .showcase {
+            flex-direction: column-reverse;
+        }
+    }
+</style>

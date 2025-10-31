@@ -8,9 +8,18 @@
 
 html,
 body {
-    height: 100%;
     margin: 0;
     padding: 0;
+    block-size: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-padding-block-start: 4.5rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* This is necessary to prevent double scrollbars from appearing in the Popup docs. */
+html {
+    overflow-y: hidden;
 }
 
 /* Layout container — Main grid */
@@ -21,29 +30,28 @@ body {
         "sidebar main";
     grid-template-columns: 300px 1fr;
     grid-template-rows: 3.5rem 1fr;
-    height: 100dvh;
-    overflow: hidden;
+    min-block-size: 100dvh;
 }
 
 /* Skip links */
 .skip-to-main-content {
     position: fixed;
-    top: var(--pc-spacing-l);
-    left: var(--pc-spacing-l);
+    inset-block-start: var(--pc-spacing-l);
+    inset-inline-start: var(--pc-spacing-l);
     z-index: 1000;
 }
 
 .skip-to-toc {
-    position: absolute;
-    top: calc(-1 * var(--pc-spacing-m));
-    left: calc(-6.5 * var(--pc-spacing-m));
-    z-index: 100;
+    position: fixed;
+    inset-block-start: var(--pc-spacing-xxxxxl);
+    inset-inline-start: var(--pc-spacing-xxxxxl);
+    z-index: 10000000;
 }
 
 .return-to-main-content {
     position: absolute;
-    top: var(--pc-spacing-m);
-    left: var(--pc-spacing-m);
+    inset-block-start: var(--pc-spacing-m);
+    inset-inline-start: var(--pc-spacing-m);
     z-index: 100;
 }
 
@@ -51,133 +59,186 @@ body {
 main {
     grid-area: main;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxxl);
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
-}
+    max-inline-size: 100%;
+    z-index: 1;
 
-main.no-overflow {
-    overflow: hidden;
-}
+    &:not(.hero) article > header,
+    &:not(.hero) article {
+        min-inline-size: 80ch;
+        max-inline-size: 80ch;
+    }
 
-main:not(main.hero) header {
-    max-width: 80ch;
-}
+    .pc-theme-utility &:not(.hero) article > header,
+    .pc-theme-utility &:not(.hero) article {
+        min-inline-size: 75ch;
+        max-inline-size: 75ch;
+    }
 
-main header h1 {
-    font-size: 2.5rem;
-    margin: 0;
-    margin-bottom: var(--pc-spacing-xl);
-}
+    .pc-theme-serene &:not(.hero) article > header,
+    .pc-theme-serene &:not(.hero) article {
+        min-inline-size: 70ch;
+        max-inline-size: 70ch;
+    }
 
-main:not(main.hero) article {
-    min-width: 80ch;
-    width: 80ch;
-    max-width: 80ch;
-}
+    & article > header h1 {
+        margin: 0;
+        margin-block-end: var(--pc-spacing-xl);
+        font-size: 2.5rem;
+    }
 
-main:not(main.hero) article pc-callout:not(.code-demo pc-callout) {
-    display: block;
-    margin-bottom: var(--pc-spacing-xl);
-}
+    &:not(.hero) article pc-callout:not(.code-demo pc-callout) {
+        display: block;
+        margin-block-end: var(--pc-spacing-xl);
+    }
 
-main:not(main.hero) article .reflects {
-    color: var(--pc-color-success-500);
-}
+    &:not(.hero) article .reflects {
+        color: var(--pc-color-success-50);
+    }
 
-main:not(main.hero) article .does-not-reflect {
-    color: var(--pc-color-danger-500);
+    &:not(.hero) article .does-not-reflect {
+        color: var(--pc-color-danger-50);
+    }
+
+    &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor {
+        margin-inline-start: var(--pc-spacing-s);
+        opacity: 1;
+        color: var(--pc-color-text-link);
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    @media (hover: hover) {
+        &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor:hover {
+            color: color-mix(
+                in oklab,
+                var(--pc-color-text-link),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
+    &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor:active {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-text-link),
+            var(--pc-color-mix-active)
+        );
+    }
+
+    &:not(.hero)
+        article
+        :is(h2, h3, h4, h5, h6):not(:hover)
+        .heading-anchor:not(:focus-visible) {
+        opacity: 0;
+    }
+
+    @media (hover: none) {
+        &:not(.hero)
+            article
+            :is(h2, h3, h4, h5, h6):not(:hover)
+            .heading-anchor {
+            opacity: 1;
+        }
+    }
 }
 
 .content-layout {
     display: grid;
+    align-items: flex-start;
     position: relative;
-    grid-template-columns: 1fr 250px;
-    gap: 2rem;
-    align-items: start;
+    grid-template-columns: 1fr 275px;
+    gap: 5.5rem;
 }
 
 /* Table of contents */
 .toc {
     position: sticky;
-    top: var(--pc-spacing-xl);
+    inset-block-start: calc(3.5rem + var(--pc-spacing-xxxl));
     line-height: 1.4;
-    border-left: 2px solid var(--pc-color-neutral-200);
-    padding-left: var(--pc-spacing-xl);
-    overflow-y: hidden;
+    border-inline-start: 0.125rem solid var(--pc-color-surface-border);
+    padding-inline-start: var(--pc-spacing-l);
 }
 
 .toc-heading:not(.toc-mobile .toc-heading) {
-    margin-bottom: 0;
+    margin-block-end: var(--pc-spacing-s);
+    font-size: var(--pc-font-size-m);
 }
 
 .toc-ul {
-    padding-left: var(--pc-spacing-xs);
+    margin-inline-start: 0;
     font-size: var(--pc-font-size-s);
     list-style: none;
 }
 
 .toc-item {
-    margin: 0.25rem 0;
-}
+    margin-block: 0.25rem;
+    margin-inline: 0;
 
-.toc-item.depth-3 {
-    margin-left: var(--pc-spacing-l);
-}
+    &.depth-3 {
+        margin-inline-start: var(--pc-spacing-m);
+    }
 
-.toc-item a {
-    color: var(--pc-color-neutral-600);
-    text-decoration: none;
-    transition: color var(--pc-transition-fast) ease-in-out;
-}
+    a {
+        display: inline-block;
+        color: var(--pc-color-text-quiet);
+        font-weight: var(--pc-font-weight-normal);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration: none;
+        max-inline-size: 100%;
+        transition: color var(--pc-transition-fast) ease-in-out;
 
-.toc-item a:hover {
-    color: var(--pc-color-neutral-700);
-}
+        @media (hover: hover) {
+            &:hover {
+                color: color-mix(
+                    in oklab,
+                    var(--pc-color-text-quiet),
+                    var(--pc-color-mix-hover)
+                );
+            }
+        }
 
-.toc-item a:active {
-    color: var(--pc-color-neutral-500);
-}
+        &:active {
+            color: color-mix(
+                in oklab,
+                var(--pc-color-text-quiet),
+                var(--pc-color-mix-active)
+            );
+        }
 
-.toc-item a.active {
-    color: var(--pc-color-primary-600);
-    font-weight: var(--pc-font-weight-semibold);
+        &.active {
+            color: var(--pc-color-primary-fill-loud);
+            font-weight: var(--pc-font-weight-semibold);
+        }
+    }
 }
 
 .toc-desktop {
     display: block;
 }
 
-.toc-desktop .toc-ul {
-    overflow: visible;
-}
-
 .toc-scroll-fade {
     position: relative;
-    max-height: 70dvh;
-    overflow: auto;
-    scrollbar-color: var(--pc-color-neutral-600) transparent;
-    scrollbar-width: thin;
-    mask-image: linear-gradient(
-        to bottom,
-        transparent,
-        var(--pc-color-neutral-0) 1rem,
-        var(--pc-color-neutral-0) calc(100% - 1rem),
-        transparent
-    );
-    mask-size: 100% 100%;
-    mask-repeat: no-repeat;
-    will-change: scroll-position;
+    max-block-size: 75dvh;
+}
+
+.hero-callout {
+    inline-size: 50vmax;
+}
+
+.content-layout .hero-callout {
+    inline-size: 100%;
 }
 
 /* Desktop styles */
 @media screen and (min-width: 1441px) {
-    .pc-mobile-only,
     .toc-mobile {
         display: none;
     }
@@ -185,7 +246,6 @@ main:not(main.hero) article .does-not-reflect {
 
 /* Mobile styles */
 @media screen and (max-width: 1440px) {
-    .pc-desktop-only,
     .toc-desktop {
         display: none;
     }
@@ -200,28 +260,50 @@ main:not(main.hero) article .does-not-reflect {
 
     main {
         padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxl);
-    }
 
-    main .content-layout {
-        grid-template-columns: 1fr;
-    }
+        &:not(.hero) article > header,
+        &:not(.hero) article {
+            min-inline-size: 100% !important;
+            max-inline-size: 100% !important;
+        }
 
-    main:not(main.hero) article {
-        min-width: 100%;
-        width: 100%;
-        max-width: 100%;
+        .content-layout {
+            grid-template-columns: 1fr;
+        }
     }
 
     .toc-mobile {
         display: block;
-        margin-bottom: var(--pc-spacing-xl);
+        margin-block-end: var(--pc-spacing-xl);
+
+        &::part(summary) {
+            font-weight: var(--pc-font-weight-bold);
+        }
+
+        ul {
+            margin-block-start: -1rem;
+        }
     }
 
-    .toc-mobile::part(summary) {
-        font-weight: var(--pc-font-weight-bold);
+    .toc-mobile .toc-ul {
+        line-height: var(--pc-line-height-dense);
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .hero-callout {
+        inline-size: 100%;
     }
 
-    .toc-mobile ul {
-        margin-top: -16px;
+    .hero-callout .pc-split {
+        flex-direction: column;
+    }
+
+    .hero-callout .pc-split p {
+        text-align: center;
+    }
+
+    .hero-callout .pc-split pc-button {
+        inline-size: 100%;
     }
 }

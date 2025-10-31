@@ -1,5 +1,3 @@
-import { getBasePath } from "./utilities/base-path.js";
-
 const observer = new MutationObserver((mutations) => {
     for (const { addedNodes } of mutations) {
         for (const node of Array.from(addedNodes)) {
@@ -35,19 +33,28 @@ function register(tagName: string): Promise<void> {
     }
 
     const tagWithoutPrefix = tagName.replace(/^pc-/i, "");
-    const path = getBasePath(
-        `components/${tagWithoutPrefix}/${tagWithoutPrefix}.js`,
-    );
+    const path = `./components/${tagWithoutPrefix}/${tagWithoutPrefix}.js`;
 
     return new Promise((resolve, reject) => {
         import(/* @vite-ignore */ path)
-            .then(() => resolve())
+            .then(() => {
+                document.querySelectorAll(tagName).forEach((element) => {
+                    customElements.upgrade(element);
+                });
+                resolve();
+            })
             .catch((error) => {
                 reject(new Error(`Unable to auto‐load <${tagName}>: ${error}`));
             });
     });
 }
 
-discover(document.body);
+if (document.readyState !== "loading") {
+    discover(document.body);
+} else {
+    document.addEventListener("DOMContentLoaded", () => {
+        discover(document.body);
+    });
+}
 
 observer.observe(document.documentElement, { subtree: true, childList: true });

@@ -1,0 +1,142 @@
+---
+title: Radio Group
+description: Radio groups are used to group multiple radios so they function as a single form control.
+---
+
+Radio groups are used to group multiple [radios](/components/radio) so they function as a single form control.
+
+```demo:open
+<pc-radio-group label="Select an option" name="group-1" value="option-1">
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2">Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
+## Demos
+
+### Hints
+
+Add a descriptive hint to a radio group with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
+
+```demo
+<pc-radio-group
+    label="Select an option"
+    hint="Select an option that makes you proud."
+    name="group-1"
+    value="option-1"
+>
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2">Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
+### Disabling radios
+
+[Radios](/components/radio) can be disabled by adding the `disabled` attribute to the respective options inside the radio group.
+
+```demo
+<pc-radio-group label="Select an option" name="group-1" value="option-1">
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2" disabled>Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
+### Size
+
+The size of [radios](/components/radio) will be determined by the radio group’s `size` attribute.
+
+```demo
+<pc-radio-group
+    class="radio-group-size"
+    size="medium"
+    label="Select an option"
+    value="medium"
+>
+    <pc-radio value="small">Small</pc-radio>
+    <pc-radio value="medium">Medium</pc-radio>
+    <pc-radio value="large">Large</pc-radio>
+</pc-radio-group>
+
+<script>
+    const radioGroup = document.querySelector(".radio-group-size");
+
+    radioGroup.addEventListener("pc-change", () => {
+        radioGroup.size = radioGroup.value;
+    });
+</script>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="sliders"
+        slot="icon"
+    ></pc-icon>
+    [Radios](/components/radio) also have a `size` attribute. This can be useful in certain situations, but it will be ignored when used inside of a radio group.
+</pc-callout>
+
+### Required
+
+Set the `required` attribute to make selecting an option mandatory. If a value hasn’t been selected, it will prevent the form from submitting and display an error message.
+
+```demo
+<form class="radio-group-required">
+    <pc-radio-group label="Select an option" name="group-1" required>
+        <pc-radio value="option-1">Option 1</pc-radio>
+        <pc-radio value="option-2">Option 2</pc-radio>
+        <pc-radio value="option-3">Option 3</pc-radio>
+    </pc-radio-group>
+    <br />
+    <pc-button appearance="primary" type="submit">Submit</pc-button>
+    <pc-button appearance="neutral" type="reset">Reset</pc-button>
+</form>
+
+<script>
+    const form = document.querySelector(".radio-group-required");
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("All fields are valid!");
+    });
+</script>
+```
+
+### Custom validity
+
+Use the `setCustomValidity()` method to set a custom validation message. This will prevent the form from submitting and make the browser display the error message you provide. If you want to restore the default validation message, pass an empty string to the `setCustomValidity()` method.
+
+```demo
+<form class="radio-group-custom-validity">
+    <pc-radio-group label="Select an option" name="group-1" value="option-1">
+        <pc-radio value="not-me">Not me</pc-radio>
+        <pc-radio value="me-neither">Me neither</pc-radio>
+        <pc-radio value="select-me">Select me</pc-radio>
+    </pc-radio-group>
+    <br />
+    <pc-button appearance="primary" type="submit">Submit</pc-button>
+</form>
+
+<script>
+    const form = document.querySelector(".radio-group-custom-validity");
+    const radioGroup = form.querySelector("pc-radio-group");
+    const errorMessage = "You must select the last option.";
+
+    customElements.whenDefined("pc-radio").then(() => {
+        radioGroup.setCustomValidity(errorMessage);
+    });
+
+    form.addEventListener("pc-change", () => {
+        const isValid = radioGroup.value === "select-me";
+        radioGroup.setCustomValidity(isValid ? "" : errorMessage);
+    });
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("All fields are valid!");
+    });
+</script>
+```

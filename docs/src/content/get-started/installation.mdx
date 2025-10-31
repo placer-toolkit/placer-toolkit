@@ -3,71 +3,110 @@ title: Installation
 description: You can load Placer Toolkit via the CDN or by installing it locally. We have many options to install Placer Toolkit depending on what setup you have.
 ---
 
-import CodeBlock from "../../components/CodeBlock.astro";
-
 You can load Placer Toolkit via the CDN or by installing it locally. We have many options to install Placer Toolkit depending on what setup you have.
 
-## CDN installation <pc-rating label="(Easy)" value="1" max="3" readonly style="--icon-size: var(--pc-font-size-xxl); vertical-align: -2px"></pc-rating>
+## CDN installation
 
 <pc-tab-group>
     <pc-tab slot="navigation" panel="autoloader">Autoloader</pc-tab>
     <pc-tab slot="navigation" panel="standard-loader">Standard loader</pc-tab>
 
     <pc-tab-panel name="autoloader">
-        The experimental autoloader is the easiest and most efficient way to use Placer Toolkit. A lightweight script watches the DOM for unregistered Placer elements and lazy‐loads them for you—even if they’re added dynamically.
+        The experimental autoloader is the easiest and most efficient way to use Placer Toolkit. A lightweight script watches the DOM for unregistered Placer Toolkit elements and lazy‐loads them for you—even if they’re added dynamically.
 
-        While convenient, autoloading may lead to a Flash of Undefined Custom Elements (FOUCE). We added `style-utilities.css` in this code snippet to alleviate it and import the rest of the style utilities.
+        While convenient, autoloading may lead to a Flash of Undefined Custom Elements (FOUCE). Add the `pc-cloak` class to the root HTML element to apply the FOUCE patch globally.
 
-        <CodeBlock language="html">
-        {`<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin="anonymous"
-/>
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap"
-/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/default.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/native-styles.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/style-utilities.css" />
-<script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/placer-autoloader.js"></script>`}
-        </CodeBlock>
-
-        Also add the `pc-cloak` class to the `<html>` tag to apply the FOUCE patch.
-
-        We know. This code snippet is quite long _just_ to get started with Placer Toolkit, but it allows for more flexibility. For example you want to use your own fonts, just remove those Google Fonts lines and load your own, saves bandwidth and you don’t unnecessarily load the default fonts.
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/placer-autoloader.js"></script>
+        ```
     </pc-tab-panel>
     <pc-tab-panel name="standard-loader">
-        The standard loader registers all web components in Placer Toolkit up front. If you’re only using a handful of components though, it will be much more efficient to stick with the autoloader. Alternatively, you can also [cherry pick](#cherry-picking) components if you only want to import specific ones up front. Style utilities are also imported.
+        The standard loader registers all web components in Placer Toolkit up front. If you’re only using a handful of components though, it will be much more efficient to stick with the autoloader. Alternatively, you can also [cherry pick](#cherry-picking) components if you only want to import specific ones up front. Remember to add the `pc-cloak` class to the root HTML element to apply the FOUCE patch globally.
 
-        <CodeBlock language="html">
-        {`<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin="anonymous"
-/>
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap"
-/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/default.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/native-styles.css" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/style-utilities.css" />
-<script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/placer.js"></script>`}
-        </CodeBlock>
-
-        Also add the `pc-cloak` class to the `<html>` tag to apply the FOUCE patch.
-
-        We know. This code snippet is quite long _just_ to get started with Placer Toolkit, but it allows for more flexibility. For example you want to use your own fonts, just remove those Google Fonts lines and load your own, saves bandwidth and you don’t unnecessarily load the default fonts.
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/placer.js"></script>
+        ```
     </pc-tab-panel>
 </pc-tab-group>
 
 Now you can [start using Placer Toolkit](/get-started/usage)!
 
-## npm installation <pc-rating label="(Medium)" value="2" max="3" readonly style="--icon-size: var(--pc-font-size-xxl); vertical-align: -2px"></pc-rating>
+## Using Font Awesome Kit codes
+
+Font Awesome Pro and Pro+ users can set their Kit code to unlock the premium set of icons. You can provide it by adding the `data-fa-kit-code` attribute to any element on the page or by calling the `setKitCode()` function.
+
+```html
+<!-- Option 1: The data-fa-kit-code attribute -->
+<script
+    type="module"
+    src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/placer-autoloader.js"
+    data-fa-kit-code="42deadbeef"
+></script>
+
+<!-- Option 2: The setKitCode() function -->
+<script type="module">
+    import { setKitCode } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/kit-code.js";
+
+    setKitCode("42deadbeef");
+</script>
+```
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="shield-halved"
+        slot="icon"
+    ></pc-icon>
+    Font Awesome Free icons are fetched from jsDelivr, which is GDPR compliant. Font Awesome Pro and Pro+ icons are fetched from Font Awesome’s Kit CDN, which sends users’ IP addresses to Font Awesome’s servers to count pageviews. IP addresses are considered personal data under GDPR.
+
+    If you use FA Pro/Pro+, **you** are responsible for:
+
+    - Disclosing this in your website’s privacy policy
+    - Ensuring compliance with GDPR and other privacy laws
+    - Having a valid legal basis for this data processing
+
+    See the [Placer Toolkit privacy policy](/legal/privacy) for more information.
+</pc-callout>
+
+## Advanced setup
+
+The autoloader is the easiest way to use Placer Toolkit, but different projects (or your own preferences) may require different installation methods.
+
+### Cherry picking from the CDN
+
+Cherry picking will only load the components you need up front, while limiting the number of files the browser has to download. The disadvantage is that you need to import each individual component on each page it’s used. Additionally, you must include `placer.css` or other CSS files to style any imported components.
+
+Here’s an example that only loads the Button component.
+
+```html
+<link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/placer.css" />
+
+<script type="module">
+    import "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/components/button/button.js";
+
+    // <pc-button> is registered and ready to use!
+</script>
+```
+
+You can copy and paste the code to import a code from the **Importing** section of that component’s documentation. Note that some components have dependencies that are automatically imported when you cherry pick components. If a component has dependencies, they will be listed in the **Dependencies** section of its docs.
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="file-circle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    You will see files named `chunk.[hash].js` in the `chunks` directory. Never import these files directly, as they are automatically generated and change from version to version.
+</pc-callout>
+
+### npm installation
 
 If you don’t or are unable to use the CDN, you can install Placer Toolkit from npm by installing it via the npm registry or using our provided tarball file.
 
@@ -78,42 +117,60 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
     <pc-tab-panel name="npm-registry">
         If you want to use the npm registry, you can use this command to install the package.
 
-        <CodeBlock language="bash">
-        {`npm install placer-toolkit --save`}
-        </CodeBlock>
+        <pc-tab-group>
+            <pc-tab slot="navigation" panel="npm">npm</pc-tab>
+            <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
+            <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
 
-        This will install the latest stable version in your project.
+            <pc-tab-panel name="npm">
+                ```bash
+                npm install placer-toolkit
+                ```
+            </pc-tab-panel>
+            <pc-tab-panel name="yarn">
+                ```bash
+                yarn add placer-toolkit
+                ```
+            </pc-tab-panel>
+            <pc-tab-panel name="pnpm">
+                ```bash
+                pnpm add placer-toolkit
+                ```
+            </pc-tab-panel>
+        </pc-tab-group>
 
-        It’s up to you to make the source files available to your app. One way to do this is to create a route in your app called `/placer` that serves static files from `node_modules/placer-toolkit`.
+        This will install the latest version in your project.
 
-        Once you’ve done that, add the following tags to your page. Make sure to update `href` and `src` so they point to the route you created.
+        Once you’ve done that, import the components you need.
 
-        <CodeBlock language="html">
-        {`<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin="anonymous"
-/>
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap"
-/>
-<link rel="stylesheet" href="/placer/dist/default.css" />
-<link rel="stylesheet" href="/placer/dist/native-styles.css" />
-<link rel="stylesheet" href="/placer/dist/style-utilities/style-utilities.css" />
-<script type="module" src="/placer/dist/placer.js"></script>`}
-        </CodeBlock>
+        ```javascript
+        // Import default fonts
+        import "https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap";
 
-        Alternatively, you can use [a bundler](#bundling).
+        // Option 1: Import all Placer Toolkit styles
+        import "placer-toolkit/dist/styles/placer.css";
+
+        // Option 2: Only import the default theme
+        import "placer-toolkit/dist/styles/themes/default.css";
+
+        // Option 1: Import all components (may increase load times)
+        import "placer-toolkit";
+
+        // Option 2: Only import the components you need
+
+        // Import <pc-button>
+        import "placer-toolkit/dist/components/button/button.js";
+
+        // Import <pc-input>
+        import "placer-toolkit/dist/components/input/input.js";
+        ```
     </pc-tab-panel>
     <pc-tab-panel name="tarball-file">
         If you want to use the tarball file, download the tarball file into the root of your project first.
 
         <pc-button
-            href="https://github.com/randomguy-2650/placer-toolkit/releases/download/0.5.1/placer-toolkit-0.5.1.tgz"
+            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.1/placer-toolkit-1.0.0-alpha.1.tgz"
             appearance="primary"
-            size="large"
             pill
             download
         >
@@ -130,193 +187,61 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
 
         Then, install it from the tarball file with this command.
 
-        <CodeBlock language="bash">
-        {`npm install placer-toolkit-0.5.1.tgz --save`}
-        </CodeBlock>
+        <pc-tab-group>
+            <pc-tab slot="navigation" panel="npm">npm</pc-tab>
+            <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
+            <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
 
-        It’s up to you to make the source files available to your app. One way to do this is to create a route in your app called `/placer` that serves static files from `node_modules/placer-toolkit`.
+            <pc-tab-panel name="npm">
+                ```bash
+                npm install placer-toolkit-1.0.0-alpha.1.tgz
+                ```
+            </pc-tab-panel>
+            <pc-tab-panel name="yarn">
+                ```bash
+                yarn add placer-toolkit-1.0.0-alpha.1.tgz
+                ```
+            </pc-tab-panel>
+            <pc-tab-panel name="pnpm">
+                ```bash
+                pnpm add placer-toolkit-1.0.0-alpha.1.tgz
+                ```
+            </pc-tab-panel>
+        </pc-tab-group>
 
-        Once you’ve done that, add the following tags to your page. Make sure to update `href` and `src` so they point to the route you created.
+        Once you’ve done that, import the components you need.
 
-        <CodeBlock language="html">
-        {`<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin="anonymous"
-/>
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap"
-/>
-<link rel="stylesheet" href="/placer/dist/default.css" />
-<link rel="stylesheet" href="/placer/dist/native-styles.css" />
-<link rel="stylesheet" href="/placer/dist/style-utilities/style-utilities.css" />
-<script type="module" src="/placer/dist/placer.js"></script>`}
-        </CodeBlock>
+        ```javascript
+        // Import default fonts
+        import "https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap";
 
-        Alternatively, you can use [a bundler](#bundling).
+        // Option 1: Import all Placer Toolkit styles
+        import "placer-toolkit/dist/styles/placer.css";
+
+        // Option 2: Only import the default theme
+        import "placer-toolkit/dist/styles/themes/default.css";
+
+        // Option 1: Import all components (may increase load times)
+        import "placer-toolkit";
+
+        // Option 2: Only import the components you need
+
+        // Import <pc-button>
+        import "placer-toolkit/dist/components/button/button.js";
+
+        // Import <pc-input>
+        import "placer-toolkit/dist/components/input/input.js";
+        ```
     </pc-tab-panel>
 </pc-tab-group>
 
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="circle-info"
-        slot="icon"
-    ></pc-icon>
-    For clarity, the docs will usually show imports from the CDN. If you’re not using the CDN, a module resolver or bundler, you’ll need to adjust these paths to point to the folder Placer Toolkit is in.
-</pc-callout>
+### What’s the difference between `cdn` and `dist`?
 
-## Cherry picking
+You’ll notice that the CDN links all start with `/cdn/` and npm imports with `/dist/`. The `/cdn/` files are bundled separately from the `/dist/` files. The `/cdn/` files come pre‐bundled, which means all dependencies are inlined, so you don’t need to worry about loading additional libraries. The `/dist/` files **do not** come pre‐bundled, allowing your bundler of choice to more efficiently dedupe dependencies, resulting in smaller bundles and optimal code sharing.
 
-Cherry picking can be done from [the CDN](#cdn-installation) or from [npm](#npm-installation). This approach will only load the components you need up front, while limiting the number of files the browser has to download. The disadvantage to this approach is that you have to import each individual component.
+TL;DR:
 
-Here’s an example that only loads the Button component. Again, if you’re not using a module resolver, you’ll need to adjust the path to point to the folder Placer Toolkit is in.
+- `/cdn/` is for CDN users
+- `/dist/` is for npm users
 
-<CodeBlock language="html">
-{`<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin="anonymous"
-/>
-<link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quicksand:wght@300..700&display=swap"
-/>
-<link rel="stylesheet" href="/placer/dist/default.css" />
-<link rel="stylesheet" href="/placer/dist/native-styles.css" />
-<link rel="stylesheet" href="/placer/dist/style-utilities/style-utilities.css" />
-
-<script type="module" data-placer="/path-to-placer-toolkit/dist">
-    import "placer-toolkit/dist/components/button/button.js";
-
-    // <pc-button> is registered and ready to use!
-</script>`}
-</CodeBlock>
-
-You can copy and paste the code to import a component from the “Importing” section of the component’s documentation. Note that some components have dependencies that are automatically imported when you cherry pick. If a component has dependencies, they will be listed in the “Dependencies” section of its docs.
-
-<pc-callout appearance="warning">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="triangle-exclamation"
-        slot="icon"
-    ></pc-icon>
-    Never cherry pick components or utilities from `placer.js` as this will cause the browser to load the entire library. Instead, cherry pick from specific modules as shown above.
-</pc-callout>
-
-## Bundling <pc-rating label="(Hard)" value="3" max="3" readonly style="--icon-size: var(--pc-font-size-xxl); vertical-align: -2px"></pc-rating>
-
-Placer Toolkit is distributed as a collection of standard ES modules that [all modern browsers can understand](https://caniuse.com/es6-module). However, importing a lot of modules can result in a lot of HTTP requests and can potentially longer load times. Using a CDN can alleviate this, but some users may wish to further optimise their imports with a bundler.
-
-To use Placer Toolkit with a bundler, first install Placer Toolkit along with your bundler of choice.
-
-<CodeBlock language="bash">
-{`npm install placer-toolkit --save`}
-</CodeBlock>
-
-Now it’s time to configure your bundler! Configurations vary for each tool, so we give you examples to help you out.
-
-<pc-tab-group>
-    <pc-tab slot="navigation" panel="webpack">
-        <span>Webpack (Example)</span>
-    </pc-tab>
-    <pc-tab slot="navigation" panel="rollup">
-        <span>Rollup (Example)</span>
-    </pc-tab>
-
-    <pc-tab-panel name="webpack">
-        <CodeBlock language="javascript">
-        {`const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
-module.exports = {
-    entry: "./src/index.js",
-    output: {
-        filename: "main.js",
-        path: path.resolve(__dirname, "dist"),
-    },
-    module: {
-        rules: [
-            {
-                test: /\\.css$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader"],
-            },
-        ],
-    },
-    plugins: [
-        new MiniCssExtractPlugin(),
-        new CopyPlugin({
-            patterns: [
-                {
-                    from: path.resolve(__dirname, "node_modules/placer-toolkit/dist/assets"),
-                    to: path.resolve(__dirname, "dist/placer-toolkit/assets"),
-                },
-            ],
-        }),
-    ],
-};`}
-        </CodeBlock>
-    </pc-tab-panel>
-    <pc-tab-panel name="rollup">
-        <CodeBlock language="javascript">
-        {`import path from "path";
-import commonjs from "@rollup/plugin-commonjs";
-import copy from "rollup-plugin-copy";
-import css from "rollup-plugin-css-only"
-import resolve from "@rollup/plugin-node-resolve";
-
-export default {
-    input: "src/index.js",
-    output: [{
-        dir: path.resolve(__dirname, "dist"),
-        format: "es",
-    }],
-    plugins: [
-        resolve(),
-        commonjs(),
-        css({
-            output: "bundle.css",
-        }),
-        copy({
-            copyOnce: true,
-            targets: [
-                {
-                    src: path.resolve(__dirname, "node_modules/placer-toolkit/dist/assets"),
-                    dest: path.resolve(__dirname, "dist/placer-toolkit"),
-                },
-            ],
-        }),
-    ],
-};`}
-        </CodeBlock>
-    </pc-tab-panel>
-</pc-tab-group>
-
-Once your bundler is configured, you’ll be able to import Placer Toolkit components and utilities.
-
-<CodeBlock language="javascript">
-{`import "placer-toolkit/dist/default.css";
-import "placer-toolkit/dist/native-styles.css";
-import "placer-toolkit/dist/components/button/button.js";
-import "placer-toolkit/dist/components/icon/icon.js";
-import "placer-toolkit/dist/components/input/input.js";
-import "placer-toolkit/dist/components/rating/rating.js";
-
-// <pc-button>, <pc-icon>, <pc-input> and <pc-rating> are registered and are ready to use!`}
-</CodeBlock>
-
-<pc-callout appearance="warning">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="triangle-exclamation"
-        slot="icon"
-    ></pc-icon>
-    Component modules include side effects for registration purposes. Because of this, importing directly from `placer-toolkit` may result in a larger bundle size than necessary. For optimal tree shaking, always cherry pick, i.e. import components and utilities from their respective files, as shown above.
-</pc-callout>
+This change was introduced in 1.0.0-alpha.1 to fix `tslib` bare module specifier errors in 0.5.1.

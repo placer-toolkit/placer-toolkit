@@ -3,12 +3,10 @@ title: Callout
 description: Callouts are used to display important messages inline.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Callouts are used to display important messages inline.
 
-<CodeDemo open>
-{`<pc-callout>
+```demo:open
+<pc-callout>
     <pc-icon
         library="default"
         icon-style="solid"
@@ -16,8 +14,8 @@ Callouts are used to display important messages inline.
         slot="icon"
     ></pc-icon>
     This is a standard callout. You can customise its content and even the icon.
-</pc-callout>`}
-</CodeDemo>
+</pc-callout>
+```
 
 ## Demos
 
@@ -25,8 +23,8 @@ Callouts are used to display important messages inline.
 
 Set the `appearance` attribute to change the callout’s appearance.
 
-<CodeDemo>
-{`<pc-callout appearance="primary">
+```demo
+<pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
@@ -87,15 +85,119 @@ Set the `appearance` attribute to change the callout’s appearance.
     ></pc-icon>
     <strong>Your account has been deleted</strong><br />
     We’re very sorry to see you go!
-</pc-callout>`}
-</CodeDemo>
+</pc-callout>
+```
 
-### Without icons
+### Variants
+
+Use the `variant` attribute to change the callout’s variant.
+
+```demo
+<pc-callout appearance="primary" variant="accent">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="square-check"
+        slot="icon"
+    ></pc-icon>
+    This <strong>accent</strong> callout draws attention.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="primary" variant="filled outlined">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="fill-drip"
+        slot="icon"
+    ></pc-icon>
+    This callout is both <strong>filled</strong> and <strong>outlined</strong>.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="primary" variant="filled">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="fill"
+        slot="icon"
+    ></pc-icon>
+    This callout is only <strong>filled</strong>.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="primary" variant="outlined">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="lines-leaning"
+        slot="icon"
+    ></pc-icon>
+    Here’s an <strong>outlined</strong> callout.
+</pc-callout>
+
+<br />
+
+<pc-callout appearance="primary" variant="plain">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="font"
+        slot="icon"
+    ></pc-icon>
+    No bells and whistles on this <strong>plain</strong> callout.
+</pc-callout>
+```
+
+### Sizes
+
+Use the `size` attribute to change the callout’s size.
+
+```demo
+<pc-callout size="large">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    This is meant to be <strong>very</strong> emphasised.
+</pc-callout>
+
+<br />
+
+<pc-callout size="medium">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    This is a normal‐sized callout.
+</pc-callout>
+
+<br />
+
+<pc-callout size="small">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    Just a small tip!
+</pc-callout>
+```
+
+### No icons
 
 Icons are optional. Simply omit the `icon` slot if you don’t want them.
 
-<CodeDemo>
-{`<pc-callout appearance="primary">
+```demo
+<pc-callout appearance="primary">
     Nothing fancy here, just a simple callout.
-</pc-callout>`}
-</CodeDemo>
+</pc-callout>
+```

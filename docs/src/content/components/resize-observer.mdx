@@ -1,17 +1,16 @@
 ---
 title: Resize Observer
+description: The Resize Observer component offers a thin, declarative interface to the ResizeObserver API.
 ---
-
-import CodeDemo from "../../components/CodeDemo.astro";
 
 The Resize Observer component offers a thin, declarative interface to the [`ResizeObserver` API](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver).
 
 The resize observer will report changes to the dimensions of the elements it wraps through the `pc-resize` event. When emitted, a collection of [`ResizeObserverEntry`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserverEntry) objects will be attached to `event.detail` that contains the target element and information about its dimensions.
 
-<CodeDemo open>
-{`<div class="resize-observer-overview">
+```demo:open
+<div class="resize-observer-overview">
     <pc-resize-observer>
-        <span>Resize this box and watch the console ↘️</span>
+        <span>Resize this box and watch the console ➡️</span>
     </pc-resize-observer>
 </div>
 
@@ -32,10 +31,12 @@ The resize observer will report changes to the dimensions of the elements it wra
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: var(--pc-spacing-xxxl) var(--pc-spacing-xxl);
-        border: 2px solid var(--pc-input-border-color);
+        padding-block: var(--pc-spacing-xxxl);
+        padding-inline: var(--pc-spacing-xxl);
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
         border-radius: var(--pc-border-radius-l);
         overflow: auto;
     }
-</style>`}
-</CodeDemo>
+</style>
+```

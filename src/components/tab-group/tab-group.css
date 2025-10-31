@@ -1,0 +1,212 @@
+:host {
+    --indicator-color: var(--pc-color-primary-fill-loud);
+    --track-width: 4px;
+
+    display: block;
+}
+
+.tab-group {
+    display: flex;
+    border-radius: 0;
+}
+
+.tabs {
+    display: flex;
+    position: relative;
+}
+
+.indicator {
+    position: absolute;
+    transition: all var(--pc-transition-medium) ease-in-out;
+}
+
+.has-scroll-controls .navigation-container {
+    position: relative;
+    padding-inline: calc(var(--pc-spacing-xxxl) + var(--pc-spacing-xs));
+}
+
+.has-scroll-controls .scroll-button-start-hidden,
+.has-scroll-controls .scroll-button-end-hidden {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.navigation-container,
+.navigation {
+    outline: none;
+}
+
+.body {
+    display: block;
+}
+
+.scroll-button {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset-block: 0;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+        opacity var(--pc-transition-fast) ease-in-out,
+        visibility 0s ease-in-out var(--pc-transition-fast);
+}
+
+.scroll-button-start {
+    inset-inline-start: 0;
+}
+
+.scroll-button-end {
+    inset-inline-end: 0;
+}
+
+.is-rtl .scroll-button-start {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+}
+
+.is-rtl .scroll-button-end {
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+}
+
+.top {
+    flex-direction: column;
+}
+
+.top .navigation-container {
+    order: 1;
+}
+
+.top .navigation {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.top .navigation::-webkit-scrollbar {
+    inline-size: 0;
+    block-size: 0;
+}
+
+.top .tabs {
+    position: relative;
+    flex-direction: row;
+    flex: 1 1 auto;
+}
+
+.top .indicator {
+    inset-block-end: 0;
+    min-block-size: var(--track-width);
+    background-color: var(--indicator-color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.top .body {
+    order: 2;
+}
+
+.top ::slotted(pc-tab-panel) {
+    padding-block: var(--pc-spacing-m);
+}
+
+.bottom {
+    flex-direction: column;
+}
+
+.bottom .navigation-container {
+    order: 2;
+}
+
+.bottom .navigation {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.bottom .tabs {
+    position: relative;
+    flex-direction: row;
+    flex: 1 1 auto;
+}
+
+.bottom .indicator {
+    inset-block-start: 0;
+    min-block-size: var(--track-width);
+    background-color: var(--indicator-color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.bottom .body {
+    order: 1;
+}
+
+.bottom ::slotted(pc-tab-panel) {
+    padding-block: var(--pc-spacing-m);
+}
+
+.start {
+    flex-direction: row;
+}
+
+.start .navigation-container {
+    order: 1;
+}
+
+.start .tabs {
+    flex-direction: column;
+    flex: 0 0 auto;
+}
+
+.start .indicator {
+    inset-inline-end: calc(-1 * var(--track-width));
+    min-inline-size: var(--track-width);
+    background-color: var(--indicator-color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.start .body {
+    flex: 1 1 auto;
+    order: 2;
+}
+
+.start ::slotted(pc-tab-panel) {
+    padding: 0 var(--pc-spacing-m);
+}
+
+.end {
+    flex-direction: row;
+}
+
+.end .navigation-container {
+    order: 2;
+}
+
+.end .tabs {
+    flex-direction: column;
+    flex: 0 0 auto;
+}
+
+.end .indicator {
+    inset-inline-start: calc(-1 * var(--track-width));
+    min-inline-size: var(--track-width);
+    background-color: var(--indicator-color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.end.is-rtl .indicator {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+}
+
+.end .body {
+    flex: 1 1 auto;
+    order: 1;
+}
+
+.end ::slotted(pc-tab-panel) {
+    padding-inline: var(--pc-spacing-m);
+}

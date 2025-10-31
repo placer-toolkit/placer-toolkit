@@ -4,184 +4,220 @@ import crypto from "node:crypto";
 const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
 ---
 
-<button
-    id="theme-toggle"
-    aria-label="Toggle theme"
-    aria-live="polite"
->
-    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24">
-        <mask class="moon" id={id}>
-            <rect x="0" y="0" width="100%" height="100%" fill="#fff"></rect>
-            <circle cx="24" cy="10" r="6" fill="#000"></circle>
-        </mask>
-        <circle class="sun" cx="12" cy="12" r="6" mask={`url(#${id})`}></circle>
-        <g class="sun-beams" stroke="currentColor">
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </g>
-    </svg>
-</button>
+<pc-dropdown class="theme-selector" value="default">
+    <pc-button size="small" variant="outlined" slot="trigger">
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="solid"
+            name="paintbrush"></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="default">Default</pc-dropdown-item>
+    <pc-dropdown-item value="utility">Utility</pc-dropdown-item>
+    <pc-dropdown-item value="serene">Serene</pc-dropdown-item>
+</pc-dropdown>
+
+<pc-button class="color-scheme-toggle" variant="outlined" size="small">
+    <pc-icon
+        class="color-scheme-icon icon-expand"
+        library="default"
+        icon-style="solid"
+        name="circle-half-stroke"
+        label="System theme"></pc-icon>
+</pc-button>
 
 <script>
-    const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
-    const getPreferred = () => (prefersLight.matches ? "light" : "dark");
+    import type { PcDropdown } from "placer-toolkit/dist/components/dropdown/dropdown.js";
+    import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
 
-    function parseTheme(value: string) {
-        return ["light", "dark", "auto"].includes(value) ? value : "auto";
+    let currentTheme: "light" | "dark" | null = null;
+
+    function isEditableInPath(path: EventTarget[]) {
+        return path.some((element) => {
+            const tag = (element as HTMLElement)?.tagName?.toLowerCase();
+            return (
+                tag === "textarea" ||
+                (tag === "input" &&
+                    !["checkbox", "radio"].includes(
+                        (element as HTMLInputElement).type,
+                    )) ||
+                (element as HTMLElement)?.isContentEditable
+            );
+        });
     }
 
-    function getStoredTheme() {
-        return parseTheme(localStorage.getItem("saved-theme") ?? "");
+    function parseTheme(value: string | null): "light" | "dark" | null {
+        if (value === "light" || value === "dark") {
+            return value;
+        }
+
+        return null;
     }
 
-    function applyTheme(theme: string) {
-        const effectiveTheme = theme === "auto" ? getPreferred() : theme;
+    function parseStyleTheme(value: string) {
+        return ["default", "utility", "serene"].includes(value)
+            ? value
+            : "default";
+    }
+
+    function getStoredTheme(): "light" | "dark" | null {
+        const stored = localStorage.getItem("saved-theme");
+        return stored ? parseTheme(stored) : null;
+    }
+
+    function updateIcon(theme: "light" | "dark" | null) {
+        const icon = document.querySelector(".color-scheme-icon") as PcIcon;
+
+        if (!icon) {
+            return;
+        }
+
+        if (theme === "light") {
+            icon.name = "sun";
+        } else if (theme === "dark") {
+            icon.name = "moon";
+        } else {
+            icon.name = "circle-half-stroke";
+        }
+    }
+
+    function applyColorTheme(theme: "light" | "dark" | null) {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+        const effectiveTheme =
+            theme ?? (prefersLight.matches ? "light" : "dark");
         const root = document.documentElement;
 
-        root.classList.remove("pc-theme-light", "pc-theme-dark");
+        root.classList.remove("pc-light", "pc-dark");
+        root.classList.add(`pc-${effectiveTheme}`);
 
-        root.classList.add(`pc-theme-${effectiveTheme}`);
+        if (theme === null) {
+            localStorage.removeItem("saved-theme");
+        } else {
+            localStorage.setItem("saved-theme", theme);
+        }
 
-        localStorage.setItem("saved-theme", theme);
+        currentTheme = theme;
+
+        const label = theme === null ? "System" : theme;
+        const icon = document.querySelector(".color-scheme-icon") as PcIcon | null;
+
+        if (icon) {
+            icon.label = `${label} theme`;
+        }
+
+        updateIcon(theme);
     }
 
-    function cycleTheme(current: string) {
-        switch (current) {
-            case "dark":
-                return "light";
-            case "light":
-                return "auto";
-            default:
-                return "dark";
+    function cycleTheme(
+        current: "light" | "dark" | null,
+    ): "light" | "dark" | null {
+        if (current === "light") {
+            return "dark";
+        } else if (current === "dark") {
+            return null;
+        } else {
+            return "light";
         }
     }
 
-    const button = document.getElementById("theme-toggle");
-    let currentTheme = getStoredTheme();
-    applyTheme(currentTheme);
+    document.addEventListener(
+        "keydown",
+        (event) => {
+            const isBackslash =
+                event.key === "\\" || event.code === "Backslash";
 
-    button?.addEventListener("click", () => {
-        currentTheme = cycleTheme(currentTheme);
-        applyTheme(currentTheme);
-        button.setAttribute("aria-label", `${currentTheme} theme`);
-    });
+            if (!isBackslash) {
+                return;
+            }
 
-    prefersLight.addEventListener("change", () => {
-        if (getStoredTheme() === "auto") {
-            applyTheme("auto");
-        }
-    });
-</script>
+            const path = (
+                event.composedPath
+                    ? event.composedPath()
+                    : [document.activeElement]
+            ).filter((element): element is EventTarget => element !== null);
 
-<style>
-    #theme-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: transparent;
-        border: none;
-        padding: var(--pc-spacing-xs);
-        border-radius: var(--pc-border-radius-m);
-        height: 100%;
-        cursor: pointer;
-        transition: outline var(--pc-transition-fast) ease-in-out;
-    }
+            if (isEditableInPath(path)) {
+                return;
+            }
 
-    #theme-toggle:focus-visible {
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
-    }
+            event.preventDefault();
 
-    svg {
-        stroke-linecap: round;
-    }
+            const nextTheme = cycleTheme(currentTheme);
 
-    svg .moon,
-    svg .sun,
-    svg .sun-beams {
-        transform-origin: center;
-    }
+            applyColorTheme(nextTheme);
+        },
+        { capture: true, passive: false },
+    );
 
-    svg .moon,
-    svg .sun {
-        fill: var(--pc-color-neutral-950);
-    }
+    window.addEventListener("DOMContentLoaded", () => {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
 
-    svg .sun-beams {
-        stroke: var(--pc-color-neutral-950);
-        stroke-width: 2px;
-    }
-
-    button:hover svg :is(.moon, .sun),
-    button:focus-visible svg :is(.moon, .sun) {
-        fill: var(--pc-color-primary-800);
-    }
-
-    button:hover svg .sun-beams,
-    button:focus-visible svg .sun-beams {
-        stroke: var(--pc-color-primary-800);
-    }
-
-    :global(.pc-theme-dark) svg .sun {
-        transform: scale(1.75);
-    }
-
-    :global(.pc-theme-dark) svg .sun-beams {
-        opacity: 0;
-    }
-
-    :global(.pc-theme-dark) svg .moon circle {
-        transform: translateX(-7px);
-    }
-
-    @supports (cx: 1) {
-        :global(.pc-theme-dark) svg .moon circle {
-            cx: 17;
-            transform: translateX(0);
-        }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-        svg .sun {
-            transition: transform var(--pc-transition-slow) cubic-bezier(0.5, 1, 0.75, 1);
+        function getStoredStyleTheme() {
+            return parseStyleTheme(
+                localStorage.getItem("saved-color-theme") ?? "",
+            );
         }
 
-        svg .sun-beams {
-            transition:
-                opacity var(--pc-transition-slow) ease-in-out,
-                transform var(--pc-transition-slow) cubic-bezier(0.5, 1, 0.75, 1);
-        }
+        function applyStyleTheme(styleTheme: string) {
+            const root = document.documentElement;
 
-        svg .moon circle {
-            transition: transform var(--pc-transition-fast) ease-out;
-        }
+            root.classList.remove(
+                "pc-theme-utility",
+                "pc-palette-vibrant",
+                "pc-theme-serene",
+                "pc-palette-muted",
+            );
 
-        @supports (cx: 1) {
-            svg .moon circle {
-                transition: cx var(--pc-transition-fast) ease-out;
+            if (styleTheme === "utility") {
+                root.classList.add("pc-theme-utility", "pc-palette-vibrant");
+            } else if (styleTheme === "serene") {
+                root.classList.add("pc-theme-serene", "pc-palette-muted");
+            }
+
+            localStorage.setItem("saved-color-theme", styleTheme);
+
+            const selector = document.querySelector(".theme-selector");
+
+            if ((selector as PcDropdown).value !== styleTheme) {
+                (selector as PcDropdown).value = styleTheme;
             }
         }
 
-        :global(.pc-theme-dark) svg .sun {
-            transform: scale(1.75);
-            transition-duration: var(--pc-transition-fast);
-            transition-timing-function: ease-in-out;
-        }
+        const button = document.querySelector(".color-scheme-toggle");
+        const themeSelector = document.querySelector(".theme-selector");
 
-        :global(.pc-theme-dark) svg .sun-beams {
-            transform: rotateZ(-25deg);
-            transition-duration: var(--pc-transition-extra-fast);
-        }
+        currentTheme = getStoredTheme();
 
-        :global(.pc-theme-dark) svg .moon circle {
-            transition-delay: var(--pc-transition-extra-fast);
-            transition-duration: var(--pc-transition-slow);
-        }
-    }
-</style>
+        let currentStyleTheme = getStoredStyleTheme();
+
+        applyColorTheme(currentTheme);
+        applyStyleTheme(currentStyleTheme);
+
+        button?.addEventListener("click", () => {
+            const nextTheme = cycleTheme(currentTheme);
+
+            applyColorTheme(nextTheme);
+        });
+
+        themeSelector.addEventListener("pc-select", (event) => {
+            const customEvent = event as CustomEvent;
+            const newStyleTheme = customEvent.detail.item.value;
+
+            if (typeof newStyleTheme === "string") {
+                const finalTheme = parseStyleTheme(newStyleTheme);
+
+                if (finalTheme !== currentStyleTheme) {
+                    currentStyleTheme = finalTheme;
+                    applyStyleTheme(currentStyleTheme);
+                }
+            }
+        });
+
+        prefersLight.addEventListener("change", () => {
+            if (currentTheme === null) {
+                applyColorTheme(null);
+            }
+        });
+    });
+</script>

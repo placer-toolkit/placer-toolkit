@@ -1,0 +1,14 @@
+.preview-wrapper {
+    min-block-size: 3em;
+    padding: var(--pc-spacing-xs);
+    border: var(--pc-border-width-s) dashed
+        var(--pc-color-neutral-border-normal);
+    border-radius: var(--pc-border-radius-m);
+}
+
+.preview-block:not(:has(~ .code-block, ~ .toggle-block)) {
+    min-block-size: 1em;
+    background-color: var(--pc-color-neutral-fill-loud);
+    border-radius: var(--pc-border-radius-s);
+    aspect-ratio: 1 / 1;
+}

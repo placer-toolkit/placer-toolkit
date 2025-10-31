@@ -1,7 +1,0 @@
-.border-radius-demo {
-    background-color: var(--pc-color-neutral-300);
-    width: 4rem;
-    height: 4rem;
-    margin: 0 auto;
-    border-radius: var(--pc-border-radius-m);
-}

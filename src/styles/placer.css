@@ -1,0 +1,10 @@
+@layer pc-native, pc-utilities, pc-color-palette, pc-theme, pc-theme-overrides;
+
+/* Theme */
+@import "./themes/default.css";
+
+/* Native styles */
+@import "./native.css";
+
+/* Utilities */
+@import "./utilities.css";

@@ -3,19 +3,17 @@ title: Switch
 description: Switches allow the user to toggle an option on or off.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Switches allow the user to toggle an option on or off.
 
-<CodeDemo open>
-{`<pc-switch>Switch</pc-switch>`}
-</CodeDemo>
+```demo:open
+<pc-switch>Switch</pc-switch>
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="book-open"
         slot="icon"
     ></pc-icon>
     This component works well with standard `<form>` elements. Please refer to the [form controls](/get-started/form-controls) page to learn more about form submission and client‐side validation.
@@ -27,50 +25,46 @@ Switches allow the user to toggle an option on or off.
 
 Use the `checked` attribute to set the switch’s state to enabled.
 
-<CodeDemo>
-{`<pc-switch checked>Checked</pc-switch>`}
-</CodeDemo>
+```demo
+<pc-switch checked>Checked</pc-switch>
+```
 
 ### Disabled
 
 Use the `disabled` attribute to disable the switch.
 
-<CodeDemo>
-{`<pc-switch disabled>Disabled</pc-switch>`}
-</CodeDemo>
+```demo
+<pc-switch disabled>Disabled</pc-switch>
+```
 
 ### Sizes
 
 Use the `size` attribute to change a switch’s size.
 
-<CodeDemo>
-{`<pc-switch size="small">Small</pc-switch>
+```demo
+<pc-switch size="small">Small</pc-switch>
 <br />
 <pc-switch size="medium">Medium</pc-switch>
 <br />
-<pc-switch size="large">Large</pc-switch>`}
-</CodeDemo>
+<pc-switch size="large">Large</pc-switch>
+```
 
 ### Hint
 
 Add a descriptive hint to a switch with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
 
-<CodeDemo>
-{`<pc-switch
-    hint="What should the user know about the switch?"
->
+```demo
+<pc-switch hint="What should the user know about the switch?">
     Label
-</pc-switch>`}
-</CodeDemo>
+</pc-switch>
+```
 
 ### Custom styles
 
 Use the available custom properties to change how the switch is styled.
 
-<CodeDemo>
-{`<pc-switch
-    style="--width: 70px; --height: 40px; --thumb-size: 32px"
->
+```demo
+<pc-switch style="--width: 70px; --height: 40px; --thumb-size: 28px">
     A really large switch
-</pc-switch>`}
-</CodeDemo>
+</pc-switch>
+```

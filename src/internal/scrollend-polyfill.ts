@@ -83,7 +83,9 @@ const decorate = <T, M extends keyof T>(
             EventTarget.prototype,
             "removeEventListener",
             function (this: EventTarget, removeEventListener, type) {
-                if (type !== "scrollend") return;
+                if (type !== "scrollend") {
+                    return;
+                }
 
                 const scrollHandler = scrollHandlers.get(this);
                 if (scrollHandler) {

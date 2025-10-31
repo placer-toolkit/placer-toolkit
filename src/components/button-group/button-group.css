@@ -1,0 +1,19 @@
+:host {
+    display: inline-flex;
+}
+
+.button-group {
+    display: flex;
+    position: relative;
+    flex-wrap: nowrap;
+    gap: var(--pc-spacing-xxxs);
+    isolation: isolate;
+}
+
+.button-group.has-outlined {
+    gap: 0;
+}
+
+.button-group.has-outlined ::slotted(:not(:first-child)) {
+    margin-inline-start: calc(-1 * var(--pc-spacing-xxs));
+}

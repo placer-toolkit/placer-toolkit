@@ -1,0 +1,103 @@
+---
+title: Format Number
+description: Formats a number using the specified locale and options.
+---
+
+Formats a number using the specified locale and options.
+
+Localisation is handled by the browser’s [`Intl.DateTimeFormat` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat). No language packs are required.
+
+```demo:open
+<div class="format-number-overview">
+    <pc-format-number value="1000"></pc-format-number>
+
+    <br /><br />
+
+    <pc-input
+        label="Number to format"
+        type="number"
+        value="1000"
+        style="max-inline-size: 180px"
+    ></pc-input>
+</div>
+
+<script>
+    const container = document.querySelector(".format-number-overview");
+    const formatter = container.querySelector("pc-format-number");
+    const input = container.querySelector("pc-input");
+
+    input.addEventListener("pc-input", () => (formatter.value = input.value || 0));
+</script>
+```
+
+## Demos
+
+### Percentages
+
+To get the value as a percentage, set the `type` attribute to `percent`.
+
+```demo
+<pc-format-number type="percent" value="0"></pc-format-number>
+<br />
+<pc-format-number type="percent" value="0.5"></pc-format-number>
+<br />
+<pc-format-number type="percent" value="0.75"></pc-format-number>
+<br />
+<pc-format-number type="percent" value="1"></pc-format-number>
+```
+
+### Localisation
+
+Use the `lang` attribute to set the number formatting locale.
+
+```demo
+English: <pc-format-number value="2000" lang="en" minimum-fraction-digits="2"></pc-format-number>
+<br />
+German: <pc-format-number value="2000" lang="de" minimum-fraction-digits="2"></pc-format-number>
+<br />
+French: <pc-format-number value="2000" lang="fr" minimum-fraction-digits="2"></pc-format-number>
+```
+
+### SI conventions <pc-icon library="default" icon-style="solid" name="flask" style="font-size: calc(var(--pc-font-size-smaller) * 0.9)"></pc-icon>
+
+Add the `use-si` attribute to change the formatting of the component to follow <abbr title="International System of Units">SI</abbr> conventions.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="globe"
+        slot="icon"
+    ></pc-icon>
+    This property is experimental and does not work on currencies.
+</pc-callout>
+
+```demo
+<strong>With local conventions</strong><br />
+<pc-format-number value="1000"></pc-format-number>
+<br />
+<pc-format-number value="1234567.89"></pc-format-number>
+
+<br /><br />
+
+<strong>With SI conventions</strong><br />
+<pc-format-number value="1000" use-si></pc-format-number>
+<br />
+<pc-format-number value="1234567.89" use-si></pc-format-number>
+```
+
+### Currency
+
+To format a number as a monetary value, set the `type` attribute to `currency` and set the `currency` attribute to the desired ISO 4217 currency code. You should also specify the `lang` attribute to ensure that the number and currency symbol is formatted correctly for the target locale.
+
+```demo
+<pc-format-number type="currency" currency="USD" value="2000" lang="en-US"></pc-format-number>
+<br />
+<pc-format-number type="currency" currency="GBP" value="2000" lang="en-GB"></pc-format-number>
+<br />
+<pc-format-number type="currency" currency="EUR" value="2000" lang="de"></pc-format-number>
+<br />
+<pc-format-number type="currency" currency="RUB" value="2000" lang="ru"></pc-format-number>
+<br />
+<pc-format-number type="currency" currency="CNY" value="2000" lang="zh-cn"></pc-format-number>
+```

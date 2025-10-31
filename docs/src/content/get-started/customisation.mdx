@@ -1,97 +1,156 @@
 ---
 title: Customisation
-description: Placer components can be customised at a high level through design tokens. This gives you control over theme controls and general styling. For more advanced customisations, you can make use of CSS parts and custom properties to target individual components.
+description: Placer Toolkit components can be customised at a high level through design tokens. This gives you control over theme controls and general styling. For more advanced customisations, you can make use of CSS parts and custom properties to target individual components.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-import CodeBlock from "../../components/CodeBlock.astro";
+Placer Toolkit components can be customised at a high level through design tokens. This gives you control over theme controls and general styling. For more advanced customisations, you can make use of CSS parts and custom properties to target individual components.
 
-Placer components can be customised at a high level through design tokens. This gives you control over theme controls and general styling. For more advanced customisations, you can make use of CSS parts and custom properties to target individual components.
+## Colour schemes
+
+Placer Toolkit offers two built‐in colour schemes—light and dark mode—which allow users to switch colour schemes based on ambient lighting conditions or personal aesthetic preference.
+
+These colour schemes work by defining specific CSS custom properties (primarily [colour tokens](/design-tokens/colour)) that utilise opposite sides of the colour tint scale to ensure optimal contrast in each mode.
+
+The two available colour schemes are:
+
+- **Light mode (default):** Uses dark content on light backgrounds.
+- **Dark mode:** Uses light content on dark backgrounds to reduce eye strain in low‐light environments.
+
+You can activate a colour scheme by applying a single class to the appropriate HTML element.
+
+To apply dark mode across the entire page, add the `pc-dark` class to the root `<html>` element.
+
+```diff
+ <!DOCTYPE html>
+-<html>
++<html class="pc-dark">
+     <head>
+         <!-- … -->
+     </head>
+     <body>
+         <!-- … -->
+     </body>
+ </html>
+```
+
+If you only want dark mode to apply to a specific element, you can apply the `pc-dark` class directly to that element.
+
+Light mode is the default colour scheme. This means, you do not need to specify a class (like `pc-light`) to activate it. However, the `pc-light` class is available should you need it for specific theme‐switching logic or component‐level overrides.
+
+## Themes
+
+Placer Toolkit uses themes to apply a cohesive look and feel across the entire library. Themes are built with a collection of pre‐defined CSS custom properties, which we call [design tokens](/design-tokens), and you can mix and match styling with 18 unique possibilities to choose from.
+
+To use a theme, simply add a link to the theme’s stylesheet to the `<head>` of your page. For example, you can add this code snippet alongside the [installation code](/get-started/installation) to use the corresponding theme.
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="default">Default</pc-tab>
+    <pc-tab slot="navigation" panel="utility">Utility</pc-tab>
+    <pc-tab slot="navigation" panel="serene">Serene</pc-tab>
+
+    <pc-tab-panel name="default">
+        The Default theme serves as the default theme for Placer Toolkit, therefore, you don’t need to import it separately. But we’ll list the font import again.
+
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="utility">
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/themes/utility.css" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="serene">
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/themes/serene.css" />
+        ```
+    </pc-tab-panel>
+</pc-tab-group>
 
 ## Design tokens
 
-Placer Toolkit makes use of several design tokens to provide a consistent appearance across components. You can customise them and use them in your own application with pure CSS—no preprocessor required.
-
-Design tokens offer a high‐level way to customise the library with minimal effort. There are no component‐specific variables, however, as design tokens are intended to be generic and highly reusable. To customise an individual component, scroll to the [CSS parts](#css-parts) section.
-
 Design tokens are accessed through CSS custom properties that are defined in your theme. Because design tokens live at the page level, they’re prefixed with `--pc-` to avoid collisions with other libraries.
 
-To customise a design token, simply override it in your stylesheet using a `:root` block. Here’s an interactive example that changes the accent colour to violet based on existing design tokens.
+To customise a design token, simply override it in your stylesheet using a `:root` block. Here’s an interactive example that changes the accent colour to indigo based on existing design tokens.
 
-<CodeDemo>
-{`<div class="purple-theme">
-    <pc-button appearance="primary">Button</pc-button>
-    <br /><br />
-    <pc-checkbox>Checkbox</pc-checkbox>
-    <br /><br />
-    <pc-radio-group label="Select an option" name="radio-group" value="option-1">
-        <pc-radio value="option-1">Option 1</pc-radio>
-        <pc-radio value="option-2">Option 2</pc-radio>
-        <pc-radio value="option-3">Option 3</pc-radio>
-    </pc-radio-group>
-</div>
+```css
+:root,
+.pc-light {
+    --pc-color-primary-fill-quiet: var(--pc-color-indigo-95);
+    --pc-color-primary-fill-normal: var(--pc-color-indigo-90);
+    --pc-color-primary-fill-loud: var(--pc-color-indigo-50);
+    --pc-color-primary-border-quiet: var(--pc-color-indigo-90);
+    --pc-color-primary-border-normal: var(--pc-color-indigo-80);
+    --pc-color-primary-border-loud: var(--pc-color-indigo-60);
+    --pc-color-primary-on-quiet: var(--pc-color-indigo-40);
+    --pc-color-primary-on-normal: var(--pc-color-indigo-30);
+    --pc-color-primary-on-loud: oklch(100% 0 0);
+}
 
-<style>
-    /* We’re scoping the styles to this <div> element to
-       prevent these styles leaking out of the code demo */
-    .purple-theme {
-        /* Changes the accent colour to violet using design tokens */
-        --pc-color-primary-50: var(--pc-color-violet-50);
-        --pc-color-primary-100: var(--pc-color-violet-100);
-        --pc-color-primary-200: var(--pc-color-violet-200);
-        --pc-color-primary-300: var(--pc-color-violet-300);
-        --pc-color-primary-400: var(--pc-color-violet-400);
-        --pc-color-primary-500: var(--pc-color-violet-500);
-        --pc-color-primary-600: var(--pc-color-violet-600);
-        --pc-color-primary-700: var(--pc-color-violet-700);
-        --pc-color-primary-800: var(--pc-color-violet-800);
-        --pc-color-primary-900: var(--pc-color-violet-900);
-        --pc-color-primary-950: var(--pc-color-violet-950);
-    }
-</style>`}
-</CodeDemo>
+.pc-dark {
+    --pc-color-primary-fill-quiet: var(--pc-color-indigo-10);
+    --pc-color-primary-fill-normal: var(--pc-color-indigo-20);
+    --pc-color-primary-fill-loud: var(--pc-color-indigo-50);
+    --pc-color-primary-border-quiet: var(--pc-color-indigo-20);
+    --pc-color-primary-border-normal: var(--pc-color-indigo-30);
+    --pc-color-primary-border-loud: var(--pc-color-indigo-40);
+    --pc-color-primary-on-quiet: var(--pc-color-indigo-60);
+    --pc-color-primary-on-normal: var(--pc-color-indigo-70);
+    --pc-color-primary-on-loud: oklch(100% 0 0);
+}
+```
 
-Many design tokens are described further along in this documentation. For a complete list, refer to `src/default.css` in the project’s [source code](https://github.com/randomguy-2650/placer-toolkit/blob/main/src/default.css). It contains both the light and dark mode tokens and is the source of the design tokens used in Placer Toolkit.
+Many design tokens are described further along in this documentation. For a complete list, refer to the theme and palette files located in the project’s source code under [`src/styles`](https://github.com/placer-toolkit/placer-toolkit/tree/main/src/styles). It contains all tokens used in Placer Toolkit.
 
 ## CSS parts
 
 Whereas design tokens offer a high‐level way to customise the library, CSS parts offer a low‐level to customise individual components. Again, this is done with pure CSS—no preprocessor required.
 
-Placer components use a [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) to encapsulate their styles and behaviours. As a result, you can’t simply target their internals with the usual CSS selectors. Instead, components expose “parts” that can be targeted with the [CSS part selector](https://developer.mozilla.org/en-US/docs/Web/CSS/::part), or `::part()`.
+Placer Toolkit components use a [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) to encapsulate their styles and behaviours. As a result, you can’t simply target their internals with the usual CSS selectors. Instead, components expose “parts” that can be targeted with the [CSS part selector](https://developer.mozilla.org/en-US/docs/Web/CSS/::part), or `::part()`.
 
-Here’s an example that modifies buttons with the `tomato-button` class.
+Here’s an example that modifies the button with the `tomato-button` class.
 
-<CodeDemo>
-{`<pc-button class="tomato-button">Tomato Button</pc-button>
+```demo
+<pc-button class="tomato-button" pill>
+    <span slot="prefix">🍅</span>
+    Tomato Button
+</pc-button>
 
 <style>
-    /* We use CSS color-mix() for consistent hover colours */
     .tomato-button::part(base) {
-        background-color: tomato;
-        border: 1px solid color-mix(in oklch, tomato 90%, black 10%);
-        color: color-mix(in oklch, white 90%, tomato 10%);
+        background-color: transparent;
+        color: var(--pc-color-neutral-on-normal);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-neutral-border-normal);
     }
 
-    .tomato-button::part(base):hover {
-        background-color: color-mix(in oklch, tomato 90%, white 10%);
-        border-color: tomato;
+    @media (hover: hover) {
+        .tomato-button::part(base):hover {
+            background-color: oklch(69.6% 0.195 32.3 / 10%);
+            color: oklch(69.6% 0.195 32.3);
+            border-color: oklch(69.6% 0.195 32.3);
+            scale: 1.05;
+        }
     }
 
     .tomato-button::part(base):active {
-        background-color: color-mix(in oklch, tomato 80%, black 20%);
-        border-color: color-mix(in oklch, tomato 80%, black 20%);
-        color: color-mix(in oklch, white 80%, tomato 20%);
+        background-color: oklch(69.6% 0.195 32.3 / 20%);
+        color: oklch(69.6% 0.195 32.3);
+        border-color: oklch(69.6% 0.195 32.3);
+        scale: 0.95;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 At first glance, this approach might seem a bit verbose or even limiting, but it comes with a few important advantages:
 
--   Customisations can be made to components with explicit selectors, such as `::part(base)`, rather than implicit selectors, such as `.button > div > span > .icon`, that are much more fragile.
--   The internal structure of a component will likely change as it evolves. By exposing CSS parts through an API, the internals can be reworked without fear of breaking customisations as long as its parts remain intact.
--   It encourages us to think more about how components are designed and how customisations should be allowed before users can take advantage of them. Once we opt a part into the component’s API, it’s guaranteed to be supported and can’t be removed until a major version of the library is released.
+- Customisations can be made to components with explicit selectors, such as `::part(base)`, rather than implicit selectors, such as `.button > div > span > .icon`, that are much more fragile.
+- The internal structure of a component will likely change as it evolves. By exposing CSS parts through an API, the internals can be reworked without fear of breaking customisations as long as its parts remain intact.
+- It encourages us to think more about how components are designed and how customisations should be allowed before users can take advantage of them. Once we opt a part into the component’s API, it’s guaranteed to be supported and can’t be removed until a major version of the library is released.
 
-Most (but not all) components expose parts. You can find them in each component’s API documentation under the “CSS parts” section.
+Most (but not all) components expose parts. You can find them in each component’s API documentation under the **Parts** section.
 
 ## Custom properties
 
@@ -99,38 +158,38 @@ For convenience, some components expose CSS custom properties you can override. 
 
 You can set custom properties on a component in your stylesheet.
 
-<CodeBlock language="css">
-{`pc-avatar {
+```css
+pc-avatar {
     --size: 6rem;
-}`}
-</CodeBlock>
+}
+```
 
 This will also work if you need to target a subset of components with a specific class.
 
-<CodeBlock language="css">
-{`pc-avatar.your-class {
+```css
+pc-avatar.your-class {
     --size: 6rem;
-}`}
-</CodeBlock>
+}
+```
 
 Alternatively, you can set them inline directly on the element.
 
-<CodeBlock language="html">
-{`<pc-avatar style="--size: 6rem"></pc-avatar>`}
-</CodeBlock>
+```html
+<pc-avatar style="--size: 6rem"></pc-avatar>
+```
 
 Not all components expose CSS custom properties. For those that do, they can be found in the component’s API documentation.
 
 ## Animations
 
-Some components use animations, such as when a dialog is shown or hidden. Animations are performed using the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API) rather than CSS. However, you can still customise them through Placer Toolkit’s animation registry. If a component has customisable animations, they’ll be listed in the “Animation” section of its documentation.
+Some components use animations, such as when a dialog is shown or hidden. Animations are performed using the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API) rather than CSS. However, you can still customise them through Placer Toolkit’s animation registry. If a component has customisable animations, they’ll be listed in the **Animation** section of its documentation.
 
 To customise a default animation, use the `setDefaultAnimation()` method. The function accepts an animation name (found in the component’s docs) and an object with `keyframes`, `options` or `null` to disable the animation.
 
 This example will make all dialogs use a custom show animation.
 
-<CodeBlock language="javascript">
-{`import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/utilities/animation-registry.js";
+```javascript
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/animation-registry.js";
 
 // Change the default animation for all dialogs
 setDefaultAnimation("dialog.show", {
@@ -139,14 +198,14 @@ setDefaultAnimation("dialog.show", {
         { transform: "rotate(0deg) scale(1)", opacity: "1" },
     ],
     options: { duration: 500 },
-});`}
-</CodeBlock>
+});
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="language"
         slot="icon"
     ></pc-icon>
     To support RTL languages in your animation, you can pass an additional property called `rtlKeyframes`. This property shares the same type as `keyframes` and will be automatically used when the component’s directionality is RTL. If `rtlKeyframes` is not provided, `keyframes` will be used as a fallback.
@@ -156,8 +215,8 @@ If you only want to target a single component, use the `setAnimation()` method i
 
 In this example, only the target dialog will use the custom show animation.
 
-<CodeBlock language="javascript">
-{`import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/utilities/animation-registry.js";
+```javascript
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/animation-registry.js";
 
 // Change the default animation for a single dialog
 const dialog = document.querySelector("#my-dialog");
@@ -168,8 +227,8 @@ setDefaultAnimation(dialog, "dialog.show", {
         { transform: "rotate(0deg) scale(1)", opacity: "1" },
     ],
     options: { duration: 500 },
-});`}
-</CodeBlock>
+});
+```
 
 To learn more about creating web animations using the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), refer to the documentation for [`Element.animate()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate).
 
@@ -177,7 +236,7 @@ To learn more about creating web animations using the [Web Animations API](https
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="universal-access"
         slot="icon"
     ></pc-icon>
     Animations respect the user’s `prefers-reduced-motion` setting. When this setting is enabled, animations will not be played. To disable animations for all users, pass in `null` instead of a keyframes/options object.

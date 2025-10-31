@@ -7,9 +7,58 @@ slug: /
 A theme is a collection of predefined CSS custom properties that control global styles from colour to shadows. These custom properties thread through all Placer Toolkit components for a consistent look and feel.
 
 <div class="catalog-grid">
+    <a href="/design-tokens/borders">
+        <pc-card>
+            <div slot="media">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="64"
+                    height="64"
+                    viewBox="0 0 64 49"
+                >
+                    <line
+                        x1="0.5"
+                        y1="0.5"
+                        x2="63.5"
+                        y2="0.5"
+                        stroke="var(--pc-color-neutral-border-loud)"
+                        stroke-linecap="round"
+                    />
+                    <line
+                        x1="1"
+                        y1="16"
+                        x2="63"
+                        y2="16"
+                        stroke="var(--pc-color-neutral-border-loud)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                    />
+                    <line
+                        x1="2"
+                        y1="31"
+                        x2="62"
+                        y2="31"
+                        stroke="var(--pc-color-neutral-border-loud)"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                    />
+                    <line
+                        x1="3"
+                        y1="46"
+                        x2="61"
+                        y2="46"
+                        stroke="var(--pc-color-neutral-border-loud)"
+                        stroke-width="6"
+                        stroke-linecap="round"
+                    />
+                </svg>
+            </div>
+            <div class="catalog-title">Borders</div>
+        </pc-card>
+    </a>
     <a href="/design-tokens/colour">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
@@ -18,112 +67,68 @@ A theme is a collection of predefined CSS custom properties that control global 
                 >
                     <path
                         d="M48.8665 59.1993L33.7329 33H64C63.8352 38.2705 62.3694 43.4244 59.7264 48C57.0833 52.5756 53.3507 56.4213 48.8665 59.1993Z"
-                        fill="var(--pc-color-green-600)"
+                        fill="var(--pc-color-green-60)"
                     />
                     <path
                         d="M32 64C26.714 64 21.5155 62.6919 16.8665 60.1993L32 34L47.1336 60.1993C42.4845 62.6919 37.286 64 32 64Z"
-                        fill="var(--pc-color-blue-600)"
+                        fill="var(--pc-color-blue-60)"
                     />
                     <path
                         d="M4.27365 48C1.63063 43.4244 0.164839 38.2706 0 33L30.2671 33L15.1336 59.1993C10.6493 56.4213 6.91666 52.5756 4.27365 48Z"
-                        fill="var(--pc-color-indigo-600)"
+                        fill="var(--pc-color-indigo-60)"
                     />
                     <path
                         d="M4.27365 16C6.91667 11.4244 10.6493 7.57868 15.1336 4.80072L30.2671 31L0 31C0.16484 25.7295 1.63063 20.5756 4.27365 16Z"
-                        fill="var(--pc-color-purple-600)"
+                        fill="var(--pc-color-purple-60)"
                     />
                     <path
                         d="M32 30L16.8665 3.80072C21.5155 1.30813 26.714 0 32 0C37.286 0 42.4845 1.30813 47.1336 3.80072L32 30Z"
-                        fill="var(--pc-color-red-600)"
+                        fill="var(--pc-color-red-60)"
                     />
                     <path
                         d="M33.7329 31L48.8665 4.80072C53.3507 7.57868 57.0833 11.4244 59.7264 16C62.3694 20.5756 63.8352 25.7294 64 31L33.7329 31Z"
-                        fill="var(--pc-color-yellow-600)"
+                        fill="var(--pc-color-yellow-60)"
                     />
                 </svg>
             </div>
             <div class="catalog-title">Colour</div>
         </pc-card>
     </a>
-    <a href="/design-tokens/spacing">
+    <a href="/design-tokens/focus">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="64"
+                    width="76"
                     height="64"
-                    viewBox="0 0 64 64"
+                    viewBox="0 0 76 44"
+                    fill="none"
                 >
-                    <circle
-                        cx="4"
-                        cy="32"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <circle
-                        cx="4"
-                        cy="8"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <circle
-                        cx="4"
-                        cy="56"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <circle
-                        cx="44"
-                        cy="32"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <circle
-                        cx="28"
-                        cy="8"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <circle
-                        cx="60"
-                        cy="56"
-                        r="4"
-                        fill="var(--pc-color-neutral-700)"
-                    ></circle>
-                    <rect
-                        x="8"
-                        y="24"
-                        rx="4"
-                        ry="4"
-                        width="32"
-                        height="16"
-                        fill="var(--pc-color-neutral-300)"
+                    <path
+                        d="M6 12C6 8.68629 8.68629 6 12 6H64C67.3137 6 70 8.68629 70 12V32C70 35.3137 67.3137 38 64 38H12C8.68629 38 6 35.3137 6 32V12Z"
+                        fill="var(--pc-color-neutral-fill-normal)"
+                    />
+                    <path
+                        d="M18.375 19.125C18.375 18.4414 18.9219 17.875 19.625 17.875H21.5C23.2188 17.875 24.625 19.2812 24.625 21C24.625 22.7383 23.2188 24.125 21.5 24.125H19.625V26C19.625 26.3516 19.332 26.625 19 26.625C18.6484 26.625 18.375 26.3516 18.375 26V23.5V19.125ZM19.625 22.875H21.5C22.5352 22.875 23.375 22.0352 23.375 21C23.375 19.9648 22.5352 19.125 21.5 19.125H19.625V22.875ZM27.875 17.875H30.0625C31.6055 17.875 32.875 19.1445 32.875 20.6875C32.875 21.8789 32.1328 22.8945 31.1172 23.3047L32.7578 25.6484C32.9531 25.9414 32.875 26.332 32.6016 26.5273C32.3086 26.7227 31.918 26.6445 31.7227 26.3711L29.7305 23.5H27.875V26C27.875 26.3516 27.582 26.625 27.25 26.625C26.8984 26.625 26.625 26.3516 26.625 26V22.875V19.125C26.625 18.4414 27.1719 17.875 27.875 17.875ZM30.0625 22.25C30.9219 22.25 31.625 21.5664 31.625 20.6875C31.625 19.8281 30.9219 19.125 30.0625 19.125H27.875V22.25H30.0625ZM36.125 17.875H40.5C40.832 17.875 41.125 18.168 41.125 18.5C41.125 18.8516 40.832 19.125 40.5 19.125H36.125V21.625H39.25C39.582 21.625 39.875 21.918 39.875 22.25C39.875 22.6016 39.582 22.875 39.25 22.875H36.125V25.375H40.5C40.832 25.375 41.125 25.668 41.125 26C41.125 26.3516 40.832 26.625 40.5 26.625H36.125C35.4219 26.625 34.875 26.0781 34.875 25.375V22.25V19.125C34.875 18.4414 35.4219 17.875 36.125 17.875ZM45.0586 19.3203C44.668 19.4766 44.4531 19.75 44.3945 20.082C44.3359 20.3555 44.375 20.5312 44.4336 20.668C44.4922 20.7852 44.5898 20.9023 44.7461 21.0195C45.1367 21.293 45.7031 21.4492 46.4062 21.6641C46.4258 21.6641 46.4453 21.6641 46.4648 21.6836C47.1094 21.8594 47.8711 22.0742 48.4375 22.4648C48.75 22.6797 49.0234 22.9727 49.1992 23.3438C49.375 23.7344 49.4141 24.1641 49.3164 24.6523C49.1797 25.4727 48.6328 26.0391 47.9297 26.3516C47.2266 26.6445 46.3672 26.7031 45.5078 26.5664C45.0391 26.4883 44.2773 26.2344 43.7891 26.0586C43.6914 26.0391 43.6133 26 43.5352 25.9805C43.2227 25.8633 43.0469 25.5117 43.1445 25.1797C43.2617 24.8672 43.6133 24.6914 43.9453 24.7891C44.043 24.8281 44.1406 24.8477 44.2578 24.8867C44.7461 25.0625 45.3516 25.2773 45.7031 25.3359C46.4258 25.4336 47.0117 25.375 47.4219 25.1992C47.832 25.0234 48.0273 24.7695 48.0859 24.4375C48.1445 24.1641 48.1055 23.9688 48.0469 23.8516C48.0078 23.7344 47.8906 23.6172 47.7344 23.5C47.3438 23.2266 46.7773 23.0703 46.0742 22.8555C46.0547 22.8555 46.0352 22.8555 46.0156 22.8359C45.3711 22.6602 44.6094 22.4453 44.043 22.0547C43.7305 21.8398 43.457 21.5469 43.2812 21.1758C43.125 20.7852 43.0859 20.3555 43.1641 19.8672L43.7695 19.9844L43.1641 19.8672C43.3008 19.0469 43.8477 18.4805 44.5508 18.168C45.2539 17.875 46.1133 17.8164 46.9727 17.9531C47.2266 17.9922 48.0078 18.1484 48.2812 18.2266C48.6133 18.3047 48.8086 18.6562 48.7109 18.9883C48.6328 19.3203 48.2812 19.5156 47.9492 19.418C47.7344 19.3594 47.0117 19.2227 46.7773 19.1836L46.875 18.5781L46.7773 19.1836C46.0547 19.0859 45.4688 19.1445 45.0586 19.3203ZM53.3086 19.3203C52.918 19.4766 52.7031 19.75 52.6445 20.082C52.5859 20.3555 52.625 20.5312 52.6836 20.668C52.7422 20.7852 52.8398 20.9023 52.9961 21.0195C53.3867 21.293 53.9531 21.4492 54.6562 21.6641C54.6758 21.6641 54.6953 21.6641 54.7148 21.6836C55.3594 21.8594 56.1211 22.0742 56.6875 22.4648C57 22.6797 57.2734 22.9727 57.4492 23.3438C57.625 23.7344 57.6641 24.1641 57.5664 24.6523C57.4297 25.4727 56.8828 26.0391 56.1797 26.3516C55.4766 26.6445 54.6172 26.7031 53.7578 26.5664C53.2891 26.4883 52.5273 26.2344 52.0391 26.0586C51.9414 26.0391 51.8633 26 51.7852 25.9805C51.4727 25.8633 51.2969 25.5117 51.3945 25.1797C51.5117 24.8672 51.8633 24.6914 52.1953 24.7891C52.293 24.8281 52.3906 24.8477 52.5078 24.8867C52.9961 25.0625 53.6016 25.2773 53.9531 25.3359C54.6758 25.4336 55.2617 25.375 55.6719 25.1992C56.082 25.0234 56.2773 24.7695 56.3359 24.4375C56.3945 24.1641 56.3555 23.9688 56.2969 23.8516C56.2578 23.7344 56.1406 23.6172 55.9844 23.5C55.5938 23.2266 55.0273 23.0703 54.3242 22.8555C54.3047 22.8555 54.2852 22.8555 54.2656 22.8359C53.6211 22.6602 52.8594 22.4453 52.293 22.0547C51.9805 21.8398 51.707 21.5469 51.5312 21.1758C51.375 20.7852 51.3359 20.3555 51.4141 19.8672L52.0195 19.9844L51.4141 19.8672C51.5508 19.0469 52.0977 18.4805 52.8008 18.168C53.5039 17.875 54.3633 17.8164 55.2227 17.9531C55.4766 17.9922 56.2578 18.1484 56.5312 18.2266C56.8633 18.3047 57.0586 18.6562 56.9609 18.9883C56.8828 19.3203 56.5312 19.5156 56.1992 19.418C55.9844 19.3594 55.2617 19.2227 55.0273 19.1836L55.125 18.5781L55.0273 19.1836C54.3047 19.0859 53.7188 19.1445 53.3086 19.3203Z"
+                        fill="var(--pc-color-neutral-on-normal)"
                     />
                     <rect
-                        x="8"
-                        rx="4"
-                        ry="4"
-                        width="16"
-                        height="16"
-                        fill="var(--pc-color-neutral-300)"
-                    />
-                    <rect
-                        x="8"
-                        y="48"
-                        rx="4"
-                        ry="4"
-                        width="48"
-                        height="16"
-                        fill="var(--pc-color-neutral-300)"
+                        x="2"
+                        y="2"
+                        width="72"
+                        height="40"
+                        rx="10"
+                        stroke="var(--pc-color-focus)"
+                        stroke-width="4"
                     />
                 </svg>
             </div>
-            <div class="catalog-title">Spacing</div>
+            <div class="catalog-title">Focus</div>
         </pc-card>
     </a>
     <a href="/design-tokens/shadows">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
@@ -132,12 +137,12 @@ A theme is a collection of predefined CSS custom properties that control global 
                 >
                     <path
                         d="M8 20C8 13.3726 13.3726 8 20 8H44C50.6274 8 56 13.3726 56 20V44C56 50.6274 50.6274 56 44 56H20C13.3726 56 8 50.6274 8 44V20Z"
-                        fill="var(--pc-color-neutral-0)"
+                        fill="var(--pc-color-surface-lowered)"
                     />
                     <path
                         d="M12 1H36C42.0751 1 47 5.92487 47 12V36C47 42.0751 42.0751 47 36 47H12C5.92487 47 1 42.0751 1 36V12C1 5.92487 5.92487 1 12 1Z"
-                        fill="var(--pc-color-neutral-100)"
-                        stroke="var(--pc-color-neutral-300)"
+                        fill="var(--pc-color-surface-raised)"
+                        stroke="var(--pc-color-surface-border)"
                         stroke-width="2"
                     />
                 </svg>
@@ -145,36 +150,85 @@ A theme is a collection of predefined CSS custom properties that control global 
             <div class="catalog-title">Shadows</div>
         </pc-card>
     </a>
-    <a href="/design-tokens/border-radius">
+    <a href="/design-tokens/spacing">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
                     height="64"
                     viewBox="0 0 64 64"
                 >
-                    <path
-                        d="M8 20C8 13.3726 13.3726 8 20 8H44C50.6274 8 56 13.3726 56 20V44C56 50.6274 50.6274 56 44 56H20C13.3726 56 8 50.6274 8 44V20Z"
-                        fill="var(--pc-color-neutral-100)"
-                        stroke="var(--pc-color-neutral-300)"
-                        stroke-width="2"
+                    <circle
+                        cx="4"
+                        cy="32"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
                     />
-                    <path
-                        d="M40 4 L44 4 A16 16 0 0 1 60 20 L60 24"
-                        fill="none"
-                        stroke="var(--pc-color-primary-500)"
-                        stroke-width="2"
-                        stroke-linecap="round"
+                    <circle
+                        cx="4"
+                        cy="8"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
+                    />
+                    <circle
+                        cx="4"
+                        cy="56"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
+                    />
+                    <circle
+                        cx="44"
+                        cy="32"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
+                    />
+                    <circle
+                        cx="28"
+                        cy="8"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
+                    />
+                    <circle
+                        cx="60"
+                        cy="56"
+                        r="4"
+                        fill="var(--pc-color-neutral-on-normal)"
+                    />
+                    <rect
+                        x="8"
+                        y="24"
+                        rx="4"
+                        ry="4"
+                        width="32"
+                        height="16"
+                        fill="var(--pc-color-neutral-fill-normal)"
+                    />
+                    <rect
+                        x="8"
+                        rx="4"
+                        ry="4"
+                        width="16"
+                        height="16"
+                        fill="var(--pc-color-neutral-fill-normal)"
+                    />
+                    <rect
+                        x="8"
+                        y="48"
+                        rx="4"
+                        ry="4"
+                        width="48"
+                        height="16"
+                        fill="var(--pc-color-neutral-fill-normal)"
                     />
                 </svg>
             </div>
-            <div class="catalog-title">Border radius</div>
+            <div class="catalog-title">Spacing</div>
         </pc-card>
     </a>
     <a href="/design-tokens/transitions">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
@@ -187,13 +241,13 @@ A theme is a collection of predefined CSS custom properties that control global 
                         y1="7.15686"
                         x2="2"
                         y2="7.15686"
-                        stroke="var(--pc-color-neutral-300)"
+                        stroke="var(--pc-color-neutral-border-loud)"
                         stroke-width="2"
                         stroke-linecap="round"
                     />
                     <path
                         d="M6.65685 1.50001L1 7.15686L6.65685 12.8137"
-                        stroke="var(--pc-color-neutral-300)"
+                        stroke="var(--pc-color-neutral-border-loud)"
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -203,13 +257,13 @@ A theme is a collection of predefined CSS custom properties that control global 
                         y1="29.8431"
                         x2="48"
                         y2="29.8431"
-                        stroke="var(--pc-color-neutral-300)"
+                        stroke="var(--pc-color-neutral-border-loud)"
                         stroke-width="2"
                         stroke-linecap="round"
                     />
                     <path
                         d="M43.3431 35.5L49 29.8431L43.3431 24.1863"
-                        stroke="var(--pc-color-neutral-300)"
+                        stroke="var(--pc-color-neutral-border-loud)"
                         stroke-width="2"
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -219,53 +273,9 @@ A theme is a collection of predefined CSS custom properties that control global 
             <div class="catalog-title">Transitions</div>
         </pc-card>
     </a>
-    <a href="/design-tokens/z-index">
-        <pc-card>
-            <div slot="image">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                >
-                    <rect
-                        x="8"
-                        y="16"
-                        width="32"
-                        height="32"
-                        rx="6"
-                        fill="var(--pc-color-neutral-100)"
-                        stroke="var(--pc-color-neutral-300)"
-                        stroke-width="1"
-                    />
-                    <rect
-                        x="16"
-                        y="12"
-                        width="32"
-                        height="32"
-                        rx="6"
-                        fill="var(--pc-color-primary-100)"
-                        stroke="var(--pc-color-primary-300)"
-                        stroke-width="1"
-                    />
-                    <rect
-                        x="24"
-                        y="8"
-                        width="32"
-                        height="32"
-                        rx="6"
-                        fill="var(--pc-color-primary-500)"
-                        stroke="var(--pc-color-primary-600)"
-                        stroke-width="1"
-                    />
-                </svg>
-            </div>
-            <div class="catalog-title">Z‐index</div>
-        </pc-card>
-    </a>
     <a href="/design-tokens/typography">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
@@ -274,20 +284,20 @@ A theme is a collection of predefined CSS custom properties that control global 
                 >
                     <path
                         d="M15.936 7.936L5.568 32.32C5.344 32.928 4.992 33.408 4.512 33.76C4.064 34.08 3.568 34.24 3.024 34.24C2.16 34.24 1.52 34 1.104 33.52C0.688 33.04 0.48 32.448 0.48 31.744C0.48 31.456 0.528 31.152 0.624 30.832L12.576 2.128C12.832 1.488 13.216 0.991998 13.728 0.639997C14.272 0.287998 14.848 0.143998 15.456 0.207997C16.032 0.207997 16.56 0.383998 17.04 0.735999C17.552 1.056 17.92 1.52 18.144 2.128L29.952 30.256C30.112 30.672 30.192 31.056 30.192 31.408C30.192 32.272 29.904 32.96 29.328 33.472C28.784 33.984 28.176 34.24 27.504 34.24C26.928 34.24 26.4 34.064 25.92 33.712C25.472 33.36 25.12 32.88 24.864 32.272L14.544 8.224L15.936 7.936ZM7.056 26.464L9.696 20.944H22.656L23.568 26.464H7.056Z"
-                        fill="var(--pc-color-neutral-300)"
+                        fill="var(--pc-color-neutral-border-loud)"
                     />
                     <path
                         d="M55.7378 7.84C56.5698 7.84 57.2578 8.112 57.8018 8.656C58.3458 9.2 58.6178 9.904 58.6178 10.768V31.072C58.6178 31.904 58.3458 32.608 57.8018 33.184C57.2578 33.728 56.5698 34 55.7378 34C54.9058 34 54.2177 33.728 53.6737 33.184C53.1297 32.608 52.8578 31.904 52.8578 31.072V28.72L53.9138 29.152C53.9138 29.568 53.6898 30.08 53.2418 30.688C52.7938 31.264 52.1858 31.84 51.4178 32.416C50.6498 32.992 49.7378 33.488 48.6818 33.904C47.6578 34.288 46.5378 34.48 45.3218 34.48C43.1138 34.48 41.1138 33.92 39.3218 32.8C37.5298 31.648 36.1058 30.08 35.0498 28.096C34.0258 26.08 33.5137 23.776 33.5137 21.184C33.5137 18.56 34.0258 16.256 35.0498 14.272C36.1058 12.256 37.5138 10.688 39.2738 9.568C41.0338 8.416 42.9857 7.84 45.1297 7.84C46.5058 7.84 47.7697 8.048 48.9217 8.464C50.0737 8.88 51.0658 9.408 51.8978 10.048C52.7618 10.688 53.4177 11.344 53.8657 12.016C54.3458 12.656 54.5858 13.2 54.5858 13.648L52.8578 14.272V10.768C52.8578 9.936 53.1297 9.248 53.6737 8.704C54.2177 8.128 54.9058 7.84 55.7378 7.84ZM46.0418 29.2C47.4498 29.2 48.6818 28.848 49.7378 28.144C50.7938 27.44 51.6097 26.48 52.1857 25.264C52.7937 24.048 53.0978 22.688 53.0978 21.184C53.0978 19.648 52.7937 18.272 52.1857 17.056C51.6097 15.84 50.7938 14.88 49.7378 14.176C48.6818 13.472 47.4498 13.12 46.0418 13.12C44.6658 13.12 43.4497 13.472 42.3937 14.176C41.3377 14.88 40.5058 15.84 39.8978 17.056C39.3218 18.272 39.0337 19.648 39.0337 21.184C39.0337 22.688 39.3218 24.048 39.8978 25.264C40.5058 26.48 41.3377 27.44 42.3937 28.144C43.4497 28.848 44.6658 29.2 46.0418 29.2Z"
-                        fill="var(--pc-color-neutral-300)"
+                        fill="var(--pc-color-neutral-border-loud)"
                     />
                 </svg>
             </div>
             <div class="catalog-title">Typography</div>
         </pc-card>
     </a>
-    <a href="/design-tokens/other-tokens">
+    <a href="/design-tokens/component-groups">
         <pc-card>
-            <div slot="image">
+            <div slot="media">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="64"
@@ -300,25 +310,35 @@ A theme is a collection of predefined CSS custom properties that control global 
                         width="28"
                         height="16"
                         rx="8"
-                        fill="var(--pc-color-primary-500)"
+                        fill="var(--pc-color-primary-fill-loud)"
                     />
-                    <circle cx="46" cy="8" r="6" fill="var(--pc-color-neutral-0)" />
+                    <circle
+                        cx="46"
+                        cy="8"
+                        r="6"
+                        fill="var(--pc-color-surface-default)"
+                    />
                     <circle
                         cx="72"
                         cy="8"
                         r="7"
-                        fill="var(--pc-color-primary-500)"
-                        stroke="var(--pc-color-primary-500)"
+                        fill="var(--pc-color-primary-fill-loud)"
+                        stroke="var(--pc-color-primary-fill-loud)"
                         stroke-width="2"
                     />
-                    <circle cx="72" cy="8" r="4" fill="var(--pc-color-neutral-0)" />
+                    <circle
+                        cx="72"
+                        cy="8"
+                        r="4"
+                        fill="var(--pc-color-surface-default)"
+                    />
                     <path
                         d="M0 3C0 1.34315 1.34315 0 3 0H13C14.6569 0 16 1.34315 16 3V13C16 14.6569 14.6569 16 13 16H3C1.34315 16 0 14.6569 0 13V3Z"
-                        fill="var(--pc-color-primary-500)"
+                        fill="var(--pc-color-primary-fill-loud)"
                     />
                     <path
                         d="M12.5977 4.65234C12.877 4.91016 12.877 5.36133 12.5977 5.61914L7.09766 11.1191C6.83984 11.3984 6.38867 11.3984 6.13086 11.1191L3.38086 8.36914C3.10156 8.11133 3.10156 7.66016 3.38086 7.40234C3.63867 7.12305 4.08984 7.12305 4.34766 7.40234L6.625 9.6582L11.6309 4.65234C11.8887 4.37305 12.3398 4.37305 12.5977 4.65234Z"
-                        fill="var(--pc-color-neutral-0)"
+                        fill="var(--pc-color-surface-default)"
                     />
                     <rect
                         y="26"
@@ -333,21 +353,36 @@ A theme is a collection of predefined CSS custom properties that control global 
                         width="16"
                         height="16"
                         rx="8"
-                        fill="#e5e8ee"
-                        stroke="#ccd2df"
+                        fill="var(--pc-color-neutral-90)"
+                        stroke="var(--pc-color-neutral-80)"
                         stroke-width="1"
                     />
                     <defs>
-                        <linearGradient id="slider-track-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop stop-color="var(--pc-color-primary-500)" />
-                            <stop offset="0.61" stop-color="var(--pc-color-primary-500)" />
-                            <stop offset="0.61" stop-color="var(--pc-color-neutral-300)" />
-                            <stop offset="1" stop-color="var(--pc-color-neutral-300)" />
+                        <linearGradient
+                            id="slider-track-gradient"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="0%"
+                        >
+                            <stop stop-color="var(--pc-color-primary-fill-loud)" />
+                            <stop
+                                offset="0.61"
+                                stop-color="var(--pc-color-primary-fill-loud)"
+                            />
+                            <stop
+                                offset="0.61"
+                                stop-color="var(--pc-color-neutral-fill-normal)"
+                            />
+                            <stop
+                                offset="1"
+                                stop-color="var(--pc-color-neutral-fill-normal)"
+                            />
                         </linearGradient>
                     </defs>
                 </svg>
             </div>
-            <div class="catalog-title">Other tokens</div>
+            <div class="catalog-title">Component groups</div>
         </pc-card>
     </a>
 </div>

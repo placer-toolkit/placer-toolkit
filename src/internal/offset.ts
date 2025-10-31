@@ -1,3 +1,4 @@
+/** Returns an element’s offset relative to its parent. Similar to `element.offsetTop` and `element.offsetLeft`, except the parent doesn’t have to be positioned relative or absolute. Note: This was created to work around what appears to be a bug in Chrome where a slotted element’s `offsetParent` seems to ignore elements inside the surrounding shadow DOM (https://issues.chromium.org/issues/41434587). */
 export function getOffset(element: HTMLElement, parent: HTMLElement) {
     return {
         top: Math.round(

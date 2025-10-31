@@ -3,26 +3,24 @@ title: Select
 description: Selects allow you to choose items from a menu of predefined options.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Selects allow you to choose items from a menu of predefined options.
 
-<CodeDemo open>
-{`<pc-select>
+```demo:open
+<pc-select>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="book-open"
         slot="icon"
     ></pc-icon>
     This component works well with standard `<form>` elements. Please refer to the [form controls](/get-started/form-controls) page to learn more about form submission and client‐side validation.
@@ -34,106 +32,106 @@ Selects allow you to choose items from a menu of predefined options.
 
 Use the `label` attribute to give the select an accessible label. For labels that contain HTML, use the `label` slot instead.
 
-<CodeDemo>
-{`<pc-select label="Select an option">
+```demo
+<pc-select label="Select an option">
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Hints
 
 Add a descriptive hint to a select with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
 
-<CodeDemo>
-{`<pc-select label="Experience" hint="Please tell us your skill level.">
+```demo
+<pc-select label="Experience" hint="Please tell us your skill level.">
     <pc-option value="novice">Novice</pc-option>
     <pc-option value="intermediate">Intermediate</pc-option>
     <pc-option value="advanced">Advanced</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Placeholders
 
 Use the `placeholder` attribute to add a placeholder.
 
-<CodeDemo>
-{`<pc-select placeholder="Select one">
+```demo
+<pc-select placeholder="Select one">
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Clearable
 
 Use the `clearable` attribute to make the select clearable. The clear button only appears when an option is selected.
 
-<CodeDemo>
-{`<pc-select value="option-1" clearable>
+```demo
+<pc-select value="option-1" clearable>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Filled
 
 Add the `filled` attribute to draw a filled select.
 
-<CodeDemo>
-{`<pc-select filled>
+```demo
+<pc-select filled>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Pill
 
 Use the `pill` attribute to give selects a pill‐shaped look.
 
-<CodeDemo>
-{`<pc-select pill>
+```demo
+<pc-select pill>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Disabled
 
 Use the `disabled` attribute to disable the select.
 
-<CodeDemo>
-{`<pc-select placeholder="Disabled" disabled>
+```demo
+<pc-select placeholder="Disabled" disabled>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Multiple options
 
-To allow multiple options to be selected, use the `multiple` attribute. It’s a good practise to use the `clearable` attribute as well when this option is enabled. To set multiple values at once, set `value` to a space‐delimited list of values.
+To allow multiple options to be selected, use the `multiple` attribute. It’s a good practice to use the `clearable` attribute as well when this option is enabled. To set multiple values at once, set `value` to a space‐delimited list of values.
 
-<CodeDemo>
-{`<pc-select label="Select a few options" value="option-1 option-2 option-3" multiple clearable>
+```demo
+<pc-select label="Select a few options" value="option-1 option-2 option-3" multiple clearable>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="sliders"
         slot="icon"
     ></pc-icon>
     Multi‐select options may wrap, causing the select to expand vertically. You can use the `max-options-visible` attribute to control the maximum number of selected options to show at once.
@@ -145,23 +143,23 @@ Use the `value` attribute to set the initial selection.
 
 When using the `multiple` attribute, the `value` attribute uses space‐delimited values to select more than one option. Because of this, `<pc-option>` values cannot contain spaces. If you’re accessing the `value` property through JavaScript, it will be an array.
 
-<CodeDemo>
-{`<pc-select value="option-1 option-2 option-3" multiple clearable>
+```demo
+<pc-select value="option-1 option-2 option-3" multiple clearable>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Grouping options
 
 Use the [Divider](/components/divider) component to group listbox items visually. You can also use the `<small>` tag to provide labels, but they won’t be announced by most assistive devices.
 
-<CodeDemo>
-{`<pc-select>
+```demo
+<pc-select>
     <small>Section 1</small>
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
@@ -171,15 +169,15 @@ Use the [Divider](/components/divider) component to group listbox items visually
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Sizes
 
-Use the `size` attribute to change the select’s combobox size.
+Use the `size` attribute to change the select’s size.
 
-<CodeDemo>
-{`<pc-select size="small" placeholder="Small">
+```demo
+<pc-select size="small" placeholder="Small">
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
@@ -199,27 +197,27 @@ Use the `size` attribute to change the select’s combobox size.
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Placement
 
 The preferred placement of the select’s listbox can be set with the `placement` attribute. The actual position may vary to ensure the panel remains in the viewport.
 
-<CodeDemo>
-{`<pc-select placement="top">
+```demo
+<pc-select placement="top">
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Prefixes and suffixes
 
 Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid slotting in interactive elements, such as buttons and links.
 
-<CodeDemo>
-{`<pc-select size="small" placeholder="Small" clearable>
+```demo
+<pc-select size="small" placeholder="Small" clearable>
     <pc-icon
         library="default"
         icon-style="solid"
@@ -260,8 +258,8 @@ Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid 
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
-</pc-select>`}
-</CodeDemo>
+</pc-select>
+```
 
 ### Custom tags
 
@@ -269,8 +267,8 @@ When multiple options can be selected, you can provide custom tags by passing a 
 
 Remember that custom tags are rendered in a shadow root. To style them, you can use the `style` attribute in your template or you can add your own [parts](/get-started/customisation/#css-parts) and target them with the [`::part()`](https://developer.mozilla.org/en-US/docs/Web/CSS/::part) selector.
 
-<CodeDemo>
-{`<pc-select
+```demo
+<pc-select
     class="custom-tags"
     placeholder="Select one"
     value="e-mail phone"
@@ -313,20 +311,20 @@ Remember that custom tags are rendered in a shadow root. To style them, you can 
         const name = option.querySelector('pc-icon[slot="prefix"]').name;
 
         // A string, Lit template or HTMLElement can be returned here
-        return \`
+        return `
             <pc-tag removable>
                 <pc-icon
                     library="default"
                     icon-style="solid"
-                    name="\${name}"
+                    name="${name}"
                     style="padding-inline-end: var(--pc-spacing-s)"
                 ></pc-icon>
-                \${option.getTextLabel()}
+                ${option.getTextLabel()}
             </pc-tag>
-        \`;
+        `;
     };
-</script>`}
-</CodeDemo>
+</script>
+```
 
 ### Lazy loading options
 
@@ -334,16 +332,16 @@ Lazy loading options is very hard to get right. `<pc-select>` largely follows ho
 
 Here are the following conditions:
 
--   If a `<pc-select>` is created without any options, but is given a `value` attribute, its `value` will be `""`, and then when options are added, if any of the options have a value equal to the `<pc-select>` value, the value of the `<pc-select>` will be equal that of the option.
+- If a `<pc-select>` is created without any options, but is given a `value` attribute, its `value` will be `""`, and then when options are added, if any of the options have a value equal to the `<pc-select>` value, the value of the `<pc-select>` will be equal that of the option.
 
 For example, `<pc-select value="foo">` will have a value of `""` until `<pc-option value="foo">Foo</pc-option>` connects, at which point its value will become `"foo"` when submitting.
 
--   If a `<pc-select multiple>` with an initial value has multiple values, but only some of the options are present, it will only respect the options that are present, and if a selected option is loaded in later, **and** the value of the select has not changed via user interaction or direct property assignment, it will add the selected option ot the form value and to the `.value` of the select.
+- If a `<pc-select multiple>` with an initial value has multiple values, but only some of the options are present, it will only respect the options that are present, and if a selected option is loaded in later, **and** the value of the select has not changed via user interaction or direct property assignment, it will add the selected option ot the form value and to the `.value` of the select.
 
 This can be hard to conceptualise, so here’s a fairly large example showing how lazy‐loaded options work with `<pc-select>` and `<pc-select multiple>` when given initial value attributes. Feel free to play around with it in this code demo.
 
-<CodeDemo>
-{`<form id="lazy-options-example">
+```demo
+<form id="lazy-options-example">
     <div>
         <pc-select name="select-1" value="foo" label="Single select (with existing options)">
             <pc-option value="bar">Bar</pc-option>
@@ -449,14 +447,13 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
     container.addEventListener("click", addFooOption);
     container.addEventListener("submit", handleLazySubmit);
 </script>
-`}
-</CodeDemo>
+```
 
 <pc-callout appearance="warning">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="shield-virus"
         slot="icon"
     ></pc-icon>
     Be sure you trust the content you are outputting! Passing unsanitised user input to `getTag()` can result in XSS vulnerabilities.

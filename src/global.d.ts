@@ -1,31 +1,28 @@
-import type { CSSResultGroup } from "lit";
-
 declare module "*.css" {
-    export const styles: CSSResultGroup;
+    const styles: string;
+    export default styles;
 }
 
-declare global {
-    interface HTMLInputElement {
-        showPicker: () => void;
-    }
+interface HTMLInputElement {
+    showPicker: () => void;
+}
 
-    interface CloseWatcher extends EventTarget {
-        new (options?: CloseWatcherOptions): CloseWatcher;
-        requestClose(): void;
-        close(): void;
-        destroy(): void;
+interface CloseWatcher extends EventTarget {
+    new (options?: CloseWatcherOptions): CloseWatcher;
+    requestClose(): void;
+    close(): void;
+    destroy(): void;
 
-        oncancel: (event: Event) => void | null;
-        onclose: (event: Event) => void | null;
-    }
+    oncancel: (event: Event) => void | null;
+    onclose: (event: Event) => void | null;
+}
 
-    declare const CloseWatcher: CloseWatcher;
+declare const CloseWatcher: CloseWatcher;
 
-    interface CloseWatcherOptions {
-        signal: AbortSignal;
-    }
+interface CloseWatcherOptions {
+    signal: AbortSignal;
+}
 
-    declare interface Window {
-        CloseWatcher?: CloseWatcher;
-    }
+declare interface Window {
+    CloseWatcher?: CloseWatcher;
 }

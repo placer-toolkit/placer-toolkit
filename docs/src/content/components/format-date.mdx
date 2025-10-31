@@ -1,0 +1,83 @@
+---
+title: Format Date
+description: Formats a date/time using the specified locale and options.
+---
+
+Formats a date/time using the specified locale and options.
+
+Localisation is handled by the browser’s [`Intl.DateTimeFormat` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat). No language packs are required.
+
+```demo
+<!-- 🎉 Placer Toolkit release date -->
+<pc-format-date date="2025-05-15T15:20:00+02:00"></pc-format-date>
+```
+
+The `date` attribute determines the date/time to use when formatting. It must be a string that [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse) can interpret or a [`Date`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) object set via JavaScript. If omitted, the current date/time will be assumed.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="calendar"
+        slot="icon"
+    ></pc-icon>
+    When using strings, avoid ambiguous dates such as `03/04/2024`, which can be interpreted as 4 March 2024 or 3 April 2024 depending on the user’s browser and locale. Instead, always use a valid [ISO 8601 date time string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date#date_time_string_format) to ensure the date will be parsed properly by all clients.
+</pc-callout>
+
+## Demos
+
+### Date and time formatting
+
+Formatting options are based on those found in the [`Intl.DateTimeFormat` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat). When formatting options are provided, the date/time will be formatted according to those values. When no formatting options are provided, a localised, numeric date will be displayed instead.
+
+```demo
+<!-- Human‐readable date -->
+<pc-format-date month="long" day="numeric" year="numeric"></pc-format-date>
+
+<br />
+
+<!-- Time -->
+<pc-format-date hour="numeric" minute="numeric"></pc-format-date>
+
+<br />
+
+<!-- Weekday -->
+<pc-format-date weekday="long"></pc-format-date>
+
+<br />
+
+<!-- Month -->
+<pc-format-date month="long"></pc-format-date>
+
+<br />
+
+<!-- Year -->
+<pc-format-date year="numeric"></pc-format-date>
+
+<br />
+
+<!-- No formatting options -->
+<pc-format-date></pc-format-date>
+```
+
+### Hour formatting
+
+By default, the browser will determine whether to use 12‐hour or 24‐hour time. To force one or the other, set the `hour-format` attribute to `12` or `24`.
+
+```demo
+<pc-format-date hour="numeric" minute="numeric" hour-format="12"></pc-format-date>
+<br />
+<pc-format-date hour="numeric" minute="numeric" hour-format="24"></pc-format-date>
+```
+
+### Localisation
+
+Use the `lang` attribute to set the date/time formatting locale.
+
+```demo
+English (US): <pc-format-date lang="en-us"></pc-format-date>
+<br />
+French: <pc-format-date lang="fr"></pc-format-date>
+<br />
+Russian: <pc-format-date lang="ru"></pc-format-date>
+```

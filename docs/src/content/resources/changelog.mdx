@@ -1,11 +1,9 @@
 ---
 title: Changelog
-description: Placer Toolkit follows Semantic Versioning. Breaking changes to Stable components are only allowed in major versions. Contributions must align with the project’s roadmap. Features may be deprecated, but eventually removed. Experimental components are not production‐ready and may change at any time outside semantic versioning.
+description: Placer Toolkit follows Semantic Versioning. Breaking changes to components marked with the Stable badge will not be accepted until the next major version. As such, all contributions must align with the project’s roadmap. Features that are deemed no longer necessary may be removed, but only in the next major version. Components with the Experimental badge should not be used in production. They are made available as release candidates for development and testing purposes. As such, changes to experimental components will not be subject to semantic versioning.
 ---
 
-import CodeBlock from "../../components/CodeBlock.astro";
-
-Placer Toolkit follows [Semantic Versioning](https://semver.org). Breaking changes to components marked with the <pc-badge appearance="primary">Stable</pc-badge> badge will not accepted until the next major version. As such, all contributions must align with the project’s roadmap. Features that are deemed no longer necessary may be removed, but only in the next major version. <mark>This does not apply in pre‐release versions.</mark>
+Placer Toolkit follows <a href="https://semver.org" target="_blank" rel="noreferrer noopener">Semantic Versioning</a>. Breaking changes to components marked with the <pc-badge appearance="primary">Stable</pc-badge> badge will not be accepted until the next major version. As such, all contributions must align with the project’s roadmap. Features that are deemed no longer necessary may be removed, but only in the next major version.
 
 Components with the <pc-badge appearance="warning">Experimental</pc-badge> badge should not be used in production. They are made available as release candidates for development and testing purposes. As such, changes to experimental components will not be subject to semantic versioning.
 
@@ -13,60 +11,250 @@ Components with the <pc-badge appearance="warning">Experimental</pc-badge> badge
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="flask"
         slot="icon"
     ></pc-icon>
-    During the pre‐release period, things might break! We take breaking changes very seriously, but sometimes they’re necessary to make the final product that much better. Expect breaking changes in the pre‐release stage, as it’s the least stable version category.
+    During the alpha period, things might break! We take breaking changes very seriously, but sometimes they’re necessary to make the final product better.
 </pc-callout>
 
 {/* This is a static list of the changelog over at GitHub. Make sure to copy the exact list
-    that you create here over to GitHub with GFM syntax instead of our web components.
+    that you create here over to GitHub with GFM syntax instead of our web and Astro components.
     Also refactor paths that are referencing this site with / (root) to the built site. */}
+
+## Breaking change ratings
+
+In Placer Toolkit changelogs, we use consistent ratings to clearly communicate the scope and impact of every breaking change. The usage and description of each rating is detailed below.
+
+### ☢️ Nuclear breaking change
+
+This rating applies to critical, large‐scale structural changes that affect almost all Placer Toolkit users. Migration time is often extensive, and in many cases, a dedicated migration guide may not be immediately available. We always provide an ETA for migration completion. These changes typically unlock significant new features (e.g., the theming API rewrite in v1.0.0-alpha.1).
+
+### 🚨 Major breaking change
+
+This rating applies to impactful changes that affect most Placer Toolkit users. A detailed migration guide is always provided, and the process is typically quick (e.g., the CSS path refactor in v1.0.0-alpha.1).
+
+### ⚠️ Breaking change
+
+This rating applies to smaller, localised changes that affect only a minority of users. A simple migration guide is always provided (e.g., the Storybook to Astro site migration in v0.5.1).
+
+### 🔮 Future usage warnings
+
+This rating flags minor changes that impact consistency or adherence to future API standards. It affects component usage going forward but does not break current functionality. A simple migration guide is always provided (e.g., the focus ring animation update in v1.0.0-alpha.1).
+
+## 1.0.0-alpha.1
+
+### Milestones
+
+- Rewritten the theming API of Placer Toolkit.<br />**☢️ Nuclear breaking change (≈ 1 month):** The theming API is now semantic, so a simple migration guide isn’t available. We recommend reading the [design token docs](/design-tokens) to further understand the new system and adapt to it.
+- Added [localisation](/get-started/localisation) with 70 locales, covering 99,1 % of languages used on the web, across all components.
+- Added seven new components: [Dropdown Item](/components/dropdown-item), [Format Bytes](/components/format-bytes), [Format Date](/components/format-date), [Format Number](/components/format-number), [Mutation Observer](/components/mutation-observer), [Scroller](/components/scroller) and [Textarea](/components/textarea).
+- Added the Utility and Serene themes alongside the Vibrant and Muted palettes to Placer Toolkit as a result of the new theming API.
+- Switched from Google Fonts to [Bunny Fonts](https://fonts.bunny.net) to ensure GDPR compliance.
+- Rebuilt the entire Placer Toolkit homepage with a theming playground and other stuff.
+- Removed the Menu, Menu Item and Menu Label components, as they are replaced with the already existing [Dropdown](/components/dropdown) component and the new [Dropdown Item](/components/dropdown-item) component. The Menu Label component is replaced with a slotted `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>` and `<h6>` element.<br />**🚨 Major breaking change:** If you use any of these components, they must be removed and be replaced with the new equivalent.
+- Replaced the Icon Button component with the [Button](/components/button) component with icon button support.<br />**🚨 Major breaking change:** If you use the Icon Button component, you must replace it with the [Button](/components/button) and [Icon](/components/icon) components as well as a few attributes to match it up as close as possible.
+    ```diff
+    -<pc-icon-button
+    -    library="default"
+    -    icon-style="solid"
+    -    name="home"
+    -    label="Home"
+    -></pc-icon-button>
+    +<pc-button size="small" variant="plain">
+    +    <pc-icon
+    +        library="default"
+    +        icon-style="solid"
+    +        name="home"
+    +        label="Home"
+    +    ></pc-icon>
+    +</pc-button>
+    ```
+
+    You may have to adjust the spacing of related elements due to this change.
+- Rewritten the [Dialog](/components/dialog) and [Drawer](/components/drawer) component to use the native [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) element. This has been done for better accessibility and to fix clipping issues.<br />**🚨 Major breaking change:** Since we have rewritten these two components, you need to make some changes to make it work as expected.
+    - The dialog/drawer must be opened/closed by toggling the `open` property instead of calling the `show()` and `hide()` methods. We recommend closing the dialog/drawer by attaching `data-dialog="close"` to the close button in the dialog/drawer.
+    - Replaced the `overlay` and `panel` CSS parts with a single `dialog`/`drawer` part (alongside the native `::backdrop` pseudo‐element).
+    - Replaced the `pc-request-close` event with the already existing `pc-hide` event, which now has the ability to be cancelled.
+    - `event.detail.source` must now target an HTML element instead of a limited set of strings. This makes it more flexible.
+    - Removed the `contained` attribute/property in the [Drawer](/components/drawer) component. There currently is no replacement due to restrictions with the `<dialog>` element.
+    - When preventing the dialog/drawer from closing when clicking the overlay, use the `no-light-dismiss` attribute instead of cancelling the associated event with JavaScript.
+- Bumped the minimum supported Node.js version to Node.js v20.<br />**⚠️ Breaking change:** Users must now use Node.js v20 or later (v21 is not supported) to install and use Placer Toolkit. This aligns with the EOL status of previous Node.js versions.
+- Added the [brand assets](/resources/brand-assets) page for proper usage of Placer Toolkit’s brand assets.
+- Updated the [Code of Conduct](/legal/code-of-conduct) to be based on the Contributor Covenant version 3.0.
+
+### Security vulnerability fixes
+
+- Updated `@ctrl/tinycolor`’s version to 4.2.0 after v4.1.1 and v4.1.2 being known to include malware. [Details](https://snyk.io/blog/embedded-malicious-code-in-tinycolor-and-ngx-bootstrap-releases-on-npm) on the supply‐chain compromise.
+
+### Enhancements
+
+- Refactored the paths of where CSS files are placed.<br />**🚨 Major breaking change:** You’ll immediately notice that your CSS wouldn’t load after updating to v1.0.0-alpha.1. Update your CSS paths accordingly with the help of this diff. This diff was made for the CDN, but we assume that you know how to do the same for the npm imports (use `dist` instead of `cdn`).
+    ```diff
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/default.css" />
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/native-styles.css" />
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/style-utilities.css" />
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/visually-hidden.css" />
+    +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/default.css" />
+    +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/native.css" />
+    +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/utilities.css" />
+    +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/utilities/visually-hidden.css" />
+    ```
+
+    We instead recommend loading `placer.css`; if you want to do so, check out the [Installation](/get-started/installation) docs.
+- Removed [Rollup](https://rollupjs.org) from our build pipeline and replaced it with our custom build script powered by [esbuild](https://esbuild.github.io). With this change, we separated CDN and npm builds: `cdn` for CDN users, `dist` for npm users.<br />**⚠️ Breaking change:** If you use the CDN, refactor all links to `/cdn/`, as it improves performance. You may need to reclone this repository to apply this change correctly if you have your own custom Placer Toolkit build.
+- Bumped the Font Awesome version in the [Icon](/components/icon) component from 6.7.2 to 7.1.0.<br />**⚠️ Breaking change:** Some refactoring must be done on our end to fit the breaking changes in Font Awesome 7. If you’re using the `fixed-width` attribute, that can now be safely removed, as FA icons now are fixed width by default. A new attribute has been introduced instead called `auto-width`. That reverts to the old style of only taking up as much horizontal space as the icon needs.
+- Updated all CSS directional properties to use logical properties for better internationalisation support (e.g., `margin-right` → `margin-inline-end`, `width` → `inline-size`).
+- Replaced all units and numbers that are used in English with the ones used in <abbr title="International System of Units">SI</abbr> in the Placer Toolkit docs.
+- Added variants to some components. This is because of the updated theming API that allows for more flexibility within our components.
+- Removed the Radio Button component.<br />**⚠️ Breaking change:** This component currently **does not** have a one‐to‐one replacement _yet_, as we’re trying to rewrite the radio‐related components; it will surface with a replacement in the future, in the meanwhile, use the [Radio](/components/radio) component instead.
+- Added the experimental `use-si` attribute to the new [Format Bytes](/components/format-bytes) and [Format Number](/components/format-number) components to force them to follow SI conventions instead of local ones.
+- Removed the feature that automatically stripped em-dashes (`—`) from JSDoc descriptions.<br />**⚠️ Breaking change:** Descriptions for tags within a declaration’s JSDoc comment (e.g., `@csspart`, `@slot`, `@event`) should be separated from the tag name by a hyphen‐minus (`-`) instead of an em‐dash (`—`).
+- Changed the default sans‐serif font in the Default theme from Quicksand to Nunito for legibility reasons.
+- Added a `PlacerElement` class to extend when creating new components.<br />**🔮 Future usage warnings:** If you extend `LitElement` but use `PlacerElement`‐specific features, it won’t work and cause errors.
+- Adjusted the button sizes to be the height of the equivalent input fields, so it would align correctly in flank layouts.<br />**⚠️ Breaking change:** Buttons will be larger than before, you may need to change the `size` attribute/property to achieve what you’re looking for.
+- Added terminal title bars to the internal code block when the language is set to `bash`, `shell` or `sh`.
+- Changed the code block and code demo syntax to follow [GitHub-flavored Markdown](https://github.github.com/gfm) more closely.<br />**🔮 Future usage warnings:** If you contribute to some of Placer Toolkit’s docs, make sure to read the updated section on the [Contributing](/resources/contributing#github-flavored-markdown) page to use the correct syntax. It does not require importing the Astro component anymore.
+- Removed the `hoist` attribute/property from the [Copy Button](/components/copy-button), [Select](/components/select) and [Tooltip](/components/tooltip) components.<br />**⚠️ Breaking change:** The `hoist` attribute/property has been removed from these three components. You can no longer control hoisting on these components directly. To manage popover positioning, use the [Popup](/components/popup) component and its `popover` attribute. For example, adding `boundary="scroll"` anchors the popup to the parent container while still using fixed positioning. On older browsers that do not support the `popover` attribute, the previous behaviour is used automatically.
+- Renamed some CSS parts in the [Input](/components/input) and [Radio Group](/components/radio-group) components to match its purpose better and be more concise.<br />**⚠️ Breaking change:** Please refactor the part name of these two components from `form-control-input` to `input`. In the [Input](/components/input) component, the old `input` part has been renamed to `base`; the old `base` part was removed.
+- Replaced the `vertical` attribute in the [Divider](/components/divider) component with `orientation="vertical"`.<br />**⚠️ Breaking change:** The old `vertical` attribute does not work anymore as it is replaced with the new one. This makes it consistent with the [Scroller](/components/scroller) component’s `orientation` attribute.
+- Made the focus ring animation more lively and fun.<br />**🔮 Future usage warnings:** If you create or style some elements, you may want to update it to the new animation so it is consistent with other components. You have to apply this animation to the `:focus`, `:focus-within` or `:focus-visible` pseudo‐class, depending on context.
+    ```css
+    .some-element:focus-visible {
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    @keyframes focus-ring-animation {
+        0% {
+            outline-width: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
+        }
+    }
+    ```
+- Moved `custom-elements.json` to the compiled `cdn` and `dist` folders.
+- Removed the `base`, `trigger` and `panel` parts in the [Dropdown](/components/dropdown) component during the refactor, as it doesn’t make any sense to style these elements.<br />**⚠️ Breaking change:** These parts have been removed and need to be removed from your CSS by retargeting the parts to the contents of the slots that these parts are originally targeted to.
+- Renamed the colour scheme classes from `pc-theme-light` and `pc-theme-dark` to `pc-light` and `pc-dark` to not conflict with the new theming API features.<br />**⚠️ Breaking change:** The colour scheme theming will not work as expected anymore. You have to update the colour scheme classes.
+- Swapped the sides in the [Comparer](/components/comparer) component to make sense.<br />**⚠️ Breaking change:** This changes the order of the compared elements. Swap the slot names of both elements to make it look like before.
+- Updated the animation when the tooltip pops in and out in the [Tooltip](/components/tooltip) component.
+- Removed the `aria-live="assertive"` emphasis for the Warning and Danger appearances in the [Callout](/components/callout) component.
+- Made the tags in a [multi‐option select](/components/select/#multiple-options) concentric to the select combobox.
+- Renamed a bunch of exported parts of internal components to follow the new naming scheme conventions.<br />**⚠️ Breaking change:** Please refactor these part names if you’re using them.
+    - **Copy Button**
+        - `tooltip__base` → `tooltip-base`
+        - `tooltip__base__popup` → `tooltip-base-popup`
+        - `tooltip__base__arrow` → `tooltip-base-arrow`
+        - `tooltip__body` → `tooltip-body`
+    - **Dialog**
+        - `close-button__base` → `close-button-base`
+    - **Drawer**
+        - `close-button__base` → `close-button-base`
+    - **Dropdown**
+        - `base__popup` → `base-popup`
+    - **Menu Item**
+        - `spinner__base` → `spinner-base`
+    - **Radio Group**
+        - `button-group__base` → ❌ The Radio Button component was removed.
+    - **Select**
+        - `tag__base` → `tag-base`
+        - `tag__content` → `tag-content`
+        - `tag__remove-button` → `tag-remove-button`
+        - `tag__remove-button__base` → `tag-remove-button-base`
+    - **Tab**
+        - `close-button__base` → `close-button-base`
+    - **Tab Group**
+        - `scroll-button__base` → `scroll-button-base`
+    - **Tag**
+        - `remove-button__base` → `remove-button-base`
+    - **Tooltip**
+        - `base__popup` → `base-popup`
+        - `base__arrow` → `base-arrow`
+- Renamed the `image` slot in the [Card](/components/card) component to `media`.<br />**⚠️ Breaking change:** Cards using the `image` slot must be renamed to `media`.
+- Moved a content spacing‐related CSS rule to `native.css`.
+- Updated the colour palette of the default theme.
+- Redesigned the look of many components.
+- Removed the base path utility and replaced it with `kit-code.ts`/`kit-code.js`.<br />**⚠️ Breaking change:** The base path utilities aren’t useful anymore, hence they are removed. If you use them, remove them and replace it with a safe equivalent, or recreate it yourself based off an older version of Placer Toolkit.
+- Added two new style utilities: [Rounding](/style-utilities/rounding) and [Text](/style-utilities/text).
+- Added the [native styles](/style-utilities/native-styles) documentation, placed in the [Style utilities](/style-utilities) section.
+- Updated the native styles for better accessibility and user experience.
+- Added MathML styling in correspondence to the new `--pc-font-math` custom property.
+- Added `min-block-size` to the [Divider](/components/divider) component when its orientation is vertical, so no height needs to be set on its parent flex container.
+- Removed the `label` attribute and property from the [Spinner](/components/spinner) component.<br />**⚠️ Breaking change:** This is now handled automatically by the localisation utility, but you won’t be able to customise the label for assistive devices anymore.
+- Added a [Privacy Policy](/legal/privacy) to comply with the [GDPR](https://gdpr.eu).
+- Removed all component files ending in `.component.ts` and combined them into the main `.ts` file. This will compile to `.js` instead of `.component.js`.<br />**⚠️ Breaking change:** If you’re importing `.component.js` files in your code, which you shouldn’t anyways, refactor these imports to `.js`.
+- Refactored component CSS from `.styles.ts`/`.styles.js` to `.css`.<br />**⚠️ Breaking change:** The exclusions for `.styles.ts`/`.styles.js` have been removed, it may not behave as expected if you don’t refactor. You must extend the `PlacerElement` class and use `static css` instead of `static styles` to refactor. Use other components’ code as a template for your refactor.
+- Added an **Edit** button in the internal Code Demo component to edit the code in CodePen.
+- Added heading links to headings 2–6 in the Placer Toolkit docs.
+
+### Bug fixes
+
+- Fixed all CDN files to inline the `tslib` library by refactoring CDN files to be in `/cdn/` instead of `/dist/`.
+- Fixed the auto‐loader to import components from the correct path.
+- Fixed unintended scrolling behaviour caused by the `<main>` element. Previously intended but shown to have adverse effects.
+- Fixed a ghost link to the Support page in the mobile sidebar.
+- Fixed the new component link for the [Comparer](/components/comparer) component in the v0.5.1 changelog pointing to a different component.
+- Changed the possible values of the `autocorrect` property in the [Input](/components/input) and [Textarea](/components/textarea) components from `"on"`/`"off"` to a boolean. This does not apply to the `autocorrect` attribute.<br />**⚠️ Breaking change:** This aligns with the HTML spec, but may break your code. This was done to fix type issues in TypeScript.
+- Changed the possible values of the `spellcheck` attribute in the [Input](/components/input) and [Textarea](/components/textarea) components from `"true"`/`"false"` to `"on"`/`"off"`. This does not apply to the `spellcheck` property.<br />**⚠️ Breaking change:** This aligns with the HTML spec, but may break your code. This change was made to follow the HTML spec more closely.
+- Normalised the padding in the [Dialog](/components/dialog) and [Drawer](/components/drawer) component if there’s no footer and/or if there’s no header.
+- Fixed extra padding added when there isn’t an icon in the [Callout](/components/callout) component because the internal icon container wasn’t properly removed.
+- Replaced a Byte Order Mark character, designed to prevent an empty title from collapsing in the [Dialog](/components/dialog) and [Drawer](/components/drawer) components, with the Zero Width Space character. This change was done to prevent rendering issues when copying the plain text contents of the [Dialog](/components/dialog) and [Drawer](/components/drawer) components.
+- Fixed many non‐working exported parts due to confusion with part names.<br />**⚠️ Breaking change:** The breaking change is listed in the Enhancements entry with the list of CSS part refactors.
+- Wrapped all `:hover` states in a `@media (hover: hover)` at‐rule to fix sticky hover states on mobile devices.
+
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.5.1...1.0.0-alpha.1).
 
 ## 0.5.1
 
 ### Enhancements
 
--   Removed the [Storybook](https://storybook.js.org) dependency and migrated to custom setup powered by [Astro](https://astro.build).<br />**⚠️ Breaking change:** This may disrupt some custom builds of Placer Toolkit. We recommend recloning the repository when upgrading from earlier versions to 0.5.1.
--   After the migration to Astro, paths changed from parameter‐based syntax to real paths.<br />**⚠️ Breaking change:** If you click on older bookmarks or similar, you may encounter a 404, as that page no longer exists.
--   Added 14 new components: [Callout](/components/callout), [Comparer](/components/callout), [Copy Button](/components/copy-button), [Details](/components/details), [Dialog](/components/dialog), [Divider](/components/divider), [Drawer](/components/drawer), [Dropdown](/components/dropdown), [Menu](/components/menu), [Menu Item](/components/menu-item), [Menu Label](/components/menu-label), [Option](/components/option), [Select](/components/select) and [Tag](/components/tag).
--   Moved style utilities to the `style-utilities/` folder from `utilities/`.<br />**⚠️ Breaking change:** If you’re using a style utility, please refactor paths from `utilities/` to `style-utilities/`.
--   Removed the `<pc-visually-hidden>` component in favour of the [Visually Hidden](/style-utilities/visually-hidden) style utility.<br />**⚠️ Breaking change:** If you’re using `<pc-visually-hidden>`, please refactor your code.<br /><br />
-    <CodeBlock language="diff">
-    {`- <pc-visually-hidden>Lorem ipsum dolor sit amet…</pc-visually-hidden>
-    + <span class="pc-visually-hidden">Lorem ipsum dolor sit amet…</span>`}
-    </CodeBlock>
-    You may need to import `visually-hidden.css` from the `style-utilities/` folder.
--   Reworked some native styles and adjusted tables slightly.
--   Renamed all `--pc-input-hint-text-*` custom properties to `--pc-input-hint-*`.<br />**⚠️ Breaking change:** If you’re using any of these custom properties in your code, please refactor them to the new name.
--   Changed colours to use OKLCH instead of HSL and the new [CSS Color Module Level 4](https://www.w3.org/TR/css-color-4) syntax.
--   Set the border radius of all [buttons](/components/button) to 8px.
--   Added a new `events/` folder for event types.
--   All components using the `CSSResultGroup` type is explicitly imported as a type.
--   Added a `.tgz` file for testing as a local npm package.
--   Published the package on npm as `placer-toolkit`.
--   Replaced all instances of the `:hover:active` pseudo‐classes with the `:active` pseudo‐class; this fixes the pressed state in mobile browsers.
--   Added the system icon library for Placer Toolkit components. All components have been refactored to use the new system icon library.
--   Added an official logo for Placer Toolkit: a stylised puzzle piece with a squircular shape featuring a sparkle and a gradient.
--   Added the `fixed-width` and `swap-opacity` attribute as well as some more CSS custom properties for Font Awesome Pro.
--   Added JSDoc comments to some components. Will soon be extended to be added to all components for auto‐generated API docs.
--   Added a `label` attribute and property to the [Spinner](/components/spinner) component.
--   Changed the padding of the [Badge](/components/badge) component to better match the purpose of it.
--   Changed the default easing curve of the [Animation](/components/animation) component to `ease-in-out` from `linear`.<br />**⚠️ Behavioural warning:** This may impact how animations feel like if you are relying on the default value of the `easing` attribute/property.
--   Updated the README to be more comprehensive and useful.
+- Removed the [Storybook](https://storybook.js.org) dependency and migrated to custom setup powered by [Astro](https://astro.build).<br />**⚠️ Breaking change:** This may disrupt some custom builds of Placer Toolkit. We recommend recloning the repository when upgrading from earlier versions to 0.5.1.
+- After the migration to Astro, paths changed from parameter‐based syntax to real paths.<br />**⚠️ Breaking change:** If you click on older bookmarks or similar, you may encounter a 404, as that page no longer exists.
+- Added 14 new components: [Callout](/components/callout), [Comparer](/components/comparer), [Copy Button](/components/copy-button), [Details](/components/details), [Dialog](/components/dialog), [Divider](/components/divider), [Drawer](/components/drawer), [Dropdown](/components/dropdown), Menu, Menu Item, Menu Label, [Option](/components/option), [Select](/components/select) and [Tag](/components/tag).
+- Moved style utilities to the `style-utilities/` folder from `utilities/`.<br />**⚠️ Breaking change:** If you’re using a style utility, please refactor paths from `utilities/` to `style-utilities/`.
+- Removed the `<pc-visually-hidden>` component in favour of the [Visually Hidden](/style-utilities/visually-hidden) style utility.<br />**⚠️ Breaking change:** If you’re using `<pc-visually-hidden>`, please refactor your code.
+    ```diff
+    -<pc-visually-hidden>Lorem ipsum dolor sit amet…</pc-visually-hidden>
+    +<span class="pc-visually-hidden">Lorem ipsum dolor sit amet…</span>
+    ```
+
+    You may need to import `visually-hidden.css` from the `style-utilities/`
+    folder.
+- Reworked some native styles and adjusted tables slightly.
+- Renamed all `--pc-input-hint-text-*` custom properties to `--pc-input-hint-*`.<br />**⚠️ Breaking change:** If you’re using any of these custom properties in your code, please refactor them to the new name.
+- Changed colours to use OKLCH instead of HSL and the new [CSS Color Module Level 4](https://www.w3.org/TR/css-color-4) syntax.
+- Rounded the corners of the [Button](/components/button) component more to feel more friendly.
+- Added a new `events/` folder for event types.
+- All components using the `CSSResultGroup` type is explicitly imported as a type.
+- Added a `.tgz` file for testing as a local npm package.
+- Published the package on npm as `placer-toolkit`.
+- Replaced all instances of the `:hover:active` pseudo‐classes with the `:active` pseudo‐class; this fixes the pressed state in mobile browsers.
+- Added the system icon library for Placer Toolkit components. All components have been refactored to use the new system icon library.
+- Added an official logo for Placer Toolkit: a stylised puzzle piece with a squircular shape featuring a sparkle and a gradient.
+- Added the `fixed-width` and `swap-opacity` attribute as well as some more CSS custom properties for Font Awesome Pro.
+- Added JSDoc comments to some components. Will soon be extended to be added to all components for auto‐generated API docs.
+- Added a `label` attribute and property to the [Spinner](/components/spinner) component.
+- Changed the padding of the [Badge](/components/badge) component to better match the purpose of it.
+- Changed the default easing curve of the [Animation](/components/animation) component to `ease-in-out` from `linear`.<br />**🔮 Future usage warnings:** This may impact how animations feel like if you are relying on the default value of the `easing` attribute/property.
+- Updated the README to be more comprehensive and useful.
 
 ### Bug fixes
 
--   Rewritten the [Button](/components/button) component to match the naming convention of classes by other components and used the `button-disabled` class internally instead of the `disabled` attribute, as that doesn’t work for `<a>` elements.
--   Remove type `Boolean` from the `type` attribute/property in the internal `@property()` decorator used in the [Button](/components/button) component, as it’s not a boolean.
--   Fix prefix and suffix icon alignment in the [Button](/components/button) component.
--   Changed the classes of the [Badge](/components/badge) component to match other components.
+- Fixed the disabled state in the [Button](/components/button) component when it’s a link.
+- Remove type `Boolean` from the `type` attribute/property in the internal `@property` decorator used in the [Button](/components/button) component, as it’s not a boolean.
+- Fix prefix and suffix icon alignment in the [Button](/components/button) component.
+- Changed the classes of the [Badge](/components/badge) component to match other components.
 
 ### Known bugs
 
--   Submenus in the [Menu](/components/menu) component are clipped in the base menu and/or other submenus.
+- Submenus in the [Menu](/components/menu) component are clipped in the base menu and/or other submenus.
 
-Need the full commit history? View it right [here](https://github.com/randomguy-2650/placer-toolkit/compare/0.4.0...0.5.1).
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.4.0...0.5.1).
 
 ## 0.5.0
 
@@ -76,20 +264,45 @@ Due to npm publishing restrictions, this version was unpublished shortly after r
 
 ### Enhancements
 
--   Added new components: Input, Popup and Tooltip
--   Added new animation utilities
--   Added descriptions to some stories (will be extended in the future)
+- Added four new components: [Animation](/components/animation), [Input](/components/input), [Popup](/components/popup) and [Tooltip](/components/tooltip).
+- Integrated built‐in animations inspired by [Animate.css](https://animate.style) in correspondence to the addition of the [Animation](/components/animation) component.
+- Introduced native styles to some native HTML elements to make them more appealing.
+- Added the [Reduce FOUCE](/style-utilities/reduce-fouce) style utility.
+- Included important metadata to the `package.json` file.
+- Renamed the `iconStyle` attribute (not property) in the [Icon](/components/icon) and Icon Button components to `icon-style`.<br />**⚠️ Breaking change:** If you specify a different icon style other than `solid`, you will see noticeable changes to the icon style being displayed. Either way, we recommend you to refactor all of your code to use the `icon-style` attribute.
+- Shipped important metadata, configuration and maintenance files (`.prettierrc`, `.prettierignore`, `.editorconfig`, etc.) for improved developer experience.
+- Swapped out Georgia with Playfair Display as the default serif font in the Default theme.
+- Added the `--pc-font-weight-medium` design token for the Medium font weight (500).
+- Cleaned up the `active` state‐related form control design tokens.
+- Created the `active` state to the form control icon design tokens.
+- Removed the unused `--pc-input-focus-ring-color` and `--pc-input-focus-ring-offset` design tokens.
+- Adjusted the values of the tooltip design tokens, as they weren’t fitting for the new component.
+- Placed Storybook‐related files into `.gitignore`.
 
-**Changelog is listed [here](https://github.com/randomguy-2650/placer-toolkit/compare/0.3.0...0.4.0).**
+### Bug fixes
+
+- Fixed icons in the [Icon](/components/icon) component from clipping when overflowing out of the icon grid by adding `overflow: visible`.
+
+### Known bugs
+
+- During the `iconStyle` to `icon-style` attribute rename, we’ve later spotted some stories not including the attribute name but its value.
+
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.3.0...0.4.0).
 
 ## 0.3.0
 
 ### Enhancements
 
--   Added new components: Button Group, Radio Button and Radio Group
--   Finished remaining stories.
+- Added three new components: [Button Group](/components/button-group), Radio Button and [Radio Group](/components/radio-group).
+- Upgraded Storybook and its related dependencies from version 8 to version 9.
+- Renamed the `getSymbol` property to `getIcon` in the [Rating](/components/rating) component.<br />**⚠️ Breaking change:** Your custom icons for the rating may not work anymore, you have to replace all instances of the `getSymbol` property with `getIcon`.
+- Finished remaining component stories.
 
-**Changelog is listed [here](https://github.com/randomguy-2650/placer-toolkit/compare/0.2.0...0.3.0).**
+### Bug fixes
+
+- Fixed the missing indicator in the `end` placement of the [Tab Group](/components/tab-group) component.
+
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.2.0...0.3.0).
 
 ## 0.2.0 (re‐draft)
 
@@ -97,19 +310,22 @@ Due to npm publishing restrictions, this version was unpublished shortly after r
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="clock-rotate-left"
         slot="icon"
     ></pc-icon>
-    This is a re‐draft of the previous releases. Versions v0.1.0 and v0.2.0 were redrafted with new data because of a security leak.
+    This is a re‐draft of the previous releases. Versions 0.1.0 and 0.2.0 were redrafted with new data because of a security leak.
 </pc-callout>
 
 ### Enhancements
 
--   Added new component: Radio
--   Added Icon Button story
--   Added docs add‐on + automated docs (will be manual in the future)
+- Added the [Radio](/components/radio) component. This component is unusable in v0.2.0, as there isn’t a [Radio Group](/components/radio-group) component in 0.2.0.
+- Slowed down the transition speed on the Icon Button component from `var(--pc-transition-extra-fast)` (0,075 s) to `var(--pc-transition-fast)` (0,15 s).
+- Added the Icon Button story.
+- Added the docs add‐on and enabled auto‐docs in Storybook.
+- Added corresponding `active` states to the form control design tokens.
+- Reorganised the `tsconfig.json` file to be easier to comprehend and understand.
 
-**Changelog is listed [here](https://github.com/randomguy-2650/placer-toolkit/compare/0.1.0...0.2.0).**
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.1.0...0.2.0).
 
 ## 0.1.0 (re‐draft)
 
@@ -117,17 +333,19 @@ Due to npm publishing restrictions, this version was unpublished shortly after r
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="clock-rotate-left"
         slot="icon"
     ></pc-icon>
-    This is a re‐draft of the previous releases. Versions v0.1.0 and v0.2.0 were redrafted with new data because of a security leak.
+    This is a re‐draft of the previous releases. Versions 0.1.0 and 0.2.0 were redrafted with new data because of a security leak.
 </pc-callout>
 
-This is the first release of Placer Toolkit! Here’s a recap of what’s new:
+This is the first official release of Placer Toolkit! We’re not going to get into the tiny details here, we’re just going to list the main features added in 0.1.0.
 
--   Added 16 new components, including Button, Checkbox, Badge and Tab Group!
--   Added Storybook for UI testing and docs in the future!
--   Experimented with Vite + Lit and Rollup settings but decided on Storybook
--   Built with Web Components and [Lit](https://lit.dev)!
+### Milestones
 
-Changelog is listed [here](https://github.com/randomguy-2650/placer-toolkit/commits/0.1.0). (No commits, reused code from pre‐release unversioned code)
+- Built all components with Web Components with [Lit](https://lit.dev), a lightweight library to make building web components easier.
+- Added 16 new components: [Avatar](/components/avatar), [Badge](/components/badge), [Button](/components/button), [Card](/components/card), [Checkbox](/components/checkbox), [Icon](/components/icon), Icon Button, [QR Code](/components/qr-code), [Rating](/components/rating), [Resize Observer](/components/resize-observer), [Spinner](/components/spinner), [Switch](/components/switch), [Tab Group](/components/tab-group), [Tab](/components/tab), [Tab Panel](/components/tab-panel) and Visually Hidden.
+- Added [Storybook](https://storybook.js.org) for UI testing and documentation.
+- Used [Rollup](https://rollupjs.org) to compile the Placer Toolkit library written in TypeScript into JavaScript.
+
+Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/commits/0.1.0).

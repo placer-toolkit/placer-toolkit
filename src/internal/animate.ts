@@ -1,3 +1,4 @@
+/** Animates an element using keyframes. This returns a promise that resolves after the animation completes or gets cancelled. */
 export function animateTo(
     element: HTMLElement,
     keyframes: Keyframe[],
@@ -18,6 +19,7 @@ export function animateTo(
     });
 }
 
+/** Parses a CSS duration and returns the number in milliseconds (ms). */
 export function parseDuration(delay: number | string) {
     delay = delay.toString().toLowerCase();
 
@@ -32,11 +34,13 @@ export function parseDuration(delay: number | string) {
     return parseFloat(delay);
 }
 
+/** Tells if the user has the “reduced motion” setting enabled in their browser or operating system. */
 export function prefersReducedMotion() {
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     return query.matches;
 }
 
+/** Stops all active animations on the target element. This returns a promise that resolves after all animations are cancelled. */
 export function stopAnimations(element: HTMLElement) {
     return Promise.all(
         element.getAnimations().map((animation) => {
@@ -48,15 +52,22 @@ export function stopAnimations(element: HTMLElement) {
     );
 }
 
+/** Animates `height: auto` and `block-size: auto` by calculating the resulting height and replacing the intrinsic height value (in this case `auto`) with the element’s `scrollHeight` before the animation. */
 export function shimKeyframesHeightAuto(
     keyframes: Keyframe[],
     calculatedHeight: number,
 ) {
-    return keyframes.map((keyframe) => ({
-        ...keyframe,
-        height:
-            keyframe.height === "auto"
-                ? `${calculatedHeight}px`
-                : keyframe.height,
-    }));
+    return keyframes.map((keyframe) => {
+        const shimmed: Keyframe = { ...keyframe };
+
+        if (keyframe.height === "auto") {
+            shimmed.height = `${calculatedHeight}px`;
+        }
+
+        if (keyframe.blockSize === "auto") {
+            shimmed.blockSize = `${calculatedHeight}px`;
+        }
+
+        return shimmed;
+    });
 }

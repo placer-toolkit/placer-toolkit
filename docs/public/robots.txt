@@ -1,3 +1,7 @@
-# Full syntax: https://developers.google.com/search/docs/advanced/robots/create-robots-txt
+# For robots only. Human eyes beyond this point will be punished with nonstop cat videos.
+# © 2025 Placer and its contributors
+
 User-agent: *
 Allow: /
+
+Sitemap: https://placer-toolkit.netlify.app/sitemap-index.xml

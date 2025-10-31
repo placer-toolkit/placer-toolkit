@@ -3,56 +3,87 @@ title: Tag
 description: Tags are used as labels to organise things or to indicate a selection.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Tags are used as labels to organise things or to indicate a selection.
 
-<CodeDemo open>
-{`<pc-tag appearance="primary">Primary</pc-tag>
+```demo:open
+<pc-tag>Tag</pc-tag>
+```
+
+### Appearances
+
+Use the `appearance` attribute to change the tag’s appearance.
+
+```demo
+<pc-tag appearance="primary">Primary</pc-tag>
 <pc-tag appearance="success">Success</pc-tag>
 <pc-tag appearance="neutral">Neutral</pc-tag>
 <pc-tag appearance="warning">Warning</pc-tag>
-<pc-tag appearance="danger">Danger</pc-tag>`}
-</CodeDemo>
+<pc-tag appearance="danger">Danger</pc-tag>
+```
+
+### Variants
+
+Use the `variant` attribute to change the tag’s variant.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-tag appearance="primary" variant="accent">Accent</pc-tag>
+    <pc-tag appearance="primary" variant="filled outlined">F + O</pc-tag>
+    <pc-tag appearance="primary" variant="filled">Filled</pc-tag>
+    <pc-tag appearance="primary" variant="outlined">Outlined</pc-tag>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-tag appearance="success" variant="accent">Accent</pc-tag>
+    <pc-tag appearance="success" variant="filled outlined">F + O</pc-tag>
+    <pc-tag appearance="success" variant="filled">Filled</pc-tag>
+    <pc-tag appearance="success" variant="outlined">Outlined</pc-tag>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-tag appearance="neutral" variant="accent">Accent</pc-tag>
+    <pc-tag appearance="neutral" variant="filled outlined">F + O</pc-tag>
+    <pc-tag appearance="neutral" variant="filled">Filled</pc-tag>
+    <pc-tag appearance="neutral" variant="outlined">Outlined</pc-tag>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-tag appearance="warning" variant="accent">Accent</pc-tag>
+    <pc-tag appearance="warning" variant="filled outlined">F + O</pc-tag>
+    <pc-tag appearance="warning" variant="filled">Filled</pc-tag>
+    <pc-tag appearance="warning" variant="outlined">Outlined</pc-tag>
+</div>
+<div>
+    <pc-tag appearance="danger" variant="accent">Accent</pc-tag>
+    <pc-tag appearance="danger" variant="filled outlined">F + O</pc-tag>
+    <pc-tag appearance="danger" variant="filled">Filled</pc-tag>
+    <pc-tag appearance="danger" variant="outlined">Outlined</pc-tag>
+</div>
+```
 
 ### Sizes
 
 Use the `size` attribute to change the tag’s size.
 
-<CodeDemo>
-{`<pc-tag size="small">Small</pc-tag>
+```demo
+<pc-tag size="small">Small</pc-tag>
 <pc-tag size="medium">Medium</pc-tag>
-<pc-tag size="large">Large</pc-tag>`}
-</CodeDemo>
-
-### Outlined
-
-Use the `outlined` attribute to draw outlined tags with transparent backgrounds.
-
-<CodeDemo>
-{`<pc-tag appearance="primary" outlined>Primary</pc-tag>
-<pc-tag appearance="success" outlined>Success</pc-tag>
-<pc-tag appearance="neutral" outlined>Neutral</pc-tag>
-<pc-tag appearance="warning" outlined>Warning</pc-tag>
-<pc-tag appearance="danger" outlined>Danger</pc-tag>`}
-</CodeDemo>
+<pc-tag size="large">Large</pc-tag>
+```
 
 ### Pill
 
 Use the `pill` attribute to give tags a pill‐shaped look.
 
-<CodeDemo>
-{`<pc-tag size="small" pill>Small</pc-tag>
+```demo
+<pc-tag size="small" pill>Small</pc-tag>
 <pc-tag size="medium" pill>Medium</pc-tag>
-<pc-tag size="large" pill>Large</pc-tag>`}
-</CodeDemo>
+<pc-tag size="large" pill>Large</pc-tag>
+```
 
 ### Removable
 
 Use the `removable` attribute to add a remove button to the tag.
 
-<CodeDemo>
-{`<div class="tags-removable">
+```demo
+<div class="tags-removable">
     <pc-tag size="small" removable>Small</pc-tag>
     <pc-tag size="medium" removable>Medium</pc-tag>
     <pc-tag size="large" removable>Large</pc-tag>
@@ -74,5 +105,5 @@ Use the `removable` attribute to add a remove button to the tag.
     .tags-removable pc-tag {
         transition: opacity var(--pc-transition-fast) ease-in-out;
     }
-</style>`}
-</CodeDemo>
+</style>
+```

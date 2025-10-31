@@ -1,0 +1,445 @@
+@import "../palette/default.css";
+
+@layer pc-theme {
+    :where(:root),
+    .pc-light {
+        color-scheme: light;
+        color: var(--pc-color-text-normal);
+
+        --pc-color-surface-raised: oklch(100% 0 0);
+        --pc-color-surface-default: oklch(100% 0 0);
+        --pc-color-surface-lowered: var(--pc-color-neutral-95);
+        --pc-color-surface-border: var(--pc-color-neutral-90);
+
+        --pc-color-text-normal: var(--pc-color-neutral-10);
+        --pc-color-text-quiet: var(--pc-color-neutral-40);
+        --pc-color-text-link: var(--pc-color-primary-40);
+
+        --pc-color-overlay-modal: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05) 20%,
+            transparent
+        );
+        --pc-color-overlay-inline: color-mix(
+            in oklab,
+            var(--pc-color-neutral-80) 30%,
+            transparent
+        );
+
+        --pc-color-shadow: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05)
+                calc(var(--pc-shadow-blur-scale) * 4% + 8%),
+            transparent
+        );
+
+        --pc-color-focus: var(--pc-color-primary-60);
+
+        --pc-color-mix-hover: oklch(0% 0 0) 5%;
+        --pc-color-mix-active: oklch(0% 0 0) 10%;
+
+        --pc-color-neutral-fill-quiet: var(--pc-color-neutral-95);
+        --pc-color-neutral-fill-normal: var(--pc-color-neutral-90);
+        --pc-color-neutral-fill-loud: var(--pc-color-neutral-20);
+        --pc-color-neutral-border-quiet: var(--pc-color-neutral-90);
+        --pc-color-neutral-border-normal: var(--pc-color-neutral-80);
+        --pc-color-neutral-border-loud: var(--pc-color-neutral-60);
+        --pc-color-neutral-on-quiet: var(--pc-color-neutral-40);
+        --pc-color-neutral-on-normal: var(--pc-color-neutral-30);
+        --pc-color-neutral-on-loud: oklch(100% 0 0);
+
+        --pc-color-primary-fill-quiet: var(--pc-color-primary-95);
+        --pc-color-primary-fill-normal: var(--pc-color-primary-90);
+        --pc-color-primary-fill-loud: var(--pc-color-primary-50);
+        --pc-color-primary-border-quiet: var(--pc-color-primary-90);
+        --pc-color-primary-border-normal: var(--pc-color-primary-80);
+        --pc-color-primary-border-loud: var(--pc-color-primary-60);
+        --pc-color-primary-on-quiet: var(--pc-color-primary-40);
+        --pc-color-primary-on-normal: var(--pc-color-primary-30);
+        --pc-color-primary-on-loud: oklch(100% 0 0);
+
+        --pc-color-success-fill-quiet: var(--pc-color-success-95);
+        --pc-color-success-fill-normal: var(--pc-color-success-90);
+        --pc-color-success-fill-loud: var(--pc-color-success-50);
+        --pc-color-success-border-quiet: var(--pc-color-success-90);
+        --pc-color-success-border-normal: var(--pc-color-success-80);
+        --pc-color-success-border-loud: var(--pc-color-success-60);
+        --pc-color-success-on-quiet: var(--pc-color-success-40);
+        --pc-color-success-on-normal: var(--pc-color-success-30);
+        --pc-color-success-on-loud: oklch(100% 0 0);
+
+        --pc-color-warning-fill-quiet: var(--pc-color-warning-95);
+        --pc-color-warning-fill-normal: var(--pc-color-warning-90);
+        --pc-color-warning-fill-loud: var(--pc-color-warning-50);
+        --pc-color-warning-border-quiet: var(--pc-color-warning-90);
+        --pc-color-warning-border-normal: var(--pc-color-warning-80);
+        --pc-color-warning-border-loud: var(--pc-color-warning-60);
+        --pc-color-warning-on-quiet: var(--pc-color-warning-40);
+        --pc-color-warning-on-normal: var(--pc-color-warning-30);
+        --pc-color-warning-on-loud: oklch(100% 0 0);
+
+        --pc-color-danger-fill-quiet: var(--pc-color-danger-95);
+        --pc-color-danger-fill-normal: var(--pc-color-danger-90);
+        --pc-color-danger-fill-loud: var(--pc-color-danger-50);
+        --pc-color-danger-border-quiet: var(--pc-color-danger-90);
+        --pc-color-danger-border-normal: var(--pc-color-danger-80);
+        --pc-color-danger-border-loud: var(--pc-color-danger-60);
+        --pc-color-danger-on-quiet: var(--pc-color-danger-40);
+        --pc-color-danger-on-normal: var(--pc-color-danger-30);
+        --pc-color-danger-on-loud: oklch(100% 0 0);
+    }
+
+    .pc-dark {
+        color-scheme: dark;
+        color: var(--pc-color-text-normal);
+
+        --pc-color-surface-raised: var(--pc-color-neutral-10);
+        --pc-color-surface-default: var(--pc-color-neutral-05);
+        --pc-color-surface-lowered: color-mix(
+            in oklab,
+            var(--pc-color-surface-default),
+            oklch(0% 0 0) 20%
+        );
+        --pc-color-surface-border: var(--pc-color-neutral-20);
+
+        --pc-color-text-normal: var(--pc-color-neutral-95);
+        --pc-color-text-quiet: var(--pc-color-neutral-60);
+        --pc-color-text-link: var(--pc-color-primary-60);
+
+        --pc-color-overlay-modal: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05) 60%,
+            transparent
+        );
+        --pc-color-overlay-inline: color-mix(
+            in oklab,
+            var(--pc-color-neutral-50) 20%,
+            transparent
+        );
+
+        --pc-color-shadow: color-mix(
+            in oklab,
+            var(--pc-color-surface-lowered)
+                calc(var(--pc-shadow-blur-scale) * 32% + 40%),
+            transparent
+        );
+
+        --pc-color-focus: var(--pc-color-primary-60);
+
+        --pc-color-mix-hover: oklch(100% 0 0) 8%;
+        --pc-color-mix-active: oklch(0% 0 0) 8%;
+
+        --pc-color-neutral-fill-quiet: var(--pc-color-neutral-10);
+        --pc-color-neutral-fill-normal: var(--pc-color-neutral-20);
+        --pc-color-neutral-fill-loud: var(--pc-color-neutral-90);
+        --pc-color-neutral-border-quiet: var(--pc-color-neutral-20);
+        --pc-color-neutral-border-normal: var(--pc-color-neutral-30);
+        --pc-color-neutral-border-loud: var(--pc-color-neutral-40);
+        --pc-color-neutral-on-quiet: var(--pc-color-neutral-60);
+        --pc-color-neutral-on-normal: var(--pc-color-neutral-70);
+        --pc-color-neutral-on-loud: var(--pc-color-neutral-05);
+
+        --pc-color-primary-fill-quiet: var(--pc-color-primary-10);
+        --pc-color-primary-fill-normal: var(--pc-color-primary-20);
+        --pc-color-primary-fill-loud: var(--pc-color-primary-50);
+        --pc-color-primary-border-quiet: var(--pc-color-primary-20);
+        --pc-color-primary-border-normal: var(--pc-color-primary-30);
+        --pc-color-primary-border-loud: var(--pc-color-primary-40);
+        --pc-color-primary-on-quiet: var(--pc-color-primary-60);
+        --pc-color-primary-on-normal: var(--pc-color-primary-70);
+        --pc-color-primary-on-loud: oklch(100% 0 0);
+
+        --pc-color-success-fill-quiet: var(--pc-color-success-10);
+        --pc-color-success-fill-normal: var(--pc-color-success-20);
+        --pc-color-success-fill-loud: var(--pc-color-success-50);
+        --pc-color-success-border-quiet: var(--pc-color-success-20);
+        --pc-color-success-border-normal: var(--pc-color-success-30);
+        --pc-color-success-border-loud: var(--pc-color-success-40);
+        --pc-color-success-on-quiet: var(--pc-color-success-60);
+        --pc-color-success-on-normal: var(--pc-color-success-70);
+        --pc-color-success-on-loud: oklch(100% 0 0);
+
+        --pc-color-warning-fill-quiet: var(--pc-color-warning-10);
+        --pc-color-warning-fill-normal: var(--pc-color-warning-20);
+        --pc-color-warning-fill-loud: var(--pc-color-warning-50);
+        --pc-color-warning-border-quiet: var(--pc-color-warning-20);
+        --pc-color-warning-border-normal: var(--pc-color-warning-30);
+        --pc-color-warning-border-loud: var(--pc-color-warning-40);
+        --pc-color-warning-on-quiet: var(--pc-color-warning-60);
+        --pc-color-warning-on-normal: var(--pc-color-warning-70);
+        --pc-color-warning-on-loud: oklch(100% 0 0);
+
+        --pc-color-danger-fill-quiet: var(--pc-color-danger-10);
+        --pc-color-danger-fill-normal: var(--pc-color-danger-20);
+        --pc-color-danger-fill-loud: var(--pc-color-danger-50);
+        --pc-color-danger-border-quiet: var(--pc-color-danger-20);
+        --pc-color-danger-border-normal: var(--pc-color-danger-30);
+        --pc-color-danger-border-loud: var(--pc-color-danger-40);
+        --pc-color-danger-on-quiet: var(--pc-color-danger-60);
+        --pc-color-danger-on-normal: var(--pc-color-danger-70);
+        --pc-color-danger-on-loud: oklch(100% 0 0);
+    }
+
+    :where(:root),
+    .pc-theme-default,
+    .pc-light,
+    .pc-dark {
+        /* #region — Fonts */
+        --pc-font-sans:
+            "Nunito", system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI Variable", "Segoe UI", "Roboto", "Open Sans",
+            "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+            "Segoe UI Symbol";
+        --pc-font-serif:
+            "Playfair Display", "Georgia", "Times New Roman", serif;
+        --pc-font-mono:
+            "JetBrains Mono", "IBM Plex Mono", "Source Code Pro", "Consolas",
+            "Menlo", monospace;
+        --pc-font-math:
+            "STIX Two Math", "Cambria Math", "Times New Roman", serif;
+
+        --pc-font-size-scale: 1;
+        --pc-font-size-xxs: round(
+            calc(var(--pc-font-size-xs) / 1.125),
+            1px
+        ); /* 11 px */
+        --pc-font-size-xs: round(
+            calc(var(--pc-font-size-s) / 1.125),
+            1px
+        ); /* 12 px */
+        --pc-font-size-s: round(
+            calc(var(--pc-font-size-m) / 1.125),
+            1px
+        ); /* 14 px */
+        --pc-font-size-m: calc(1rem * var(--pc-font-size-scale)); /* 16 px */
+        --pc-font-size-l: round(
+            calc(var(--pc-font-size-m) * 1.125 * 1.125),
+            1px
+        ); /* 20 px */
+        --pc-font-size-xl: round(
+            calc(var(--pc-font-size-l) * 1.125 * 1.125),
+            1px
+        ); /* 25 px */
+        --pc-font-size-xxl: round(
+            calc(var(--pc-font-size-xl) * 1.125 * 1.125),
+            1px
+        ); /* 32 px */
+        --pc-font-size-xxxl: round(
+            calc(var(--pc-font-size-xxl) * 1.125 * 1.125),
+            1px
+        ); /* 41 px */
+        --pc-font-size-xxxxl: round(
+            calc(var(--pc-font-size-xxxl) * 1.125 * 1.125),
+            1px
+        ); /* 52 px */
+
+        --pc-font-size-smaller: round(calc(1em / 1.125), 1px);
+        --pc-font-size-larger: round(calc(1em * 1.125 * 1.125), 1px);
+
+        --pc-font-weight-light: 300;
+        --pc-font-weight-normal: 400;
+        --pc-font-weight-medium: 500;
+        --pc-font-weight-semibold: 600;
+        --pc-font-weight-bold: 700;
+
+        --pc-line-height-denser: 1;
+        --pc-line-height-dense: 1.4;
+        --pc-line-height-normal: 1.8;
+        --pc-line-height-loose: 2.2;
+        --pc-line-height-looser: 2.6;
+
+        --pc-link-decoration-default: underline dotted currentColor;
+        --pc-link-decoration-hover: underline solid currentColor;
+        --pc-link-decoration-active: underline solid currentColor;
+        /* #endregion */
+
+        /* #region — Spacing */
+        --pc-spacing-scale: 1;
+        --pc-spacing-xxxs: calc(var(--pc-spacing-scale) * 0.0625rem); /* 1 px */
+        --pc-spacing-xxs: calc(var(--pc-spacing-scale) * 0.125rem); /* 2 px */
+        --pc-spacing-xs: calc(var(--pc-spacing-scale) * 0.25rem); /* 4 px */
+        --pc-spacing-s: calc(var(--pc-spacing-scale) * 0.5rem); /* 8 px */
+        --pc-spacing-m: calc(var(--pc-spacing-scale) * 0.75rem); /* 12 px */
+        --pc-spacing-l: calc(var(--pc-spacing-scale) * 1rem); /* 16 px */
+        --pc-spacing-xl: calc(var(--pc-spacing-scale) * 1.25rem); /* 20 px */
+        --pc-spacing-xxl: calc(var(--pc-spacing-scale) * 1.75rem); /* 28 px */
+        --pc-spacing-xxxl: calc(var(--pc-spacing-scale) * 2.25rem); /* 36 px */
+        --pc-spacing-xxxxl: calc(var(--pc-spacing-scale) * 3rem); /* 48 px */
+        --pc-spacing-xxxxxl: calc(var(--pc-spacing-scale) * 4.5rem); /* 72 px */
+
+        --pc-content-spacing: var(--pc-spacing-xl);
+        /* #endregion */
+
+        /* #region — Borders */
+        --pc-border-style: solid;
+
+        --pc-border-width-scale: 1;
+        --pc-border-width-s: calc(
+            var(--pc-border-width-scale) * 0.0625rem
+        ); /* 1 px */
+        --pc-border-width-m: calc(
+            var(--pc-border-width-scale) * 0.125rem
+        ); /* 2 px */
+        --pc-border-width-l: calc(
+            var(--pc-border-width-scale) * 0.1875rem
+        ); /* 3 px */
+        --pc-border-width-xl: calc(
+            var(--pc-border-width-scale) * 0.25rem
+        ); /* 4 px */
+        /* #endregion */
+
+        /* #region — Rounding */
+        --pc-border-radius-scale: 1;
+        --pc-border-radius-s: calc(
+            var(--pc-border-radius-scale) * 0.25rem
+        ); /* 4 px */
+        --pc-border-radius-m: calc(
+            var(--pc-border-radius-scale) * 0.5rem
+        ); /* 8 px */
+        --pc-border-radius-l: calc(
+            var(--pc-border-radius-scale) * 0.75rem
+        ); /* 12 px */
+        --pc-border-radius-xl: calc(
+            var(--pc-border-radius-scale) * 1rem
+        ); /* 16 px */
+
+        --pc-border-radius-pill: 9999px;
+        --pc-border-radius-circle: 50%;
+        --pc-border-radius-square: 0;
+        /* #endregion */
+
+        /* #region — Focus */
+        --pc-focus-ring-width: 0.1875rem; /* 3 px */
+        --pc-focus-ring-style: solid;
+        --pc-focus-ring: var(--pc-focus-ring-width) var(--pc-focus-ring-style)
+            var(--pc-color-focus);
+        --pc-focus-ring-offset: 0.0625rem; /* 1 px */
+        /* #endregion */
+
+        /* #region — Shadows */
+        --pc-shadow-offset-x-scale: 0;
+        --pc-shadow-offset-x-xs: calc(
+            var(--pc-shadow-offset-x-scale) * 0.0625rem
+        );
+        --pc-shadow-offset-x-s: calc(
+            var(--pc-shadow-offset-x-scale) * 0.0625rem
+        );
+        --pc-shadow-offset-x-m: calc(
+            var(--pc-shadow-offset-x-scale) * 0.125rem
+        );
+        --pc-shadow-offset-x-l: calc(
+            var(--pc-shadow-offset-x-scale) * 0.125rem
+        );
+        --pc-shadow-offset-x-xl: calc(
+            var(--pc-shadow-offset-x-scale) * 0.25rem
+        );
+
+        --pc-shadow-offset-y-scale: 1;
+        --pc-shadow-offset-y-xs: calc(
+            var(--pc-shadow-offset-y-scale) * 0.0625rem
+        );
+        --pc-shadow-offset-y-s: calc(
+            var(--pc-shadow-offset-y-scale) * 0.125rem
+        );
+        --pc-shadow-offset-y-m: calc(var(--pc-shadow-offset-y-scale) * 0.25rem);
+        --pc-shadow-offset-y-l: calc(var(--pc-shadow-offset-y-scale) * 0.5rem);
+        --pc-shadow-offset-y-xl: calc(var(--pc-shadow-offset-y-scale) * 1rem);
+
+        --pc-shadow-blur-scale: 1;
+        --pc-shadow-blur-xs: calc(var(--pc-shadow-blur-scale) * 0.0625rem);
+        --pc-shadow-blur-s: calc(var(--pc-shadow-blur-scale) * 0.125rem);
+        --pc-shadow-blur-m: calc(var(--pc-shadow-blur-scale) * 0.25rem);
+        --pc-shadow-blur-l: calc(var(--pc-shadow-blur-scale) * 0.5rem);
+        --pc-shadow-blur-xl: calc(var(--pc-shadow-blur-scale) * 0.75rem);
+
+        --pc-shadow-spread-scale: -0.5;
+        --pc-shadow-spread-xs: calc(var(--pc-shadow-spread-scale) * 0.0625rem);
+        --pc-shadow-spread-s: calc(var(--pc-shadow-spread-scale) * 0.125rem);
+        --pc-shadow-spread-m: calc(var(--pc-shadow-spread-scale) * 0.25rem);
+        --pc-shadow-spread-l: calc(var(--pc-shadow-spread-scale) * 0.5rem);
+        --pc-shadow-spread-xl: calc(var(--pc-shadow-spread-scale) * 0.75rem);
+
+        --pc-shadow-xs: var(--pc-shadow-offset-x-xs)
+            var(--pc-shadow-offset-y-xs) var(--pc-shadow-blur-xs)
+            var(--pc-shadow-spread-xs) var(--pc-color-shadow);
+        --pc-shadow-s: var(--pc-shadow-offset-x-s) var(--pc-shadow-offset-y-s)
+            var(--pc-shadow-blur-s) var(--pc-shadow-spread-s)
+            var(--pc-color-shadow);
+        --pc-shadow-m: var(--pc-shadow-offset-x-m) var(--pc-shadow-offset-y-m)
+            var(--pc-shadow-blur-m) var(--pc-shadow-spread-m)
+            var(--pc-color-shadow);
+        --pc-shadow-l: var(--pc-shadow-offset-x-l) var(--pc-shadow-offset-y-l)
+            var(--pc-shadow-blur-l) var(--pc-shadow-spread-l)
+            var(--pc-color-shadow);
+        --pc-shadow-xl: var(--pc-shadow-offset-x-xl)
+            var(--pc-shadow-offset-y-xl) var(--pc-shadow-blur-xl)
+            var(--pc-shadow-spread-xl) var(--pc-color-shadow);
+        /* #endregion */
+
+        /* #region — Transitions */
+        --pc-transition-extra-fast: 0.1s;
+        --pc-transition-fast: 0.15s;
+        --pc-transition-medium: 0.3s;
+        --pc-transition-slow: 0.5s;
+        --pc-transition-extra-slow: 0.75s;
+        /* #endregion */
+
+        /* #region — Form controls */
+        --pc-form-control-background-color: var(--pc-color-surface-default);
+
+        --pc-form-control-border-width: var(--pc-border-width-s);
+        --pc-form-control-border-style: var(--pc-border-style);
+        --pc-form-control-border-color: var(--pc-color-neutral-border-loud);
+        --pc-form-control-border-radius: var(--pc-border-radius-m);
+
+        --pc-form-control-activated-color: var(--pc-color-primary-fill-loud);
+
+        --pc-form-control-label-color: var(--pc-color-text-normal);
+        --pc-form-control-label-font-weight: var(--pc-font-weight-medium);
+        --pc-form-control-label-line-height: var(--pc-line-height-dense);
+
+        --pc-form-control-value-color: var(--pc-color-text-normal);
+        --pc-form-control-value-font-weight: var(--pc-font-weight-normal);
+        --pc-form-control-value-line-height: var(--pc-line-height-dense);
+
+        --pc-form-control-hint-color: var(--pc-color-text-quiet);
+        --pc-form-control-hint-font-weight: var(--pc-font-weight-normal);
+        --pc-form-control-hint-line-height: var(--pc-line-height-normal);
+
+        --pc-form-control-placeholder-color: var(--pc-color-neutral-50);
+
+        --pc-form-control-required-content: "*";
+        --pc-form-control-required-content-offset: 0.125em;
+        --pc-form-control-required-content-color: var(--pc-color-danger-60);
+
+        --pc-form-control-padding-block: 0.6em;
+        --pc-form-control-padding-inline: 0.85em;
+        --pc-form-control-height: round(
+            calc(
+                2 * var(--pc-form-control-padding-block) + 1em *
+                    var(--pc-form-control-value-line-height)
+            ),
+            1px
+        );
+        --pc-form-control-toggle-size: round(1.25em, 1px);
+        /* #endregion */
+
+        /* #region — Panels */
+        --pc-panel-border-style: var(--pc-border-style);
+        --pc-panel-border-width: var(--pc-border-width-s);
+        --pc-panel-border-radius: var(--pc-border-radius-l);
+        /* #endregion */
+
+        /* #region — Tooltips */
+        --pc-tooltip-border-radius: var(--pc-border-radius-s);
+        --pc-tooltip-background-color: var(--pc-color-neutral-fill-normal);
+        --pc-tooltip-color: var(--pc-color-text-normal);
+        --pc-tooltip-font-family: var(--pc-font-sans);
+        --pc-tooltip-font-weight: var(--pc-font-weight-medium);
+        --pc-tooltip-font-size: var(--pc-font-size-s);
+        --pc-tooltip-line-height: var(--pc-line-height-dense);
+        --pc-tooltip-padding: var(--pc-spacing-xs) var(--pc-spacing-s);
+        --pc-tooltip-arrow-size: 0.375rem;
+        /* #endregion */
+    }
+}

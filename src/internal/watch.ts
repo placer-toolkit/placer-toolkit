@@ -9,9 +9,20 @@ type UpdateHandlerFunctionKeys<T extends object> = {
 }[keyof T];
 
 interface WatchOptions {
+    /** If true, it will only start watching after the initial update/render. */
     waitUntilFirstUpdate?: boolean;
 }
 
+/**
+ * Runs when observed properties change (e.g., `@property` or `@state`), but before the component updates. To wait for an update to complete after a change occurs, use `await this.updateComplete` in the handler. To start watching after the initial update/render, use `{ waitUntilFirstUpdate: true }` or `this.hasUpdated` in the handler.
+ *
+ * ```typescript
+ * @watch("propertyName")
+ * handlePropertyChange(oldValue, newValue) {
+ *     // …
+ * }
+ * ```
+ */
 export function watch(propertyName: string | string[], options?: WatchOptions) {
     const resolvedOptions: Required<WatchOptions> = {
         waitUntilFirstUpdate: false,

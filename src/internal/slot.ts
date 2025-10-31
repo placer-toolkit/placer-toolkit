@@ -1,5 +1,6 @@
 import type { ReactiveController, ReactiveControllerHost } from "lit";
 
+/** A reactive controller that determines when slots exist. */
 export class HasSlotController implements ReactiveController {
     host: ReactiveControllerHost & Element;
     slotNames: string[] = [];
@@ -74,6 +75,7 @@ export class HasSlotController implements ReactiveController {
     };
 }
 
+/** Given a slot, this function iterates over all of its assigned element and text nodes and returns the concatenated HTML as a string. This is useful because `slot.innerHTML` does not work. */
 export function getInnerHTML(slot: HTMLSlotElement): string {
     const nodes = slot.assignedNodes({ flatten: true });
     let html = "";
@@ -91,6 +93,7 @@ export function getInnerHTML(slot: HTMLSlotElement): string {
     return html;
 }
 
+/** Given a slot, this function iterates over all of its assigned text nodes and returns the concatenated string. This is useful because `slot.textContent` does not work. */
 export function getTextContent(
     slot: HTMLSlotElement | undefined | null,
 ): string {

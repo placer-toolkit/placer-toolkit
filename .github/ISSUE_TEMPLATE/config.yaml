@@ -1,0 +1,7 @@
+contact_links:
+    - name: Feature requests
+      url: https://github.com/placer-toolkit/placer-toolkit/discussions/categories/ideas
+      about: All requests for new features should go here.
+    - name: Support
+      url: https://github.com/placer-toolkit/placer-toolkit/discussions/categories/support
+      about: Please don’t create issues for personal help requests. Instead, ask your question in the Discussions panel, as people would be far more likely to help you.

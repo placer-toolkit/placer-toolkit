@@ -2,11 +2,13 @@ import { getOffset } from "./offset.js";
 
 const locks = new Set();
 
+/** Returns the width of the document’s scrollbar. */
 function getScrollbarWidth() {
     const documentWidth = document.documentElement.clientWidth;
     return Math.abs(window.innerWidth - documentWidth);
 }
 
+/** Used in conjunction with `scrollbarWidth` to set proper body padding in case the user has already had padding on the `<body>` element. */
 function getExistingBodyPadding() {
     const padding = Number(
         getComputedStyle(document.body).paddingRight.replace(/px/, ""),
@@ -19,6 +21,7 @@ function getExistingBodyPadding() {
     return padding;
 }
 
+/** Prevents body scrolling. Keeps track of which elements requested a lock so multiple levels of locking are possible without premature unlocking. */
 export function lockBodyScrolling(lockingElement: HTMLElement) {
     locks.add(lockingElement);
 
@@ -48,6 +51,7 @@ export function lockBodyScrolling(lockingElement: HTMLElement) {
     }
 }
 
+/** Unlocks body scrolling. Scrolling will only be unlocked once all elements that requested a lock call this method. */
 export function unlockBodyScrolling(lockingElement: HTMLElement) {
     locks.delete(lockingElement);
 
@@ -57,6 +61,7 @@ export function unlockBodyScrolling(lockingElement: HTMLElement) {
     }
 }
 
+/** Scrolls an element into view of its container. If the element is already in view, nothing will happen. */
 export function scrollIntoView(
     element: HTMLElement,
     container: HTMLElement,

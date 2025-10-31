@@ -1,0 +1,89 @@
+:host {
+    --spacing: var(--pc-spacing-l);
+
+    display: inline-block;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--pc-color-surface-default);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+        var(--pc-color-surface-border);
+    border-radius: var(--pc-panel-border-radius);
+    box-shadow: var(--pc-shadow-l);
+}
+
+:host([variant~="accent"]) .card {
+    background-color: var(--pc-color-neutral-fill-loud);
+    color: var(--pc-color-neutral-on-loud);
+    border-color: transparent;
+}
+
+:host([variant~="outlined"]) .card {
+    background-color: var(--pc-color-surface-default);
+    border-color: var(--pc-color-surface-border);
+}
+
+:host([variant~="filled"]) .card {
+    background-color: var(--pc-color-neutral-fill-quiet);
+    border-color: transparent;
+}
+
+:host([variant~="filled"][variant~="outlined"]) .card {
+    border-color: var(--pc-color-neutral-border-quiet);
+}
+
+:host([variant~="plain"]) .card {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.media {
+    display: flex;
+    border-start-start-radius: var(--pc-panel-border-radius);
+    border-start-end-radius: var(--pc-panel-border-radius);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    overflow: hidden;
+}
+
+:host([variant~="plain"]) .media {
+    border-end-start-radius: var(--pc-panel-border-radius);
+    border-end-end-radius: var(--pc-panel-border-radius);
+}
+
+.media::slotted(img),
+.media::slotted(video) {
+    display: block;
+    inline-size: 100%;
+    border-radius: 0 !important;
+}
+
+.header {
+    display: block;
+    padding-block: calc(var(--spacing) / 2);
+    padding-inline: var(--spacing);
+    border-block-end: var(--pc-panel-border-width) var(--pc-panel-border-style)
+        var(--pc-color-surface-border);
+}
+
+.body {
+    display: block;
+    padding: var(--spacing);
+}
+
+.has-footer .footer {
+    display: block;
+    padding: var(--spacing);
+    border-block-start: var(--pc-panel-border-width)
+        var(--pc-panel-border-style) var(--pc-color-surface-border);
+}
+
+.card:not(.has-media) .media,
+.card:not(.has-header) .header,
+.card:not(.has-footer) .footer {
+    display: none;
+}

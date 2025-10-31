@@ -1,0 +1,151 @@
+:host {
+    --width: 31rem;
+    --header-spacing: var(--pc-spacing-xl);
+    --body-spacing: var(--pc-spacing-s) var(--pc-spacing-xl);
+    --footer-spacing: var(--pc-spacing-s) var(--pc-spacing-xl)
+        var(--pc-spacing-xl);
+
+    display: none;
+}
+
+:host([open]) {
+    display: block;
+}
+
+.dialog {
+    display: flex;
+    flex-direction: column;
+    inset: 0;
+    margin: auto;
+    padding: 0;
+    inline-size: var(--width);
+    max-inline-size: calc(100% - var(--pc-spacing-xxl));
+    max-block-size: calc(100% - var(--pc-spacing-xxl));
+    background-color: var(--pc-color-surface-raised);
+    border: none;
+    border-radius: var(--pc-panel-border-radius);
+    box-shadow: var(--pc-shadow-xl);
+}
+
+.dialog::backdrop {
+    background-color: var(--pc-color-overlay-modal);
+}
+
+.dialog.show::backdrop {
+    animation: dialog-backdrop-open 0.3s ease-out;
+}
+
+.dialog.hide::backdrop {
+    animation: dialog-backdrop-close 0.2s ease-in;
+}
+
+.dialog:focus {
+    outline: none;
+}
+
+.dialog.open {
+    display: flex;
+    opacity: 1;
+}
+
+.header {
+    display: flex;
+    gap: var(--pc-spacing-l);
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
+    padding: var(--header-spacing);
+}
+
+.title {
+    align-self: center;
+    flex: 1 1 auto;
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--pc-font-size-l);
+    font-weight: var(--pc-font-weight-bold);
+    line-height: var(--pc-line-height-dense);
+}
+
+.header-actions {
+    display: flex;
+    align-self: flex-start;
+    justify-content: flex-end;
+    gap: var(--pc-spacing-xs);
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.header-actions pc-button,
+.header-actions ::slotted(pc-button) {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.body {
+    display: block;
+    flex: 1 1 auto;
+    padding: var(--body-spacing);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.footer {
+    flex: 0 0 auto;
+    padding: var(--footer-spacing);
+    text-align: end;
+}
+
+.footer ::slotted(pc-button:not(:first-of-type)) {
+    margin-inline-start: var(--pc-spacing-xs);
+}
+
+.dialog:not(.has-footer) .footer {
+    display: none;
+}
+
+.dialog:not(:has(> .header)) .body {
+    --body-spacing: var(--pc-spacing-xl) var(--pc-spacing-xl)
+        var(--pc-spacing-s) var(--pc-spacing-xl);
+}
+
+.dialog:not(.has-footer) .body {
+    --body-spacing: var(--pc-spacing-s) var(--pc-spacing-xl)
+        var(--pc-spacing-xl) var(--pc-spacing-xl);
+}
+
+.dialog:not(:has(> .header), .has-footer) .body {
+    --body-spacing: var(--pc-spacing-xl);
+}
+
+@keyframes dialog-backdrop-open {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes dialog-backdrop-close {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@media (forced-colors: active) {
+    .dialog {
+        border: 1px solid oklch(100% 0 0);
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .dialog {
+        max-block-size: 80dvh;
+    }
+}

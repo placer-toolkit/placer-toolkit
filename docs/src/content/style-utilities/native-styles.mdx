@@ -1,0 +1,234 @@
+---
+title: Native styles
+description: Placer Toolkit provides optional native styles, designed to make native HTML elements that aren’t implemented as a web component look good.
+---
+
+Placer Toolkit provides optional native styles, designed to make native HTML elements that aren’t implemented as a web component look good.
+
+## Demos
+
+### Headings
+
+Semantic heading elements with proper hierarchy and styling.
+
+```demo
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<h3>Heading 3</h3>
+<h4>Heading 4</h4>
+<h5>Heading 5</h5>
+<h6>Heading 6</h6>
+```
+
+### Paragraphs
+
+Standard paragraph text with optimal spacing and readability.
+
+```demo
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a eros
+    tristique, porttitor odio a, efficitur justo. Ut ut mauris vehicula,
+    lacinia justo eu, pulvinar est. Duis lobortis purus pellentesque placerat
+    rhoncus. Suspendisse varius justo quis sapien faucibus imperdiet. Donec
+    id lorem non tortor interdum mattis.
+</p>
+
+<p>
+    Donec ornare lorem eu sem porta, nec fringilla arcu posuere. Suspendisse
+    potenti. Nullam in urna eu diam sagittis cursus. Donec placerat a libero
+    quis porta. Vestibulum sollicitudin sed eros non pulvinar. Integer laoreet
+    libero mi, id rhoncus dui fringilla quis.
+</p>
+```
+
+### Blockquotes
+
+Styled quotations that stand out from regular text.
+
+```demo
+<blockquote>
+    “The web is more of a social creation than a technical one. I designed it for a social effect—to help people work together—and not as a technical toy.”
+    <footer>— <cite>Tim Berners‐Lee</cite></footer>
+</blockquote>
+```
+
+### Lists
+
+Organised content in bulleted or numbered format with proper nesting support.
+
+```demo
+<ul>
+    <li>List item 1</li>
+    <li>
+        List item 2
+        <ul>
+            <li>Subitem a</li>
+            <li>Subitem b</li>
+        </ul>
+    </li>
+    <li>List item 3</li>
+</ul>
+
+<ol>
+    <li>List item 1</li>
+    <li>
+        List item 2
+        <ol>
+            <li>Subitem a</li>
+            <li>Subitem b</li>
+        </ol>
+    </li>
+    <li>List item 3</li>
+</ol>
+```
+
+### Description lists
+
+Term and definition pairs for glossaries and descriptions.
+
+```demo
+<dl>
+    <dt>Definition 1</dt>
+    <dd>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat.
+    </dd>
+
+    <dt>Definition 2</dt>
+    <dd>
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+        dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </dd>
+
+    <dt>Definition 3</dt>
+    <dd>
+        Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+        accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
+        illo inventore veritatis et quasi architecto beatae vitae dicta sunt
+        explicabo.
+    </dd>
+</dl>
+```
+
+### Inline text
+
+Various text formatting elements for emphasis and semantic meaning.
+
+```demo
+<div class="native-inline">
+    <p><strong>Bold</strong></p>
+    <p><em>Italic</em></p>
+    <p><u>Underline</u></p>
+    <p><s>Strikethrough</s></p>
+    <p><del>Deleted</del></p>
+    <p><ins>Inserted</ins></p>
+    <p><small>Small</small></p>
+    <p><span>Subscript <sub>Sub</sub></span></p>
+    <p><span>Superscript <sup>Sup</sup></span></p>
+    <p><abbr title="Abbreviation">Abbr.</abbr></p>
+    <p><mark>Highlighted</mark></p>
+    <p><a href="#">Link text</a></p>
+    <p><code>Inline code</code></p>
+    <p><kbd>Keyboard</kbd></p>
+</div>
+
+<style>
+    .native-inline {
+        columns: 2;
+        gap: var(--pc-spacing-l);
+    }
+</style>
+```
+
+### Code blocks
+
+Formatted code snippet with proper syntax styling.
+
+```demo
+<pre><code>// do a thing
+export function thing() {
+    return true;
+}</code></pre>
+```
+
+### Images
+
+Responsive images with proper scaling and styling.
+
+```demo
+<img
+    src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+    alt="Colour version of a fantasy desert that’s all blue"
+/>
+```
+
+### Tables
+
+Structured data presentation with clean styling.
+
+```demo
+<table>
+    <caption>I’m just a table</caption>
+    <thead>
+        <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+            <th>Column 4</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Cell 1a</td>
+            <td>Cell 1b</td>
+            <td>Cell 1c</td>
+            <td>Cell 1d</td>
+        </tr>
+        <tr>
+            <td>Cell 2a</td>
+            <td>Cell 2b</td>
+            <td>Cell 2c</td>
+            <td>Cell 2d</td>
+        </tr>
+        <tr>
+            <td>Cell 3a</td>
+            <td>Cell 3b</td>
+            <td>Cell 3c</td>
+            <td>Cell 3d</td>
+        </tr>
+        <tr>
+            <td>Cell 4a</td>
+            <td>Cell 4b</td>
+            <td>Cell 4c</td>
+            <td>Cell 4d</td>
+        </tr>
+    </tbody>
+</table>
+```
+
+## Importing
+
+If you imported `placer.css`, you can skip this section. But if you cherry picked from all the CSS files, you can use these snippets to import these native styles.
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="in-html">In HTML</pc-tab>
+    <pc-tab slot="navigation" panel="in-css">In CSS</pc-tab>
+
+    <pc-tab-panel name="in-html">
+        To import native styles from the CDN with a link tag, copy this snippet and paste it in your HTML:
+
+        ```html
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/native.css" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="in-css">
+        To import native styles with an `@import` at‐rule, copy this snippet and paste it in your global CSS file:
+
+        ```css
+        @import url("https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/native.css");
+        ```
+    </pc-tab-panel>
+</pc-tab-group>

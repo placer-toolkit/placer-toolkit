@@ -3,20 +3,17 @@ title: Copy Button
 description: Copies text data to the clipboard when the user clicks the trigger.
 ---
 
-import AutoKeyboardSwitch from "../../components/AutoKeyboardSwitch.astro";
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Copies text data to the clipboard when the user clicks the trigger.
 
-<CodeDemo open>
-{`<pc-copy-button value="Placer Toolkit rocks!"></pc-copy-button>`}
-</CodeDemo>
+```demo:open
+<pc-copy-button value="Placer Toolkit rocks!"></pc-copy-button>
+```
 
 <pc-callout appearance="warning">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="globe"
         slot="icon"
     ></pc-icon>
     Copy buttons use the browser’s [`clipboard.writeText()`](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText) method, which requires a [secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts) (HTTPS) in most browsers.
@@ -28,21 +25,21 @@ Copies text data to the clipboard when the user clicks the trigger.
 
 Copy buttons display feedback in a tooltip. You can customise the labels using the `copy-label`, `success-label` and `error-label` attributes.
 
-<CodeDemo>
-{`<pc-copy-button
+```demo
+<pc-copy-button
     value="Custom labels are easy"
     copy-label="Click to copy"
     success-label="You did it!"
-    error-label="Whoops, your browser doesn’t support this!"
-></pc-copy-button>`}
-</CodeDemo>
+    error-label="Whoops, didn’t work for some reason."
+></pc-copy-button>
+```
 
 ### Custom icons
 
 Use the `copy-icon`, `success-icon` and `error-icon` slots to customise the icons that get displayed for each state. You can use [`<pc-icon>`](/components/icon) or your own images.
 
-<CodeDemo>
-{`<pc-copy-button value="Copied from a copy button with custom icons">
+```demo
+<pc-copy-button value="Copied from a copy button with custom icons">
     <pc-icon
         library="default"
         icon-style="regular"
@@ -61,8 +58,8 @@ Use the `copy-icon`, `success-icon` and `error-icon` slots to customise the icon
         name="thumbs-down"
         slot="error-icon"
     ></pc-icon>
-</pc-copy-button>`}
-</CodeDemo>
+</pc-copy-button>
+```
 
 ### Copying values from other elements
 
@@ -72,28 +69,34 @@ When using the `from` attribute, the element’s [`textContent`](https://develop
 
 To copy data from an attribute, use `from="id[attribute]"` where `id` is the id of the target element and `attribute` is the name of the attribute you’d like to copy. To copy data from a property, use `from="id.property"` where `id` is the id of the target element and `property` is the name of the property you’d like to copy.
 
-<CodeDemo>
-{`<!-- Copies the span’s textContent -->
-<span id="my-phone">+44 1234 567890</span>
-<pc-copy-button from="my-phone"></pc-copy-button>
+```demo
+<!-- Copies the span’s textContent -->
+<span class="pc-align-items-center pc-gap-s">
+    <span id="my-phone">+1 555 555 0123</span>
+    <pc-copy-button from="my-phone"></pc-copy-button>
+</span>
 
 <br />
 
-<!-- Copies the input’s “value” property -->
-<pc-input
-    type="text"
-    id="my-input"
-    value="User input"
-    style="display: inline-block; max-width: 300px"
-></pc-input>
-<pc-copy-button from="my-input.value" style="vertical-align: 10px"></pc-copy-button>
+<!-- Copies the input’s value property -->
+<span class="pc-align-items-center pc-gap-s">
+    <pc-input
+        type="text"
+        id="my-input"
+        value="User input"
+        style="display: inline-block; max-inline-size: 300px"
+    ></pc-input>
+    <pc-copy-button from="my-input.value"></pc-copy-button>
+</span>
 
 <br />
 
-<!-- Copies the link’s “href” attribute -->
-<a href="https://example.com" id="my-link">Example website</a>
-<pc-copy-button from="my-link[href]"></pc-copy-button>`}
-</CodeDemo>
+<!-- Copies the link’s href attribute -->
+<span class="pc-align-items-center pc-gap-s">
+    <a href="https://example.com" id="my-link">Example website</a>
+    <pc-copy-button from="my-link[href]"></pc-copy-button>
+</span>
+```
 
 ### Handling errors
 
@@ -101,35 +104,35 @@ A copy error will occur if the value is an empty string, if the `from` attribute
 
 This example demonstrates what happens when a copy error occurs. You can customise the error label and icon using the `error-label` attribute and the `error-icon` slot, respectively.
 
-<CodeDemo>
-{`<pc-copy-button from="i-do-not-exist"></pc-copy-button>`}
-</CodeDemo>
+```demo
+<pc-copy-button from="i-do-not-exist"></pc-copy-button>
+```
 
 ### Disabled
 
 Copy buttons can be disabled by adding the `disabled` attributes.
 
-<CodeDemo>
-{`<pc-copy-button value="You can’t copy me!" disabled></pc-copy-button>`}
-</CodeDemo>
+```demo
+<pc-copy-button value="You can’t copy me!" disabled></pc-copy-button>
+```
 
 ### Changing feedback duration
 
 A success indicator is briefly shown after copying. You can customise the length of time the indicator is shown using the `feedback-duration` attribute.
 
-<CodeDemo>
-{`<pc-copy-button
+```demo
+<pc-copy-button
     value="Placer Toolkit rocks!"
     feedback-duration="250"
-></pc-copy-button>`}
-</CodeDemo>
+></pc-copy-button>
+```
 
 ### Custom styles
 
 You can customise the button to your liking with CSS.
 
-<CodeDemo>
-{`<pc-copy-button value="I’m so stylish!" class="custom-pink-copy-button">
+```demo
+<pc-copy-button value="I’m so stylish!" class="custom-pink-copy-button">
     <pc-icon
         library="default"
         icon-style="solid"
@@ -153,13 +156,13 @@ You can customise the button to your liking with CSS.
 <style>
     pc-copy-button.custom-pink-copy-button::part(button) {
         background-color: #ff1493;
-        border: 2px solid;
-        border-top-color: #ff7ac1;
-        border-left-color: #ff7ac1;
-        border-bottom-color: #ad005c;
-        border-right-color: #ad005c;
-        border-radius: 6px;
         color: #fff;
+        border: 2px solid;
+        border-block-start-color: #ff7ac1;
+        border-block-end-color: #ad005c;
+        border-inline-start-color: #ff7ac1;
+        border-inline-end-color: #ad005c;
+        border-radius: 6px;
         box-shadow: 0 2px 10px #0002;
         transition: all var(--pc-transition-fast) ease-in-out;
     }
@@ -169,10 +172,10 @@ You can customise the button to your liking with CSS.
     }
 
     pc-copy-button.custom-pink-copy-button::part(button):active {
-        border-top-color: #ad005c;
-        border-right-color: #ff7ac1;
-        border-bottom-color: #ff7ac1;
-        border-left-color: #ad005c;
+        border-block-start-color: #ad005c;
+        border-block-end-color: #ff7ac1;
+        border-inline-start-color: #ad005c;
+        border-inline-end-color: #ff7ac1;
         transform: translateY(1px) rotate(-1deg);
     }
 
@@ -180,5 +183,5 @@ You can customise the button to your liking with CSS.
         outline: 2px dashed deeppink;
         outline-offset: 2px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```

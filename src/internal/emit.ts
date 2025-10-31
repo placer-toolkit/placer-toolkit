@@ -1,16 +1,17 @@
+/** Emits a custom event with convenient defaults. */
 export function emit(
     target: EventTarget,
     eventName: string,
     eventDetail?: CustomEventInit,
 ): CustomEvent {
-    const { detail, cancelable, ...rest } = eventDetail || {};
+    const { detail, cancelable, ...options } = eventDetail || {};
 
     const event = new CustomEvent(eventName, {
         bubbles: true,
         cancelable: cancelable !== undefined ? cancelable : false,
         composed: true,
         detail: detail,
-        ...rest,
+        ...options,
     });
 
     target.dispatchEvent(event);

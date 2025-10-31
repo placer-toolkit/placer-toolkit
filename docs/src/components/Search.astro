@@ -2,7 +2,7 @@
 import "@pagefind/default-ui/css/ui.css";
 ---
 
-<pc-dialog class="search-dialog" no-header>
+<pc-dialog class="search-dialog" id="search-dialog" no-header>
     {
         import.meta.env.MODE === "development" && (
             <p class="dev-warning">
@@ -16,6 +16,36 @@ import "@pagefind/default-ui/css/ui.css";
 </pc-dialog>
 
 <script>
+    import type { PcDialog } from "placer-toolkit/dist/components/dialog/dialog.js";
+
+    document.addEventListener("keydown", (event) => {
+        if (
+            (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
+            (event.key === "/" &&
+                !event.composedPath().some((element) => {
+                    const tag = (
+                        element as HTMLElement
+                    )?.tagName?.toLowerCase();
+                    return (
+                        tag === "textarea" ||
+                        (tag === "input" &&
+                            !["checkbox", "radio"].includes(
+                                (element as HTMLInputElement).type,
+                            ))
+                    );
+                }))
+        ) {
+            event.preventDefault();
+
+            const searchDialog: PcDialog | null =
+                document.querySelector(".search-dialog");
+
+            if (searchDialog) {
+                searchDialog.open = true;
+            }
+        }
+    });
+
     window.addEventListener("DOMContentLoaded", () => {
         if (import.meta.env.DEV) {
             return;
@@ -26,7 +56,7 @@ import "@pagefind/default-ui/css/ui.css";
             ((callback) => setTimeout(callback, 1));
 
         onIdle(async () => {
-            // @ts-expect-error — Missing types for @pagefind/default-ui package
+            // @ts-expect-error — Missing types for the @pagefind/default-ui package
             const { PagefindUI } = await import("@pagefind/default-ui");
 
             new PagefindUI({
@@ -34,24 +64,27 @@ import "@pagefind/default-ui/css/ui.css";
                 showImages: false,
                 showSubResults: true,
                 translations: {
-                    placeholder: "Search…",
+                    searchingFor: "Searching for [SEARCH_TERM]…",
                 },
             });
 
             setTimeout(() => {
-                const searchInput = document.querySelector(
-                    "#search .pagefind-ui__search-input",
-                );
+                const searchInput: HTMLInputElement | null =
+                    document.querySelector(
+                        "#search .pagefind-ui__search-input",
+                    );
 
                 if (searchInput) {
                     const inputId = "pagefind-ui__search-input";
                     searchInput.id = inputId;
 
+                    searchInput.focus();
+
                     const label = document.createElement("label");
                     label.setAttribute("for", inputId);
                     label.classList.add("pc-visually-hidden");
                     label.textContent =
-                        "Search the Placer Toolkit documentation:";
+                        "Search the Placer Toolkit documentation…";
 
                     const searchForm =
                         searchInput.closest(".pagefind-ui__form");
@@ -76,18 +109,15 @@ import "@pagefind/default-ui/css/ui.css";
         justify-content: center;
     }
 
-    .search-dialog::part(panel) {
-        position: absolute;
-        top: 2rem;
-        width: 40rem;
-        max-width: calc(100% - var(--pc-spacing-xxl));
-        min-height: 15rem;
-        height: max-content;
-        max-height: calc(100% - (var(--pc-spacing-xxl) * 2));
-    }
-
-    .search-dialog::part(body) {
-        padding: var(--pc-spacing-xl);
+    .search-dialog::part(dialog) {
+        position: fixed;
+        inset-block: 0;
+        margin-block-start: 2%;
+        inline-size: 40rem;
+        max-inline-size: calc(100% - var(--pc-spacing-xxl));
+        min-block-size: 15rem;
+        block-size: max-content;
+        max-block-size: calc(100% - (var(--pc-spacing-xxl) * 2));
     }
 
     .search-dialog > .dev-warning {
@@ -96,13 +126,13 @@ import "@pagefind/default-ui/css/ui.css";
     }
 
     #search {
-        --pagefind-ui-primary: var(--pc-color-neutral-950);
-        --pagefind-ui-text: var(--pc-color-neutral-950);
+        --pagefind-ui-primary: var(--pc-color-text-normal);
+        --pagefind-ui-text: var(--pc-color-text-normal);
         --pagefind-ui-font: var(--pc-font-sans);
-        --pagefind-ui-background: var(--pc-color-neutral-0);
-        --pagefind-ui-border: var(--pc-color-neutral-500);
-        --pagefind-ui-border-width: 1px;
-        --pagefind-ui-tag: var(--pc-color-neutral-500);
+        --pagefind-ui-background: var(--pc-color-neutral-fill-normal);
+        --pagefind-ui-border: var(--pc-color-text-quiet);
+        --pagefind-ui-border-width: 0.0625rem;
+        --pagefind-ui-tag: var(--pc-color-text-quiet);
 
         --search-result-spacing: var(--pc-spacing-xl);
         --search-result-pad-inline-start: 3.75rem;
@@ -115,62 +145,75 @@ import "@pagefind/default-ui/css/ui.css";
             (
                     var(--search-result-pad-inline-start) -
                         var(--search-page-icon-size)
-                ) / 2
+                ) /
+                2
         );
         --search-tree-diagram-size: 2.5rem;
         --search-tree-diagram-inline-start: calc(
             (
                     var(--search-result-pad-inline-start) -
                         var(--search-tree-diagram-size)
-                ) / 2
+                ) /
+                2
         );
     }
 
     #search .pagefind-ui__form::before {
-        --pagefind-ui-text: var(--pc-color-neutral-500);
+        --pagefind-ui-text: var(--pc-color-text-quiet);
         content: "";
         position: absolute;
-        top: 17px;
-        left: 15px;
-        width: 18px;
-        height: 18px;
+        inset-block-start: 1.0625rem;
+        inset-inline-start: 0.9375rem;
+        inline-size: 1.125rem;
+        block-size: 1.125rem;
         opacity: 1;
         mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.5 9.75c0 2.15-.7 4.14-1.875 5.74L23.37 21.4c.59.59.59 1.54 0 2.12s-1.54.59-2.12 0L15.5 17.6c-1.61 1.18-3.6 1.875-5.74 1.875C4.37 19.5 0 15.13 0 9.75S4.37 0 9.75 0S19.5 4.37 19.5 9.75zM9.75 16.5a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 1 0 0 13.5z'/%3E%3C/svg%3E");
         -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.5 9.75c0 2.15-.7 4.14-1.875 5.74L23.37 21.4c.59.59.59 1.54 0 2.12s-1.54.59-2.12 0L15.5 17.6c-1.61 1.18-3.6 1.875-5.74 1.875C4.37 19.5 0 15.13 0 9.75S4.37 0 9.75 0S19.5 4.37 19.5 9.75zM9.75 16.5a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 1 0 0 13.5z'/%3E%3C/svg%3E");
     }
 
     #search .pagefind-ui__search-input {
-        background-color: var(--pc-input-background-color);
-        color: var(--pc-input-color);
-        border-color: var(--pc-input-border-color);
-        width: 100%;
-        font-weight: var(--pc-font-weight-normal);
-        padding-right: 52px !important;
-        border-radius: var(--pc-input-border-radius-l);
+        padding-inline-end: calc((1.0625em * 2) + 1.25rem) !important;
+        inline-size: 100%;
+        background-color: var(--pc-form-control-background-color);
+        color: var(--pc-form-control-value-color);
+        border-color: var(--pc-form-control-border-color);
+        border-radius: var(--pc-border-radius-l);
+        font-weight: var(--pc-form-control-value-font-weight);
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    #search input:hover {
-        background-color: var(--pc-input-background-color-hover);
-        border-color: var(--pc-input-border-color-hover);
+    @media (hover: hover) {
+        #search .pagefind-ui__search-input:not(:focus):hover {
+            border-color: color-mix(
+                in oklab,
+                var(--pc-form-control-border-color),
+                var(--pc-color-mix-hover)
+            );
+        }
     }
 
-    #search input:focus {
-        background-color: var(--pc-input-background-color);
-        border-color: var(--pc-input-border-color);
+    #search .pagefind-ui__search-input:focus {
+        border-color: var(--pc-form-control-border-color);
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
-    #search input::placeholder {
-        color: var(--pc-input-placeholder-color);
+    #search .pagefind-ui__search-input::placeholder {
+        color: var(--pc-form-control-placeholder-color);
         opacity: 1;
     }
 
     #search .pagefind-ui__search-clear {
-        width: 50px;
+        inset-block-start: 0.9375rem;
+        inset-inline-end: 1.0625em;
         padding: 0;
+        inline-size: 1.25rem;
+        block-size: 1.25rem;
         background-color: transparent;
+        color: transparent;
+        border-radius: var(--pc-border-radius-circle);
         overflow: hidden;
         transition: outline var(--pc-transition-fast) ease-in-out;
     }
@@ -178,31 +221,49 @@ import "@pagefind/default-ui/css/ui.css";
     #search .pagefind-ui__search-clear:focus-visible {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     #search .pagefind-ui__search-clear::before {
         content: "";
         display: block;
-        width: 100%;
-        height: 100%;
-        background-color: var(--pc-color-neutral-600);
-        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m13.41 12 6.3-6.29a1 1 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1 1 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 .33 1.64 1 1 0 0 0 1.09-.22l6.29-6.3 6.29 6.3a1 1 0 0 0 1.64-.33 1 1 0 0 0-.22-1.09L13.41 12Z'/%3E%3C/svg%3E")
-            center / 40% no-repeat;
-        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m13.41 12 6.3-6.29a1 1 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1 1 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 .33 1.64 1 1 0 0 0 1.09-.22l6.29-6.3 6.29 6.3a1 1 0 0 0 1.64-.33 1 1 0 0 0-.22-1.09L13.41 12Z'/%3E%3C/svg%3E")
-            center / 40% no-repeat;
+        inline-size: 100%;
+        block-size: 100%;
+        background-color: var(--pc-color-text-quiet);
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM167 167c-9.4 9.4-9.4 24.6 0 33.9l55 55-55 55c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l55-55 55 55c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-55-55 55-55c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-55 55-55-55c-9.4-9.4-24.6-9.4-33.9 0z'/%3E%3C/svg%3E")
+            center / 100% no-repeat;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM167 167c-9.4 9.4-9.4 24.6 0 33.9l55 55-55 55c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l55-55 55 55c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-55-55 55-55c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-55 55-55-55c-9.4-9.4-24.6-9.4-33.9 0z'/%3E%3C/svg%3E")
+            center / 100% no-repeat;
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    #search .pagefind-ui__search-clear:hover::before {
-        background-color: var(--pc-color-primary-600);
+    @media (hover: hover) {
+        #search .pagefind-ui__search-clear:hover::before {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-text-quiet),
+                var(--pc-color-mix-hover)
+            );
+        }
     }
 
     #search .pagefind-ui__search-clear:active::before {
-        background-color: var(--pc-color-primary-500);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-text-quiet),
+            var(--pc-color-mix-active)
+        );
     }
 
     #search .pagefind-ui__results > * + * {
-        margin-top: var(--search-result-spacing);
+        margin-block-start: var(--search-result-spacing);
+    }
+
+    #search .pagefind-ui__drawer > .pagefind-ui__message {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     #search .pagefind-ui__result {
@@ -218,36 +279,58 @@ import "@pagefind/default-ui/css/ui.css";
     }
 
     #search
-        .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
+        .pagefind-ui__result-title:not(
+            .pagefind-ui__result-nested > .pagefind-ui__result-title
+        ),
     #search .pagefind-ui__result-nested {
         position: relative;
-        background-color: var(--pc-color-neutral-0);
+        background-color: var(--pc-color-neutral-fill-normal);
+    }
+
+    @media (hover: hover) {
+        #search
+            .pagefind-ui__result-title:not(
+                .pagefind-ui__result-nested > .pagefind-ui__result-title
+            ):hover,
+        #search .pagefind-ui__result-nested:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-normal),
+                var(--pc-color-mix-hover)
+            );
+        }
     }
 
     #search
         .pagefind-ui__result-title:not(
-            :where(.pagefind-ui__result-nested *)
-        ):hover,
-    #search
-        .pagefind-ui__result-title:not(
-            :where(.pagefind-ui__result-nested *)
-        ):focus-within,
-    #search .pagefind-ui__result-nested:hover,
-    #search .pagefind-ui__result-nested:focus-within {
-        background-color: var(--pc-color-neutral-100);
+            .pagefind-ui__result-nested > .pagefind-ui__result-title
+        ):active,
+    #search .pagefind-ui__result-nested:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-active)
+        );
     }
 
     #search
         .pagefind-ui__result-title:not(
-            :where(.pagefind-ui__result-nested *)
-        ):focus-within,
-    #search .pagefind-ui__result-nested:focus-within {
-        background-color: var(--pc-color-neutral-200);
+            .pagefind-ui__result-nested > .pagefind-ui__result-title
+        ):has(.pagefind-ui__result-link:focus-visible),
+    #search
+        .pagefind-ui__result-nested:has(
+            .pagefind-ui__result-link:focus-visible
+        ) {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+        z-index: 1;
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     #search .pagefind-ui__result-thumb,
     #search .pagefind-ui__result-inner {
-        margin-top: 0;
+        margin-block-start: 0;
     }
 
     #search .pagefind-ui__result-inner > * {
@@ -255,20 +338,32 @@ import "@pagefind/default-ui/css/ui.css";
     }
 
     #search .pagefind-ui__result-inner > .pagefind-ui__result-nested {
-        border-radius: 2px;
+        border-radius: 0.125rem;
     }
 
     #search .pagefind-ui__result-inner > :first-child {
-        border-radius: var(--search-corners) var(--search-corners) 2px 2px;
+        border-start-start-radius: var(--search-corners);
+        border-start-end-radius: var(--search-corners);
+        border-end-start-radius: 0.125rem;
+        border-end-end-radius: 0.125rem;
     }
 
     #search .pagefind-ui__result-inner > :last-child {
-        border-radius: 2px 2px var(--search-corners) var(--search-corners);
+        border-start-start-radius: 0.125rem;
+        border-start-end-radius: 0.125rem;
+        border-end-start-radius: var(--search-corners);
+        border-end-end-radius: var(--search-corners);
+    }
+
+    #search
+        .pagefind-ui__result-inner
+        > .pagefind-ui__result-title:not(:has(~ .pagefind-ui__result-nested)) {
+        border-radius: var(--search-corners);
     }
 
     #search .pagefind-ui__result-inner > .pagefind-ui__result-title {
-        padding: var(--search-result-pad-block)
-            var(--search-result-pad-inline-end);
+        padding-block: var(--search-result-pad-block);
+        padding-inline: var(--search-result-pad-inline-end);
         padding-inline-start: var(--search-result-pad-inline-start);
     }
 
@@ -277,8 +372,8 @@ import "@pagefind/default-ui/css/ui.css";
         position: absolute;
         inset-block: 0;
         inset-inline-start: var(--search-page-icon-inline-start);
-        width: var(--search-page-icon-size);
-        background-color: var(--pc-color-neutral-500);
+        inline-size: var(--search-page-icon-size);
+        background-color: var(--pc-color-text-quiet);
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
             center no-repeat;
         -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
@@ -287,18 +382,20 @@ import "@pagefind/default-ui/css/ui.css";
 
     #search .pagefind-ui__result-inner {
         align-items: stretch;
-        gap: 2px;
+        gap: 0.125rem;
     }
 
     #search .pagefind-ui__result-link {
         position: unset;
-        --pagefind-ui-text: var(--pc-color-neutral-950);
+        --pagefind-ui-text: var(--pc-color-text-normal);
         font-weight: var(--pc-font-weight-bold);
         outline: none;
     }
 
-    #search .pagefind-ui__result-link:hover {
-        text-decoration: none;
+    @media (hover: hover) {
+        #search .pagefind-ui__result-link:hover {
+            text-decoration: none;
+        }
     }
 
     #search .pagefind-ui__result-nested .pagefind-ui__result-link::before {
@@ -310,8 +407,8 @@ import "@pagefind/default-ui/css/ui.css";
         position: absolute;
         inset-block: 0;
         inset-inline-start: var(--search-tree-diagram-inline-start);
-        width: var(--search-tree-diagram-size);
-        background-color: var(--pc-color-neutral-400);
+        inline-size: var(--search-tree-diagram-size);
+        background-color: var(--pc-color-text-quiet);
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-linecap='round' viewBox='0 0 16 1000' preserveAspectRatio='xMinYMin slice'%3E%3Cpath d='M8 0v1000m6-988H8'/%3E%3C/svg%3E")
             0% 0% / 100% no-repeat;
         -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-linecap='round' viewBox='0 0 16 1000' preserveAspectRatio='xMinYMin slice'%3E%3Cpath d='M8 0v1000m6-988H8'/%3E%3C/svg%3E")
@@ -342,46 +439,68 @@ import "@pagefind/default-ui/css/ui.css";
     }
 
     #search mark {
-        padding: var(--pc-spacing-xxs) var(--pc-spacing-xs);
-        background-color: var(--pc-color-warning-200);
-        color: var(--pc-color-warning-800);
-        border-radius: var(--pc-border-radius-m);
+        padding: 0.125em 0.25em;
+        color: var(--pc-color-warning-on-quiet);
+        background-color: var(--pc-color-warning-fill-quiet);
+        border-radius: var(--pc-border-radius-s);
     }
 
     #search .pagefind-ui__filter-value::before {
-        border-color: var(--pc-color-neutral-0);
+        border-color: var(--pc-color-neutral-border-normal);
     }
 
     #search .pagefind-ui__result-tags {
-        background-color: var(--pc-color-neutral-0);
-        margin-top: 0;
+        background-color: var(--pc-color-neutral-fill-normal);
+        margin-block-start: 0;
         padding: var(--search-result-nested-pad-block)
             var(--search-result-pad-inline-end);
     }
 
     #search .pagefind-ui__button {
-        background-color: var(--pc-color-neutral-0);
-        border-color: var(--pc-color-neutral-100);
-        color: var(--pc-color-neutral-900);
+        background-color: var(--pc-color-neutral-fill-normal);
+        border-color: var(--pc-color-neutral-border-normal);
+        color: var(--pc-color-neutral-on-normal);
         font-weight: var(--pc-font-weight-bold);
         padding-inline: var(--pc-spacing-m);
-        min-height: var(--pc-input-height-m);
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    #search .pagefind-ui__button:hover,
-    #search .pagefind-ui__button:focus-visible {
-        background-color: var(--pc-color-neutral-100);
-        border-color: var(--pc-color-neutral-200);
+    @media (hover: hover) {
+        #search .pagefind-ui__button:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-normal),
+                var(--pc-color-mix-hover)
+            );
+        }
     }
 
     #search .pagefind-ui__button:active {
-        background-color: var(--pc-color-neutral-200);
-        border-color: var(--pc-color-neutral-200);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-active)
+        );
     }
 
     #search .pagefind-ui__button:focus-visible {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    @keyframes focus-ring-animation {
+        0% {
+            outline-width: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
+        }
     }
 </style>

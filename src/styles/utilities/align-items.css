@@ -1,0 +1,21 @@
+@layer pc-utilities {
+    .pc-align-items-start {
+        align-items: flex-start;
+    }
+
+    .pc-align-items-end {
+        align-items: flex-end;
+    }
+
+    .pc-align-items-center {
+        align-items: center;
+    }
+
+    .pc-align-items-stretch {
+        align-items: stretch;
+    }
+
+    .pc-align-items-baseline {
+        align-items: baseline;
+    }
+}

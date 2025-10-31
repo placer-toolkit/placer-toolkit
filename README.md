@@ -1,26 +1,26 @@
-# <picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/randomguy-2650/placer-toolkit/blob/main/public/logo-wordmark-dark.svg"></source><source media="(prefers-color-scheme: light)" srcset="https://github.com/randomguy-2650/placer-toolkit/blob/main/public/logo-wordmark-light.svg"></source><img src="https://github.com/randomguy-2650/placer-toolkit/blob/main/public/logo-wordmark-light.svg" alt="Placer Toolkit" width="50%" /></picture>
+# <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-dark.svg"></source><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-light.svg"></source><img src="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-light.svg" alt="Placer Toolkit" width="50%" /></picture>
 
-### The go‐to web component library for the web! 🛠️
+### Flexible. Accessible. Web Components.
 
-[![Netlify status](https://api.netlify.com/api/v1/badges/b854c7b0-7765-4fe0-a1a7-06e300c4e164/deploy-status)](https://app.netlify.com/projects/whimsical-cheesecake-9c86fe/deploys)
+[![Netlify deploy status](https://api.netlify.com/api/v1/badges/b854c7b0-7765-4fe0-a1a7-06e300c4e164/deploy-status)](https://app.netlify.com/projects/placer-toolkit/deploys)
 
 > ![NOTE]
 > 📦 This is a **monorepo** containing the Placer Toolkit core and its documentation site.
 
-## 🚧 Pre‐release notice
+## 🚧 Alpha notice
 
-This is a **pre‐release** version of Placer Toolkit. There may be instabilities and bugs in pre‐release versions of Placer Toolkit, feel free to create an issue about the bug or if you know how to fix it, then create a PR instead. We **don’t recommend** using pre‐release software in production _just_ yet.
+This is an **alpha** version of Placer Toolkit. There may be instabilities and bugs in alpha versions of Placer Toolkit, feel free to create an issue or PR about the bug instead.
 
 ## 🛠️ Custom Placer Toolkit builds
 
-If you want to create custom builds of Placer Toolkit, you can use this documentation to learn how to build Placer Toolkit from source. You will need Node.js ≥18 to build and run the project locally.
+If you want to create custom builds of Placer Toolkit, you can use this documentation to learn how to build Placer Toolkit from source. You will need Node.js v20 or later (v21 is not supported) to build and run the project locally.
 
 You don’t need any of this to use Placer Toolkit. This section is for contributors or anyone who wants to tinker with the source or create custom builds of Placer Toolkit.
 
-1. Start by [forking the repo](https://github.com/randomguy-2650/placer-toolkit/fork) on GitHub, then clone it locally and install dependencies.
+1. Start by [forking the repo](https://github.com/placer-toolkit/placer-toolkit/fork) on GitHub, then clone it locally and install dependencies.
 
 ```shell
-git clone https://github.com/[GITHUB_USERNAME]/placer-toolkit
+git clone https://github.com/placer-toolkit/placer-toolkit
 cd placer-toolkit # Navigate into your clone
 npm install # Installs dependencies for Placer Toolkit
 cd docs
@@ -34,7 +34,7 @@ npm run dev # To spin up the dev server provided by Astro
 npx astro dev --host # If you want to expose the server on your network
 ```
 
-This will spin up the dev server on `localhost:4321`. There is hot module reloading (HMR) as the docs are powered by [Astro](https://astro.build), which uses [Vite](https://vite.dev).
+This will spin up the dev server on `localhost:4321`. There isn’t any hot module reloading as Web Components aren’t compatible with this technology, but it’ll automatically refresh the page instead.
 
 3. To build the docs, run this command in the `docs` folder.
 
@@ -43,24 +43,20 @@ npm run build # Builds the project. Also initialises Pagefind on‐the‐go
 npm run preview # To spin up the production server provided by Astro
 ```
 
-### 🧱 Creating new components
-
-See [CREATING_A_NEW_COMPONENT.md](https://github.com/randomguy-2650/placer-toolkit/blob/main/CREATING_A_NEW_COMPONENT.md) for more info.
-
 ## 📄 Licence
 
-This project is licenced under the [MIT Licence](LICENSE.md).
+This project is licenced under the [MIT License](LICENSE.md).
 
 ## 💖 Special thanks
 
 Placer Toolkit was built with the help of these fantastic libraries:
 
--   [Lit](https://lit.dev)
--   [Astro](https://astro.build)
--   [Floating UI](https://floating-ui.com)
--   [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)
--   [Pagefind](https://pagefind.app)
+- [Lit](https://lit.dev)
+- [Astro](https://astro.build)
+- [Floating UI](https://floating-ui.com)
+- [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)
+- [Pagefind](https://pagefind.app)
 
-Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licenced under the [MIT Licence](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md).
+Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licenced under the [MIT License](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md). More recently, elements of [Web Awesome](https://webawesome.com) have also influenced Placer Toolkit’s development.
 
-© 2025 Placer and its contributors. All rights reserved.
+© 2025 Placer and its contributors

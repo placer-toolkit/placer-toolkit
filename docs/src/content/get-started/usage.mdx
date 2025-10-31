@@ -1,11 +1,9 @@
 ---
 title: Usage
-description: Placer components are just regular HTML elements, or custom elements to be precise. You can use them like any other element. Each component has detailed documentation that describes its full API, including properties, events, methods and more.
+description: Placer Toolkit components are just regular HTML elements, or custom elements to be precise. You can use them like any other element. Each component has detailed documentation that describes its full API, including properties, events, methods and more.
 ---
 
-import CodeBlock from "../../components/CodeBlock.astro";
-
-Placer components are just regular HTML elements, or [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) to be precise. You can use them like any other element. Each component has detailed documentation that describes its full API, including properties, events, methods and more.
+Placer Toolkit components are just regular HTML elements, or [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements) to be precise. You can use them like any other element. Each component has detailed documentation that describes its full API, including properties, events, methods and more.
 
 If you’re new to custom elements, often referred to as “web components”, this section will familiarise you with how to use them.
 
@@ -13,27 +11,29 @@ If you’re new to custom elements, often referred to as “web components”, t
 
 Many components have properties that can be set using attributes. For example, buttons accept a `size` attribute that maps to the `size` property which dictates the button’s size.
 
-<CodeBlock language="html">
-{`<pc-button size="small">Click me</pc-button>`}
-</CodeBlock>
+```html
+<pc-button size="small">Click me</pc-button>
+```
 
 Some properties are boolean, so they only have true/false values. To activate a boolean property, add the corresponding attribute without a value.
 
-<CodeBlock language="html">
-{`<pc-button disabled>Click me</pc-button>`}
-</CodeBlock>
+```html
+<pc-button disabled>Click me</pc-button>
+```
 
 In rare cases, a property may require an array, an object or a function. For example, to customise the colour picker’s list of preset swatches, you set the `swatches` property to an array of colours. This must be done with JavaScript.
 
-<CodeBlock language="html">
-{`<pc-color-picker></pc-color-picker>
+{/* This component is not available yet, this is for future proofing. */}
+
+```html
+<pc-color-picker></pc-color-picker>
 
 <script>
     const colorPicker = document.querySelector("pc-color-picker");
 
     colorPicker.swatches = ["red", "orange", "yellow", "green", "blue", "purple"];
-</script>`}
-</CodeBlock>
+</script>
+```
 
 Refer to a component’s documentation for a complete list of its properties.
 
@@ -43,8 +43,8 @@ You can listen for standard events such as `click`, `mouseover`, `mouseout`, etc
 
 As a result, you should almost always listen for custom events instead. For example, instead of listening to `click` to determine when a `<pc-checkbox>` gets toggled, listen to `pc-change`.
 
-<CodeBlock language="html">
-{`<pc-checkbox>Check me</pc-checkbox>
+```html
+<pc-checkbox>Check me</pc-checkbox>
 
 <script>
     const checkbox = document.querySelector("pc-checkbox");
@@ -52,24 +52,24 @@ As a result, you should almost always listen for custom events instead. For exam
     checkbox.addEventListener("pc-change", (event) => {
         console.log(event.target.checked ? "checked" : "not checked");
     });
-</script>`}
-</CodeBlock>
+</script>
+```
 
 All custom events are prefixed with `pc-` to prevent collisions with standard events and other libraries. refer to a component’s documentation for a complete list of its custom events.
 
 ## Methods
 
-Some components have methods you can call to trigger various behaviours. For example, you can set focus on a Placer input using the `focus()` method.
+Some components have methods you can call to trigger various behaviours. For example, you can set focus on a Placer Toolkit input using the `focus()` method.
 
-<CodeBlock language="html">
-{`<pc-input></pc-input>
+```html
+<pc-input></pc-input>
 
 <script>
     const input = document.querySelector("pc-input");
 
     input.focus();
-</script>`}
-</CodeBlock>
+</script>
+```
 
 Refer to a component’s documentation for a complete list of its methods and their arguments.
 
@@ -79,14 +79,14 @@ Many components use slots to accept content inside of them. The most common slot
 
 For example, a button’s default slot is used to populate its label.
 
-<CodeBlock language="html">
-{`<pc-button>Click me</pc-button>`}
-</CodeBlock>
+```html
+<pc-button>Click me</pc-button>
+```
 
 Some components also have named slots. A named slot can be populated by adding a child element with the appropriate `slot` attribute. Notice how the icon below has the `slot="prefix"` attribute? This tells the component to place the icon into its `prefix` slot.
 
-<CodeBlock language="html">
-{`<pc-button>
+```html
+<pc-button>
     <pc-icon
         library="default"
         icon-style="solid"
@@ -94,8 +94,8 @@ Some components also have named slots. A named slot can be populated by adding a
         slot="prefix"
     ></pc-icon>
     Settings
-</pc-button>`}
-</CodeBlock>
+</pc-button>
+```
 
 The location of a named slot doesn’t matter. You can put it anywhere inside the component and the browser will move it to the right place automatically!
 
@@ -105,25 +105,25 @@ Refer to a component’s documentation for a complete list of available slots.
 
 Custom elements cannot have self‐closing tags. Similar to `<script>` and `<textarea>`, you must always include the full closing tag.
 
-<CodeBlock language="html">
-{`<!-- ❌ Don’t do this -->
+```html
+<!-- ❌ Don’t do this -->
 <pc-input />
 
 <!-- ✔️ Always do this -->
-<pc-input></pc-input>`}
-</CodeBlock>
+<pc-input></pc-input>
+```
 
 ## Differences from native elements
 
-You might expect similarly named elements to share the same API as native HTML elements, but this isn’t always the case. Placer components **are not** designed to be one‐to‐one replacements for their HTML counterparts. While they usually share the same API, there may be subtle differences.
+You might expect similarly named elements to share the same API as native HTML elements, but this isn’t always the case. Placer Toolkit components **are not** designed to be one‐to‐one replacements for their HTML counterparts. While they usually share the same API, there may be subtle differences.
 
-For example, `<button>` and `<pc-button>` both have a `type` attribute, but the native one defaults to `submit` while the Placer one defaults to `button` since this is a better default for most users.
+For example, `<button>` and `<pc-button>` both have a `type` attribute, but the native one defaults to `submit` while the Placer Toolkit one defaults to `button` since this is a better default for most users.
 
 <pc-callout appearance="warning">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="book-open"
         slot="icon"
     ></pc-icon>
     <strong>Don’t make assumptions about a component’s API!</strong><br />
@@ -132,23 +132,23 @@ For example, `<button>` and `<pc-button>` both have a `type` attribute, but the 
 
 ## Waiting for components to load
 
-Web Components are registered with JavaScript, so depending on how and when you load Placer Toolkit, you may notice a Flash of Undefined Custom Elements (FOUCE) when the page loads. There are a couple ways to prevent this, both of which are described in the linked article.
+Web Components are registered with JavaScript, so depending on how and when you load Placer Toolkit, you may notice a Flash of Undefined Custom Elements (FOUCE) when the page loads. There are a couple ways to prevent this with an opt‐in utility, a custom CSS style or a JS‐based promise.
 
-One option is to use our FOUCE utility to prevent FOUCE from happening. This may not work if you load all components at once.
+One option is to use our FOUCE utility to prevent FOUCE from happening. This may not work if you load all components at once. This file is automatically loaded when loading `placer.css`.
 
-<CodeBlock language="html">
-{`<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/fouce.css" />`}
-</CodeBlock>
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/utilities/fouce.css" />
+```
 
 You also have to add the `pc-cloak` class to the `<html>` element so it applies the FOUCE utility.
 
 Another option is to use the [`:defined`](https://developer.mozilla.org/en-US/docs/Web/CSS/:defined) CSS pseudo‐class to “hide” custom elements that haven’t been registered yet. You can scope it to specific tags or you can hide all undefined custom elements as shown below.
 
-<CodeBlock language="css">
-{`:not(:defined) {
+```css
+:not(:defined) {
     visibility: hidden;
-}`}
-</CodeBlock>
+}
+```
 
 As soon as a custom element is registered, it will immediately appear with all of its styles, effectively eliminating FOUCE. Note the use of `visibility: hidden` instead of `display: none` to reduce shifting as elements are registered. The drawback to this approach is that custom elements can potentially appear one by one instead of all at the same time. This is why we recommend using the FOUCE utility.
 
@@ -156,8 +156,8 @@ There’s still another option though. You can use [`customElements.whenDefined(
 
 A clever way to use this method is to hide the `<body>` with `opacity: 0` and add a class that fades it in as soon as all your custom elements are defined.
 
-<CodeBlock language="html">
-{`<script>
+```html
+<script>
     await Promise.allSettled([
         customElements.whenDefined("pc-button"),
         customElements.whenDefined("pc-card"),
@@ -178,36 +178,36 @@ A clever way to use this method is to hide the `<body>` with `opacity: 0` and ad
     body.ready {
         opacity: 1;
     }
-</style>`}
-</CodeBlock>
+</style>
+```
 
 ## Component rendering and updating
 
-Placer components are built with [Lit](https://lit.dev), a library that makes authoring custom elements easier, more maintainable and a lot more fun compared to vanilla Web Components. Here is some helpful information about rendering and updating you should probably be aware of.
+Placer Toolkit components are built with [Lit](https://lit.dev), a library that makes authoring custom elements easier, more maintainable and a lot of fun compared to vanilla Web Components. Here is some helpful information about rendering and updating you should probably be aware of.
 
 To optimise performance and reduce re‐renders, Lit batches component updates. This means changing multiple attributes or properties at the same time will result in just a single re‐render. In most cases, this isn’t an issue, but there may be times you’ll need to wait for the component to update before continuing.
 
 Consider this example. We’re going to change the `checked` property of the checkbox and observe its corresponding `checked` attribute, which happens to reflect.
 
-<CodeBlock language="javascript">
-{`const checkbox = document.querySelector("pc-checkbox");
+```javascript
+const checkbox = document.querySelector("pc-checkbox");
 
 checkbox.checked = true;
 
-console.log(checkbox.hasAttribute("checked")); // Returns false`}
-</CodeBlock>
+console.log(checkbox.hasAttribute("checked")); // Returns false
+```
 
 Most developers will expect this to be `true` instead of `false`, but the component hasn’t had a chance to re‐render yet so the attribute doesn’t exist when `hasAttribute()` is called. Since changes are batched, we need to wait for the update before proceeding. This can be done using the `updateComplete` property, which is available on all Lit‐based components.
 
-<CodeBlock language="javascript">
-{`const checkbox = document.querySelector("pc-checkbox");
+```javascript
+const checkbox = document.querySelector("pc-checkbox");
 
 checkbox.checked = true;
 
 checkbox.updateComplete.then(() => {
-    console.log(checkbox.hasAttribute("checked")); // Returns ""
-});`}
-</CodeBlock>
+    console.log(checkbox.hasAttribute("checked")); // Returns true
+});
+```
 
 This time, we see an empty string, which means the boolean attribute is now present!
 
@@ -215,7 +215,7 @@ This time, we see an empty string, which means the boolean attribute is now pres
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="clock"
         slot="icon"
     ></pc-icon>
     Avoid using `setTimeout()` or `requestAnimationFrame()` in situations like this. They might work, but it’s far more reliable to use `updateComplete` instead.

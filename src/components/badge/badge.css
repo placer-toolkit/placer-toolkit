@@ -1,0 +1,72 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.125em 0.625em;
+    font-family: var(--pc-font-sans);
+    font-size: var(--pc-font-size-xs);
+    font-weight: var(--pc-font-weight-bold);
+    --pulse-color: var(--pc-color-fill-loud);
+    background-color: var(--pc-color-fill-loud);
+    color: var(--pc-color-on-loud);
+    border: var(--pc-border-width-s) var(--pc-border-style) transparent;
+    border-radius: var(--pc-border-radius-pill);
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: inherit;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+:host([variant~="accent"]) {
+    --pulse-color: var(--pc-color-fill-loud);
+    background-color: var(--pc-color-fill-loud);
+    color: var(--pc-color-on-loud);
+    border-color: transparent;
+}
+
+:host([variant~="outlined"]) {
+    --pulse-color: var(--pc-color-fill-quiet);
+    background-color: transparent;
+    color: var(--pc-color-on-quiet);
+    border-color: var(--pc-color-border-loud);
+}
+
+:host([variant~="filled"]) {
+    --pulse-color: var(--pc-color-fill-normal);
+    background-color: var(--pc-color-fill-normal);
+    color: var(--pc-color-on-normal);
+    border-color: transparent;
+}
+
+:host([variant~="filled"][variant~="outlined"]) {
+    border-color: var(--pc-color-border-normal);
+}
+
+:host([variant~="plain"]) {
+    --pulse-color: var(--pc-color-fill-quiet);
+    background-color: transparent;
+    color: var(--pc-color-on-quiet);
+    border-color: transparent;
+}
+
+:host([rounded]) {
+    border-radius: var(--pc-border-radius-s);
+}
+
+:host([pulse]) {
+    animation: pulse 1.5s cubic-bezier(0, 0.55, 0.45, 1) infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 var(--pulse-color);
+    }
+
+    70% {
+        box-shadow: 0 0 0 0.5rem transparent;
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 transparent;
+    }
+}

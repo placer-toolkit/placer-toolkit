@@ -1,15 +1,8 @@
 import { parse } from "comment-parser";
-import commandLineArgs from "command-line-args";
 import fs from "fs";
 
 const packageData = JSON.parse(fs.readFileSync("./package.json", "utf8"));
 const { name, description, version, author, homepage, license } = packageData;
-
-commandLineArgs([
-    { name: "litelement", type: String },
-    { name: "analyze", defaultOption: true },
-    { name: "outdir", type: String },
-]);
 
 function noDash(string) {
     return string.replace(/^\s?-/, "").trim();
@@ -19,13 +12,53 @@ function replace(string, terms) {
     terms.forEach(({ from, to }) => {
         string = string?.replace(from, to);
     });
-
     return string;
 }
 
+function parseCSSProperty(comment) {
+    const nameMatch = comment.match(/^(--[^:\s]+)/);
+
+    if (!nameMatch) {
+        return {
+            name: "",
+            default: "",
+            description: comment.trim(),
+        };
+    }
+
+    const name = nameMatch[1].trim();
+    let remainingComment = comment.substring(nameMatch[0].length).trim();
+
+    if (remainingComment.startsWith(":")) {
+        remainingComment = remainingComment.substring(1).trim();
+    }
+
+    let defaultValue = "";
+    let description = "";
+
+    const descriptionSeparatorIndex = remainingComment.lastIndexOf(" - ");
+
+    if (descriptionSeparatorIndex !== -1) {
+        defaultValue = remainingComment
+            .substring(0, descriptionSeparatorIndex)
+            .trim();
+        description = remainingComment
+            .substring(descriptionSeparatorIndex + 3)
+            .trim();
+    } else {
+        defaultValue = remainingComment.trim();
+        description = "";
+    }
+
+    return {
+        name: name,
+        default: defaultValue,
+        description: description,
+    };
+}
+
 export default {
-    globs: ["src/components/**/*.component.ts"],
-    exclude: ["**/*.styles.ts"],
+    globs: ["src/components/**/*.ts"],
     plugins: [
         {
             name: "placer-package-data",
@@ -43,14 +76,18 @@ export default {
         {
             name: "placer-jsdoc-custom-tags",
             analyzePhase({ ts, node, moduleDoc }) {
-                if (node.kind !== ts.SyntaxKind.ClassDeclaration) return;
+                if (node.kind !== ts.SyntaxKind.ClassDeclaration) {
+                    return;
+                }
 
                 const className = node.name?.getText?.();
                 const classDoc = moduleDoc?.declarations?.find(
                     (declaration) => declaration.name === className,
                 );
 
-                if (!classDoc || !node.jsDoc) return;
+                if (!classDoc || !node.jsDoc) {
+                    return;
+                }
 
                 const customTags = [
                     "title",
@@ -63,7 +100,9 @@ export default {
                 let customComments = "/**";
 
                 for (const jsDoc of node.jsDoc) {
-                    if (!jsDoc.tags) continue;
+                    if (!jsDoc.tags) {
+                        continue;
+                    }
 
                     for (const tag of jsDoc.tags) {
                         const tagName = tag.tagName?.escapedText;
@@ -82,6 +121,7 @@ export default {
                     .join("\n");
 
                 const parsed = parse(customComments);
+
                 parsed[0]?.tags?.forEach((t) => {
                     switch (t.tag) {
                         case "title":
@@ -109,6 +149,40 @@ export default {
                             });
                     }
                 });
+
+                const processedCSSProperties = new Map();
+
+                for (const jsDoc of node.jsDoc) {
+                    if (!jsDoc.tags) {
+                        continue;
+                    }
+
+                    for (const tag of jsDoc.tags) {
+                        const tagName = tag.tagName?.escapedText;
+                        const tagComment = tag.comment ?? "";
+
+                        if (tagName === "cssproperty") {
+                            const parsed = parseCSSProperty(tagComment);
+
+                            if (
+                                parsed.name &&
+                                !processedCSSProperties.has(parsed.name)
+                            ) {
+                                processedCSSProperties.set(parsed.name, {
+                                    name: parsed.name,
+                                    description: parsed.description,
+                                    default: parsed.default,
+                                });
+                            }
+                        }
+                    }
+                }
+
+                if (processedCSSProperties.size > 0) {
+                    classDoc.cssProperties = Array.from(
+                        processedCSSProperties.values(),
+                    );
+                }
             },
         },
         {
@@ -117,7 +191,10 @@ export default {
                 customElementsManifest?.modules?.forEach((mod) => {
                     const terms = [
                         { from: /^src\//, to: "" },
-                        { from: /\.component.(t|j)sx?$/, to: ".js" },
+                        {
+                            from: /^.*\.([tj]sx?)$/,
+                            to: ".js",
+                        },
                     ];
 
                     mod.path = replace(mod.path, terms);

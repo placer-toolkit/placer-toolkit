@@ -4,17 +4,17 @@ import type { ReactiveElement } from "lit";
 export const defaultValue =
     (propertyName = "value") =>
     (proto: ReactiveElement, key: string) => {
-        const ctor = proto.constructor as typeof ReactiveElement;
+        const constructor = proto.constructor as typeof ReactiveElement;
 
         const attributeChangedCallback =
-            ctor.prototype.attributeChangedCallback;
-        ctor.prototype.attributeChangedCallback = function (
+            constructor.prototype.attributeChangedCallback;
+        constructor.prototype.attributeChangedCallback = function (
             this: ReactiveElement & { [name: string]: unknown },
             name,
             old,
             value,
         ) {
-            const options = ctor.getPropertyOptions(propertyName);
+            const options = constructor.getPropertyOptions(propertyName);
             const attributeName =
                 typeof options.attribute === "string"
                     ? options.attribute

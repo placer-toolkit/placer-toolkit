@@ -1,0 +1,24 @@
+:host {
+    --color: var(--pc-color-surface-border);
+    --stroke-width: var(--pc-panel-border-width);
+    --spacing: var(--pc-content-spacing);
+}
+
+:host([orientation="horizontal"]) {
+    display: block;
+    margin-block: var(--spacing);
+    inline-size: 100%;
+    block-size: var(--stroke-width);
+    background-color: var(--color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+:host([orientation="vertical"]) {
+    display: inline-block;
+    margin: 0 var(--spacing);
+    inline-size: var(--stroke-width);
+    min-block-size: 1lh;
+    block-size: 100%;
+    background-color: var(--color);
+    border-radius: var(--pc-border-radius-pill);
+}

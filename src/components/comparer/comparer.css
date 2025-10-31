@@ -1,0 +1,93 @@
+:host {
+    --divider-width: 0.125rem;
+    --handle-size: 2.5rem;
+
+    display: inline-block;
+    position: relative;
+}
+
+.comparer {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: 100%;
+    max-block-size: 100%;
+    overflow: hidden;
+}
+
+.content {
+    block-size: 100%;
+}
+
+.before-content,
+.after-content {
+    display: block;
+    pointer-events: none;
+    block-size: 100%;
+}
+
+.before-content ::slotted(*),
+.after-content ::slotted(*) {
+    display: block;
+    max-inline-size: 100% !important;
+    block-size: auto;
+    border-radius: var(--pc-border-radius-m);
+}
+
+.after-content {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+}
+
+.divider {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset-block-start: 0;
+    inline-size: var(--divider-width);
+    block-size: 100%;
+    background-color: var(--pc-color-surface-default);
+    translate: calc(var(--divider-width) / -2);
+    cursor: ew-resize;
+}
+
+.handle {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset-block-start: calc(50% - (var(--handle-size) / 2));
+    inline-size: var(--handle-size);
+    block-size: var(--handle-size);
+    background-color: var(--pc-color-surface-default);
+    border-radius: var(--pc-border-radius-circle);
+    font-size: calc(var(--handle-size) * 0.4);
+    color: var(--pc-color-neutral-on-quiet);
+    cursor: inherit;
+    z-index: 10;
+}
+
+.handle:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

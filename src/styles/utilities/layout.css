@@ -1,0 +1,162 @@
+@layer pc-utilities {
+    :is(
+            [class*="pc-cluster"],
+            [class*="pc-flank"],
+            [class*="pc-frame"],
+            [class*="pc-grid"],
+            [class*="pc-stack"],
+            [class*="pc-split"]
+        )
+        > * {
+        margin: 0;
+    }
+
+    :where(
+        [class*="pc-cluster"],
+        [class*="pc-flank"],
+        [class*="pc-frame"],
+        [class*="pc-grid"],
+        [class*="pc-stack"],
+        [class*="pc-split"]
+    ) {
+        gap: var(--pc-spacing-l);
+    }
+
+    /* #region — Cluster */
+    [class*="pc-cluster"] {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    :where([class*="pc-cluster"]) {
+        align-items: center;
+    }
+    /* #endregion */
+
+    /* #region — Flank */
+    [class*="pc-flank"] {
+        --content-percentage: initial;
+        --flank-size: initial;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    [class*="pc-flank"]:not([class*="\:end"]) > :first-child,
+    [class*="pc-flank"][class*="\:start"] > :first-child {
+        flex-basis: var(--flank-size, auto);
+        flex-grow: 1;
+    }
+
+    [class*="pc-flank"]:not([class*="\:end"]) > :last-child,
+    [class*="pc-flank"][class*="\:start"] > :last-child {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-inline-size: var(--content-percentage, 50%);
+    }
+
+    [class*="pc-flank"][class*="\:end"] > :last-child {
+        flex-basis: var(--flank-size, auto);
+        flex-grow: 1;
+    }
+
+    [class*="pc-flank"][class*="\:end"] > :first-child {
+        flex-basis: 0;
+        flex-grow: 999;
+        min-inline-size: var(--content-percentage, 50%);
+    }
+
+    :where([class*="pc-flank"]) {
+        align-items: center;
+    }
+    /* #endregion */
+
+    /* #region — Frame */
+    [class*="pc-frame"] {
+        display: flex;
+        justify-content: center;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+    }
+
+    [class*="pc-frame"] > img,
+    [class*="pc-frame"] > video {
+        block-size: 100%;
+        inline-size: 100%;
+        object-fit: cover;
+    }
+
+    [class*="pc-frame"][class*="\:square"] {
+        aspect-ratio: 1 / 1;
+    }
+
+    [class*="pc-frame"][class*="\:landscape"] {
+        aspect-ratio: 16 / 9;
+    }
+
+    [class*="pc-frame"][class*="\:portrait"] {
+        aspect-ratio: 9 / 16;
+    }
+
+    :where([class*="pc-frame"]) {
+        align-items: center;
+    }
+    /* #endregion */
+
+    /* #region — Grid */
+    [class*="pc-grid"] {
+        --min-column-size: initial;
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(var(--min-column-size, 20ch), 100%), 1fr)
+        );
+    }
+
+    .pc-span-grid {
+        grid-column: 1 / -1;
+    }
+    /* #endregion */
+
+    /* #region — Split */
+    [class*="pc-split"] {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    [class*="pc-split"],
+    [class*="pc-split"][class*="\:row"] {
+        flex-direction: row;
+        block-size: auto;
+        inline-size: 100%;
+    }
+
+    [class*="pc-split"]:not([class*="\:column"]) > :first-child {
+        flex: 0 1 auto;
+    }
+
+    [class*="pc-split"][class*="\:column"] {
+        flex-direction: column;
+        block-size: auto;
+        inline-size: auto;
+        align-self: stretch;
+    }
+
+    :where([class*="pc-split"]) {
+        align-items: center;
+    }
+    /* #endregion */
+
+    /* #region — Stack */
+    [class*="pc-stack"] {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+
+    :where([class*="pc-stack"]) {
+        align-items: stretch;
+    }
+    /* #endregion */
+}

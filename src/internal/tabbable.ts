@@ -1,12 +1,12 @@
 const computedStyleMap = new WeakMap<Element, CSSStyleDeclaration>();
 
-function getCachedComputedStyle(el: HTMLElement): CSSStyleDeclaration {
+function getCachedComputedStyle(element: HTMLElement): CSSStyleDeclaration {
     let computedStyle: undefined | CSSStyleDeclaration =
-        computedStyleMap.get(el);
+        computedStyleMap.get(element);
 
     if (!computedStyle) {
-        computedStyle = window.getComputedStyle(el, null);
-        computedStyleMap.set(el, computedStyle);
+        computedStyle = window.getComputedStyle(element, null);
+        computedStyleMap.set(element, computedStyle);
     }
 
     return computedStyle;
@@ -56,6 +56,7 @@ function isOverflowingAndTabbable(element: HTMLElement): boolean {
     return false;
 }
 
+/** Determines if the specified element is tabbable using heuristics inspired by https://github.com/focus-trap/tabbable. */
 function isTabbable(element: HTMLElement) {
     const tag = element.tagName.toLowerCase();
 
@@ -132,6 +133,7 @@ function isTabbable(element: HTMLElement) {
     return isOverflowingAndTabbable(element);
 }
 
+/** Returns the first and last bounding elements that are tabbable. This is more performant than checking every single element because it short‐circuits after finding the first and last ones. */
 export function getTabbableBoundary(root: HTMLElement | ShadowRoot) {
     const tabbableElements = getTabbableElements(root);
 
@@ -141,6 +143,7 @@ export function getTabbableBoundary(root: HTMLElement | ShadowRoot) {
     return { start, end };
 }
 
+/** This fixes an edge case that if the `root` is wrapped by another shadow DOM, it can’t grab the children. */
 function getSlottedChildrenOutsideRootElement(
     slotElement: HTMLSlotElement,
     root: HTMLElement | ShadowRoot,

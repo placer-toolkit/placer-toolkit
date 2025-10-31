@@ -3,39 +3,13 @@ title: Tab Panel
 description: Tab panels are used inside tab groups to display tabbed content.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Tab panels are used inside [tab groups](/components/tab-group) to display tabbed content.
-
-<CodeDemo open>
-{`<pc-tab-group>
-    <pc-tab slot="navigation" panel="general">General</pc-tab>
-    <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
-    <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
-    <pc-tab slot="navigation" panel="disabled" disabled>
-        Disabled
-    </pc-tab>
-
-    <pc-tab-panel name="general">
-        This is the general tab panel.
-    </pc-tab-panel>
-    <pc-tab-panel name="custom">
-        This is the custom tab panel.
-    </pc-tab-panel>
-    <pc-tab-panel name="advanced">
-        This is the advanced tab panel.
-    </pc-tab-panel>
-    <pc-tab-panel name="disabled">
-        This is a disabled tab panel.
-    </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="square-arrow-up-right"
         slot="icon"
     ></pc-icon>
     Additional demonstrations can be found in the [tab group demos](/components/tab-group/#demos).
