@@ -15,7 +15,8 @@
         "astro": "^5.15.1",
         "highlight.js": "^11.11.1",
         "node-fetch": "^3.3.2",
-        "placer-toolkit": "^1.0.0-alpha.1"
+        "placer-toolkit": "^1.0.0-alpha.1",
+        "sharp": "^0.34.4"
     },
     "devDependencies": {
         "rehype-autolink-headings": "^7.1.0",
