@@ -1,0 +1,166 @@
+:host {
+    --width: calc(var(--height) * 1.75);
+    --height: var(--pc-form-control-toggle-size);
+    --thumb-size: 0.75em;
+
+    display: inline-flex;
+    line-height: var(--pc-form-control-value-line-height);
+}
+
+label {
+    display: flex;
+    position: relative;
+    align-items: center;
+    color: var(--pc-form-control-value-color);
+    font: inherit;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.switch {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    inline-size: var(--width);
+    block-size: var(--height);
+    background-color: var(--pc-form-control-background-color);
+    border: var(--pc-form-control-border-width)
+        var(--pc-form-control-border-style) var(--pc-form-control-border-color);
+    border-radius: var(--pc-border-radius-pill);
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    label:not(.disabled) .switch:hover {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-form-control-background-color),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-border-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+label:not(.disabled) .switch:active {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-background-color),
+        var(--pc-color-mix-active)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-border-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+.switch .thumb {
+    inline-size: var(--thumb-size);
+    block-size: var(--thumb-size);
+    aspect-ratio: 1 / 1;
+    background-color: var(--pc-form-control-border-color);
+    border-radius: var(--pc-border-radius-circle);
+    translate: calc((var(--width) - var(--height)) / -2);
+    transition:
+        all var(--pc-transition-fast) ease-in-out,
+        translate var(--pc-transition-medium) cubic-bezier(0.34, 1.35, 0.64, 1);
+}
+
+.input {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+label:not(.disabled) .input:focus-visible ~ .switch .thumb {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.checked:not(.disabled) .switch {
+    background-color: var(--pc-form-control-activated-color);
+    border-color: var(--pc-form-control-activated-color);
+}
+
+@media (hover: hover) {
+    .checked:not(.disabled) .switch:hover {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-form-control-activated-color),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-activated-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.checked:not(.disabled) .switch:active {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+.checked .switch .thumb {
+    background-color: var(--pc-color-surface-default);
+    translate: calc((var(--width) - var(--height)) / 2);
+}
+
+label:has(> :disabled) {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+[part~="label"] {
+    display: inline-flex;
+    line-height: var(--height);
+    margin-inline-start: 0.5em;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+:host([required]) [part~="label"]::after {
+    content: var(--pc-form-control-required-content);
+    color: var(--pc-form-control-required-content-color);
+    margin-inline-start: var(--pc-form-control-required-content-offset);
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}
+
+@media (forced-colors: active) {
+    :checked:enabled + .switch:hover .thumb,
+    :checked + .switch .thumb {
+        background-color: ButtonText;
+    }
+}

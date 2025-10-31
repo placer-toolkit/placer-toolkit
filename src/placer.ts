@@ -1,53 +1,54 @@
-// Critical: Global shim for SSR rendering. More information in global-shims.ts/global-shims.js
+// Critical: Global shim for SSR rendering. More information in global-shims.ts/global-shims.js.
 import "./global-shims.js";
 
 // Components
-export { default as PcAnimation } from "./components/animation/animation.js";
-export { default as PcAvatar } from "./components/avatar/avatar.js";
-export { default as PcBadge } from "./components/badge/badge.js";
-export { default as PcButton } from "./components/button/button.js";
-export { default as PcButtonGroup } from "./components/button-group/button-group.js";
-export { default as PcCallout } from "./components/callout/callout.js";
-export { default as PcCard } from "./components/card/card.js";
-export { default as PcCheckbox } from "./components/checkbox/checkbox.js";
-export { default as PcComparer } from "./components/comparer/comparer.js";
-export { default as PcCopyButton } from "./components/copy-button/copy-button.js";
-export { default as PcDetails } from "./components/details/details.js";
-export { default as PcDialog } from "./components/dialog/dialog.js";
-export { default as PcDivider } from "./components/divider/divider.js";
-export { default as PcDrawer } from "./components/drawer/drawer.js";
-export { default as PcDropdown } from "./components/dropdown/dropdown.js";
-export { default as PcIcon } from "./components/icon/icon.js";
-export { default as PcIconButton } from "./components/icon-button/icon-button.js";
-export { default as PcInput } from "./components/input/input.js";
-export { default as PcMenu } from "./components/menu/menu.js";
-export { default as PcMenuItem } from "./components/menu-item/menu-item.js";
-export { default as PcMenuLabel } from "./components/menu-label/menu-label.js";
-export { default as PcOption } from "./components/option/option.js";
-export { default as PcPopup } from "./components/popup/popup.js";
-export { default as PcQrCode } from "./components/qr-code/qr-code.js";
-export { default as PcRadio } from "./components/radio/radio.js";
-export { default as PcRadioButton } from "./components/radio-button/radio-button.js";
-export { default as PcRadioGroup } from "./components/radio-group/radio-group.js";
-export { default as PcRating } from "./components/rating/rating.js";
-export { default as PcResizeObserver } from "./components/resize-observer/resize-observer.js";
-export { default as PcSelect } from "./components/select/select.js";
-export { default as PcSpinner } from "./components/spinner/spinner.js";
-export { default as PcSwitch } from "./components/switch/switch.js";
-export { default as PcTab } from "./components/tab/tab.js";
-export { default as PcTabGroup } from "./components/tab-group/tab-group.js";
-export { default as PcTabPanel } from "./components/tab-panel/tab-panel.js";
-export { default as PcTag } from "./components/tag/tag.js";
-export { default as PcTooltip } from "./components/tooltip/tooltip.js";
-
-// Note: Style utilities cannot be included in placer.ts/placer.js and must be imported manually
+export { PcAnimation } from "./components/animation/animation.js";
+export { PcAvatar } from "./components/avatar/avatar.js";
+export { PcBadge } from "./components/badge/badge.js";
+export { PcButton } from "./components/button/button.js";
+export { PcButtonGroup } from "./components/button-group/button-group.js";
+export { PcCallout } from "./components/callout/callout.js";
+export { PcCard } from "./components/card/card.js";
+export { PcCheckbox } from "./components/checkbox/checkbox.js";
+export { PcComparer } from "./components/comparer/comparer.js";
+export { PcCopyButton } from "./components/copy-button/copy-button.js";
+export { PcDetails } from "./components/details/details.js";
+export { PcDialog } from "./components/dialog/dialog.js";
+export { PcDivider } from "./components/divider/divider.js";
+export { PcDrawer } from "./components/drawer/drawer.js";
+export { PcDropdown } from "./components/dropdown/dropdown.js";
+export { PcDropdownItem } from "./components/dropdown-item/dropdown-item.js";
+export { PcFormatBytes } from "./components/format-bytes/format-bytes.js";
+export { PcFormatDate } from "./components/format-date/format-date.js";
+export { PcFormatNumber } from "./components/format-number/format-number.js";
+export { PcIcon } from "./components/icon/icon.js";
+export { PcInput } from "./components/input/input.js";
+export { PcMutationObserver } from "./components/mutation-observer/mutation-observer.js";
+export { PcOption } from "./components/option/option.js";
+export { PcPopup } from "./components/popup/popup.js";
+export { PcQrCode } from "./components/qr-code/qr-code.js";
+export { PcRadio } from "./components/radio/radio.js";
+export { PcRadioGroup } from "./components/radio-group/radio-group.js";
+export { PcRating } from "./components/rating/rating.js";
+export { PcResizeObserver } from "./components/resize-observer/resize-observer.js";
+export { PcScroller } from "./components/scroller/scroller.js";
+export { PcSelect } from "./components/select/select.js";
+export { PcSpinner } from "./components/spinner/spinner.js";
+export { PcSwitch } from "./components/switch/switch.js";
+export { PcTab } from "./components/tab/tab.js";
+export { PcTabGroup } from "./components/tab-group/tab-group.js";
+export { PcTabPanel } from "./components/tab-panel/tab-panel.js";
+export { PcTag } from "./components/tag/tag.js";
+export { PcTextarea } from "./components/textarea/textarea.js";
+export { PcTooltip } from "./components/tooltip/tooltip.js";
 
 // Utilities
 export * from "./utilities/animation-registry.js";
 export * from "./utilities/animation.js";
-export * from "./utilities/base-path.js";
 export * from "./utilities/form.js";
 export * from "./utilities/icon-library.js";
+export * from "./utilities/localize.js";
+export * from "./utilities/kit-code.js";
 
 // Events
 export * from "./events/events.js";

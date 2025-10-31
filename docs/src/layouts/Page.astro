@@ -2,77 +2,96 @@
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
+
+import ComponentInfo from "../components/ComponentInfo.astro";
 import Search from "../components/Search.astro";
 
-import "placer-toolkit/dist/default.css";
-import "placer-toolkit/dist/native-styles.css";
-import "placer-toolkit/dist/style-utilities/style-utilities.css";
+import "placer-toolkit/dist/styles/placer.css";
+import "placer-toolkit/dist/styles/themes/utility.css";
+import "placer-toolkit/dist/styles/themes/serene.css";
 import "../styles/main.css";
+import "../styles/utilities.css";
 
 const {
     title = "Untitled",
-    description = "The go‐to web component library for the web! 🛠️",
+    description = "Flexible. Accessible. Web Components.",
+    component = "",
     hero = false,
-    overflow = true,
+    pagefindIgnore = false,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" class="pc-cloak">
+<html lang="en-gb" class="pc-light pc-cloak">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossorigin="anonymous"
+        <meta
+            name="keywords"
+            content="lit, placer, toolkit, litelement, components, placer-toolkit, web-components, custom-elements"
         />
+        <meta name="author" content="randomguy-2650" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="Placer Toolkit" />
+        <meta
+            property="og:description"
+            content="Flexible. Accessible. Web Components."
+        />
+        <meta
+            property="og:url"
+            content={new URL(Astro.url.pathname, Astro.site).href}
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Placer Toolkit" />
+        <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <!-- Bunny Fonts -->
         <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100..700&family=JetBrains+Mono:ital,wght@0,100..800&family=Playfair+Display:ital,wght@0,400..900&family=Quicksand:wght@300..700&display=swap"
+            href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
         />
         <!-- Placer Toolkit -->
         <script>
-            import "placer-toolkit/dist/placer.js";
+            import "placer-toolkit";
+            import "placer-toolkit/dist/translations/en-gb.js";
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
         ></script>
-        <title>{!hero ? `${title} | Placer Toolkit` : title}</title>
+        <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
     <body>
         <div class="layout-container">
             <pc-button
                 href="#main-content"
+                appearance="neutral"
+                variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
+                data-pagefind-ignore
             >
                 Skip to main content
             </pc-button>
 
             <NavigationBar />
 
-            <Search />
-
             <MobileSidebar />
 
             <Sidebar />
 
+            <Search />
+
             <noscript>
-                This page requires JavaScript to function properly, as it uses
+                This site requires JavaScript to function properly, as it uses
                 JavaScript‐reliant web technologies.
             </noscript>
 
             <main
-                class={[hero && "hero", !overflow && "no-overflow"]
-                    .filter(Boolean)
-                    .join(" ")}
+                class:list={[{ hero: hero }]}
                 id="main-content"
                 tabindex="-1"
+                data-pagefind-ignore={pagefindIgnore ? true : undefined}
             >
                 {
                     !hero ? (
@@ -80,44 +99,111 @@ const {
                             <article>
                                 <pc-button
                                     href="#table-of-contents"
+                                    appearance="neutral"
+                                    variant="filled outlined"
                                     size="small"
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
+                                    data-pagefind-ignore
                                 >
                                     Skip to table of contents
                                 </pc-button>
 
+                                <pc-callout class="hero-callout" appearance="warning">
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name="circle-radiation"
+                                        slot="icon"
+                                    />
+                                    <div class="pc-split">
+                                        <p style="flex: 1">
+                                            <strong>
+                                                The Placer Toolkit alpha has
+                                                arrived! 🎉
+                                            </strong>
+                                            <br />
+                                            Plenty of changes are coming your
+                                            way—some big, some breaking, some
+                                            even nuclear! Beware the changelog…
+                                        </p>
+                                        <pc-button
+                                            appearance="warning"
+                                            href="/resources/changelog"
+                                        >
+                                            Bring it on!
+                                        </pc-button>
+                                    </div>
+                                </pc-callout>
+
                                 <pc-details
                                     class="toc-mobile"
                                     summary="On this page"
+                                    data-pagefind-ignore
                                 >
                                     <ul class="toc-ul" />
                                 </pc-details>
 
-                                <header id="_top">
-                                    <h1>{title}</h1>
-                                </header>
-
+                                    <header id="_top">
+                                        <h1>{title}</h1>
+                                        {component ? (
+                                            <ComponentInfo componentName={component} />
+                                        ) : ""}
+                                    </header>
                                 <slot />
                             </article>
 
                             <aside
                                 class="toc toc-desktop"
                                 id="table-of-contents"
+                                data-pagefind-ignore
                             >
                                 <pc-button
                                     href="#_top"
+                                    appearance="neutral"
+                                    variant="filled outlined"
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
+                                    data-pagefind-ignore
                                 >
                                     Return to main content
                                 </pc-button>
                                 <h3 class="toc-heading">On this page</h3>
-                                <div class="toc-scroll-fade">
+                                <pc-scroller
+                                    class="toc-scroll-fade"
+                                    orientation="vertical"
+                                >
                                     <ul class="toc-ul" />
-                                </div>
+                                </pc-scroller>
                             </aside>
                         </div>
                     ) : (
+                        <pc-callout class="hero-callout" appearance="warning">
+                            <pc-icon
+                                library="default"
+                                icon-style="solid"
+                                name="circle-radiation"
+                                slot="icon"
+                            />
+                            <div class="pc-split">
+                                <p style="flex: 1">
+                                    <strong>
+                                        The Placer Toolkit alpha has
+                                        arrived! 🎉
+                                    </strong>
+                                    <br />
+                                    Plenty of changes are coming your
+                                    way—some big, some breaking, some
+                                    even nuclear! Beware the changelog…
+                                </p>
+                                <pc-button
+                                    appearance="warning"
+                                    href="/resources/changelog"
+                                >
+                                    Bring it on!
+                                </pc-button>
+                            </div>
+                        </pc-callout>
+
                         <slot />
                     )
                 }
@@ -131,10 +217,10 @@ const {
                 window.matchMedia("(prefers-color-scheme: dark)").matches;
 
             document.documentElement.classList.add(
-                prefersDark ? "pc-theme-dark" : "pc-theme-light",
+                prefersDark ? "pc-dark" : "pc-light",
             );
             document.documentElement.classList.remove(
-                prefersDark ? "pc-theme-light" : "pc-theme-dark",
+                prefersDark ? "pc-light" : "pc-dark",
             );
 
             // Mobile sidebar
@@ -144,54 +230,8 @@ const {
             const sidebarToggle = document.querySelector(".sidebar-toggle");
 
             sidebarToggle?.addEventListener("click", () =>
-                mobileSidebar?.show(),
+                mobileSidebar.open = true,
             );
-
-            // Search
-            const searchDialog = document.querySelector(
-                ".search-dialog",
-            ) as HTMLDialogElement;
-            const searchButton = document.getElementById("open-search-dialog");
-
-            searchButton?.addEventListener("click", () => searchDialog?.show());
-
-            // TOC scroll masks
-            function updateTOCFade(container: HTMLElement) {
-                const { scrollTop, scrollHeight, clientHeight } = container;
-                const none = "none";
-                const topFade =
-                    "linear-gradient(to bottom, var(--pc-color-neutral-0) 90%, transparent)";
-                const bottomFade =
-                    "linear-gradient(to bottom, transparent, var(--pc-color-neutral-0) 10%)";
-                const bothFade =
-                    "linear-gradient(to bottom, transparent, var(--pc-color-neutral-0) 10%, var(--pc-color-neutral-0) 90%, transparent)";
-
-                if (scrollHeight <= clientHeight) {
-                    container.style.maskImage = none;
-                } else if (scrollTop === 0) {
-                    container.style.maskImage = topFade;
-                } else if (scrollTop + clientHeight >= scrollHeight - 1) {
-                    container.style.maskImage = bottomFade;
-                } else {
-                    container.style.maskImage = bothFade;
-                }
-            }
-
-            window.addEventListener("load", () => {
-                const tocScroll: HTMLDivElement | null =
-                    document.querySelector(".toc-scroll-fade");
-                if (!tocScroll) return;
-
-                updateTOCFade(tocScroll);
-
-                tocScroll.addEventListener("scroll", () => {
-                    updateTOCFade(tocScroll);
-                });
-
-                window.addEventListener("resize", () => {
-                    updateTOCFade(tocScroll);
-                });
-            });
 
             // TOC generation
             document.addEventListener("DOMContentLoaded", () => {
@@ -206,7 +246,13 @@ const {
                 const items = headings.map((element) => ({
                     depth: element.tagName === "H2" ? 2 : 3,
                     slug: element.id,
-                    text: element.textContent?.trim() || "",
+                    text: (() => {
+                        let text = element.textContent?.trim() || "";
+                        if (text.endsWith("#")) {
+                            text = text.slice(0, -1).trim();
+                        }
+                        return text;
+                    })(),
                 }));
 
                 function createTOCItem({
@@ -253,7 +299,11 @@ const {
             // TOC scrollspy
             document.addEventListener("DOMContentLoaded", () => {
                 const toc = document.querySelector(".toc-desktop");
-                if (!toc) return;
+
+                if (!toc) {
+                    return;
+                }
+
                 const links = Array.from(toc.querySelectorAll(".toc-ul a"));
                 const idToLink = new Map(
                     links.map((link) => [
@@ -267,7 +317,11 @@ const {
                         entries.forEach((entry) => {
                             if (entry.isIntersecting) {
                                 const id = entry.target.id;
-                                if (!id) return;
+
+                                if (!id) {
+                                    return;
+                                }
+
                                 links.forEach((link) =>
                                     link.classList.toggle(
                                         "active",
@@ -295,6 +349,70 @@ const {
                         observer.observe(heading);
                     }
                 });
+
+                function determineActiveFromPosition() {
+                    const targetLine = window.innerHeight * 0.18;
+                    let chosenId: string | null = null;
+                    let chosenTop = -Infinity;
+
+                    idToLink.forEach((_link, id) => {
+                        if (!id) {
+                            return;
+                        }
+
+                        const element = document.getElementById(id);
+
+                        if (!element) {
+                            return;
+                        }
+
+                        const top = element.getBoundingClientRect().top;
+
+                        if (top <= targetLine && top > chosenTop) {
+                            chosenTop = top;
+                            chosenId = id;
+                        }
+                    });
+
+                    if (!chosenId) {
+                        let nearestId: string | null = null;
+                        let nearestDistance = Infinity;
+
+                        idToLink.forEach((_link, id) => {
+                            if (!id) {
+                                return;
+                            }
+
+                            const element = document.getElementById(id);
+
+                            if (!element) {
+                                return;
+                            }
+
+                            const distance = Math.abs(element.getBoundingClientRect().top - targetLine);
+
+                            if (distance < nearestDistance) {
+                                nearestDistance = distance;
+                                nearestId = id;
+                            }
+                        });
+                        chosenId = nearestId;
+                    }
+
+                    if (chosenId) {
+                        links.forEach((link) =>
+                            link.classList.toggle(
+                                "active",
+                                link.getAttribute("href") === `#${chosenId}`,
+                            ),
+                        );
+                    }
+                }
+
+                determineActiveFromPosition();
+
+                window.addEventListener("load", determineActiveFromPosition);
+                window.addEventListener("resize", determineActiveFromPosition);
             });
         </script>
     </body>

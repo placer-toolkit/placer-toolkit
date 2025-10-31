@@ -1,0 +1,55 @@
+---
+const { is992Size, slotName, variant = "outlined" } = Astro.props;
+---
+
+<div
+    class:list={[
+        { "navigation-icons": true },
+        { "is-header-action": slotName === "header-actions" },
+        { "pc-992-size": is992Size },
+    ]}
+    aria-label="Navigation icons"
+    slot={slotName}
+>
+    <pc-button
+        size="small"
+        variant={variant}
+        href="https://v0-placer-toolkit.netlify.app"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="solid"
+            name="backward"
+            label="Placer Toolkit v0 docs"></pc-icon>
+    </pc-button>
+    <pc-button
+        size="small"
+        variant={variant}
+        href="https://github.com/placer-toolkit/placer-toolkit"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="brands"
+            name="github"
+            label="GitHub"></pc-icon>
+    </pc-button>
+</div>
+
+<style>
+    .navigation-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-m);
+    }
+
+    .navigation-icons.is-header-action {
+        gap: var(--pc-spacing-xs);
+    }
+</style>

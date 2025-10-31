@@ -1,0 +1,63 @@
+:host {
+    --size: 3rem;
+
+    display: inline-block;
+}
+
+.avatar {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size);
+    block-size: var(--size);
+    background-color: var(--pc-color-neutral-fill-normal);
+    color: var(--pc-color-neutral-on-normal);
+    font-family: var(--pc-font-sans);
+    font-size: calc(var(--size) * 0.4);
+    font-weight: var(--pc-font-weight-bold);
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+.circle,
+.circle .image {
+    border-radius: var(--pc-border-radius-circle);
+}
+
+.rounded,
+.rounded .image {
+    border-radius: var(--pc-border-radius-m);
+}
+
+.square {
+    border-radius: 0;
+}
+
+.icon {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+}
+
+.initials {
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.image {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}

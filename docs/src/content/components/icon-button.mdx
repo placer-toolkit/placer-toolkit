@@ -1,21 +1,20 @@
 ---
 title: Icon Button
+description: Icon buttons are simple, icon‐only buttons that can be used for actions and in toolbars.
 ---
-
-import CodeDemo from "../../components/CodeDemo.astro";
 
 Icon buttons are simple, icon‐only buttons that can be used for actions and in toolbars.
 
 For a full list of icons that come bundled in with Placer Toolkit, see the [Icon](/components/icon) component docs.
 
-<CodeDemo open>
-{`<pc-icon-button
+```demo:open
+<pc-icon-button
     library="default"
     icon-style="solid"
     name="gear"
     label="Settings"
-></pc-icon-button>`}
-</CodeDemo>
+></pc-icon-button>
+```
 
 ## Demos
 
@@ -23,8 +22,8 @@ For a full list of icons that come bundled in with Placer Toolkit, see the [Icon
 
 Icon buttons are sized based on the current font size. To change their size, set the `font-size` property on the icon button itself as shown below or on a parent element.
 
-<CodeDemo>
-{`<pc-icon-button
+```demo
+<pc-icon-button
     library="default"
     icon-style="solid"
     name="pencil"
@@ -44,15 +43,15 @@ Icon buttons are sized based on the current font size. To change their size, set
     name="pencil"
     label="Edit"
     style="font-size: 2.5rem"
-></pc-icon-button>`}
-</CodeDemo>
+></pc-icon-button>
+```
 
 ### Colours
 
 Icon buttons are designed to have a uniform appearance, so their colour is not inherited. However, you can still customise them by styling the `base` part.
 
-<CodeDemo>
-{`<div class="icon-button-color">
+```demo
+<div class="icon-button-color">
     <pc-icon-button
         library="default"
         icon-style="solid"
@@ -75,35 +74,31 @@ Icon buttons are designed to have a uniform appearance, so their colour is not i
 
 <style>
     .icon-button-color pc-icon-button::part(base) {
-        color: var(--pc-color-primary-600);
+        color: var(--pc-color-primary-on-quiet);
     }
-
-    .icon-button-color pc-icon-button::part(base):active {
-        color: var(--pc-color-primary-500);
-    }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Link buttons
 
 Use the `href` attribute to convert the button to a link.
 
-<CodeDemo>
-{`<pc-icon-button
+```demo
+<pc-icon-button
     href="https://example.com"
     library="default"
     icon-style="solid"
     name="gear"
     label="Settings"
     target="_blank"
-></pc-icon-button>`}
-</CodeDemo>
+></pc-icon-button>
+```
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="shield-halved"
         slot="icon"
     ></pc-icon>
     When using `target="_blank"`, the component automatically adds `rel="noreferrer noopener"` for [security reasons](https://mathiasbynens.github.io/rel-noopener).
@@ -113,27 +108,27 @@ Use the `href` attribute to convert the button to a link.
 
 Wrap a tooltip around an icon button to provide contextual information to the user.
 
-<CodeDemo>
-{`<pc-tooltip content="Settings">
+```demo
+<pc-tooltip content="Settings">
     <pc-icon-button
         library="default"
         icon-style="solid"
         name="gear"
         label="Settings"
     ></pc-icon-button>
-</pc-tooltip>`}
-</CodeDemo>
+</pc-tooltip>
+```
 
 ### Disabled
 
 Use the `disabled` attribute to disable the icon button.
 
-<CodeDemo>
-{`<pc-icon-button
+```demo
+<pc-icon-button
     library="default"
     icon-style="solid"
     name="gear"
     label="Settings"
     disabled
-></pc-icon-button>`}
-</CodeDemo>
+></pc-icon-button>
+```

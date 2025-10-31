@@ -1,5 +1,5 @@
 //! This is a critical file that provides global shims for browser APIs that may not be available in a Node.js environment.
-//! Applies to: Astro, Next.js, Nuxt.js, SvelteKit, Angular Universal, Remix, Gatsby, 11ty, Jest, Vitest, Web Test Runner and bundlers or environments that use Node.js internally
+//! This applies to Astro, Next.js, Nuxt.js, SvelteKit, Angular Universal, Remix, Gatsby, 11ty, Jest, Vitest, Web Test Runner and bundlers or environments that use Node.js internally.
 
 if (typeof globalThis.Event === "undefined") {
     globalThis.Event = class EventStub {
@@ -21,29 +21,39 @@ if (typeof globalThis.Event === "undefined") {
         target: EventTarget | null = null;
         timeStamp: number = Date.now();
         type: string = "";
+
         composedPath(): EventTarget[] {
             return [];
         }
+
         initEvent(
             _type: string,
             _bubbles?: boolean,
             _cancelable?: boolean,
         ): void {}
+
         preventDefault(): void {
             this.defaultPrevented = true;
         }
+
         stopImmediatePropagation(): void {}
         stopPropagation(): void {}
 
         constructor(type?: string, eventInitDict?: EventInit) {
             if (type) this.type = type;
+
             if (eventInitDict) {
-                if (typeof eventInitDict.bubbles === "boolean")
+                if (typeof eventInitDict.bubbles === "boolean") {
                     this.bubbles = eventInitDict.bubbles;
-                if (typeof eventInitDict.cancelable === "boolean")
+                }
+
+                if (typeof eventInitDict.cancelable === "boolean") {
                     this.cancelable = eventInitDict.cancelable;
-                if (typeof eventInitDict.composed === "boolean")
+                }
+
+                if (typeof eventInitDict.composed === "boolean") {
                     this.composed = eventInitDict.composed;
+                }
             }
         }
     } as any;

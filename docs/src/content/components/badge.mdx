@@ -3,46 +3,86 @@ title: Badge
 description: Badges are used to draw attention and display statuses or counts.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Badges are used to draw attention and display statuses or counts.
 
-<CodeDemo open>
-{`<pc-badge>Badge</pc-badge>`}
-</CodeDemo>
+```demo:open
+<pc-badge>Badge</pc-badge>
+```
 
 ## Demos
 
 ### Appearances
 
-Set the `appearance` attribute to change the badge’s appearance.
+Use the `appearance` attribute to set the badge’s appearance.
 
-<CodeDemo>
-{`<pc-badge appearance="primary">Primary</pc-badge>
+```demo
+<pc-badge appearance="primary">Primary</pc-badge>
 <pc-badge appearance="success">Success</pc-badge>
 <pc-badge appearance="neutral">Neutral</pc-badge>
 <pc-badge appearance="warning">Warning</pc-badge>
-<pc-badge appearance="danger">Danger</pc-badge>`}
-</CodeDemo>
+<pc-badge appearance="danger">Danger</pc-badge>
+```
+
+### Variants
+
+Use the `variant` attribute to set the badge’s variant.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="primary" variant="accent">Accent</pc-badge>
+    <pc-badge appearance="primary" variant="filled outlined">F + O</pc-badge>
+    <pc-badge appearance="primary" variant="filled">Filled</pc-badge>
+    <pc-badge appearance="primary" variant="outlined">Outlined</pc-badge>
+    <pc-badge appearance="primary" variant="plain">Plain</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="success" variant="accent">Accent</pc-badge>
+    <pc-badge appearance="success" variant="filled outlined">F + O</pc-badge>
+    <pc-badge appearance="success" variant="filled">Filled</pc-badge>
+    <pc-badge appearance="success" variant="outlined">Outlined</pc-badge>
+    <pc-badge appearance="success" variant="plain">Plain</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="neutral" variant="accent">Accent</pc-badge>
+    <pc-badge appearance="neutral" variant="filled outlined">F + O</pc-badge>
+    <pc-badge appearance="neutral" variant="filled">Filled</pc-badge>
+    <pc-badge appearance="neutral" variant="outlined">Outlined</pc-badge>
+    <pc-badge appearance="neutral" variant="plain">Plain</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="warning" variant="accent">Accent</pc-badge>
+    <pc-badge appearance="warning" variant="filled outlined">F + O</pc-badge>
+    <pc-badge appearance="warning" variant="filled">Filled</pc-badge>
+    <pc-badge appearance="warning" variant="outlined">Outlined</pc-badge>
+    <pc-badge appearance="warning" variant="plain">Plain</pc-badge>
+</div>
+<div>
+    <pc-badge appearance="danger" variant="accent">Accent</pc-badge>
+    <pc-badge appearance="danger" variant="filled outlined">F + O</pc-badge>
+    <pc-badge appearance="danger" variant="filled">Filled</pc-badge>
+    <pc-badge appearance="danger" variant="outlined">Outlined</pc-badge>
+    <pc-badge appearance="danger" variant="plain">Plain</pc-badge>
+</div>
+```
 
 ### Rounded badges
 
 Use the `rounded` attribute to give the badge a rounded rectangle shape.
 
-<CodeDemo>
-{`<pc-badge appearance="primary" rounded>Primary</pc-badge>
+```demo
+<pc-badge appearance="primary" rounded>Primary</pc-badge>
 <pc-badge appearance="success" rounded>Success</pc-badge>
 <pc-badge appearance="neutral" rounded>Neutral</pc-badge>
 <pc-badge appearance="warning" rounded>Warning</pc-badge>
-<pc-badge appearance="danger" rounded>Danger</pc-badge>`}
-</CodeDemo>
+<pc-badge appearance="danger" rounded>Danger</pc-badge>
+```
 
 ### Pulsating badges
 
 Use the `pulse` attribute to draw attention to the badge with a subtle animation.
 
-<CodeDemo>
-{`<div class="badge-pulse">
+```demo
+<div class="badge-pulse">
     <pc-badge appearance="primary" pulse>1</pc-badge>
     <pc-badge appearance="success" pulse>1</pc-badge>
     <pc-badge appearance="neutral" pulse>1</pc-badge>
@@ -52,25 +92,7 @@ Use the `pulse` attribute to draw attention to the badge with a subtle animation
 
 <style>
     .badge-pulse pc-badge:not(:last-of-type) {
-        margin-right: var(--pc-spacing-l);
+        margin-inline-end: var(--pc-spacing-l);
     }
-</style>`}
-</CodeDemo>
-
-### With menu items
-
-When including badges in menu items, use the `suffix` slot to make sure they’re aligned correctly.
-
-<CodeDemo>
-{`<pc-menu style="max-width: 240px">
-    <pc-menu-label>Messages</pc-menu-label>
-    <pc-menu-item>
-        Comments
-        <pc-badge slot="suffix">4</pc-badge>
-    </pc-menu-item>
-    <pc-menu-item>
-        Replies
-        <pc-badge slot="suffix">12</pc-badge>
-    </pc-menu-item>
-</pc-menu>`}
-</CodeDemo>
+</style>
+```

@@ -1,0 +1,133 @@
+/* #region — Icon scaling utilities */
+pc-icon.icon-expand {
+    scale: 1.25;
+}
+
+pc-icon.icon-shrink {
+    scale: 0.75;
+}
+/* #endregion */
+
+/* #region — Icon visibility based on button state */
+@media (hover: hover) {
+    pc-button:hover .rest-only,
+    pc-button:active .rest-only {
+        display: none;
+    }
+}
+
+@media (hover: none) {
+    pc-button:active .rest-only {
+        display: none;
+    }
+}
+
+pc-button .hover-only {
+    display: none;
+}
+
+@media (hover: hover) {
+    pc-button:hover .hover-only,
+    pc-button:active .hover-only {
+        display: inline-flex;
+    }
+}
+
+@media (hover: none) {
+    pc-button:active .hover-only {
+        display: inline-flex;
+    }
+}
+/* #endregion */
+
+/* #region — Icons in list items */
+ul.check-items,
+ul.xmark-items {
+    margin-inline-start: 1.75em;
+    list-style: none;
+}
+
+ul.check-items li,
+ul.xmark-items li {
+    position: relative;
+}
+
+ul.check-items li::before,
+ul.xmark-items li::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    inset-inline-start: -1.5em;
+    inline-size: 1em;
+    block-size: 1em;
+    mask-size: contain;
+    -webkit-mask-size: contain;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-position: center;
+}
+
+ul.check-items li::before {
+    inset-block-start: 0.35em;
+    background-color: var(--pc-color-success-on-quiet);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z'/%3E%3C/svg%3E");
+}
+
+ul.xmark-items li::before {
+    inset-block-start: 0.45em;
+    background-color: var(--pc-color-danger-on-quiet);
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath d='M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z' fill='currentColor'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'%3E%3Cpath d='M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z' fill='currentColor'/%3E%3C/svg%3E");
+}
+/* #endregion */
+
+/* #region — Theme‐dependent content switcher */
+html .theme-dependent-content-switcher .dark-content,
+html.pc-light .theme-dependent-content-switcher .dark-content {
+    display: none;
+}
+
+html.pc-light .theme-dependent-content-switcher .light-content {
+    display: block;
+}
+
+html.pc-dark .theme-dependent-content-switcher .light-content {
+    display: none;
+}
+
+html.pc-dark .theme-dependent-content-switcher .dark-content {
+    display: block;
+}
+/* #endregion */
+
+/* #region — Responsive visibility utilities */
+/* If viewport is ≥ 1 440 px, then hide element. */
+@media screen and (min-width: 1441px) {
+    .pc-mobile-only {
+        display: none !important;
+    }
+}
+
+/* If viewport is ≤ 1 440 px, then hide element. */
+@media screen and (max-width: 1440px) {
+    .pc-desktop-only {
+        display: none !important;
+    }
+}
+
+/* If viewport is ≥ 992 px, then hide element. */
+@media screen and (min-width: 992px) {
+    .pc-992-size {
+        display: none !important;
+    }
+}
+
+/* If viewport is ≤ 992 px, then hide element. */
+@media screen and (max-width: 992px) {
+    .pc-not-992-size {
+        display: none !important;
+    }
+}
+/* #endregion */

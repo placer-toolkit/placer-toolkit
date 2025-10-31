@@ -1,0 +1,13 @@
+/* Utilities */
+@import "./utilities/align-items.css";
+@import "./utilities/appearance.css";
+@import "./utilities/border-radius.css";
+@import "./utilities/fouce.css";
+@import "./utilities/gap.css";
+@import "./utilities/layout.css";
+@import "./utilities/size.css";
+@import "./utilities/text.css";
+@import "./utilities/visually-hidden.css";
+
+/* Internal utilities */
+@import "./utilities/scroll-lock.css";

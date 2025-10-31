@@ -2,8 +2,16 @@ import defaultLibrary from "./library.default.js";
 import systemLibrary from "./library.system.js";
 import type { PcIcon } from "./icon.js";
 
-export type IconLibraryResolver = (name: string, iconStyle?: string) => string;
-export type IconLibraryMutator = (svg: SVGElement) => void;
+export type IconLibraryHostElement = PcIcon;
+export type IconLibraryResolver = (
+    name: string,
+    iconStyle: string,
+    autoWidth: boolean,
+) => string;
+export type IconLibraryMutator = (
+    svg: SVGElement,
+    hostElement?: IconLibraryHostElement,
+) => void;
 
 export interface IconLibrary {
     name: string;
@@ -24,10 +32,7 @@ export function unwatchIcon(icon: PcIcon) {
 }
 
 export function getIconLibrary(name?: string) {
-    return (
-        registry.find((library) => library.name === name) ||
-        registry.find((library) => library.name === "default")
-    );
+    return registry.find((library) => library.name === name);
 }
 
 export function registerIconLibrary(
@@ -35,6 +40,7 @@ export function registerIconLibrary(
     options: Omit<IconLibrary, "name">,
 ) {
     unregisterIconLibrary(name);
+
     registry.push({
         name,
         resolver: options.resolver,

@@ -1,17 +1,57 @@
-<kbd class="keyboard-key auto-identify-meta-key"></kbd>
+---
+const { keyName } = Astro.props;
+
+const fallbackDisplayKey = keyName
+    ? keyName.charAt(0).toUpperCase() + keyName.slice(1)
+    : "";
+---
+
+<kbd
+    class="keyboard-key"
+    data-key={keyName?.toLowerCase() || ""}
+    aria-label={fallbackDisplayKey}
+>
+    {fallbackDisplayKey}
+</kbd>
 
 <script>
-    document
-        .querySelectorAll(".keyboard-key.auto-identify-meta-key")
-        .forEach((keyboardKey) => {
-            const isAppleDevice =
-                // @ts-expect-error — TypeScript is unaware of navigator.userAgentData
-                navigator.userAgentData?.platform
-                    ?.toLowerCase()
-                    .includes("mac") ||
-                // Deprecated: We use this deprecated function for browsers that don’t support navigator.userAgentData
-                /mac|iphone|ipad|ipod/i.test(navigator.platform);
+    (() => {
+        const keys = document.querySelectorAll<HTMLElement>(".keyboard-key");
 
-            keyboardKey.textContent = isAppleDevice ? "⌘" : "Ctrl";
+        const isAppleDevice =
+            // @ts-expect-error — TypeScript does not recognise navigator.userAgentData yet
+            navigator.userAgentData?.platform?.toLowerCase().includes("mac") ||
+            /mac|iphone|ipad|ipod/i.test(navigator.platform);
+
+        const keyMap = {
+            meta: { win: "Windows", mac: "⌘" },
+            command: { win: "Ctrl", mac: "⌘" },
+            ctrl: { win: "Ctrl", mac: "⌃" },
+            enter: { win: "Enter", mac: "Return" },
+            alt: { win: "Alt", mac: "⌥" },
+            altgr: { win: "AltGr", mac: "⌥" },
+            shift: { win: "Shift", mac: "⇧" },
+            tab: { win: "Tab", mac: "⇥" },
+            delete: { win: "Del", mac: "⌦" },
+        };
+
+        keys.forEach((kbd) => {
+            const keyType = kbd.dataset.key;
+
+            if (!keyType) {
+                return;
+            }
+
+            const keySymbols = keyMap[keyType as keyof typeof keyMap];
+
+            if (keySymbols) {
+                kbd.textContent = isAppleDevice
+                    ? keySymbols.mac
+                    : keySymbols.win;
+            } else {
+                kbd.textContent =
+                    keyType.charAt(0).toUpperCase() + keyType.slice(1);
+            }
         });
+    })();
 </script>

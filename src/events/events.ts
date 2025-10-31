@@ -24,7 +24,6 @@ export type { PcLoadEvent } from "./pc-load.js";
 export type { PcMutationEvent } from "./pc-mutation.js";
 export type { PcRemoveEvent } from "./pc-remove.js";
 export type { PcRepositionEvent } from "./pc-reposition.js";
-export type { PcRequestCloseEvent } from "./pc-request-close.js";
 export type { PcResizeEvent } from "./pc-resize.js";
 export type { PcSelectEvent } from "./pc-select.js";
 // export type { PcSelectionChangeEvent } from "./pc-selection-change.js";

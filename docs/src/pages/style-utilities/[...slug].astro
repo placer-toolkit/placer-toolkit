@@ -2,6 +2,9 @@
 import { getCollection, render } from "astro:content";
 import Page from "../../layouts/Page.astro";
 
+import CodeBlock from "../../components/CodeBlock.astro";
+import CodeDemo from "../../components/CodeDemo.astro";
+
 import "../../styles/catalog.css";
 
 export async function getStaticPaths() {
@@ -25,5 +28,5 @@ const { Content, headings } = await render(post);
 ---
 
 <Page {...post.data} headings={headings}>
-    <Content />
+    <Content components={{ CodeBlock, CodeDemo }} />
 </Page>

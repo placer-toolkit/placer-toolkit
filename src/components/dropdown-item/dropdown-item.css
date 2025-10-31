@@ -1,0 +1,257 @@
+:host {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding-block: 0.5em;
+    padding-inline: 1em;
+    color: var(--pc-color-text-normal);
+    border-radius: var(--pc-border-radius-m);
+    line-height: var(--pc-line-height-denser);
+    isolation: isolate;
+    cursor: pointer;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    :host(:hover:not(:state(disabled))) {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-hover)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-on-normal),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+:host(:active:not(:state(disabled), :state(has-submenu))) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-fill-normal),
+        var(--pc-color-mix-active)
+    );
+    color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-on-normal),
+        var(--pc-color-mix-active)
+    );
+}
+
+:host(:focus-visible) {
+    background-color: var(--pc-color-neutral-fill-normal);
+    outline: var(--pc-focus-ring);
+    z-index: 1;
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+:host(:state(disabled)) {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+:host([appearance="danger"]),
+:host([appearance="danger"]) #details {
+    color: var(--pc-color-danger-on-quiet);
+}
+
+@media (hover: hover) {
+    :host([appearance="danger"]:hover:not(:state(disabled))) {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-danger-fill-normal),
+            var(--pc-color-mix-hover)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-danger-on-normal),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+:host([appearance="danger"]:active:not(:state(disabled), :state(has-submenu))) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-danger-fill-normal),
+        var(--pc-color-mix-active)
+    );
+    color: color-mix(
+        in oklab,
+        var(--pc-color-danger-on-normal),
+        var(--pc-color-mix-active)
+    );
+}
+
+:host([appearance="danger"]:focus-visible) {
+    background-color: var(--pc-color-danger-fill-normal);
+    color: var(--pc-color-danger-on-normal);
+}
+
+:host([checkbox-adjacent]) {
+    padding-inline-start: 2em;
+}
+
+:host([submenu-adjacent]:not(:state(has-submenu))) #details {
+    padding-inline-end: 0;
+}
+
+:host(:state(has-submenu)[submenu-adjacent]) #details {
+    padding-inline-end: 1.75em;
+}
+
+#check {
+    margin-inline-start: -1.5em;
+    margin-inline-end: 0.5em;
+    font-size: var(--pc-font-size-smaller);
+    visibility: hidden;
+}
+
+:host(:state(checked)) #check {
+    visibility: visible;
+}
+
+#icon ::slotted(*) {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    margin-inline-end: 0.75em !important;
+    font-size: var(--pc-font-size-smaller);
+}
+
+#label {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#details {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    color: var(--pc-color-text-quiet);
+    font-size: var(--pc-font-size-smaller) !important;
+}
+
+#details ::slotted(*) {
+    margin-inline-start: 2em !important;
+}
+
+#submenu-indicator {
+    position: absolute;
+    inset-inline-end: 1em;
+    color: var(--pc-color-neutral-on-quiet);
+    font-size: var(--pc-font-size-smaller);
+}
+
+:host(:dir(rtl)) #submenu-indicator {
+    transform: scaleX(-1);
+}
+
+#submenu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0.25em;
+    inline-size: max-content;
+    background-color: var(--pc-color-surface-raised);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-surface-border);
+    border-radius: calc(var(--pc-border-radius-m) + 0.25em);
+    text-align: start;
+    user-select: none;
+    box-shadow: var(--pc-shadow-m);
+    z-index: 10;
+}
+
+#submenu[popover] {
+    inset: auto;
+    margin: 0;
+    padding: 0.25em;
+    border-radius: calc(var(--pc-border-radius-m) + 0.25em);
+    overflow: visible;
+}
+
+#submenu[data-placement^="top"] {
+    transform-origin: bottom;
+}
+
+#submenu[data-placement^="bottom"] {
+    transform-origin: top;
+}
+
+#submenu[data-placement^="left"] {
+    transform-origin: right;
+}
+
+#submenu[data-placement^="right"] {
+    transform-origin: left;
+}
+
+#submenu[data-placement="left-start"] {
+    transform-origin: right top;
+}
+
+#submenu[data-placement="left-end"] {
+    transform-origin: right bottom;
+}
+
+#submenu[data-placement="right-start"] {
+    transform-origin: left top;
+}
+
+#submenu[data-placement="right-end"] {
+    transform-origin: left bottom;
+}
+
+#submenu::before {
+    content: "";
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: transparent;
+    clip-path: polygon(
+        var(--safe-triangle-cursor-x, 0) var(--safe-triangle-cursor-y, 0),
+        var(--safe-triangle-submenu-start-x, 0)
+            var(--safe-triangle-submenu-start-y, 0),
+        var(--safe-triangle-submenu-end-x, 0)
+            var(--safe-triangle-submenu-end-y, 0)
+    );
+    pointer-events: auto;
+    z-index: 9;
+}
+
+#submenu[data-visible]::before {
+    display: block;
+}
+
+::slotted(pc-dropdown-item) {
+    font-size: inherit;
+}
+
+::slotted(pc-divider) {
+    --spacing: 0.25em;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

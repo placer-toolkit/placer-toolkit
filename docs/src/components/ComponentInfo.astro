@@ -1,0 +1,112 @@
+---
+export interface Props {
+    componentName: string;
+}
+
+interface CEMDeclaration {
+    name: string;
+    tagName?: string;
+    since?: string;
+    status?: string;
+}
+
+interface CEMModule {
+    declarations?: CEMDeclaration[];
+}
+
+interface CEMManifest {
+    package?: {
+        version?: string;
+    };
+    modules?: CEMModule[];
+}
+
+const { componentName } = Astro.props;
+
+const loadManifest = async (): Promise<
+    (CEMManifest & { package?: { version?: string } }) | null
+> => {
+    try {
+        const manifestModule = await import(
+            "placer-toolkit/dist/custom-elements.json",
+            {
+                assert: { type: "json" },
+            }
+        );
+        const manifest = manifestModule.default ?? manifestModule;
+        return manifest as CEMManifest & { package?: { version?: string } };
+    } catch (error) {
+        console.error(`Couldn’t load the CEM file: ${error}`);
+        return null;
+    }
+};
+
+const findComponentData = (
+    manifest: CEMManifest,
+    componentName: string,
+): CEMDeclaration | null => {
+    if (!manifest.modules) {
+        return null;
+    }
+
+    for (const module of manifest.modules) {
+        const declaration = module.declarations?.find(
+            (decl) =>
+                decl.name === componentName || decl.tagName === componentName,
+        );
+        if (declaration) {
+            return declaration;
+        }
+    }
+    return null;
+};
+
+const manifest = await loadManifest();
+const componentData = manifest
+    ? findComponentData(manifest, componentName)
+    : null;
+
+const tagName = `<${componentData?.tagName}>`;
+const since = componentData?.since ?? "Since ?";
+const status = componentData?.status ?? "Status ?";
+---
+
+<div class="component-info pc-cluster pc-align-items-center pc-gap-s">
+    <code class="tag-name">{tagName}</code>
+    <pc-badge appearance="neutral">{since}</pc-badge>
+    {
+        status === "stable" && (
+            <pc-badge class="status" appearance="primary">
+                {status}
+            </pc-badge>
+        )
+    }
+    {
+        status === "experimental" && (
+            <pc-badge class="status" appearance="warning">
+                {status}
+            </pc-badge>
+        )
+    }
+    {
+        status === "Status ?" && (
+            <pc-badge class="status" appearance="danger">
+                {status}
+            </pc-badge>
+        )
+    }
+</div>
+
+<style>
+    .component-info {
+        margin-block-end: var(--pc-content-spacing);
+    }
+
+    code.tag-name {
+        padding-block: 0;
+    }
+
+    pc-badge.status {
+        text-transform: capitalize;
+    }
+</style>

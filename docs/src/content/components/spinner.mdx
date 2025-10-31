@@ -1,0 +1,38 @@
+---
+title: Spinner
+description: Spinners are used to show the progress of an indeterminate operation.
+---
+
+Spinners are used to show the progress of an indeterminate operation.
+
+```demo:open
+<pc-spinner></pc-spinner>
+```
+
+## Demos
+
+### Size
+
+Spinners are sized based on the current font size. To change the size, set the `font-size` property on the spinner itself or on a parent element.
+
+```demo
+<pc-spinner></pc-spinner>
+<pc-spinner style="font-size: 2rem"></pc-spinner>
+<pc-spinner style="font-size: 3rem"></pc-spinner>
+```
+
+### Track width
+
+The width of the spinner’s track can be changed by setting the `--track-width` custom property.
+
+```demo
+<pc-spinner style="font-size: 3rem; --track-width: 0.375rem"></pc-spinner>
+```
+
+### Colour
+
+The spinner’s colours can be changed by setting the `--indicator-color` and `--track-color` custom properties.
+
+```demo
+<pc-spinner style="font-size: 3rem; --indicator-color: deeppink; --track-color: pink"></pc-spinner>
+```

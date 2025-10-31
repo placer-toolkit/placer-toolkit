@@ -3,8 +3,6 @@ title: Popup
 description: Popup is a utility that lets you declaratively anchor “popup” containers to another element.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Popup is a utility that lets you declaratively anchor “popup” containers to another element.
 
 This component’s name is inspired by [`<popup>`](https://github.com/MicrosoftEdge/MSEdgeExplainers/blob/main/Popup/explainer.md). It uses [Floating UI](https://floating-ui.com) under the hood to provide a well‐tested, lightweight and fully declarative positioning utility for tooltips, dropdowns and more.
@@ -15,24 +13,14 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
     <pc-icon
         library="default"
         icon-style="solid"
-        name="triangle-exclamation"
+        name="gear"
         slot="icon"
     ></pc-icon>
-    Popup is a low‐level utility built specifically for positioning elements. Do not mistake it for a tooltip or similar because _it does not facilitate an accessible experience_ ! Almost every correct usage of it will involve building other components. It should rarely, if ever, occur directly in your HTML.
+    Popup is a low‐level utility built specifically for positioning elements. Do not mistake it for a tooltip or similar because _it does not facilitate an accessible experience_! Almost every correct usage of it will involve building other components. It should rarely, if ever, occur directly in your HTML.
 </pc-callout>
 
-<pc-callout appearance="warning">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="triangle-exclamation"
-        slot="icon"
-    ></pc-icon>
-    A popup’s anchor should not be styled with `display: contents` since the coordinates will not be eligible for calculation. However, if the anchor is a `<slot>` element, the Popup component will use the first assigned element as the anchor. This behaviour allows other components to pass anchors through more easily via composition.
-</pc-callout>
-
-<CodeDemo open>
-{`<div class="popup-overview">
+```demo:open
+<div class="popup-overview">
     <pc-popup placement="top" active>
         <span slot="anchor"></span>
         <div class="box"></div>
@@ -96,22 +84,23 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
 
 <style>
     .popup-overview pc-popup {
-        --arrow-color: var(--pc-color-primary-400);
+        --arrow-color: var(--pc-color-primary-fill-loud);
     }
 
     .popup-overview span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-overview .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
 
@@ -124,18 +113,28 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
     }
 
     .popup-overview-options pc-select {
-        width: 200px;
+        inline-size: 200px;
     }
 
     .popup-overview-options pc-input {
-        width: 100px;
+        inline-size: 100px;
     }
 
     .popup-overview-options + .popup-overview-options {
-        margin-top: var(--pc-spacing-s);
+        margin-block-start: var(--pc-spacing-m);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="location-dot"
+        slot="icon"
+    ></pc-icon>
+    A popup’s anchor should not be styled with `display: contents` since the coordinates will not be eligible for calculation. However, if the anchor is a `<slot>` element, the Popup component will use the first assigned element as the anchor. This behaviour allows other components to pass anchors through more easily via composition.
+</pc-callout>
 
 ## Demos
 
@@ -143,8 +142,8 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
 
 Popups are inactive and hidden until the `active` attribute is applied. Removing the attribute will tear down all positioning logic and event listeners, meaning you can have many idle popups on the page without affecting performance.
 
-<CodeDemo>
-{`<div class="popup-active">
+```demo
+<div class="popup-active">
     <pc-popup placement="top" active>
         <span slot="anchor"></span>
         <div class="box"></div>
@@ -166,28 +165,29 @@ Popups are inactive and hidden until the `active` attribute is applied. Removing
 <style>
     .popup-active span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-active .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### External anchors
 
 By default, anchors are slotted into the popup using the `anchor` slot. If your anchor needs to live outside of the popup, you can pass the anchor’s `id` to the `anchor` attribute. Alternatively, you can pass an element reference to the `anchor` property to achieve the same effect without using an `id`.
 
-<CodeDemo>
-{`<span id="external-anchor"></span>
+```demo
+<span id="external-anchor"></span>
 
 <pc-popup placement="top" anchor="external-anchor" active>
     <div class="box"></div>
@@ -196,21 +196,23 @@ By default, anchors are slotted into the popup using the `anchor` slot. If your 
 <style>
     #external-anchor {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
+        margin-block-start: var(--pc-spacing-xxxxl);
+        margin-inline-start: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
         border-radius: var(--pc-border-radius-l);
-        margin: var(--pc-spacing-xxxxl) 0 0 var(--pc-spacing-xxxxl);
     }
 
     #external-anchor ~ pc-popup .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Placement
 
@@ -218,8 +220,8 @@ Use the `placement` attribute to tell the popup the preferred placement of the p
 
 Since placement is preferred when using `flip`, you can observe the popup’s current placement when it’s active by looking at the `data-current-placement` attribute. This attribute will update as the popup flips to find available space and will be removed when the popup is deactivated.
 
-<CodeDemo>
-{`<div class="popup-placement">
+```demo
+<div class="popup-placement">
     <pc-popup placement="top" active>
         <span slot="anchor"></span>
         <div class="box"></div>
@@ -252,32 +254,33 @@ Since placement is preferred when using `flip`, you can observe the popup’s cu
 <style>
     .popup-placement span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-placement .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
 
     .popup-placement pc-select {
-        max-width: 280px;
+        max-inline-size: 280px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Distance
 
 Use the `distance` attribute to change the distance between the popup and its anchor. A positive value will move the popup further away and a negative value will move it closer to the anchor.
 
-<CodeDemo>
-{`<div class="popup-distance">
+```demo
+<div class="popup-distance">
     <pc-popup placement="top" distance="0" active>
         <span slot="anchor"></span>
         <div class="box"></div>
@@ -304,32 +307,33 @@ Use the `distance` attribute to change the distance between the popup and its an
 <style>
     .popup-distance span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-distance .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
 
     .popup-distance pc-input {
-        max-width: 280px;
+        max-inline-size: 280px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Skidding
 
 The `skidding` attribute is similar to `distance`, but instead allows you to offset the popup along the anchor’s axis. Both positive and negative values are allowed.
 
-<CodeDemo>
-{`<div class="popup-skidding">
+```demo
+<div class="popup-skidding">
     <pc-popup placement="top" skidding="0" active>
         <span slot="anchor"></span>
         <div class="box"></div>
@@ -343,6 +347,7 @@ The `skidding` attribute is similar to `distance`, but instead allows you to off
         max="50"
         value="0"
     ></pc-input>
+
 </div>
 
 <script>
@@ -356,25 +361,26 @@ The `skidding` attribute is similar to `distance`, but instead allows you to off
 <style>
     .popup-skidding span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-skidding .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
 
     .popup-skidding pc-input {
-        max-width: 280px;
+        max-inline-size: 280px;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Arrows
 
@@ -382,8 +388,8 @@ Add an arrow to your popup with the `arrow` attribute. It’s usually a good ide
 
 By default, the arrow will be aligned as close to the centre of the anchor as possible, considering available space and `arrow-padding`. You can the `arrow-placement` attribute to force the arrow to align to the start, centre or end of the popup instead.
 
-<CodeDemo>
-{`<div class="popup-arrow">
+```demo
+<div class="popup-arrow">
     <pc-popup
         placement="top"
         arrow-placement="anchor"
@@ -443,22 +449,23 @@ By default, the arrow will be aligned as close to the centre of the anchor as po
 
 <style>
     .popup-arrow pc-popup {
-        --arrow-color: var(--pc-color-primary-400);
+        --arrow-color: var(--pc-color-primary-fill-loud);
     }
 
     .popup-arrow span[slot="anchor"] {
         display: inline-block;
-        width: 150px;
-        height: 150px;
-        border: 2px dashed var(--pc-color-neutral-400);
-        border-radius: var(--pc-border-radius-l);
         margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
     }
 
     .popup-arrow .box {
-        width: 100px;
-        height: 55px;
-        background-color: var(--pc-color-primary-400);
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
         border-radius: var(--pc-border-radius-m);
     }
 
@@ -471,13 +478,513 @@ By default, the arrow will be aligned as close to the centre of the anchor as po
     }
 
     .popup-arrow-options pc-select {
-        width: 160px;
+        inline-size: 160px;
     }
 
     .popup-arrow-options + .popup-arrow-options {
-        margin-top: var(--pc-spacing-s);
+        margin-block-start: var(--pc-spacing-m);
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
-_This page takes a long time to complete, please be patient!_
+### Syncing with the anchor’s dimensions
+
+Use the `sync` attribute to make the popup the same with or height as the anchor element. This is useful for controls that need the popup to stay the same width or height as the anchor element.
+
+```demo
+<div class="popup-sync">
+    <pc-popup placement="top" sync="width" active>
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <pc-select label="Placement" value="width">
+        <pc-option value="width">Width</pc-option>
+        <pc-option value="height">Height</pc-option>
+        <pc-option value="both">Both</pc-option>
+        <pc-option value="">None</pc-option>
+    </pc-select>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-sync");
+    const popup = container.querySelector("pc-popup");
+    const sync = container.querySelector("pc-select");
+
+    sync.addEventListener("pc-change", () => (popup.sync = sync.value));
+</script>
+
+<style>
+    .popup-sync span[slot="anchor"] {
+        display: inline-block;
+        margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-sync .box {
+        min-inline-size: 55px;
+        inline-size: 100%;
+        min-block-size: 55px;
+        block-size: 100%;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-sync pc-select {
+        inline-size: 160px;
+    }
+</style>
+```
+
+### Flip
+
+When the popup doesn’t have enough room in its preferred placement, it can automatically flip to keep it in view. To enable this, use the `flip` attribute. By default, the popup will flip to the opposite placement, but you can configure preferred fallback placements using `flip-fallback-placement` and `flip-fallback-strategy`. Additional options are available to control the flip behaviour’s boundary and padding.
+
+Scroll the container to see how the popup flips to prevent clipping.
+
+```demo
+<div class="popup-flip">
+    <div class="overflow">
+        <pc-popup placement="top" boundary="scroll" flip active>
+            <span slot="anchor"></span>
+            <div class="box"></div>
+        </pc-popup>
+    </div>
+    <pc-switch checked>Flip</pc-switch>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-flip");
+    const popup = container.querySelector("pc-popup");
+    const flip = container.querySelector("pc-switch");
+
+    flip.addEventListener("pc-change", () => (popup.flip = flip.checked));
+</script>
+
+<style>
+    .popup-flip .overflow {
+        position: relative;
+        block-size: 300px;
+        border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+        overflow: auto;
+    }
+
+    .popup-flip .overflow span[slot="anchor"] {
+        display: inline-block;
+        margin-block: 15.625rem;
+        margin-inline: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-flip .overflow .box {
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-flip pc-switch {
+        margin-block-start: var(--pc-spacing-l);
+    }
+</style>
+```
+
+### Flip fallbacks
+
+While using the `flip` attribute, you can customise the placement of the popup when the preferred placement doesn’t have room. For this, use `flip-fallback-placements` and `flip-fallback-strategy`.
+
+If the preferred placement doesn’t have room, the first suitable placement found in `flip-fallback-placement` will be used. The value of this attribute must be a string including any number of placements separated by a space, like `"right bottom"`.
+
+If no fallback placement works, the final placement will be determined by `flip-fallback-strategy`. This value can be either `initial` (default), where the placement reverts to the position in `placement`, or `best-fit`, where the placement is chosen based on available space.
+
+Scroll the container to see how the popup changes its fallback placement to prevent clipping.
+
+```demo
+<div class="popup-flip-fallbacks">
+    <pc-popup
+        placement="top"
+        boundary="scroll"
+        flip-fallback-placements="right bottom"
+        flip-fallback-strategy="initial"
+        flip
+        active
+    >
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+</div>
+
+<style>
+    .popup-flip-fallbacks {
+        position: relative;
+        block-size: 300px;
+        border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+        overflow: auto;
+    }
+
+    .popup-flip-fallbacks span[slot="anchor"] {
+        display: inline-block;
+        margin-block: 15.625rem;
+        margin-inline: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-flip-fallbacks .box {
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+### Shift
+
+When a popup is longer than its anchor, it risks being clipped by an overflowing container. In this case, use the `shift` attribute to shift the popup along its axis and back into view. You can customise the shift behaviour using `shiftBoundary` and `shift-padding`.
+
+Toggle the switch to see the demo in action.
+
+```demo
+<div class="popup-shift">
+    <div class="overflow">
+        <pc-popup
+            placement="top"
+            boundary="scroll"
+            shift-padding="10"
+            shift
+            active
+        >
+            <span slot="anchor"></span>
+            <div class="box"></div>
+        </pc-popup>
+    </div>
+    <pc-switch checked>Shift</pc-switch>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-shift");
+    const popup = container.querySelector("pc-popup");
+    const shift = container.querySelector("pc-switch");
+
+    shift.addEventListener("pc-change", () => (popup.shift = shift.checked));
+</script>
+
+<style>
+    .popup-shift .overflow {
+        position: relative;
+        border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+        overflow: auto;
+    }
+
+    .popup-shift .overflow span[slot="anchor"] {
+        display: inline-block;
+        margin: var(--pc-spacing-xxxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-shift .overflow .box {
+        inline-size: 300px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-shift pc-switch {
+        margin-block-start: var(--pc-spacing-l);
+    }
+</style>
+```
+
+### Auto‐size
+
+Use the `auto-size` attribute to tell the popup to resize when necessary to prevent it from getting clipped. Possible values are `horizontal`, `vertical` and `both`. You can use `autoSizeBoundary` and `auto-size-padding` to customise the behaviour of this option. Auto‐size works well with `flip`, but if you’re using `auto-size-padding`, make sure `flip-padding` is the same value.
+
+When using `auto-size`, one or both of `--auto-size-available-width` and `--auto-size-available-height` will be applied to the host element. These values determine the available space the popover has before clipping will occur. Since they cascade, you can use them to set a maximum width/height on your popup’s content and easily control its overflow.
+
+Scroll the container to see the popup resize as its available space changes.
+
+```demo
+<div class="popup-auto-size">
+    <div class="overflow">
+        <pc-popup
+            placement="top"
+            boundary="scroll"
+            auto-size="both"
+            auto-size-padding="10"
+            active
+        >
+            <span slot="anchor"></span>
+            <div class="box"></div>
+        </pc-popup>
+    </div>
+    <pc-switch checked>Auto‐size</pc-switch>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-auto-size");
+    const popup = container.querySelector("pc-popup");
+    const autoSize = container.querySelector("pc-switch");
+
+    autoSize.addEventListener("pc-change", () => {
+        popup.autoSize = autoSize.checked ? "both" : "";
+    });
+</script>
+
+<style>
+    .popup-auto-size .overflow {
+        position: relative;
+        block-size: 300px;
+        border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+        overflow: auto;
+    }
+
+    .popup-auto-size .overflow span[slot="anchor"] {
+        display: inline-block;
+        margin-block: 15.625rem;
+        margin-inline: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-auto-size .overflow .box {
+        /* This sets the preferred size of the popup’s content. */
+        inline-size: 100px;
+        block-size: 200px;
+
+        /* This sets the maximum dimensions and allows scrolling when auto‐size kicks in. */
+        max-inline-size: var(--auto-size-available-width);
+        max-block-size: var(--auto-size-available-height);
+
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+        overflow: auto;
+    }
+
+    .popup-auto-size pc-switch {
+        margin-block-start: var(--pc-spacing-l);
+    }
+</style>
+```
+
+### Hover bridge
+
+When a gap exists between the anchor and the popup, this option will add a “hover bridge” that fills the gap using an invisible element. This makes listening for events such as `mouseover` and `mouseout` more sane because the cursor technically never leaves the element. The hover bridge will only be drawn when the popup is active. For demo purposes, the hover bridge will be shown in a transparent blue colour.
+
+```demo
+<div class="popup-hover-bridge">
+    <pc-popup
+        placement="top"
+        distance="10"
+        skidding="0"
+        hover-bridge
+        active
+    >
+        <span slot="anchor"></span>
+        <div class="box"></div>
+    </pc-popup>
+
+    <div class="popup-hover-bridge-options">
+        <pc-switch checked>Hover bridge</pc-switch>
+    </div>
+    <div class="popup-hover-bridge-options">
+        <pc-input
+            label="Distance"
+            type="number"
+            min="0"
+            max="50"
+            value="10"
+        ></pc-input>
+        <pc-input
+            label="Skidding"
+            type="number"
+            min="-50"
+            max="50"
+            value="0"
+        ></pc-input>
+    </div>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-hover-bridge");
+    const popup= container.querySelector("pc-popup");
+    const hoverBridge = container.querySelector("pc-switch");
+    const distance = container.querySelector('pc-input[label="Distance"]');
+    const skidding = container.querySelector('pc-input[label="Skidding"]');
+
+    hoverBridge.addEventListener("pc-change", () => (popup.hoverBridge = hoverBridge.checked));
+    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
+    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+</script>
+
+<style>
+    .popup-hover-bridge span[slot="anchor"] {
+        display: inline-block;
+        margin: var(--pc-spacing-xxxxl);
+        inline-size: 150px;
+        block-size: 150px;
+        border: var(--pc-border-width-m) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .popup-hover-bridge .box {
+        inline-size: 100px;
+        block-size: 55px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .popup-hover-bridge pc-popup::part(hover-bridge) {
+        background-color: var(--pc-color-primary-fill-loud);
+        opacity: 0.5;
+    }
+
+    .popup-hover-bridge-options {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: var(--pc-spacing-s);
+    }
+
+    .popup-hover-bridge-options pc-input {
+        inline-size: 200px;
+    }
+
+    .popup-hover-bridge-options + .popup-hover-bridge-options {
+        margin-block-start: var(--pc-spacing-m);
+    }
+</style>
+```
+
+### Virtual elements
+
+In most cases, popups are anchored to an actual element. Sometimes, it can be useful to anchor them to non‐DOM elements. To do this, you can pass a `VirtualElement` to the anchor property. A virtual element must contain a function called `getBoundingClientRect()` that returns a [`DOMRect`](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect) object as shown below.
+
+```javascript
+const virtualElement = {
+    getBoundingClientRect() {
+        // …
+        return { width, height, x, y, top, left, right, bottom };
+    },
+};
+```
+
+This demo anchors a popup to the mouse cursor using a virtual element. As such, a mouse is required to properly view it.
+
+```demo
+<div class="popup-virtual-element">
+    <pc-popup placement="right-start">
+        <div class="circle"></div>
+    </pc-popup>
+
+    <pc-switch>Highlight mouse cursor</pc-switch>
+</div>
+
+<script>
+    const container = document.querySelector(".popup-virtual-element");
+    const popup = container.querySelector("pc-popup");
+    const circle = container.querySelector(".circle");
+    const enabled = container.querySelector("pc-switch");
+
+    let clientX = 0;
+    let clientY = 0;
+
+    popup.anchor = {
+        getBoundingClientRect() {
+            return {
+                width: 0,
+                height: 0,
+                x: clientX,
+                y: clientY,
+                top: clientY,
+                left: clientX,
+                right: clientX,
+                bottom: clientY,
+            };
+        }
+    };
+
+    enabled.addEventListener("pc-change", () => {
+        popup.active = enabled.checked;
+    });
+
+    document.addEventListener("mousemove", handleMouseMove);
+
+    function handleMouseMove(event) {
+        clientX = event.clientX;
+        clientY = event.clientY;
+
+        if (popup.active) {
+            popup.reposition();
+        }
+    }
+</script>
+
+<style>
+    .popup-virtual-element pc-popup::part(popup) {
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .popup-virtual-element .circle {
+        inline-size: 100px;
+        block-size: 100px;
+        border: var(--pc-border-width-xl) var(--pc-border-style)
+            var(--pc-color-primary-border-loud);
+        border-radius: var(--pc-border-radius-circle);
+        translate: -50px -50px;
+        animation: 1s virtual-cursor ease-in-out infinite;
+    }
+
+    @keyframes virtual-cursor {
+        0%,
+        100% {
+            scale: 1;
+        }
+
+        50% {
+            scale: 1.1;
+        }
+    }
+</style>
+```
+
+Sometimes, the `getBoundingClientRects` might be derived from a real element. In this case, provide the anchor element as context to ensure clipping and position updates for the popup work well.
+
+```javascript
+const virtualElement = {
+    getBoundingClientRect() {
+        // …
+        return { width, height, x, y, top, left, right, bottom };
+    },
+    contextElement: anchorElement,
+};
+```

@@ -1,24 +1,30 @@
 ---
 title: Transitions
-description: Transitions make your app more lively and expressive, guiding users through changes and highlighting important elements with fluid animations.
+description: Transitions can make interactions more lively and emphasise the relationship between a user’s action and its outcome.
 ---
 
-Transitions make your app more lively and expressive, guiding users through changes and highlighting important elements with fluid animations.
+Transitions can make interactions more lively and emphasise the relationship between a user’s action and its outcome.
+
+## Duration
+
+Placer Toolkit uses different transition durations to make it easy to track a component’s state while minimising sluggish or distracting movement.
+
+Properties that change between frequent, incidental states, such as hover and focus generally use faster transitions than properties that change between states that are more intentional and impactful, like checked or open.
+
+| Design token                 | Default value | Example                                                                                          |
+| ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------ |
+| `--pc-transition-extra-fast` | `0.1s`        | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-fast)"></div> |
+| `--pc-transition-fast`       | `0.15s`       | <div class="transition-demo" style="transition-duration: var(--pc-transition-fast)"></div>       |
+| `--pc-transition-medium`     | `0.3s`        | <div class="transition-demo" style="transition-duration: var(--pc-transition-medium)"></div>     |
+| `--pc-transition-slow`       | `0.5s`        | <div class="transition-demo" style="transition-duration: var(--pc-transition-slow)"></div>       |
+| `--pc-transition-extra-slow` | `0.75s`       | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-slow)"></div> |
 
 <pc-callout appearance="primary">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="gear"
         slot="icon"
     ></pc-icon>
-    Internally, we may use other durations like 0.2s and 0.25s in our components with the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
+    Internally, we may use other durations like 0,2 s and 0,25 s in our components with the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API), but is generally not used in standard CSS.
 </pc-callout>
-
-| Design token                 | Default value | Example                                                                                          |
-| ---------------------------- | ------------- | ------------------------------------------------------------------------------------------------ |
-| `--pc-transition-extra-fast` | 0.1s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-fast)"></div> |
-| `--pc-transition-fast`       | 0.15s         | <div class="transition-demo" style="transition-duration: var(--pc-transition-fast)"></div>       |
-| `--pc-transition-medium`     | 0.3s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-medium)"></div>     |
-| `--pc-transition-slow`       | 0.5s          | <div class="transition-demo" style="transition-duration: var(--pc-transition-slow)"></div>       |
-| `--pc-transition-extra-slow` | 0.75s         | <div class="transition-demo" style="transition-duration: var(--pc-transition-extra-slow)"></div> |

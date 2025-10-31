@@ -1,6 +1,6 @@
-import type PcMenuItem from "../components/menu-item/menu-item.js";
+import type { PcDropdownItem } from "../components/dropdown-item/dropdown-item.js";
 
-export type PcSelectEvent = CustomEvent<{ item: PcMenuItem }>;
+export type PcSelectEvent = CustomEvent<{ item: PcDropdownItem }>;
 
 declare global {
     interface GlobalEventHandlersEventMap {

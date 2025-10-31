@@ -1,0 +1,192 @@
+:host {
+    display: inline-block;
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: flex-start;
+    position: relative;
+    font-family: var(--pc-font-sans);
+    font-size: inherit;
+    font-weight: var(--pc-form-control-value-font-weight);
+    line-height: var(--pc-form-control-value-line-height);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.control {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    inline-size: var(--pc-form-control-toggle-size);
+    block-size: var(--pc-form-control-toggle-size);
+    background-color: transparent;
+    color: var(--pc-color-primary-on-loud);
+    border: var(--pc-form-control-border-width) var(--pc-border-style)
+        var(--pc-form-control-border-color);
+    border-radius: var(--pc-border-radius-s);
+    font-size: inherit;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+.control pc-icon {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity var(--pc-transition-fast) ease-in-out,
+        visibility var(--pc-transition-fast) ease-in-out;
+}
+
+.checked .control pc-icon,
+.indeterminate .control pc-icon {
+    opacity: 1;
+    visibility: visible;
+}
+
+.checked:not(> .fade-out) .control pc-icon {
+    opacity: 1;
+    visibility: visible;
+}
+
+.control.fade-out pc-icon {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.input {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+pc-icon {
+    display: inline-flex;
+    font-size: inherit;
+    scale: 0.8;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .checkbox:not(.checked):not(.disabled) .control:hover {
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-border-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.checkbox:not(.checked):not(.disabled) .control:focus-visible {
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-border-color),
+        var(--pc-color-mix-hover)
+    );
+}
+
+.checkbox:not(.checked):not(.disabled) .control:active {
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-border-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+.checkbox:not(.checked):not(.disabled) .input:focus-visible ~ .control {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.checked .control,
+.indeterminate .control {
+    background-color: var(--pc-form-control-activated-color);
+    border-color: var(--pc-form-control-activated-color);
+}
+
+@media (hover: hover) {
+    .checkbox.checked:not(.disabled) .control:hover,
+    .checkbox.indeterminate:not(.disabled) .control:hover {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-form-control-activated-color),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-activated-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.checkbox.checked:not(.disabled) .control:focus-visible,
+.checkbox.indeterminate:not(.disabled) .control:focus-visible {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-hover)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-hover)
+    );
+}
+
+.checkbox.checked:not(.disabled) .control:active,
+.checkbox.indeterminate:not(.disabled) .control:active {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+.checkbox.checked:not(.disabled) .input:focus-visible ~ .control,
+.checkbox.indeterminate:not(.disabled) .input:focus-visible ~ .control {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+[part~="label"] {
+    display: inline-flex;
+    margin-inline-start: 0.5em !important;
+}
+
+:host([required]) [part~="label"]::after {
+    content: var(--pc-form-control-required-content);
+    color: var(--pc-form-control-required-content-color);
+    margin-inline-start: var(--pc-form-control-required-content-offset);
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

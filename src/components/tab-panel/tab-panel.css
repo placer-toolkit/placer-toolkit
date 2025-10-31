@@ -1,0 +1,12 @@
+:host {
+    display: none;
+}
+
+:host([active]) {
+    display: block;
+}
+
+.tab-panel {
+    display: block;
+    padding: 0;
+}

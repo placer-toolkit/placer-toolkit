@@ -3,14 +3,15 @@ title: Drawer
 description: Drawers slide in from a container to expose additional options and information.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Drawers slide in from a container to expose additional options and information.
 
-<CodeDemo open>
-{`<pc-drawer label="Drawer" class="drawer-overview">
+```demo:open
+<pc-drawer label="Drawer" class="drawer-overview">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -18,23 +19,58 @@ Drawers slide in from a container to expose additional options and information.
 <script>
     const drawer = document.querySelector(".drawer-overview");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ## Demos
+
+### Opening and closing drawers declaratively
+
+You can open and close drawers with JavaScript by toggling the `open` attribute, but you can also do it declaratively. Add the `data-drawer="open id"` to any button on the page, where `id` is the id of the dialog you want to open.
+
+```demo
+<pc-drawer label="Drawer" id="drawer-open-declarative">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
+</pc-drawer>
+
+<pc-button data-drawer="open drawer-open-declarative">
+    Open drawer
+</pc-button>
+```
+
+Similarly, you can add `data-drawer="close"` to a button _inside_ of the drawer to tell it to close it.
+
+```demo
+<pc-drawer label="Drawer" id="drawer-dismiss-declarative">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
+</pc-drawer>
+
+<pc-button data-drawer="open drawer-dismiss-declarative">
+    Open drawer
+</pc-button>
+```
 
 ### Slide in from start
 
 By default, drawers slide in from the end. To make the drawer slide in from the start, set the `placement` attribute to `start`.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" placement="start" class="drawer-placement-start">
+```demo
+<pc-drawer label="Drawer" placement="start" class="drawer-placement-start">
     This drawer slides in from the start.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -42,21 +78,22 @@ By default, drawers slide in from the end. To make the drawer slide in from the 
 <script>
     const drawer = document.querySelector(".drawer-placement-start");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ### Slide in from top
 
 To make the drawer slide in from the top, set the `placement` attribute to `top`.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" placement="top" class="drawer-placement-top">
+```demo
+<pc-drawer label="Drawer" placement="top" class="drawer-placement-top">
     This drawer slides in from the top.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -64,21 +101,22 @@ To make the drawer slide in from the top, set the `placement` attribute to `top`
 <script>
     const drawer = document.querySelector(".drawer-placement-top");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ### Slide in from bottom
 
 To make the drawer slide in from the bottom, set the `placement` attribute to `bottom`.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" placement="bottom" class="drawer-placement-bottom">
+```demo
+<pc-drawer label="Drawer" placement="bottom" class="drawer-placement-bottom">
     This drawer slides in from the bottom.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -86,61 +124,22 @@ To make the drawer slide in from the bottom, set the `placement` attribute to `b
 <script>
     const drawer = document.querySelector(".drawer-placement-bottom");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
-
-### Contained to an element
-
-By default, drawers slide out of their [containing block](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_display/Containing_block#identifying_the_containing_block), which is usually the viewport. To make a drawer slide out of a parent element, add the `contained` attribute to the drawer and apply `position: relative` to its parent.
-
-Unlike normal drawers, contained drawers are not modal. This means they do not show an overlay, they do not trap focus and they are not dismissible with the <kbd aria-label="Escape">Esc</kbd> key. This is intentional to allow users to interact with elements outside the drawer.
-
-<CodeDemo>
-{`<div class="drawer-contained-container">
-    The drawer will be contained to this box. This content won’t shift or be affected in any way when the drawer opens.
-
-    <pc-drawer label="Drawer" class="drawer-contained" style="--size: 50%" contained>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        <pc-button appearance="text" slot="footer">Close</pc-button>
-    </pc-drawer>
-</div>
-
-<pc-button>Toggle drawer</pc-button>
-
-<script>
-    const drawer = document.querySelector(".drawer-contained");
-    const openButton = drawer.parentElement.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
-
-    openButton.addEventListener("click", () => (drawer.open = !drawer.open));
-    closeButton.addEventListener("click", () => drawer.hide());
+    openButton.addEventListener("click", () => (drawer.open = true));
 </script>
-
-<style>
-    .drawer-contained-container {
-        position: relative;
-        margin-bottom: var(--pc-spacing-l);
-        padding: var(--pc-spacing-l);
-        height: 300px;
-        border: 2px solid var(--pc-panel-border-color);
-        border-radius: var(--pc-border-radius-l);
-        overflow: hidden;
-    }
-</style>`}
-</CodeDemo>
+```
 
 ### Custom size
 
 Use the `--size` custom property to set the drawer’s size. This will be applied to the drawer’s width or height depending on its `placement`.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" class="drawer-custom-size">
-    This drawer is always 50% of the viewport.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+```demo
+<pc-drawer label="Drawer" class="drawer-custom-size">
+    This drawer is always 50 % of the viewport.
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -148,37 +147,38 @@ Use the `--size` custom property to set the drawer’s size. This will be applie
 <script>
     const drawer = document.querySelector(".drawer-custom-size");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
+    openButton.addEventListener("click", () => (drawer.open = true));
 </script>
 
 <style>
     .drawer-custom-size {
         --size: 50vw;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
 
 ### Scrolling
 
-By design, a drawer’s height will never exceed 100% of its container. As such, drawers will not scroll with the page to ensure the header and footer are always accessible to the user.
+By design, a drawer’s height will never exceed that of the viewport. As such, drawers will not scroll with the page to ensure the header and footer are always accessible to the user.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" class="drawer-scrolling">
+```demo
+<pc-drawer label="Drawer" class="drawer-scrolling">
     <div
         style="
-            height: 150vh;
-            border: 2px dashed var(--pc-color-neutral-200);
+            padding: var(--pc-spacing-l);
+            block-size: 150dvh;
+            border: var(--pc-border-width-m) dashed
+                var(--pc-color-neutral-border-normal);
             border-radius: var(--pc-border-radius-l);
-            padding: 0 var(--pc-spacing-l);
         "
     >
-        <p>Scroll down and give it a try! 👇</p>
+        <p>Scroll down and give it a try! ⬇️</p>
     </div>
 
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -186,28 +186,35 @@ By design, a drawer’s height will never exceed 100% of its container. As such,
 <script>
     const drawer = document.querySelector(".drawer-scrolling");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ### Header actions
 
-The header shows a functional close button by default. You can use the `header-actions` slot to add additional [icon buttons](/components/icon-button) if needed.
+The header shows a functional close button by default. You can use the `header-actions` slot to add additional [icon buttons](/components/button/#icon-buttons) if needed.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" class="drawer-header-actions">
-    <pc-icon-button
-        class="new-window-button"
-        library="default"
-        icon-style="solid"
-        name="arrow-up-right-from-square"
+```demo
+<pc-drawer label="Drawer" class="drawer-header-actions">
+    <pc-button
+        class="new-window"
+        size="small"
+        variant="plain"
         slot="header-actions"
-    ></pc-icon-button>
+    >
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-up-right-from-square"
+        ></pc-icon>
+    </pc-button>
+
     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -218,24 +225,49 @@ The header shows a functional close button by default. You can use the `header-a
     const closeButton = drawer.querySelector('pc-button[slot="footer"]');
     const newWindowButton = drawer.querySelector(".new-window-button");
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
+    openButton.addEventListener("click", () => (drawer.open = true));
     newWindowButton.addEventListener("click", () => window.open(location.href));
-</script>`}
-</CodeDemo>
+</script>
+```
+
+### Prevent light dismissal
+
+If you want to prevent the drawer from closing if the user clicks on the overlay, add the `no-light-dismiss` attribute.
+
+```demo
+<pc-drawer label="Drawer" class="drawer-no-light-dismiss" no-light-dismiss>
+    This drawer will not close when you click on the overlay.
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
+</pc-drawer>
+
+<pc-button>Open drawer</pc-button>
+
+<script>
+    const drawer = document.querySelector(".drawer-no-light-dismiss");
+    const openButton = drawer.nextElementSibling;
+
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ### Prevent drawer from closing
 
 By default, drawers will close when the user clicks the close button, clicks the overlay or presses the <kbd aria-label="Escape">Esc</kbd> key. In most cases, the default behaviour is the best behaviour in terms of UX. However, there are situations where this may be undesirable, such as when data loss will occur.
 
-To keep the drawer open in such cases, you can cancel the `pc-request-close` event. When cancelled, the drawer will remain open and pulse briefly to draw the user’s attention to it.
+To keep the drawer open in such cases, you can cancel the `pc-hide` event. When cancelled, the drawer will remain open and pulse briefly to draw the user’s attention to it.
 
-You can use `event.detail.source` to determine what triggered to request to close. This example prevents the drawer from closing when the overlay is clicked, but allows the close button or <kbd aria-label="Escape">Esc</kbd> to dismiss it.
+You can use `event.detail.source` to check what triggered the close request. In this example, the drawer will only close when a custom close button inside the footer is clicked. Clicking the overlay, pressing <kbd aria-label="Escape">Esc</kbd> or using the built‐in header close button will all be prevented.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" class="drawer-deny-close">
-    This drawer will not close when you click on the overlay.
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+```demo
+<pc-drawer label="Drawer" class="drawer-deny-close">
+    This drawer will only close if you click on the button below.
+
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -245,30 +277,31 @@ You can use `event.detail.source` to determine what triggered to request to clos
     const openButton = drawer.nextElementSibling;
     const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    drawer.addEventListener("pc-request-close", (event) => {
-        if (event.detail.source === "overlay") {
+    drawer.addEventListener("pc-hide", (event) => {
+        if (event.detail.source !== closeButton) {
             event.preventDefault();
         }
     });
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```
 
 ### Customise initial focus
 
-By default, the drawer’s panel will gain focus when opened. This allows a subsequent tab press to focus on the first tabbable element in the drawer. If you want a different element to have focus, add the autofocus attribute to it as shown below.
+By default, the drawer’s panel will gain focus when opened. This allows a subsequent tab press to focus on the first tabbable element in the drawer. If you want a different element to have focus, add the `autofocus` attribute to it as shown below.
 
-<CodeDemo>
-{`<pc-drawer label="Drawer" class="drawer-focus">
+```demo
+<pc-drawer label="Drawer" class="drawer-focus">
     <pc-input
         placeholder="I will have focus when the drawer is opened"
-        aria-placeholder="I will have focus when the drawer is opened"
+        aria-label="I will have focus when the drawer is opened"
         autofocus
     ></pc-input>
 
-    <pc-button appearance="text" slot="footer">Close</pc-button>
+    <pc-button variant="plain" slot="footer" data-drawer="close">
+        Close
+    </pc-button>
 </pc-drawer>
 
 <pc-button>Open drawer</pc-button>
@@ -276,19 +309,7 @@ By default, the drawer’s panel will gain focus when opened. This allows a subs
 <script>
     const drawer = document.querySelector(".drawer-focus");
     const openButton = drawer.nextElementSibling;
-    const closeButton = drawer.querySelector('pc-button[slot="footer"]');
 
-    openButton.addEventListener("click", () => drawer.show());
-    closeButton.addEventListener("click", () => drawer.hide());
-</script>`}
-</CodeDemo>
-
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="circle-info"
-        slot="icon"
-    ></pc-icon>
-    You can further customise initial focus behaviour by cancelling the `pc-initial-focus` event and setting focus yourself inside the event handler.
-</pc-callout>
+    openButton.addEventListener("click", () => (drawer.open = true));
+</script>
+```

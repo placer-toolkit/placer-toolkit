@@ -1,0 +1,152 @@
+:host {
+    --shadow-color: var(--pc-color-surface-default);
+    --shadow-size: 2rem;
+
+    /* These custom properties shouldn’t be accessed out of this scope. */
+    --start-shadow-opacity: 0;
+    --end-shadow-opacity: 0;
+
+    display: block;
+    position: relative;
+    max-inline-size: 100%;
+    isolation: isolate;
+}
+
+:host([orientation="vertical"]) {
+    display: flex;
+    flex-direction: column;
+    block-size: 100%;
+}
+
+#content {
+    border-radius: inherit;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--pc-color-neutral-border-normal) transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+#content:focus {
+    outline: none;
+}
+
+#content:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+:host([no-scrollbar]) #content {
+    scrollbar-width: none;
+}
+
+:host([orientation="horizontal"]) #content {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+:host([orientation="vertical"]) #content {
+    flex: 1 1 auto;
+    min-block-size: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+:host([orientation="horizontal"]) {
+    #start-shadow,
+    #end-shadow {
+        position: absolute;
+        inset-block: 0;
+        inline-size: var(--shadow-size);
+        pointer-events: none;
+    }
+
+    #start-shadow {
+        opacity: var(--start-shadow-opacity);
+
+        &:dir(ltr) {
+            inset-inline-start: 0;
+            background-image: linear-gradient(
+                to right,
+                var(--shadow-color),
+                transparent 100%
+            );
+        }
+
+        &:dir(rtl) {
+            inset-inline-end: 0;
+            background-image: linear-gradient(
+                to left,
+                var(--shadow-color),
+                transparent 100%
+            );
+        }
+    }
+
+    #end-shadow {
+        opacity: var(--end-shadow-opacity);
+
+        &:dir(ltr) {
+            inset-inline-end: 0;
+            background-image: linear-gradient(
+                to left,
+                var(--shadow-color),
+                transparent 100%
+            );
+        }
+
+        &:dir(rtl) {
+            inset-inline-start: 0;
+            background-image: linear-gradient(
+                to right,
+                var(--shadow-color),
+                transparent 100%
+            );
+        }
+    }
+}
+
+:host([orientation="vertical"]) {
+    #start-shadow,
+    #end-shadow {
+        position: absolute;
+        inset-inline: 0;
+        block-size: var(--shadow-size);
+        pointer-events: none;
+    }
+
+    #start-shadow {
+        inset-block-start: 0;
+        background-image: linear-gradient(
+            to bottom,
+            var(--shadow-color),
+            transparent 100%
+        );
+        opacity: var(--start-shadow-opacity);
+    }
+
+    #end-shadow {
+        inset-block-end: 0;
+        background-image: linear-gradient(
+            to top,
+            var(--shadow-color),
+            transparent 100%
+        );
+        opacity: var(--end-shadow-opacity);
+    }
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

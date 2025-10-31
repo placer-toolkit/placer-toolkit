@@ -1,0 +1,16 @@
+@layer pc-utilities {
+    :host([size="small"]),
+    .pc-size-s {
+        font-size: var(--pc-font-size-s);
+    }
+
+    :host([size="medium"]),
+    .pc-size-m {
+        font-size: var(--pc-font-size-m);
+    }
+
+    :host([size="large"]),
+    .pc-size-l {
+        font-size: var(--pc-font-size-l);
+    }
+}

@@ -1,52 +1,104 @@
 ---
-import "highlight.js/styles/github-dark.min.css";
+import "../styles/syntax/placer-eclipse.css";
 
-import hljs from "highlight.js/lib/core";
-import xml from "highlight.js/lib/languages/xml";
-import css from "highlight.js/lib/languages/css";
-import javascript from "highlight.js/lib/languages/javascript";
-import typescript from "highlight.js/lib/languages/typescript";
-import bash from "highlight.js/lib/languages/bash";
-
-hljs.registerLanguage("html", xml);
-hljs.registerLanguage("css", css);
-hljs.registerLanguage("javascript", javascript);
-hljs.registerLanguage("js", javascript);
-hljs.registerLanguage("typescript", typescript);
-hljs.registerLanguage("ts", typescript);
-hljs.registerLanguage("bash", bash);
-hljs.registerLanguage("shell", bash);
-hljs.registerLanguage("sh", bash);
-
-const uid =  `code-${Math.random().toString(36).slice(2, 9)}`;
+const uniqueID = `code-${Math.random().toString(36).slice(2, 9)}`;
 const language = Astro.props.language ?? undefined;
+
+const isTerminal = language === "bash" || language === "shell" || language === "sh";
 ---
 
+{isTerminal && (
+    <div class="terminal-bar">
+        <div class="circle circle-red"></div>
+        <div class="circle circle-yellow"></div>
+        <div class="circle circle-green"></div>
+    </div>
+)}
+
 <div class="code-block">
-    <pc-copy-button from={uid}></pc-copy-button>
-    <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uid}><slot /></code></pre>
+    <pc-copy-button from={uniqueID}></pc-copy-button>
+    <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uniqueID} tabindex="-1"><slot /></code></pre>
 </div>
 
 <script>
     import hljs from "highlight.js";
 
-    const blocks = document.querySelectorAll(".code-block pre code.hljs");
+    import html from "highlight.js/lib/languages/xml";
+    import css from "highlight.js/lib/languages/css";
+    import javascript from "highlight.js/lib/languages/javascript";
+    import typescript from "highlight.js/lib/languages/typescript";
+    import bash from "highlight.js/lib/languages/bash";
+
+    hljs.registerLanguage("html", html);
+    hljs.registerLanguage("css", css);
+    hljs.registerLanguage("javascript", javascript);
+    hljs.registerLanguage("js", javascript);
+    hljs.registerLanguage("typescript", typescript);
+    hljs.registerLanguage("ts", typescript);
+    hljs.registerLanguage("bash", bash);
+    hljs.registerLanguage("shell", bash);
+    hljs.registerLanguage("sh", bash);
+
+    const blocks = document.querySelectorAll<HTMLElement>(
+        ".code-block pre code.hljs",
+    );
 
     blocks.forEach((block) => {
-        hljs.highlightElement(block as HTMLElement);
+        hljs.highlightElement(block);
     });
 </script>
 
 <style>
+    .terminal-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.375rem;
+        padding-inline: var(--pc-spacing-l);
+        inline-size: 100%;
+        block-size: 2rem;
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-block-end: 0;
+        border-start-start-radius: var(--pc-border-radius-l);
+        border-start-end-radius: var(--pc-border-radius-l);
+    }
+
+    .terminal-bar .circle {
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+        opacity: 0.6;
+        border-radius: var(--pc-border-radius-circle);
+    }
+
+    .terminal-bar .circle-red {
+        background-color: var(--pc-color-red-60);
+    }
+
+    .terminal-bar .circle-yellow {
+        background-color: var(--pc-color-yellow-60);
+    }
+
+    .terminal-bar .circle-green {
+        background-color: var(--pc-color-green-60);
+    }
+
     .code-block {
         position: relative;
-        background-color: oklch(26.1% 0.015 264.3);
-        border: 1px solid oklch(29% 0.019 264.2);
-        border-radius: var(--pc-border-radius-m);
-        width: 100%;
-        margin-bottom: var(--pc-spacing-xl);
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-l);
+        inline-size: 100%;
+        margin-block-end: var(--pc-content-spacing);
         overflow: visible;
-        max-height: max-content;
+        max-block-size: max-content;
+    }
+
+    .terminal-bar + .code-block {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
     }
 
     .code-block :is(pre, code) {
@@ -57,38 +109,46 @@ const language = Astro.props.language ?? undefined;
     }
 
     .code-block .hljs {
-        padding: var(--pc-spacing-l) !important;
         background-color: transparent;
+        padding: var(--pc-spacing-l) !important;
         line-height: var(--pc-line-height-normal);
         font-size: var(--pc-font-size-xs);
     }
 
     .code-block pc-copy-button {
         position: absolute;
-        top: var(--pc-spacing-s);
-        right: var(--pc-spacing-s);
+        inset-block-start: var(--pc-spacing-s);
+        inset-inline-end: var(--pc-spacing-s);
         z-index: 1;
     }
 
     .code-block pc-copy-button::part(button) {
-        background-color: oklch(26.1% 0.015 264.3);
-        color: oklch(96.7% 0.005 264.5);
+        background-color: var(--pc-color-surface-raised);
     }
 
-    .code-block pc-copy-button::part(button):hover,
+    @media (hover: hover) {
+        .code-block pc-copy-button::part(button):hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-surface-raised),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
     .code-block pc-copy-button::part(button):focus-visible {
-        background-color: oklch(32.8% 0.024 264.2);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-raised),
+            var(--pc-color-mix-hover)
+        );
     }
 
     .code-block pc-copy-button::part(button):active {
-        background-color: oklch(29% 0.019 264.2);
-    }
-
-    .code-block pc-copy-button::part(success-icon) {
-        color: var(--success-color) !important;
-    }
-
-    .code-block pc-copy-button::part(error-icon) {
-        color: var(--error-color) !important;
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-raised),
+            var(--pc-color-mix-active)
+        );
     }
 </style>

@@ -1,20 +1,24 @@
 ---
 title: Spacing
-description: Spacing is used to provide consistent gaps between content in your app.
+description: Spacing is used intentionally throughout Placer Toolkit to create predictable rhythm and meaningful proximity. These properties use `rem` units in order to scale proportionately with the root font size.
 ---
 
-Spacing is used to provide consistent gaps between content in your app.
+Spacing is used intentionally throughout Placer Toolkit to create predictable rhythm and meaningful proximity. These properties use `rem` units in order to scale proportionately with the root font size.
 
-| Token                 | Default value   | Example                                                                  |
-| --------------------- | --------------- | ------------------------------------------------------------------------ |
-| `--pc-spacing-xxxs`   | 0.0625rem (1px) | <div class="spacing-demo" style="width: var(--pc-spacing-xxxs)"></div>   |
-| `--pc-spacing-xxs`    | 0.125rem (2px)  | <div class="spacing-demo" style="width: var(--pc-spacing-xxs)"></div>    |
-| `--pc-spacing-xs`     | 0.25rem (4px)   | <div class="spacing-demo" style="width: var(--pc-spacing-xs)"></div>     |
-| `--pc-spacing-s`      | 0.5rem (8px)    | <div class="spacing-demo" style="width: var(--pc-spacing-s)"></div>      |
-| `--pc-spacing-m`      | 0.75rem (12px)  | <div class="spacing-demo" style="width: var(--pc-spacing-m)"></div>      |
-| `--pc-spacing-l`      | 1rem (16px)     | <div class="spacing-demo" style="width: var(--pc-spacing-l)"></div>      |
-| `--pc-spacing-xl`     | 1.25rem (20px)  | <div class="spacing-demo" style="width: var(--pc-spacing-xl)"></div>     |
-| `--pc-spacing-xxl`    | 1.75rem (28px)  | <div class="spacing-demo" style="width: var(--pc-spacing-xxl)"></div>    |
-| `--pc-spacing-xxxl`   | 2.25rem (36px)  | <div class="spacing-demo" style="width: var(--pc-spacing-xxxl)"></div>   |
-| `--pc-spacing-xxxxl`  | 3rem (48px)     | <div class="spacing-demo" style="width: var(--pc-spacing-xxxxl)"></div>  |
-| `--pc-spacing-xxxxxl` | 4.5rem (72px)   | <div class="spacing-demo" style="width: var(--pc-spacing-xxxxxl)"></div> |
+You can use `--pc-spacing-scale` to increase or decrease all spacing by the scale you provide at once. By default, this multiplier is 1.
+
+The raw size without the scale is provided for better readability. Font size values in px are based on a root font size of 16px.
+
+| Custom property       | Default value      | Example                                                                        |
+| --------------------- | ------------------ | ------------------------------------------------------------------------------ |
+| `--pc-spacing-xxxs`   | `0.0625rem` (1 px) | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxxs)"></div>   |
+| `--pc-spacing-xxs`    | `0.125rem` (2 px)  | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxs)"></div>    |
+| `--pc-spacing-xs`     | `0.25rem` (4 px)   | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xs)"></div>     |
+| `--pc-spacing-s`      | `0.5rem` (8 px)    | <div class="spacing-demo" style="inline-size: var(--pc-spacing-s)"></div>      |
+| `--pc-spacing-m`      | `0.75rem` (12 px)  | <div class="spacing-demo" style="inline-size: var(--pc-spacing-m)"></div>      |
+| `--pc-spacing-l`      | `1rem` (16 px)     | <div class="spacing-demo" style="inline-size: var(--pc-spacing-l)"></div>      |
+| `--pc-spacing-xl`     | `1.25rem` (20 px)  | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xl)"></div>     |
+| `--pc-spacing-xxl`    | `1.75rem` (28 px)  | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxl)"></div>    |
+| `--pc-spacing-xxxl`   | `2.25rem` (36 px)  | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxxl)"></div>   |
+| `--pc-spacing-xxxxl`  | `3rem` (48 px)     | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxxxl)"></div>  |
+| `--pc-spacing-xxxxxl` | `4.5rem` (72 px)   | <div class="spacing-demo" style="inline-size: var(--pc-spacing-xxxxxl)"></div> |

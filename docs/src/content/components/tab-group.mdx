@@ -3,14 +3,14 @@ title: Tab Group
 description: Tab groups organise content into a container that shows one section at a time.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
+import AutoKeyboardSwitch from "../../components/AutoKeyboardSwitch.astro";
 
 Tab groups organise content into a container that shows one section at a time.
 
 This component makes use of [tabs](/components/tab) and [tab panels](/components/tab-panel). Each tab must be slotted into the `navigation` slot and its `panel` must refer to a tab panel of the same `name`.
 
-<CodeDemo open>
-{`<pc-tab-group>
+```demo:open
+<pc-tab-group>
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
     <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
@@ -30,8 +30,8 @@ This component makes use of [tabs](/components/tab) and [tab panels](/components
     <pc-tab-panel name="disabled">
         This is a disabled tab panel.
     </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ## Demos
 
@@ -39,8 +39,8 @@ This component makes use of [tabs](/components/tab) and [tab panels](/components
 
 Tabs can be shown on the bottom by setting the `placement` attribute to `bottom`.
 
-<CodeDemo>
-{`<pc-tab-group placement="bottom">
+```demo
+<pc-tab-group placement="bottom">
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
     <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
@@ -60,15 +60,15 @@ Tabs can be shown on the bottom by setting the `placement` attribute to `bottom`
     <pc-tab-panel name="disabled">
         This is a disabled tab panel.
     </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ### Tabs on start
 
 Tabs can be shown on the starting side by setting the `placement` attribute to `start`.
 
-<CodeDemo>
-{`<pc-tab-group placement="start">
+```demo
+<pc-tab-group placement="start">
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
     <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
@@ -88,15 +88,15 @@ Tabs can be shown on the starting side by setting the `placement` attribute to `
     <pc-tab-panel name="disabled">
         This is a disabled tab panel.
     </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ### Tabs on end
 
 Tabs can be shown on the ending side by setting the `placement` attribute to `end`.
 
-<CodeDemo>
-{`<pc-tab-group placement="end">
+```demo
+<pc-tab-group placement="end">
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
     <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
@@ -116,15 +116,15 @@ Tabs can be shown on the ending side by setting the `placement` attribute to `en
     <pc-tab-panel name="disabled">
         This is a disabled tab panel.
     </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ### Closable tabs
 
 Add the `closable` attribute to a tab to show a close button. This example shows how you can dynamically remove tabs from the DOM when the close button is pressed.
 
-<CodeDemo>
-{`<pc-tab-group class="tabs-closable">
+```demo
+<pc-tab-group class="tabs-closable">
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="closable-1" closable>
         Closable 1
@@ -155,7 +155,7 @@ Add the `closable` attribute to a tab to show a close button. This example shows
 
     closableTabGroup.addEventListener("pc-close", async (event) => {
         const tab = event.target;
-        const panel = closableTabGroup.querySelector(\`pc-tab-panel[name="\${tab.panel}"]\`);
+        const panel = closableTabGroup.querySelector(`pc-tab-panel[name="${tab.panel}"]`);
 
         if (tab.active) {
             closableTabGroup.show(tab.previousElementSibling.panel);
@@ -164,15 +164,15 @@ Add the `closable` attribute to a tab to show a close button. This example shows
         tab.remove();
         panel.remove();
     });
-</script>`}
-</CodeDemo>
+</script>
+```
 
 ### Scrolling tabs
 
 When there are more tabs than horizontal space allows, the tab navigation bar will be scrollable.
 
-<CodeDemo>
-{`<pc-tab-group>
+```demo
+<pc-tab-group>
     <pc-tab slot="navigation" panel="tab-1">Tab 1</pc-tab>
     <pc-tab slot="navigation" panel="tab-2">Tab 2</pc-tab>
     <pc-tab slot="navigation" panel="tab-3">Tab 3</pc-tab>
@@ -214,15 +214,15 @@ When there are more tabs than horizontal space allows, the tab navigation bar wi
     <pc-tab-panel name="tab-18">This is the 18th tab panel.</pc-tab-panel>
     <pc-tab-panel name="tab-19">This is the 19th tab panel.</pc-tab-panel>
     <pc-tab-panel name="tab-20">This is the 20th tab panel.</pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ### Fixed scroll controls
 
 When tabs are scrolled all the way to one side, the scroll button on that side isn’t visible. Set the `fixed-scroll-controls` to always show both scroll buttons.
 
-<CodeDemo>
-{`<pc-tab-group fixed-scroll-controls>
+```demo
+<pc-tab-group fixed-scroll-controls>
     <pc-tab slot="navigation" panel="tab-1">Tab 1</pc-tab>
     <pc-tab slot="navigation" panel="tab-2">Tab 2</pc-tab>
     <pc-tab slot="navigation" panel="tab-3">Tab 3</pc-tab>
@@ -264,15 +264,15 @@ When tabs are scrolled all the way to one side, the scroll button on that side i
     <pc-tab-panel name="tab-18">This is the 18th tab panel.</pc-tab-panel>
     <pc-tab-panel name="tab-19">This is the 19th tab panel.</pc-tab-panel>
     <pc-tab-panel name="tab-20">This is the 20th tab panel.</pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```
 
 ### Manual activation
 
-When focused, keyboard users can press <kbd aria-label="Left">←</kbd> and <kbd aria-label="Right">→</kbd> to select the desired tab. By default, the corresponding tab panel will be shown immediately (automatic activation). You can change this behaviour by setting `activation="manual"` which will require the user to press <kbd>Space</kbd> or <kbd><span aria-hidden="true">⏎</span> Enter</kbd> before showing the tab panel (manual activation).
+When focused, keyboard users can press <kbd aria-label="Left">←</kbd> and <kbd aria-label="Right">→</kbd> to select the desired tab. By default, the corresponding tab panel will be shown immediately (automatic activation). You can change this behaviour by setting `activation="manual"` which will require the user to press <kbd>Space</kbd> or <AutoKeyboardSwitch keyName="enter" /> before showing the tab panel (manual activation).
 
-<CodeDemo>
-{`<pc-tab-group activation="manual">
+```demo
+<pc-tab-group activation="manual">
     <pc-tab slot="navigation" panel="general">General</pc-tab>
     <pc-tab slot="navigation" panel="custom">Custom</pc-tab>
     <pc-tab slot="navigation" panel="advanced">Advanced</pc-tab>
@@ -292,5 +292,5 @@ When focused, keyboard users can press <kbd aria-label="Left">←</kbd> and <kbd
     <pc-tab-panel name="disabled">
         This is a disabled tab panel.
     </pc-tab-panel>
-</pc-tab-group>`}
-</CodeDemo>
+</pc-tab-group>
+```

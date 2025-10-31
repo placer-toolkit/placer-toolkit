@@ -1,0 +1,40 @@
+:host {
+    --fa-primary-color: currentColor;
+    --fa-secondary-color: currentColor;
+    --fa-primary-opacity: 1;
+    --fa-secondary-opacity: 0.4;
+
+    display: inline-flex;
+    justify-content: center;
+    box-sizing: content-box !important;
+    inline-size: auto;
+    block-size: 1em;
+}
+
+svg {
+    display: inline-block;
+    inline-size: auto;
+    block-size: inherit;
+    fill: currentColor;
+    overflow: visible;
+}
+
+/* Fixed‐width icons */
+:host([library="default"]:not([auto-width])) svg *,
+:host([library="system"]:not([auto-width])) svg * {
+    /* This scaling gets rid of the whitespace around the icon grid. */
+    scale: 1.25;
+    transform-origin: center;
+}
+
+/* Primary layer */
+svg path[data-duotone-primary] {
+    color: var(--fa-primary-color);
+    opacity: var(--fa-primary-opacity);
+}
+
+/* Secondary layer */
+svg path[data-duotone-secondary] {
+    color: var(--fa-secondary-color);
+    opacity: var(--fa-secondary-opacity);
+}

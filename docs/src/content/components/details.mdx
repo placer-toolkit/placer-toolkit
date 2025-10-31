@@ -3,34 +3,53 @@ title: Details
 description: Details show a brief summary and expand to show additional content.
 ---
 
-import CodeDemo from "../../components/CodeDemo.astro";
-
 Details show a brief summary and expand to show additional content.
 
-<CodeDemo open>
-{`<pc-details summary="Toggle me">
+```demo:open
+<pc-details summary="Toggle me">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-</pc-details>`}
-</CodeDemo>
+</pc-details>
+```
 
 ## Demos
 
+### Variants
+
+Use the `variant` attribute to change the details’ variant.
+
+```demo
+<div class="pc-stack">
+    <pc-details variant="outlined" summary="Outlined (default)">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+    <pc-details variant="filled outlined" summary="Filled + Outlined">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+    <pc-details variant="filled" summary="Filled">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+    <pc-details variant="plain" summary="Plain">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </pc-details>
+</div>
+```
+
 ### Disabled
 
-Use the `disabled` attribute to disable the details component.
+Use the `disabled` attribute to prevent the details from expanding.
 
-<CodeDemo>
-{`<pc-details summary="Disabled" disabled>
+```demo
+<pc-details summary="Disabled" disabled>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-</pc-details>`}
-</CodeDemo>
+</pc-details>
+```
 
 ### Customise the summary icon
 
 Use the `expand-icon` and `collapse-icon` slots to change the expand and collapse icons, respectively. To disable the animation, override the `rotate` property on the `summary-icon` part as shown below.
 
-<CodeDemo>
-{`<pc-details summary="Toggle me" class="custom-icons">
+```demo
+<pc-details summary="Toggle me" class="custom-icons">
     <pc-icon
         library="default"
         icon-style="solid"
@@ -52,15 +71,41 @@ Use the `expand-icon` and `collapse-icon` slots to change the expand and collaps
     pc-details.custom-icons::part(summary-icon) {
         rotate: none;
     }
-</style>`}
-</CodeDemo>
+</style>
+```
+
+### HTML in summary
+
+To use HTML in the summary, use the `summary` slot. Links and other interactive elements will still retain their behaviour.
+
+```demo
+<pc-details>
+    <span slot="summary">
+        Ooh, look at
+        <a href="https://example.com" rel="noreferrer noopener" target="_blank">
+            this link</a>!
+    </span>
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+</pc-details>
+```
+
+### RTL language support
+
+The details component automatically adapts to RTL languages with the `lang` and `dir` attributes.
+
+```demo
+<pc-details summary="نص تجريبي" lang="ar" dir="rtl">
+    هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم.
+</pc-details>
+```
 
 ### Group details
 
 Details are designed to function independently, but you can simulate a group or “accordion” where only one is shown at a time by listening for the `pc-show` event.
 
-<CodeDemo>
-{`<div class="details-group">
+```demo
+<div class="details-group pc-stack">
     <pc-details summary="First" open>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
     </pc-details>
@@ -74,7 +119,7 @@ Details are designed to function independently, but you can simulate a group or 
     </pc-details>
 </div>
 
-<script type="module">
+<script>
     const container = document.querySelector(".details-group");
 
     container.addEventListener("pc-show", (event) => {
@@ -85,10 +130,4 @@ Details are designed to function independently, but you can simulate a group or 
         }
     });
 </script>
-
-<style>
-    .details-group pc-details:not(:last-of-type) {
-        margin-bottom: var(--pc-spacing-s);
-    }
-</style>`}
-</CodeDemo>
+```
