@@ -1,11 +1,3 @@
----
-name: Pull request 🔀
-about: Propose changes to the Placer Toolkit codebase, like new components or an easy typo fix.
-title: ""
-labels: ""
-assignees: ""
----
-
 ### ✨ Type of change
 
 - [ ] Bug fix (non‐breaking change which fixes an issue)
