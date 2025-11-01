@@ -1,7 +1,5 @@
 ---
 import crypto from "node:crypto";
-
-const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
 ---
 
 <pc-dropdown class="theme-selector" value="default">
@@ -28,7 +26,6 @@ const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
 </pc-button>
 
 <script>
-    import type { PcDropdown } from "placer-toolkit/dist/components/dropdown/dropdown.js";
     import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
 
     let currentTheme: "light" | "dark" | null = null;
@@ -176,12 +173,6 @@ const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
             }
 
             localStorage.setItem("saved-color-theme", styleTheme);
-
-            const selector = document.querySelector(".theme-selector");
-
-            if ((selector as PcDropdown).value !== styleTheme) {
-                (selector as PcDropdown).value = styleTheme;
-            }
         }
 
         const button = document.querySelector(".color-scheme-toggle");
@@ -200,7 +191,7 @@ const id = `moon-mask-${crypto.randomBytes(4).toString("hex")}`;
             applyColorTheme(nextTheme);
         });
 
-        themeSelector.addEventListener("pc-select", (event) => {
+        themeSelector?.addEventListener("pc-select", (event) => {
             const customEvent = event as CustomEvent;
             const newStyleTheme = customEvent.detail.item.value;
 
