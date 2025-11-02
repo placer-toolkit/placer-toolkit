@@ -50,16 +50,18 @@ This rating flags minor changes that impact consistency or adherence to future A
 ### Enhancements
 
 - Added the [accessibility statement](/resources/accessibility) to comply with the [EAA](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en).
+- Added a new Branches section in the [Contributing](/resources/contributing/#branches) page.
 
 ### Bug fixes
 
+- Fixed a grammar error regarding about the word “to rewrite” in the 1.0.0-alpha.1 changelog.
 - Fixed that the PR template doesn’t show up.
 
 ## 1.0.0-alpha.1
 
 ### Milestones
 
-- Rewritten the theming API of Placer Toolkit.<br />**☢️ Nuclear breaking change (≈ 1 month):** The theming API is now semantic, so a simple migration guide isn’t available. We recommend reading the [design token docs](/design-tokens) to further understand the new system and adapt to it.
+- Rewrote the theming API of Placer Toolkit.<br />**☢️ Nuclear breaking change (≈ 1 month):** The theming API is now semantic, so a simple migration guide isn’t available. We recommend reading the [design token docs](/design-tokens) to further understand the new system and adapt to it.
 - Added [localisation](/get-started/localisation) with 70 locales, covering 99,1 % of languages used on the web, across all components.
 - Added seven new components: [Dropdown Item](/components/dropdown-item), [Format Bytes](/components/format-bytes), [Format Date](/components/format-date), [Format Number](/components/format-number), [Mutation Observer](/components/mutation-observer), [Scroller](/components/scroller) and [Textarea](/components/textarea).
 - Added the Utility and Serene themes alongside the Vibrant and Muted palettes to Placer Toolkit as a result of the new theming API.
@@ -85,7 +87,7 @@ This rating flags minor changes that impact consistency or adherence to future A
     ```
 
     You may have to adjust the spacing of related elements due to this change.
-- Rewritten the [Dialog](/components/dialog) and [Drawer](/components/drawer) component to use the native [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) element. This has been done for better accessibility and to fix clipping issues.<br />**🚨 Major breaking change:** Since we have rewritten these two components, you need to make some changes to make it work as expected.
+- Rewrote the [Dialog](/components/dialog) and [Drawer](/components/drawer) component to use the native [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) element. This has been done for better accessibility and to fix clipping issues.<br />**🚨 Major breaking change:** Since we have rewritten these two components, you need to make some changes to make it work as expected.
     - The dialog/drawer must be opened/closed by toggling the `open` property instead of calling the `show()` and `hide()` methods. We recommend closing the dialog/drawer by attaching `data-dialog="close"` to the close button in the dialog/drawer.
     - Replaced the `overlay` and `panel` CSS parts with a single `dialog`/`drawer` part (alongside the native `::backdrop` pseudo‐element).
     - Replaced the `pc-request-close` event with the already existing `pc-hide` event, which now has the ability to be cancelled.
