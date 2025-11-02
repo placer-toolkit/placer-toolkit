@@ -1,0 +1,34 @@
+name: Standardise Dependabot labels
+
+on:
+    pull_request:
+        types: [opened, labeled, reopened, synchronize]
+
+jobs:
+    fix-dependabot-labels:
+        if: github.actor == "dependabot[bot]"
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repo
+              uses: actions/checkout@v4
+
+            - name: Set up GitHub CLI
+              uses: cli/cli@v3
+              with:
+                  version: latest
+
+            - name: Remove unwanted labels
+              run: |
+                  gh pr view ${{ github.event.pull_request.number }} --json labels -q ".labels[].name" | while read label; do
+                      if [[ "$label" == "javascript" ]]; then
+                          gh pr edit ${{ github.event.pull_request.number }} --remove-label "javascript"
+                          echo "Removed label: javascript"
+                      fi
+                  done
+
+            - name: Replace default dependencies label
+              run: |
+                  gh pr view ${{ github.event.pull_request.number }} --json labels -q ".labels[].name" | grep -q "^dependencies$" && \
+                      gh pr edit ${{ github.event.pull_request.number }} --remove-label dependencies
+                  gh pr edit ${{ github.event.pull_request.number }} --add-label "📦 dependencies"
+                  echo "Added label: 📦 dependencies"
