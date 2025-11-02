@@ -43,7 +43,7 @@ A bug is a _demonstrable_ problem caused by code in the library. Bug reports are
 - And **always** add a minimal sandbox that demonstrates the bug, like CodePen or JSFiddle.
 - To replicate the bug, **do** provide additional information when necessary.
 
-A minimal test case is critical to a successful bug report. It demonstrates that the bug exists in the library and not in surrounding code. Contributors should be able to understand the bug without studying your code, otherwise, they’ll probably move on to another bug.
+A minimal test sandbox is critical to a successful bug report. It demonstrates that the bug exists in the library and not in surrounding code. Contributors should be able to understand the bug without studying your code, otherwise, they’ll probably move on to another bug.
 
 ### Feature requests
 
@@ -63,7 +63,15 @@ To keep the project on track, please consider the following guidelines before su
 - Also open your PR against the `main` branch.
 - **Never** edit anything in **cdn** and **dist** folders. These files are generated automatically, so you **must** edit the source files instead.
 
-The author reserves the right to reject any PR that’s outside the scope of the project or doesn’t meet code quality standards.
+The maintainer reserves the right to reject any PR that’s outside the scope of the project or doesn’t meet code quality standards.
+
+### Branches
+
+Placer Toolkit has three main branches used for different purposes.
+
+- `main`: This branch reflects ongoing development in Placer Toolkit. All PRs must be submitted to this branch. Any changes made in this branch can be previewed in [preview-placer-toolkit.netlify.app](https://preview-placer-toolkit.netlify.app).
+- `1.0-deploy`: This branch reflects the latest Placer Toolkit v1 release and powers [placer-toolkit.netlify.app](https://placer-toolkit.netlify.app).
+- `pre-1.0-deploy`: This branch contains a historical archive of the Placer Toolkit v0.5.1 version. You can find the historical snapshot on [v0-placer-toolkit.netlify.app](https://v0-placer-toolkit.netlify.app).
 
 ## Developing
 
