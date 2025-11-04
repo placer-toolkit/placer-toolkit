@@ -2,6 +2,8 @@
     --color: var(--pc-color-surface-border);
     --stroke-width: var(--pc-panel-border-width);
     --spacing: var(--pc-content-spacing);
+
+    flex-shrink: 0;
 }
 
 :host([orientation="horizontal"]) {
