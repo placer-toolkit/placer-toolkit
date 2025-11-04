@@ -14,7 +14,7 @@ export default function remarkGitHubLinker({ owner, repo, token }) {
 
         const endpoints = [
             { type: "pull", url: `${base}/pull/${number}` },
-            { type: "issue", url: `${base}/issues/${number}` },
+            { type: "issues", url: `${base}/issues/${number}` },
         ];
 
         for (const { type, url } of endpoints) {
