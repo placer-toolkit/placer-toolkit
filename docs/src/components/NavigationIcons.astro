@@ -11,20 +11,22 @@ const { is992Size, slotName, variant = "outlined" } = Astro.props;
     aria-label="Navigation icons"
     slot={slotName}
 >
-    <pc-button
-        size="small"
-        variant={variant}
-        href="https://v0-placer-toolkit.netlify.app"
-        rel="noreferrer noopener"
-        target="_blank"
-    >
-        <pc-icon
-            class="icon-expand"
-            library="default"
-            icon-style="solid"
-            name="backward"
-            label="Placer Toolkit v0 docs"></pc-icon>
-    </pc-button>
+    <pc-tooltip content="The v0 site is not GDPR‐compliant" placement="left">
+        <pc-button
+            size="small"
+            variant={variant}
+            href="https://v0-placer-toolkit.netlify.app"
+            rel="noreferrer noopener"
+            target="_blank"
+        >
+            <pc-icon
+                class="icon-expand"
+                library="default"
+                icon-style="solid"
+                name="backward"
+                label="Placer Toolkit v0 docs"></pc-icon>
+        </pc-button>
+    </pc-tooltip>
     <pc-button
         size="small"
         variant={variant}
