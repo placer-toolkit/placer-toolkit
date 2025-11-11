@@ -16,6 +16,8 @@ jobs:
               uses: actions/checkout@v4
               
             - name: Remove unwanted labels
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   gh pr view ${{ github.event.pull_request.number }} --json labels -q ".labels[].name" | while read label; do
                       if [[ "$label" == "javascript" ]]; then
