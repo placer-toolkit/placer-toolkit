@@ -27,6 +27,8 @@ jobs:
                   done
 
             - name: Replace default dependencies label
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
                   gh pr view ${{ github.event.pull_request.number }} --json labels -q ".labels[].name" | grep -q "^dependencies$" && \
                       gh pr edit ${{ github.event.pull_request.number }} --remove-label dependencies
