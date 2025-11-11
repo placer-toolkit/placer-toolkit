@@ -14,11 +14,6 @@ jobs:
         steps:
             - name: Check out repo
               uses: actions/checkout@v4
-
-            - name: Set up GitHub CLI
-              uses: actions/setup-gh@v2
-              with:
-                version: latest
               
             - name: Remove unwanted labels
               run: |
