@@ -16,10 +16,8 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Set up GitHub CLI
-              uses: cli/cli@v2
-              with:
-                  version: latest
-
+              uses: cli/cli@2
+              
             - name: Remove unwanted labels
               run: |
                   gh pr view ${{ github.event.pull_request.number }} --json labels -q ".labels[].name" | while read label; do
