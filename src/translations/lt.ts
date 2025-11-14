@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Klaida",
     goToSlide: (slide, count) => `Eiti į ${slide} iš ${count} skaidrę`,
     hidePassword: "Slėpti slaptažodį",
+    hue: "Spalvos tonas",
     loading: "Įkeliama…",
     nextSlide: "Kita skaidrė",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} parinktys pasirinktos`;
         }
     },
+    opacity: "Nepermatomumas",
     pickAColorFromTheScreen: "Pasirinkite spalvą iš ekrano",
     previousSlide: "Ankstesnė skaidrė",
     progress: "Eiga",

@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Errore",
     goToSlide: (slide, count) => `Vai alla diapositiva ${slide} di ${count}`,
     hidePassword: "Nascondi password",
+    hue: "Tonalità",
     loading: "In caricamento…",
     nextSlide: "Prossima diapositiva",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opzioni selezionate`;
         }
     },
+    opacity: "Opacità",
     pickAColorFromTheScreen: "Seleziona un colore dallo schermo",
     previousSlide: "Diapositiva precedente",
     progress: "Avanzamento",

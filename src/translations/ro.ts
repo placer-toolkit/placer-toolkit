@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Eroare",
     goToSlide: (slide, count) => `Du‐te la slide‐ul ${slide} din ${count}`,
     hidePassword: "Ascunde parola",
+    hue: "Ton de culoare",
     loading: "Se încarcă…",
     nextSlide: "Slide‐ul următor",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opțiuni selectate`;
         }
     },
+    opacity: "Opacitate",
     pickAColorFromTheScreen: "Alege o culoare de pe ecran",
     previousSlide: "Slide‐ul anterior",
     progress: "Progres",

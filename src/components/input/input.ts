@@ -61,8 +61,8 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
 
     private readonly hasSlotController = new HasSlotController(
         this,
-        "hint",
         "label",
+        "hint",
     );
     private readonly localize = new LocalizeController(this);
 

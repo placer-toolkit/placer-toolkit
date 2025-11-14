@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Earráid",
     goToSlide: (slide, count) => `Téigh go sleamhnán ${slide} de ${count}`,
     hidePassword: "Folaigh an pasfhocal",
+    hue: "Tóin datha",
     loading: "Lódáil…",
     nextSlide: "An chéad sleamhnán eile",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} roghanna roghnaithe`;
         }
     },
+    opacity: "Trédhearcacht",
     pickAColorFromTheScreen: "Roghnaigh dath ón scáileán",
     previousSlide: "Sleamhnán roimhe",
     progress: "Dul chun cinn",

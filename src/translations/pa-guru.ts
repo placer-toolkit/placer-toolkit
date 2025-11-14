@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "ਗਲਤੀ",
     goToSlide: (slide, count) => `ਸਲਾਈਡ ${slide} 'ਤੇ ਜਾਓ ${count} ਵਿੱਚੋਂ`,
     hidePassword: "ਪਾਸਵਰਡ ਲੁਕਾਓ",
+    hue: "ਰੰਗ ਟੋਨ",
     loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
     nextSlide: "ਅਗਲੀ ਸਲਾਈਡ",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} ਵਿਕਲਪ ਚੁਣੇ ਗਏ`;
         }
     },
+    opacity: "ਅਪਾਰਦਰਸ਼ਤਾ",
     pickAColorFromTheScreen: "ਸਕ੍ਰੀਨ ਤੋਂ ਇੱਕ ਰੰਗ ਚੁਣੋ",
     previousSlide: "ਪਿਛਲੀ ਸਲਾਈਡ",
     progress: "ਤਰੱਕੀ",

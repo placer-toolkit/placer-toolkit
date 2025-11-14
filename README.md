@@ -45,7 +45,7 @@ npm run preview # To spin up the production server provided by Astro
 
 ## 📄 Licence
 
-This project is licenced under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](LICENSE.md).
 
 ## 💖 Special thanks
 
@@ -57,6 +57,6 @@ Placer Toolkit was built with the help of these fantastic libraries:
 - [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)
 - [Pagefind](https://pagefind.app)
 
-Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licenced under the [MIT License](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md). More recently, elements of [Web Awesome](https://webawesome.com) have also influenced Placer Toolkit’s development.
+Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licensed under the [MIT License](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md). More recently, elements of [Web Awesome](https://webawesome.com) have also influenced Placer Toolkit’s development.
 
 © 2025 Placer and its contributors

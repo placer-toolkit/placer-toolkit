@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Błąd",
     goToSlide: (slide, count) => `Przejdź do slajdu ${slide} z ${count}`,
     hidePassword: "Ukryj hasło",
+    hue: "Odcień",
     loading: "Ładowanie…",
     nextSlide: "Następny slajd",
     numOptionsSelected: (number) => {
@@ -35,6 +36,7 @@ const translation: Translation = {
             return `Wybrano ${number} opcji`;
         }
     },
+    opacity: "Krycie",
     pickAColorFromTheScreen: "Wybierz kolor z ekranu",
     previousSlide: "Poprzedni slajd",
     progress: "Postęp",

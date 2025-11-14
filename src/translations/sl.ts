@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Napaka",
     goToSlide: (slide, count) => `Pojdi na diapozitiv ${slide} od ${count}`,
     hidePassword: "Skrij geslo",
+    hue: "Ton barve",
     loading: "Nalaganje…",
     nextSlide: "Naslednji diapozitiv",
     numOptionsSelected: (number) => {
@@ -30,6 +31,7 @@ const translation: Translation = {
             return `${number} možnosti je izbranih`;
         }
     },
+    opacity: "Motnost",
     pickAColorFromTheScreen: "Izberi barvo z zaslona",
     previousSlide: "Prejšnji diapozitiv",
     progress: "Napredek",
