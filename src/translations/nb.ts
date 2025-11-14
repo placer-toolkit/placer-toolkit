@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Feil",
     goToSlide: (slide, count) => `Gå til lysbilde ${slide} av ${count}`,
     hidePassword: "Skjul passord",
+    hue: "Fargetone",
     loading: "Laster…",
     nextSlide: "Neste lysbilde",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} alternativer valgt`;
         }
     },
+    opacity: "Gjennomsiktighet",
     pickAColorFromTheScreen: "Velg en farge fra skjermen",
     previousSlide: "Forrige lysbilde",
     progress: "Fremdrift",

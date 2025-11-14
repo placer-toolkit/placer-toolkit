@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Errorea",
     goToSlide: (slide, count) => `Joan ${slide}. diapositibara, ${count}‐etik`,
     hidePassword: "Ezkutatu pasahitza",
+    hue: "Kolore‐tona",
     loading: "Kargatzen…",
     nextSlide: "Hurrengo diapositiba",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} aukera hautatuta`;
         }
     },
+    opacity: "Opakutasuna",
     pickAColorFromTheScreen: "Hautatu kolore bat pantailatik",
     previousSlide: "Aurreko diapositiba",
     progress: "Aurrerapena",

@@ -17,6 +17,7 @@ const translation: Translation = {
     error: "خطا",
     goToSlide: (slide, count) => `رفتن به اسلاید ${slide}‏ از ${count}‏`,
     hidePassword: "پنهان کردن رمز عبور",
+    hue: "تون رنگ",
     loading: "در حال بارگذاری…",
     nextSlide: "اسلاید بعدی",
     numOptionsSelected: (number) => {
@@ -28,6 +29,7 @@ const translation: Translation = {
             return `${number}‏ گزینه انتخاب شده‌اند`;
         }
     },
+    opacity: "شفافیت",
     pickAColorFromTheScreen: "انتخاب رنگ از روی صفحه",
     previousSlide: "اسلاید قبلی",
     progress: "پیشرفت",

@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Feilur",
     goToSlide: (slide, count) => `Far til myndaflok ${slide} av ${count}`,
     hidePassword: "Fjal loyniorð",
+    hue: "Litútónn",
     loading: "Løðir…",
     nextSlide: "Næsti myndaflokkur",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} val eru vald`;
         }
     },
+    opacity: "Gjøgnumsæi",
     pickAColorFromTheScreen: "Vel ein lit av skíggjanum",
     previousSlide: "Fyrri myndaflokkur",
     progress: "Framgongd",

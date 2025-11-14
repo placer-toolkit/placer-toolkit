@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "エラー",
     goToSlide: (slide, count) => `${count}枚中${slide}枚のスライドに移動`,
     hidePassword: "パスワードを隠す",
+    hue: "色相",
     loading: "読み込み中…",
     nextSlide: "次のスライド",
     numOptionsSelected: (number) => {
@@ -24,6 +25,7 @@ const translation: Translation = {
             return `${number}個の項目が選択されました`;
         }
     },
+    opacity: "不透明度",
     pickAColorFromTheScreen: "画面から色を選択してください",
     previousSlide: "前のスライド",
     progress: "進行",

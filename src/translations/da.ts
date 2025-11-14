@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Fejl",
     goToSlide: (slide, count) => `Gå til dias ${slide} af ${count}`,
     hidePassword: "Skjul adgangskode",
+    hue: "Farvetone",
     loading: "Indlæser…",
     nextSlide: "Næste dias",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} valgt`;
         }
     },
+    opacity: "Gennemsigtighed",
     pickAColorFromTheScreen: "Vælg en farve fra skærmen",
     previousSlide: "Forrige dias",
     progress: "Status",

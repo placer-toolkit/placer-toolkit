@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Żball",
     goToSlide: (slide, count) => `Mur fuq is‐slajd ${slide} minn ${count}`,
     hidePassword: "Aħbi l‐password",
+    hue: "Ton ta’ kulur",
     loading: "Tagħbija…",
     nextSlide: "Slajd li jmiss",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} għażliet magħżula`;
         }
     },
+    opacity: "Opaċità",
     pickAColorFromTheScreen: "Agħżel kulur mill‐iskrin",
     previousSlide: "Slajd preċedenti",
     progress: "Progress",

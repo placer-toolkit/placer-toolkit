@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Kļūda",
     goToSlide: (slide, count) => `Iet uz slaidu ${slide} no ${count}`,
     hidePassword: "Slēpt paroli",
+    hue: "Krāsas tonis",
     loading: "Notiek ielāde…",
     nextSlide: "Nākamais slaids",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `Izvēlētas ${number} opcijas`;
         }
     },
+    opacity: "Necaurredzamība",
     pickAColorFromTheScreen: "Izvēlieties krāsu no ekrāna",
     previousSlide: "Iepriekšējais slaids",
     progress: "Progress",

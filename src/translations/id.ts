@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Kesalahan",
     goToSlide: (slide, count) => `Ke slide ${slide} dari ${count}`,
     hidePassword: "Sembunyikan kata sandi",
+    hue: "Nada warna",
     loading: "Memuat…",
     nextSlide: "Slide berikutnya",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opsi dipilih`;
         }
     },
+    opacity: "Opasitas",
     pickAColorFromTheScreen: "Pilih warna dari layar",
     previousSlide: "Slide sebelumnya",
     progress: "Progres",

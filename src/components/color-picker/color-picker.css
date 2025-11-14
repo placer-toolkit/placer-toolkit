@@ -1,0 +1,411 @@
+:host {
+    --grid-width: 17em;
+    --grid-height: 12em;
+    --grid-handle-size: 1.25em;
+    --slider-height: 1em;
+    --slider-thumb-size: calc(var(--slider-height) + 0.25em);
+    --swatch-size: 1.5em;
+}
+
+.color-picker {
+    inline-size: var(--grid-width);
+    background-color: var(--pc-color-surface-raised);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-surface-border);
+    border-radius: var(--pc-border-radius-l);
+    font-family: var(--pc-font-sans);
+    font-size: inherit;
+    font-weight: var(--pc-font-weight-normal);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.color-picker.inline {
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-surface-border);
+}
+
+.color-picker.inline:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.color-picker.inline .label,
+.color-picker.inline .label * {
+    position: absolute !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    width: 1px !important;
+    height: 1px !important;
+    clip-path: inset(50%) !important;
+    border: none !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}
+
+.grid {
+    position: relative;
+    block-size: var(--grid-height);
+    background-image:
+        linear-gradient(to bottom, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 100%) 100%),
+        linear-gradient(
+            to right,
+            rgb(255 255 255 / 100%) 0%,
+            rgb(255 255 255 / 0%) 100%
+        );
+    border-start-start-radius: var(--pc-border-radius-l);
+    border-start-end-radius: var(--pc-border-radius-l);
+    cursor: crosshair;
+    forced-color-adjust: none;
+}
+
+.grid-handle {
+    position: absolute;
+    margin-top: calc(var(--grid-handle-size) / -2);
+    margin-left: calc(var(--grid-handle-size) / -2);
+    inline-size: var(--grid-handle-size);
+    block-size: var(--grid-handle-size);
+    border: var(--pc-border-width-m) var(--pc-border-style)
+        var(--pc-color-neutral-95);
+    border-radius: var(--pc-border-radius-circle);
+    box-shadow: 0 0 0 var(--pc-border-width-s)
+        color-mix(in oklab, var(--pc-color-neutral-05) 25%, transparent);
+    z-index: 1;
+    transition: scale var(--pc-transition-fast) ease-in-out;
+}
+
+.grid-handle.dragging {
+    scale: 1.5;
+    cursor: none;
+}
+
+.grid-handle:focus-visible {
+    outline: var(--pc-focus-ring);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    padding: var(--pc-spacing-m);
+}
+
+.sliders {
+    flex: 1 1 auto;
+}
+
+.slider {
+    position: relative;
+    block-size: var(--slider-height);
+    border-radius: var(--pc-border-radius-pill);
+    box-shadow: inset 0 0 0 var(--pc-border-style)
+        color-mix(in oklab, var(--pc-color-neutral-05) 20%, transparent);
+    forced-color-adjust: none;
+}
+
+.slider:not(:last-of-type) {
+    margin-block-end: var(--pc-spacing-s);
+}
+
+.slider .slider-thumb {
+    position: absolute;
+    top: calc(50% - var(--slider-thumb-size) / 2);
+    margin-left: calc(var(--slider-thumb-size) / -2);
+    inline-size: var(--slider-thumb-size);
+    block-size: var(--slider-thumb-size);
+    background-color: var(--pc-color-neutral-95);
+    border-radius: var(--pc-border-radius-circle);
+    box-shadow: color-mix(
+        in oklab,
+        var(--pc-color-neutral-05) 25%,
+        transparent
+    );
+}
+
+.slider .slider-thumb:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.hue-slider {
+    background-image: linear-gradient(
+        to right,
+        hsl(0 100% 50%) 0%,
+        hsl(60 100% 50%) 16.7%,
+        hsl(120 100% 50%) 33.3%,
+        hsl(180 100% 50%) 50%,
+        hsl(240 100% 50%) 66.7%,
+        hsl(300 100% 50%) 83.3%,
+        hsl(360 100% 50%) 100%
+    );
+}
+
+.alpha-slider .alpha-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: inherit;
+}
+
+.preview {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-inline-start: var(--pc-spacing-m);
+    inline-size: 2.25rem;
+    block-size: 2.25rem;
+    background-color: transparent;
+    border: none;
+    border-radius: var(--pc-border-radius-circle);
+    forced-color-adjust: none;
+}
+
+.preview::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: var(--preview-color);
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 var(--pc-border-width-s)
+        color-mix(in oklab, var(--pc-color-neutral-05) 20%, transparent);
+}
+
+.user-input {
+    display: flex;
+    padding-inline: var(--pc-spacing-m);
+    padding-block-start: 0;
+    padding-block-end: var(--pc-spacing-m);
+}
+
+.user-input pc-input {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+}
+
+.user-input pc-input::part(input) {
+    padding-inline-end: var(--pc-spacing-xxs);
+    background-color: var(--pc-color-surface-raised);
+    overflow: visible;
+}
+
+/* Bug: This does not remove the focus ring for some reason. */
+.user-input pc-input:has(> pc-copy-button:focus-visible) {
+    --pc-focus-ring: none;
+}
+
+.user-input pc-input pc-copy-button {
+    margin-inline-start: var(--pc-spacing-xs);
+}
+
+.user-input pc-input.empty::part(input) {
+    padding-inline-end: var(--pc-form-control-padding-inline);
+}
+
+.user-input pc-input.empty pc-copy-button {
+    display: none;
+}
+
+.user-input pc-copy-button::part(button) {
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    color: var(--pc-color-text-normal);
+}
+
+.user-input pc-copy-button::part(success-icon) {
+    color: var(--pc-color-success-on-quiet);
+}
+
+.user-input pc-copy-button::part(error-icon) {
+    color: var(--pc-color-danger-on-quiet);
+}
+
+@media (hover: hover) {
+    .user-input pc-copy-button::part(button):hover {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-text-normal),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.user-input pc-copy-button::part(button):active {
+    color: color-mix(
+        in oklab,
+        var(--pc-color-text-normal),
+        var(--pc-color-mix-active)
+    );
+}
+
+.user-input pc-button-group {
+    margin-inline-start: var(--pc-spacing-s);
+}
+
+.user-input pc-button:first-of-type {
+    min-inline-size: 3.25em;
+    max-inline-size: 3.25em;
+}
+
+.swatches {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--pc-spacing-s);
+    padding: var(--pc-spacing-m);
+    border-block-start: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-surface-border);
+}
+
+.swatches .swatch {
+    position: relative;
+    inline-size: var(--swatch-size);
+    block-size: var(--swatch-size);
+    border-radius: var(--pc-border-radius-circle);
+    forced-color-adjust: none;
+}
+
+.swatches .swatch:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.swatches .swatch .swatch-color {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    border: solid 1px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 0 0 var(--pc-border-width-s)
+        color-mix(in oklab, var(--pc-color-neutral-05) 20%, transparent);
+    border-radius: inherit;
+    cursor: pointer;
+}
+
+.pixel-background {
+    background-image:
+        linear-gradient(
+            45deg,
+            var(--pc-color-neutral-fill-normal) 25%,
+            transparent 25%
+        ),
+        linear-gradient(
+            45deg,
+            transparent 75%,
+            var(--pc-color-neutral-fill-normal) 75%
+        ),
+        linear-gradient(
+            45deg,
+            transparent 75%,
+            var(--pc-color-neutral-fill-normal) 75%
+        ),
+        linear-gradient(
+            45deg,
+            var(--pc-color-neutral-fill-normal) 25%,
+            transparent 25%
+        );
+    background-size: 0.5rem 0.5rem;
+    background-position:
+        0 0,
+        0 0,
+        -0.25rem -0.25rem,
+        0.25rem 0.25rem;
+}
+
+.color-picker.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.color-picker.disabled .grid,
+.color-picker.disabled .grid-handle,
+.color-picker.disabled .sliders .slider,
+.color-picker.disabled .sliders .slider .slider-thumb,
+.color-picker.disabled .preview,
+.color-picker.disabled .swatches .swatch,
+.color-picker.disabled .swatches .swatch .swatch-color {
+    pointer-events: none;
+}
+
+.color-popup::part(popup) {
+    max-block-size: none;
+    overflow: visible;
+}
+
+.popup-trigger {
+    display: inline-block;
+    position: relative;
+    inline-size: var(--pc-form-control-height);
+    block-size: var(--pc-form-control-height);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--pc-border-radius-m);
+    font-size: inherit;
+    cursor: pointer;
+    forced-color-adjust: none;
+}
+
+.popup-trigger::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: inherit;
+    background-color: currentColor;
+    box-shadow:
+        inset 0 0 0 var(--pc-border-width-m) var(--pc-color-surface-border),
+        inset 0 0 0 var(--pc-border-width-xl) var(--pc-color-surface-default);
+}
+
+.popup-trigger.empty::before {
+    background-color: transparent;
+}
+
+.popup-trigger:focus-visible {
+    outline: none;
+}
+
+.popup-trigger:focus-visible:not([disabled]) {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.popup-trigger[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

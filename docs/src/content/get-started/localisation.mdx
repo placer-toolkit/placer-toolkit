@@ -22,7 +22,7 @@ Through the magic of a mutation observer, changing the `lang` attribute will aut
 
 ## Available translations
 
-Placer Toolkit ships with a number of translations. The default is English (United States), which also serves as the fallback locale. As such, you do not need to import the English translation.
+Placer Toolkit ships with a number of translations. The default is English, which also serves as the fallback locale. As such, you do not need to import the English translation.
 
 We will list the available translations categorised by language family.
 
@@ -31,16 +31,16 @@ We will list the available translations categorised by language family.
 #### Germanic
 
 - Dansk (da)
-- Deutsch (de)
-- Deutsch (Österreich) (de-at)
-- Deutsch (Schweiz) (de-ch)
+    - Deutsch (de)
+    - Deutsch (Österreich) (de-at)
+    - Deutsch (Schweiz) (de-ch)
 - English (en)
-- English (United Kingdom) (en-gb)
+    - English (United Kingdom) (en-gb)
 - Føroyskt (fo)
 - Íslenska (is)
 - Lëtzebuergesch (lb)
 - Nederlands (nl)
-- Nederlands (België) (nl-be)
+    - Nederlands (België) (nl-be)
 - Norsk bokmål (nb)
 - Norsk nynorsk (nn)
 - Svenska (sv)
@@ -48,14 +48,15 @@ We will list the available translations categorised by language family.
 #### Romance
 
 - Català (ca)
-- Español (España) (es-es)
-- Español (Latinoamérica) (es-419)
+- Español (es)
+    - Español (España) (es-es)
 - Français (fr)
 - Français (Canada) (fr-ca)
 - Italiano (it)
 - Română (ro)
-- Português Brasileiro (pt-br)
-- Português Europeu (pt-pt)
+- Português (pt)
+    - Português do Brasil (pt-br)
+    - Português Europeu (pt-pt)
 
 #### Slavic
 
@@ -77,7 +78,7 @@ We will list the available translations categorised by language family.
 - हिन्दी (hi)
 - मराठी (mr)
 - پنجابی (pa)
-- ਪੰਜਾਬੀ (ਗੁਰਮੁਖੀ) (pa-guru)
+    - ਪੰਜਾਬੀ (ਗੁਰਮੁਖੀ) (pa-guru)
 - اردو (ur)
 
 #### Celtic
@@ -262,15 +263,17 @@ This limitation exists because there isn’t an efficient way to determine the c
 
 You can provide your own translations if you have specific needs or if you don’t want to wait for a translation to land upstream. The easiest way to do this is to copy `src/translations/en.ts` into your own project and translate the terms inside. When your translation is done, you can import it and use it just like a built‐in translation.
 
-Let’s create a Spanish (Spain) translation as an example. The following example assumes that you’re using TypeScript, but you can also create translations with regular JavaScript.
+Let’s create a Spanish translation as an example. The following example assumes that you’re using TypeScript, but you can also create translations with regular JavaScript.
+
+{/* cSpell:disable */}
 
 ```typescript
 import { registerTranslation } from "placer-toolkit/dist/translations/index.js";
 import type { Translation } from "placer-toolkit/dist/utilities/localize.js";
 
 const translation: Translation = {
-    $code: "es-es",
-    $name: "Español (España)",
+    $code: "es",
+    $name: "Español",
     $dir: "ltr",
 
     carousel: "Carrusel",
@@ -282,6 +285,7 @@ const translation: Translation = {
     error: "Error",
     goToSlide: (slide, count) => `Ir a la diapositiva ${slide} de ${count}`,
     hidePassword: "Ocultar contraseña",
+    hue: "Tono",
     loading: "Cargando…",
     nextSlide: "Siguiente diapositiva",
     numOptionsSelected: (number) => {
@@ -293,23 +297,26 @@ const translation: Translation = {
             return `${number} opciones seleccionadas`;
         }
     },
-    pickAColorFromTheScreen: "Seleccionad un color de la pantalla",
+    opacity: "Opacidad",
+    pickAColorFromTheScreen: "Seleccione un color de la pantalla",
     previousSlide: "Diapositiva anterior",
     progress: "Progreso",
     remove: "Eliminar",
     resize: "Cambiar tamaño",
     scrollableRegion: "Región desplazable",
-    scrollToEnd: "Desplazaos hasta el final",
-    scrollToStart: "Desplazaos al inicio",
+    scrollToEnd: "Desplácese hasta el final",
+    scrollToStart: "Desplácese al inicio",
     showPassword: "Mostrar contraseña",
     slideNum: (slide) => `Diapositiva ${slide}`,
-    toggleColorFormat: "Alternar el formato de color",
+    toggleColorFormat: "Alternar formato de color",
 };
 
 registerTranslation(translation);
 
 export default translation;
 ```
+
+{/* cSpell:enable */}
 
 Once your translation has been compiled to JavaScript, import and activate it like this.
 

@@ -15,5 +15,5 @@
 }
 
 .button-group.has-outlined ::slotted(:not(:first-child)) {
-    margin-inline-start: calc(-1 * var(--pc-spacing-xxs));
+    margin-inline-start: calc(-1 * var(--pc-spacing-xxxs));
 }

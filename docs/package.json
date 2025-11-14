@@ -9,13 +9,13 @@
         "astro": "astro"
     },
     "dependencies": {
-        "@astrojs/mdx": "^4.3.8",
+        "@astrojs/mdx": "^4.3.10",
         "@astrojs/sitemap": "^3.6.0",
         "@pagefind/default-ui": "^1.4.0",
-        "astro": "^5.15.1",
+        "astro": "^5.15.7",
         "highlight.js": "^11.11.1",
         "node-fetch": "^3.3.2",
-        "placer-toolkit": "^1.0.0-alpha.1",
+        "placer-toolkit": "file:../placer-toolkit-1.0.0-alpha.2.tgz",
         "sharp": "^0.34.4"
     },
     "devDependencies": {
