@@ -16,6 +16,7 @@ const translation: Translation = {
     goToSlide: (slide, count) =>
         `${count} स्लाइड में से स्लाइड ${slide} पर जाएँ`,
     hidePassword: "पासवर्ड छुपाएँ",
+    hue: "रंग छटा",
     loading: "लोड हो रहा है…",
     nextSlide: "अगली स्लाइड",
     numOptionsSelected: (number) => {
@@ -27,6 +28,7 @@ const translation: Translation = {
             return `${number} विकल्प चयनित`;
         }
     },
+    opacity: "अपारदर्शिता",
     pickAColorFromTheScreen: "स्क्रीन से रंग चुनें",
     previousSlide: "पिछली स्लाइड",
     progress: "प्रगति",

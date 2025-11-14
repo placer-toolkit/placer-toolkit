@@ -17,6 +17,7 @@ const translation: Translation = {
     error: "خرابی",
     goToSlide: (slide, count) => `سلائیڈ ${slide}‏ پر جائیں ${count}‏ میں سے`,
     hidePassword: "پاس ورڈ چھپائیں",
+    hue: "رنگ ٹون",
     loading: "لوڈنگ ہو رہی ہے…",
     nextSlide: "اگلی سلائیڈ",
     numOptionsSelected: (number) => {
@@ -28,6 +29,7 @@ const translation: Translation = {
             return `${number}‏ آپشنز منتخب کیے گئے ہیں`;
         }
     },
+    opacity: "بے شفافیت",
     pickAColorFromTheScreen: "اسکرین سے ایک رنگ منتخب کریں",
     previousSlide: "پچھلی سلائیڈ",
     progress: "ترقی",

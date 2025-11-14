@@ -16,6 +16,7 @@ const translation: Translation = {
     goToSlide: (slide, count) =>
         `Ugrás ${[1, 5, 6, 7, 8, 10].includes(slide) ? "az" : "a"} ${slide}. diára ${[1, 5, 6, 7, 8, 10].includes(count) ? "az" : "a"} ${count} diából`,
     hidePassword: "Jelszó elrejtése",
+    hue: "Színtónus",
     loading: "Betöltés…",
     nextSlide: "Következő dia",
     numOptionsSelected: (number) => {
@@ -27,6 +28,7 @@ const translation: Translation = {
             return `${number} opció kiválasztva`;
         }
     },
+    opacity: "Átlátszatlanság",
     pickAColorFromTheScreen: "Válassz egy színt a képernyőről",
     previousSlide: "Előző dia",
     progress: "Folyamat",

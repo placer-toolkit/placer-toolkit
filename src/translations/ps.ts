@@ -17,6 +17,7 @@ const translation: Translation = {
     error: "تېروتنه",
     goToSlide: (slide, count) => `سلايډ ${slide}‏ ته لاړ شئ له ${count}‏ څخه`,
     hidePassword: "پاسورډ پټول",
+    hue: "د رنګ ټون",
     loading: "په بارولو کې دی…",
     nextSlide: "راتلونکی سلايډ",
     numOptionsSelected: (number) => {
@@ -28,6 +29,7 @@ const translation: Translation = {
             return `${number}‏ انتخابونه شوي دي`;
         }
     },
+    opacity: "روڼتیا",
     pickAColorFromTheScreen: "د سکرین څخه یو رنګ وټاکئ",
     previousSlide: "مخکینی سلايډ",
     progress: "پرمختګ",

@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Помилка",
     goToSlide: (slide, count) => `Перейти до слайда ${slide} з ${count}`,
     hidePassword: "Приховати пароль",
+    hue: "Відтінок",
     loading: "Завантаження…",
     nextSlide: "Наступний слайд",
     numOptionsSelected: (number) => {
@@ -35,6 +36,7 @@ const translation: Translation = {
             return `Вибрано ${number} варіантів`;
         }
     },
+    opacity: "Непрозорість",
     pickAColorFromTheScreen: "Виберіть колір на екрані",
     previousSlide: "Попередній слайд",
     progress: "Прогрес",

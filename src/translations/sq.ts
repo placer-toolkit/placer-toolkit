@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Gabim",
     goToSlide: (slide, count) => `Shko te diapozitivi ${slide} nga ${count}`,
     hidePassword: "Fshih fjalëkalimin",
+    hue: "Ton ngjyre",
     loading: "Duke u ngarkuar…",
     nextSlide: "Diapozitivi tjetër",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opsione u zgjodhën`;
         }
     },
+    opacity: "Patejdukshmëri",
     pickAColorFromTheScreen: "Zgjidh një ngjyrë nga ekrani",
     previousSlide: "Diapozitivi i mëparshëm",
     progress: "Progresi",

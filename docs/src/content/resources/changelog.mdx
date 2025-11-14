@@ -41,23 +41,36 @@ This rating applies to smaller, localised changes that affect only a minority of
 
 This rating flags minor changes that impact consistency or adherence to future API standards. It affects component usage going forward but does not break current functionality. A simple migration guide is always provided (e.g., the focus ring animation update in v1.0.0-alpha.1).
 
-## Preview
+## 1.0.0-alpha.2
+
+### Milestones
+
+- Added one new component: [Color Picker](/components/color-picker). [github#24]
 
 ### Security vulnerability fixes
 
-- Bumped the Vite package in the Placer Toolkit docs from 6.3.6 to 6.4.1 with a severity rating of 6,0/10. See more details on this topic [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/1). [github#5]
+- Upgraded the Astro package in the Placer Toolkit docs from 5.15.1 to 5.15.6, addressing a severity 6,5/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/3). [github#24]
+- Upgraded the Vite package in the Placer Toolkit docs from 6.3.6 to 6.4.1, addressing a severity 6,0/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/1). [github#5]
+- Upgraded the Astro package in the Placer Toolkit docs from 5.15.1 to 5.15.6, addressing a severity 2,7/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/2). [github#24]
 
 ### Enhancements
 
-- Added the [accessibility statement](/resources/accessibility) to comply with the [EAA](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en). [github#11]
-- Added a new **Branches** section in the [Contributing](/resources/contributing/#branches) page. [github#14]
-- Replaced Bunny Fonts with [Fontsource](https://fontsource.org) for the Placer Toolkit site to improve site performance. [github#15]
+- Published the [accessibility statement](/resources/accessibility) to comply with the [EAA](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en). [github#11]
+- Expanded the [Contributing](/resources/contributing/#branches) documentation with a new **Branches** section. [github#14]
+- Removed the `es-419` locale, replacing it with `es` (neutral Spanish). [github#24]<br />**⚠️ Breaking change:** Update all references from `es-419` to `es`; otherwise, English will be used as the fallback.
+- Introduced a base `pt` locale, with `pt-br` and `pt-pt` overrides carried over from previous versions. [github#24]
+- Replaced Bunny Fonts with [Fontsource](https://fontsource.org) on the Placer Toolkit site to improve performance. [github#15]
 
 ### Bug fixes
 
-- Fixed a grammar error regarding about the word “to rewrite” in the 1.0.0-alpha.1 changelog.
-- Fixed that the PR template doesn’t apply when creating a PR. [github#10]
-- Fixed the GitHub issue Remark plugin producing `issue` in the URL instead of `issues` when no API key is provided. [github#15]
+- Corrected the PR template so that it now applies when creating a PR. [github#10]
+- Resolved an issue in the GitHub Remark plugin that produced `issue` in URLs instead of `issues` when no API key was provided. [github#15]
+- Prevented the preview block from overflowing in small viewports. [github#24]
+
+### Known bugs
+
+- The colour picker currently does not output correct alpha values in the input.
+- The label is visible when the colour picker is inline.
 
 ## 1.0.0-alpha.1
 

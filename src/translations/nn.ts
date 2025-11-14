@@ -20,6 +20,7 @@ const translation: Translation = {
             return `${number} alternativ valde`;
         }
     },
+    opacity: "Gjennomsikt",
     pickAColorFromTheScreen: "Vel ein farge frå skjermen",
     previousSlide: "Førre lysbilde",
     progress: "Framdrift",

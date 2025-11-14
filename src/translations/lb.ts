@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "feeler",
     goToSlide: (slide, count) => `gitt op d’säit ${slide} vun ${count}`,
     hidePassword: "passwuert verstoppen",
+    hue: "faarftoun",
     loading: "lueden…",
     nextSlide: "nächst säit",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} optiounen ausgewielt`;
         }
     },
+    opacity: "duerchsichtegkeet",
     pickAColorFromTheScreen: "faarf vum bildschierm wielen",
     previousSlide: "vireg säit",
     progress: "fortschrëtt",

@@ -27,9 +27,11 @@ export interface Translation extends DefaultTranslation {
     error: string;
     goToSlide: (slide: number, count: number) => string;
     hidePassword: string;
+    hue: string;
     loading: string;
     nextSlide: string;
     numOptionsSelected: (number: number) => string;
+    opacity: string;
     pickAColorFromTheScreen: string;
     previousSlide: string;
     progress: string;
