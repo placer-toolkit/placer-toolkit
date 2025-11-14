@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Chyba",
     goToSlide: (slide, count) => `Prejsť na snímku ${slide} z ${count}`,
     hidePassword: "Skryť heslo",
+    hue: "Tón farby",
     loading: "Načítava sa…",
     nextSlide: "Ďalšia snímka",
     numOptionsSelected: (number) => {
@@ -28,6 +29,7 @@ const translation: Translation = {
             return `${number} možností je vybraných`;
         }
     },
+    opacity: "Krytie",
     pickAColorFromTheScreen: "Vybrať farbu z obrazovky",
     previousSlide: "Predchádzajúca snímka",
     progress: "Priebeh",

@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "錯誤",
     goToSlide: (slide, count) => `前往第${slide}張幻燈片，共${count}張`,
     hidePassword: "隱藏密碼",
+    hue: "色相",
     loading: "載入中……",
     nextSlide: "下一張幻燈片",
     numOptionsSelected: (number) => {
@@ -24,6 +25,7 @@ const translation: Translation = {
             return `已選擇${number}個項目`;
         }
     },
+    opacity: "不透明度",
     pickAColorFromTheScreen: "從螢幕選取顏色",
     previousSlide: "上一張幻燈片",
     progress: "進度",

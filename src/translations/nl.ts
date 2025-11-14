@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Fout",
     goToSlide: (slide, count) => `Ga naar dia ${slide} van ${count}`,
     hidePassword: "Wachtwoord verbergen",
+    hue: "Kleurtint",
     loading: "Laden…",
     nextSlide: "Volgende dia",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opties geselecteerd`;
         }
     },
+    opacity: "Dekking",
     pickAColorFromTheScreen: "Selecteer een kleur van het scherm",
     previousSlide: "Vorige dia",
     progress: "Voortgang",

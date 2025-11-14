@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Viga",
     goToSlide: (slide, count) => `Mine slaidile ${slide}/${count}`,
     hidePassword: "Peida parool",
+    hue: "Värvitoon",
     loading: "Laadimine…",
     nextSlide: "Järgmine slaid",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} valikut valitud`;
         }
     },
+    opacity: "Läbipaistmatus",
     pickAColorFromTheScreen: "Vali ekraanilt värv",
     previousSlide: "Eelmine slaid",
     progress: "Edenemine",

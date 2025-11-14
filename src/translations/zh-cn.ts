@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "错误",
     goToSlide: (slide, count) => `转到第${slide}张幻灯片，共${count}张`,
     hidePassword: "隐藏密码",
+    hue: "色相",
     loading: "加载中……",
     nextSlide: "下一张幻灯片",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number}个已选择项目`;
         }
     },
+    opacity: "不透明度",
     pickAColorFromTheScreen: "从屏幕选择颜色",
     previousSlide: "上一张幻灯片",
     progress: "进度",

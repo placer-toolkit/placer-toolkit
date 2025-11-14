@@ -17,6 +17,7 @@ const translation: Translation = {
     error: "خطأ",
     goToSlide: (slide, count) => `عرض شريحة رقم ${slide}‏ من ${count}`,
     hidePassword: "إخفاء كلمة المرور",
+    hue: "درجة اللون",
     loading: "جاري التحميل…",
     nextSlide: "الشريحة التالية",
     numOptionsSelected: (number) => {
@@ -32,6 +33,7 @@ const translation: Translation = {
             return `تم تحديد ${number}‏ خيارًا`;
         }
     },
+    opacity: "العتامة",
     pickAColorFromTheScreen: "اختر لون من الشاشة",
     previousSlide: "الشريحة السابقة",
     progress: "مقدار التقدم",

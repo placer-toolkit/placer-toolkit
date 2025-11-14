@@ -30,7 +30,7 @@ export function watch(propertyName: string | string[], options?: WatchOptions) {
     };
     return <ElemClass extends LitElement>(
         proto: ElemClass,
-        decoratedFnName: UpdateHandlerFunctionKeys<ElemClass>,
+        decoratedFnName: keyof ElemClass,
     ) => {
         // @ts-expect-error — “update” is a protected property
         const { update } = proto;
