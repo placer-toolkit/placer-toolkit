@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "त्रुटी",
     goToSlide: (slide, count) => `${count} पैकी स्लाइड ${slide} वर जा`,
     hidePassword: "पासवर्ड लपवा",
+    hue: "रंग छटा",
     loading: "लोड होत आहे…",
     nextSlide: "पुढील स्लाइड",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} पर्याय निवडलेले`;
         }
     },
+    opacity: "अस्पष्टता",
     pickAColorFromTheScreen: "स्क्रीनमधून एक रंग निवडा",
     previousSlide: "मागील स्लाइड",
     progress: "प्रगती",

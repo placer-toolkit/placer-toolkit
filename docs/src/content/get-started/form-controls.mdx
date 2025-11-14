@@ -33,7 +33,7 @@ const data = new FormData(form);
 However, some people find `FormData` tricky to work wth or they need to pass a JSON payload to their server. To accommodate this, Placer Toolkit offers a serialisation utility that gathers form data and returns a simple JavaScript object instead.
 
 ```javascript
-import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/form.js";
+import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/form.js";
 
 const form = document.querySelector("form");
 const data = serialize(form);
@@ -491,7 +491,7 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of return an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
 
 ```javascript
-import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/utilities/form.js";
+import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/form.js";
 
 const form = document.querySelector("#my-form");
 const formControls = getFormControls(form);

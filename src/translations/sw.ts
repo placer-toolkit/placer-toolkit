@@ -16,6 +16,7 @@ const translation: Translation = {
     goToSlide: (slide, count) =>
         `Nenda kwenye slaidi ${slide} kati ya ${count}`,
     hidePassword: "Ficha nenosiri",
+    hue: "Tona y rangi",
     loading: "Inapakia…",
     nextSlide: "Slaidi inayofuata",
     numOptionsSelected: (number) => {
@@ -27,6 +28,7 @@ const translation: Translation = {
             return `Chaguo ${number} zimechaguliwa`;
         }
     },
+    opacity: "Uwazi",
     pickAColorFromTheScreen: "Chagua rangi kutoka kwenye skrini",
     previousSlide: "Slaidi iliyopita",
     progress: "Maendeleo",

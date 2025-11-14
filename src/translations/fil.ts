@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Error",
     goToSlide: (slide, count) => `Pumunta sa slide ${slide} ng ${count}`,
     hidePassword: "Itago ang password",
+    hue: "Tono ng kulay",
     loading: "Naglo‐load…",
     nextSlide: "Susunod na slide",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opsyon ang napili`;
         }
     },
+    opacity: "Opasitas",
     pickAColorFromTheScreen: "Pumili ng kulay mula sa screen",
     previousSlide: "Nakaraang slide",
     progress: "Pag‐usad",

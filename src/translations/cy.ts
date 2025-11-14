@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Gwall",
     goToSlide: (slide, count) => `Ewch i sleid ${slide} o ${count}`,
     hidePassword: "Cuddio cyfrinair",
+    hue: "Tôn lliw",
     loading: "Llwytho…",
     nextSlide: "Sleid nesaf",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} opsiwn wedi’u dewis`;
         }
     },
+    opacity: "Tryloywder",
     pickAColorFromTheScreen: "Dewiswch liw o’r sgrin",
     previousSlide: "Sleid flaenorol",
     progress: "Cynnydd",

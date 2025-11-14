@@ -16,6 +16,7 @@ const translation: Translation = {
     goToSlide: (slide, count) =>
         `Μετάβαση στην διαφάνεια ${slide} από ${count}`,
     hidePassword: "Απόκρυψη κωδικού",
+    hue: "Τόνος χρώματος",
     loading: "Φόρτωση…",
     nextSlide: "Επόμενη διαφάνεια",
     numOptionsSelected: (number) => {
@@ -27,6 +28,7 @@ const translation: Translation = {
             return `${number} επιλογές επιλεγμένες`;
         }
     },
+    opacity: "Αδιαφάνεια",
     pickAColorFromTheScreen: "Επιλέξτε ένα χρώμα από την οθόνη",
     previousSlide: "Προηγούμενη διαφάνεια",
     progress: "Πρόοδος",

@@ -1,4 +1,4 @@
-import { html, nothing } from "lit";
+import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import appearanceStyles from "../../styles/utilities/appearance.css";

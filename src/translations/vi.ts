@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Lỗi",
     goToSlide: (slide, count) => `Đi đến trang ${slide} trên ${count}`,
     hidePassword: "Ẩn mật khẩu",
+    hue: "Tông màu",
     loading: "Đang tải…",
     nextSlide: "Trang tiếp theo",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} lựa chọn đã chọn`;
         }
     },
+    opacity: "Độ đục",
     pickAColorFromTheScreen: "Chọn màu từ màn hình",
     previousSlide: "Trang trước đó",
     progress: "Tiến độ",

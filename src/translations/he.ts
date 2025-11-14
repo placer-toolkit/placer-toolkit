@@ -17,6 +17,7 @@ const translation: Translation = {
     error: "שגיאה",
     goToSlide: (slide, count) => `עבור לשקופית ${slide}‏ מתוך ${count}‏`,
     hidePassword: "הסתר סיסמה",
+    hue: "גוון צבע",
     loading: "טוען…",
     nextSlide: "השקופית הבאה",
     numOptionsSelected: (number) => {
@@ -28,6 +29,7 @@ const translation: Translation = {
             return `${number}‏ אפשרויות נבחרו`;
         }
     },
+    opacity: "אטימות",
     pickAColorFromTheScreen: "בחר צבע מהמסך",
     previousSlide: "השקופית הקודמת",
     progress: "התקדמות",

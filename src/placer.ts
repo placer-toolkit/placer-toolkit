@@ -10,6 +10,7 @@ export { PcButtonGroup } from "./components/button-group/button-group.js";
 export { PcCallout } from "./components/callout/callout.js";
 export { PcCard } from "./components/card/card.js";
 export { PcCheckbox } from "./components/checkbox/checkbox.js";
+export { PcColorPicker } from "./components/color-picker/color-picker.js";
 export { PcComparer } from "./components/comparer/comparer.js";
 export { PcCopyButton } from "./components/copy-button/copy-button.js";
 export { PcDetails } from "./components/details/details.js";

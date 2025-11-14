@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Villa",
     goToSlide: (slide, count) => `Fara á glæru ${slide} af ${count}`,
     hidePassword: "Fela lykilorð",
+    hue: "Litblær",
     loading: "Hleð…",
     nextSlide: "Næsta glæra",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} valkostir valdir`;
         }
     },
+    opacity: "Ógegnsæi",
     pickAColorFromTheScreen: "Velja lit af skjánum",
     previousSlide: "Fyrri glæra",
     progress: "Framvinda",

@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "లోపం",
     goToSlide: (slide, count) => `${count} లో ${slide} స్లయిడ్‌కి వెళ్లు`,
     hidePassword: "పాస్‌వర్డ్‌ను దాచు",
+    hue: "రంగు టోన్",
     loading: "లోడ్ అవుతోంది…",
     nextSlide: "తదుపరి స్లయిడ్",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} ఎంపికలు ఎంచుకోబడ్డాయి`;
         }
     },
+    opacity: "అస్పష్టత",
     pickAColorFromTheScreen: "స్క్రీన్ నుండి ఒక రంగును ఎంచుకోండి",
     previousSlide: "మునుపటి స్లయిడ్",
     progress: "ప్రగతి",

@@ -41,11 +41,42 @@ This rating applies to smaller, localised changes that affect only a minority of
 
 This rating flags minor changes that impact consistency or adherence to future API standards. It affects component usage going forward but does not break current functionality. A simple migration guide is always provided (e.g., the focus ring animation update in v1.0.0-alpha.1).
 
+## 1.0.0-alpha.2
+
+### Milestones
+
+- Added one new component: [Color Picker](/components/color-picker). [github#24]
+
+### Security vulnerability fixes
+
+- Upgraded the Astro package in the Placer Toolkit docs from 5.15.1 to 5.15.6, addressing a severity 6,5/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/3). [github#24]
+- Upgraded the Vite package in the Placer Toolkit docs from 6.3.6 to 6.4.1, addressing a severity 6,0/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/1). [github#5]
+- Upgraded the Astro package in the Placer Toolkit docs from 5.15.1 to 5.15.6, addressing a severity 2,7/10 vulnerability. See more details [here](https://github.com/placer-toolkit/placer-toolkit/security/dependabot/2). [github#24]
+
+### Enhancements
+
+- Published the [accessibility statement](/resources/accessibility) to comply with the [EAA](https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en). [github#11]
+- Expanded the [Contributing](/resources/contributing/#branches) documentation with a new **Branches** section. [github#14]
+- Removed the `es-419` locale, replacing it with `es` (neutral Spanish). [github#24]<br />**⚠️ Breaking change:** Update all references from `es-419` to `es`; otherwise, English will be used as the fallback.
+- Introduced a base `pt` locale, with `pt-br` and `pt-pt` overrides carried over from previous versions. [github#24]
+- Replaced Bunny Fonts with [Fontsource](https://fontsource.org) on the Placer Toolkit site to improve performance. [github#15]
+
+### Bug fixes
+
+- Corrected the PR template so that it now applies when creating a PR. [github#10]
+- Resolved an issue in the GitHub Remark plugin that produced `issue` in URLs instead of `issues` when no API key was provided. [github#15]
+- Prevented the preview block from overflowing in small viewports. [github#24]
+
+### Known bugs
+
+- The colour picker currently does not output correct alpha values in the input.
+- The label is visible when the colour picker is inline.
+
 ## 1.0.0-alpha.1
 
 ### Milestones
 
-- Rewritten the theming API of Placer Toolkit.<br />**☢️ Nuclear breaking change (≈ 1 month):** The theming API is now semantic, so a simple migration guide isn’t available. We recommend reading the [design token docs](/design-tokens) to further understand the new system and adapt to it.
+- Rewrote the theming API of Placer Toolkit.<br />**☢️ Nuclear breaking change (≈ 1 month):** The theming API is now semantic, so a simple migration guide isn’t available. We recommend reading the [design token docs](/design-tokens) to further understand the new system and adapt to it.
 - Added [localisation](/get-started/localisation) with 70 locales, covering 99,1 % of languages used on the web, across all components.
 - Added seven new components: [Dropdown Item](/components/dropdown-item), [Format Bytes](/components/format-bytes), [Format Date](/components/format-date), [Format Number](/components/format-number), [Mutation Observer](/components/mutation-observer), [Scroller](/components/scroller) and [Textarea](/components/textarea).
 - Added the Utility and Serene themes alongside the Vibrant and Muted palettes to Placer Toolkit as a result of the new theming API.
@@ -71,7 +102,7 @@ This rating flags minor changes that impact consistency or adherence to future A
     ```
 
     You may have to adjust the spacing of related elements due to this change.
-- Rewritten the [Dialog](/components/dialog) and [Drawer](/components/drawer) component to use the native [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) element. This has been done for better accessibility and to fix clipping issues.<br />**🚨 Major breaking change:** Since we have rewritten these two components, you need to make some changes to make it work as expected.
+- Rewrote the [Dialog](/components/dialog) and [Drawer](/components/drawer) component to use the native [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) element. This has been done for better accessibility and to fix clipping issues.<br />**🚨 Major breaking change:** Since we have rewritten these two components, you need to make some changes to make it work as expected.
     - The dialog/drawer must be opened/closed by toggling the `open` property instead of calling the `show()` and `hide()` methods. We recommend closing the dialog/drawer by attaching `data-dialog="close"` to the close button in the dialog/drawer.
     - Replaced the `overlay` and `panel` CSS parts with a single `dialog`/`drawer` part (alongside the native `::backdrop` pseudo‐element).
     - Replaced the `pc-request-close` event with the already existing `pc-hide` event, which now has the ability to be cancelled.

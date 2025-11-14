@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Hata",
     goToSlide: (slide, count) => `${count} slayttan ${slide}. slayta git`,
     hidePassword: "Parolayı gizle",
+    hue: "Renk tonu",
     loading: "Yükleniyor…",
     nextSlide: "Sonraki slayt",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} seçenek seçildi`;
         }
     },
+    opacity: "Opaklık",
     pickAColorFromTheScreen: "Ekrandan bir renk seç",
     previousSlide: "Önceki slayt",
     progress: "İlerleme",

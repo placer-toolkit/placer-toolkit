@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Virhe",
     goToSlide: (slide, count) => `Siirry diaan ${slide} / ${count}`,
     hidePassword: "Piilota salasana",
+    hue: "Värisävy",
     loading: "Ladataan…",
     nextSlide: "Seuraava dia",
     numOptionsSelected: (number) => {
@@ -26,6 +27,7 @@ const translation: Translation = {
             return `${number} vaihtoehtoa valittu`;
         }
     },
+    opacity: "Läpinäkymättömyys",
     pickAColorFromTheScreen: "Valitse väri näytöltä",
     previousSlide: "Edellinen dia",
     progress: "Edistyminen",

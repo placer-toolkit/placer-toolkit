@@ -15,6 +15,7 @@ const translation: Translation = {
     error: "Greška",
     goToSlide: (slide, count) => `Idi na slajd ${slide} od ${count}`,
     hidePassword: "Sakrij lozinku",
+    hue: "Ton boje",
     loading: "Učitavam…",
     nextSlide: "Sljedeći slajd",
     numOptionsSelected: (number) => {
@@ -35,6 +36,7 @@ const translation: Translation = {
             return `Odabrano je ${number} opcija`;
         }
     },
+    opacity: "Providnost",
     pickAColorFromTheScreen: "Odaberite boju sa zaslona",
     previousSlide: "Prethodni slajd",
     progress: "Napredak",
