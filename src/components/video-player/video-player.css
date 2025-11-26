@@ -1,0 +1,286 @@
+:host {
+    display: block;
+    max-inline-size: 100%;
+    overflow: hidden;
+}
+
+.frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+}
+
+video {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: var(--pc-border-radius-l);
+    box-shadow: var(--pc-shadow-l);
+}
+
+::cue {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 20%
+    );
+    color: var(--pc-color-neutral-80);
+    font-family: var(--pc-font-sans);
+}
+
+.title {
+    position: absolute;
+    inset-block-start: var(--pc-spacing-s);
+    inset-inline-start: var(--pc-spacing-s);
+    padding-block: var(--pc-spacing-xs);
+    padding-inline: var(--pc-spacing-s);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 20%
+    );
+    color: var(--pc-color-neutral-80);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-m);
+    font-size: var(--pc-font-size-s);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+    z-index: 2;
+}
+
+:host(.controls-visible) .title {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    inset-block-end: calc(2.25rem + (var(--pc-spacing-m) * 2));
+    inset-inline: 0;
+    padding-inline: var(--pc-spacing-m);
+    block-size: 0.5em;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+:host(.controls-visible) .bar {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.progress-wrapper {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: var(--pc-color-neutral-60);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.buffered {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 0;
+    background-color: var(--pc-color-neutral-70);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.progress {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    margin: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border-radius: inherit;
+    outline: none;
+    touch-action: none;
+    cursor: pointer;
+}
+
+.progress::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: transparent;
+    background-image: linear-gradient(
+        to right,
+        var(--pc-color-primary-50) 100%,
+        transparent 0
+    );
+    background-size: calc(var(--progress, 0) * 100%) 100%;
+    background-repeat: no-repeat;
+    border-radius: var(--pc-border-radius-pill);
+    cursor: pointer;
+}
+
+.progress::-moz-range-track {
+    inline-size: 100%;
+    block-size: 100%;
+    background-image: linear-gradient(
+        to right,
+        var(--pc-color-primary-50) calc(var(--progress, 0) * 100%),
+        transparent calc(var(--progress, 0) * 100%)
+    );
+    border-radius: var(--pc-border-radius-pill);
+    cursor: pointer;
+}
+
+.progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: var(--pc-color-primary-50);
+    border: none;
+    border-radius: var(--pc-border-radius-circle);
+}
+
+.progress::-moz-range-thumb {
+    width: 1.5em;
+    height: 1.5em;
+    background-color: var(--pc-color-primary-50);
+    border: none;
+    border-radius: var(--pc-border-radius-circle);
+}
+
+pc-tooltip::part(base-popup) {
+    left: calc(var(--progress, 0) * 100%) !important;
+    translate: -50% 0 !important;
+}
+
+.bubble {
+    padding-block: var(--pc-spacing-xxs);
+    padding-inline: var(--pc-spacing-s);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 20%
+    );
+    color: var(--pc-color-neutral-70);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-s);
+    font-size: var(--pc-font-size-xs);
+    box-shadow: var(--pc-shadow-s);
+}
+
+.controls {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    inset-block-end: var(--pc-spacing-m);
+    inset-inline: var(--pc-spacing-m);
+    gap: var(--pc-spacing-s);
+    block-size: 2.25rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+}
+
+:host(.controls-visible) .controls {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+pc-button::part(base) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 20%
+    );
+    color: var(--pc-color-neutral-80);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-circle);
+}
+
+@media (hover: hover) {
+    pc-button::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-20), transparent 20%),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+pc-button:not(.mute)::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        color-mix(in oklab, var(--pc-color-neutral-20), transparent 20%),
+        var(--pc-color-mix-active)
+    );
+}
+
+.mute {
+    display: inline-flex;
+    gap: var(--pc-spacing-xs);
+}
+
+.mute::part(base) {
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.mute:not(:hover) {
+    inline-size: var(--pc-form-control-height);
+}
+
+.volume {
+    display: block;
+    margin: 0;
+    inline-size: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        inline-size var(--pc-transition-fast) ease-in-out,
+        opacity var(--pc-transition-fast) ease-in-out;
+}
+
+.mute:hover > .volume {
+    margin-inline-start: var(--pc-spacing-m);
+    inline-size: 4.375rem;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.time-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--pc-form-control-padding-inline);
+    block-size: var(--pc-form-control-height);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 20%
+    );
+    color: var(--pc-color-neutral-80);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+    font-size: var(--pc-font-size-s);
+    font-variant-numeric: tabular-nums;
+    line-height: calc(var(--pc-form-control-height) * 2);
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+}
+
+.spacer {
+    flex: 1;
+}
