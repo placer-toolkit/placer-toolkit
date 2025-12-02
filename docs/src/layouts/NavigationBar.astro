@@ -5,6 +5,8 @@ import NavigationIcons from "../components/NavigationIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
 
 import logo from "../assets/logo.svg";
+
+const { noSidebar = false } = Astro.props;
 ---
 
 <!-- Quicksand font — Bunny Fonts -->
@@ -17,7 +19,7 @@ import logo from "../assets/logo.svg";
     <nav class="navigation-bar" aria-label="Main navigation">
         <div class="left-section">
             <pc-button
-                class="sidebar-toggle pc-mobile-only"
+                class:list={{ "sidebar-toggle": true, "pc-mobile-only": !noSidebar }}
                 size="small"
                 variant="plain"
             >
@@ -26,13 +28,15 @@ import logo from "../assets/logo.svg";
                     library="default"
                     icon-style="solid"
                     name="bars"
-                    label="Open sidebar"></pc-icon>
+                    label="Open sidebar"
+                />
                 <pc-icon
                     class="hover-only"
                     library="default"
                     icon-style="solid"
                     name="burger"
-                    label="Open sidebar"></pc-icon>
+                    label="Open sidebar"
+                />
             </pc-button>
             <a href="/">
                 <Image
