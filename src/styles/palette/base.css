@@ -2,99 +2,99 @@
 :where(:root),
 :host {
     /**
-     * These are conditional tokens to check if the key colour is greater than or equal to 40.
+     * These are conditional tokens to check if the key colour is greater than or equal to 60.
      * Key colours are the most colourful tint in a scale, recorded as --pc-color-{hue} in each palette.
      * The numeric value of the key is isolated as --pc-color-{hue}-key.
-     * If the key is less than 40, the result is 0 %.
-     * If the key is greater than or equal to 40, the result is 100 %.
+     * If the key is less than 60, the result is 0 %.
+     * If the key is greater than or equal to 60, the result is 100 %.
      * It is intended to be used in the color-mix() functions below.
      *
      * P.S.: “gte” in the custom property names mean “greater than or equal to”.
     */
-    --pc-color-grey-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-grey-key), 1) * 100%)
+    --pc-color-grey-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-grey-key), 1) * 100%)
     );
-    --pc-color-red-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-red-key), 1) * 100%)
+    --pc-color-red-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-red-key), 1) * 100%)
     );
-    --pc-color-orange-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-orange-key), 1) * 100%)
+    --pc-color-orange-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-orange-key), 1) * 100%)
     );
-    --pc-color-yellow-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-yellow-key), 1) * 100%)
+    --pc-color-yellow-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-yellow-key), 1) * 100%)
     );
-    --pc-color-green-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-green-key), 1) * 100%)
+    --pc-color-green-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-green-key), 1) * 100%)
     );
-    --pc-color-cyan-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-cyan-key), 1) * 100%)
+    --pc-color-cyan-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-cyan-key), 1) * 100%)
     );
-    --pc-color-blue-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-blue-key), 1) * 100%)
+    --pc-color-blue-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-blue-key), 1) * 100%)
     );
-    --pc-color-indigo-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-indigo-key), 1) * 100%)
+    --pc-color-indigo-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-indigo-key), 1) * 100%)
     );
-    --pc-color-purple-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-purple-key), 1) * 100%)
+    --pc-color-purple-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-purple-key), 1) * 100%)
     );
-    --pc-color-pink-gte-40: calc(
-        100% - (clamp(0, 40 - var(--pc-color-pink-key), 1) * 100%)
+    --pc-color-pink-gte-60: calc(
+        100% - (clamp(0, 60 - var(--pc-color-pink-key), 1) * 100%)
     );
 
     /**
      * These are tokens to set the text colour with appropriate WCAG AA contrast
-     * If the key is less than 40, the text colour is white
-     * If the key is greater than 40, the text colour is {hue}-10
+     * If the key is less than 60, the text colour is white
+     * If the key is greater than 60, the text colour is {hue}-10
     */
     --pc-color-grey-on: color-mix(
         in oklab,
-        var(--pc-color-grey-10) var(--pc-color-grey-gte-40),
+        var(--pc-color-grey-10) var(--pc-color-grey-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-red-on: color-mix(
         in oklab,
-        var(--pc-color-red-10) var(--pc-color-red-gte-40),
+        var(--pc-color-red-10) var(--pc-color-red-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-orange-on: color-mix(
         in oklab,
-        var(--pc-color-orange-10) var(--pc-color-orange-gte-40),
+        var(--pc-color-orange-10) var(--pc-color-orange-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-yellow-on: color-mix(
         in oklab,
-        var(--pc-color-yellow-10) var(--pc-color-yellow-gte-40),
+        var(--pc-color-yellow-10) var(--pc-color-yellow-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-green-on: color-mix(
         in oklab,
-        var(--pc-color-green-10) var(--pc-color-green-gte-40),
+        var(--pc-color-green-10) var(--pc-color-green-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-cyan-on: color-mix(
         in oklab,
-        var(--pc-color-cyan-10) var(--pc-color-cyan-gte-40),
+        var(--pc-color-cyan-10) var(--pc-color-cyan-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-blue-on: color-mix(
         in oklab,
-        var(--pc-color-blue-10) var(--pc-color-blue-gte-40),
+        var(--pc-color-blue-10) var(--pc-color-blue-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-indigo-on: color-mix(
         in oklab,
-        var(--pc-color-indigo-10) var(--pc-color-indigo-gte-40),
+        var(--pc-color-indigo-10) var(--pc-color-indigo-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-purple-on: color-mix(
         in oklab,
-        var(--pc-color-purple-10) var(--pc-color-purple-gte-40),
+        var(--pc-color-purple-10) var(--pc-color-purple-gte-60),
         oklch(100% 0 0)
     );
     --pc-color-pink-on: color-mix(
         in oklab,
-        var(--pc-color-pink-10) var(--pc-color-pink-gte-40),
+        var(--pc-color-pink-10) var(--pc-color-pink-gte-60),
         oklch(100% 0 0)
     );
 }

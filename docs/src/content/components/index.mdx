@@ -627,6 +627,55 @@ Components are reusable building blocks—like buttons, inputs and tooltips—de
             <div class="catalog-title">Checkbox</div>
         </pc-card>
     </a>
+    <a href="/components/color-picker">
+        <pc-card>
+            <div slot="media">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="96"
+                    height="64"
+                    viewBox="0 0 96 16"
+                >
+                    <rect
+                        y="2"
+                        width="96"
+                        height="12"
+                        rx="6"
+                        fill="url(#color-picker-gradient)"
+                    />
+                    <rect
+                        x="61"
+                        y="1"
+                        width="14"
+                        height="14"
+                        rx="7"
+                        fill="#4895fd"
+                        stroke="var(--pc-color-surface-default)"
+                        stroke-width="2"
+                    />
+                    <defs>
+                        <linearGradient
+                            id="color-picker-gradient"
+                            x1="0"
+                            y1="8"
+                            x2="96"
+                            y2="8"
+                            gradientUnits="userSpaceOnUse"
+                        >
+                            <stop offset="0.04" stop-color="#f2676c" />
+                            <stop offset="0.1667" stop-color="#f39b00" />
+                            <stop offset="0.3334" stop-color="#fcc041" />
+                            <stop offset="0.5" stop-color="#5dc36f" />
+                            <stop offset="0.67" stop-color="#4895fd" />
+                            <stop offset="0.84" stop-color="#8a8beb" />
+                            <stop offset="1" stop-color="#c674e1" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="catalog-title">Color Picker</div>
+        </pc-card>
+    </a>
     <a href="/components/input">
         <pc-card>
             <div slot="media">

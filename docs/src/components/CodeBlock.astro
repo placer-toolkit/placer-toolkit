@@ -4,20 +4,25 @@ import "../styles/syntax/placer-eclipse.css";
 const uniqueID = `code-${Math.random().toString(36).slice(2, 9)}`;
 const language = Astro.props.language ?? undefined;
 
-const isTerminal = language === "bash" || language === "shell" || language === "sh";
+const isTerminal =
+    language === "bash" || language === "shell" || language === "sh";
 ---
 
-{isTerminal && (
-    <div class="terminal-bar">
-        <div class="circle circle-red"></div>
-        <div class="circle circle-yellow"></div>
-        <div class="circle circle-green"></div>
-    </div>
-)}
+<div class="code-block-container">
+    {
+        isTerminal && (
+            <div class="terminal-bar">
+                <div class="circle circle-red" />
+                <div class="circle circle-yellow" />
+                <div class="circle circle-green" />
+            </div>
+        )
+    }
 
-<div class="code-block">
-    <pc-copy-button from={uniqueID}></pc-copy-button>
-    <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uniqueID} tabindex="-1"><slot /></code></pre>
+    <div class="code-block">
+        <pc-copy-button from={uniqueID}></pc-copy-button>
+        <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uniqueID} tabindex="-1"><slot /></code></pre>
+    </div>
 </div>
 
 <script>
@@ -49,6 +54,10 @@ const isTerminal = language === "bash" || language === "shell" || language === "
 </script>
 
 <style>
+    .code-block-container {
+        margin-block-end: var(--pc-content-spacing);
+    }
+
     .terminal-bar {
         display: flex;
         align-items: center;
@@ -91,7 +100,6 @@ const isTerminal = language === "bash" || language === "shell" || language === "
             var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-l);
         inline-size: 100%;
-        margin-block-end: var(--pc-content-spacing);
         overflow: visible;
         max-block-size: max-content;
     }

@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
+import Footer from "../components/Footer.astro";
 import Search from "../components/Search.astro";
 
 import "placer-toolkit/dist/styles/placer.css";
@@ -19,11 +20,16 @@ const {
     component = "",
     hero = false,
     pagefindIgnore = false,
+    noSidebar = false,
+    showFooter = false
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en-gb" class="pc-light pc-cloak">
+<html
+    lang="en-gb"
+    class:list={{ "pc-light": true, "no-sidebar": noSidebar }}
+>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,8 +55,8 @@ const {
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"></script>
         <script>
+            import "placer-toolkit";
             import "placer-toolkit/dist/translations/en-gb.js";
         </script>
         <!-- Cabin Analytics -->
@@ -58,8 +64,8 @@ const {
         ></script>
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
-    <body>
-        <div class="layout-container">
+    <body></body>
+        <div class="layout-container pc-cloak">
             <pc-button
                 href="#main-content"
                 appearance="neutral"
@@ -70,11 +76,11 @@ const {
                 Skip to main content
             </pc-button>
 
-            <NavigationBar />
+            <NavigationBar noSidebar={noSidebar} />
 
             <MobileSidebar />
 
-            <Sidebar />
+            {!noSidebar ? <Sidebar /> : undefined}
 
             <Search />
 
@@ -104,33 +110,6 @@ const {
                                     Skip to table of contents
                                 </pc-button>
 
-                                <pc-callout class="hero-callout" appearance="warning">
-                                    <pc-icon
-                                        library="default"
-                                        icon-style="solid"
-                                        name="circle-radiation"
-                                        slot="icon"
-                                    />
-                                    <div class="pc-split">
-                                        <p style="flex: 1">
-                                            <strong>
-                                                The Placer Toolkit alpha has
-                                                arrived! 🎉
-                                            </strong>
-                                            <br />
-                                            Plenty of changes are coming your
-                                            way—some big, some breaking, some
-                                            even nuclear! Beware the changelog…
-                                        </p>
-                                        <pc-button
-                                            appearance="warning"
-                                            href="/resources/changelog"
-                                        >
-                                            Bring it on!
-                                        </pc-button>
-                                    </div>
-                                </pc-callout>
-
                                 <pc-details
                                     class="toc-mobile"
                                     summary="On this page"
@@ -139,12 +118,17 @@ const {
                                     <ul class="toc-ul" />
                                 </pc-details>
 
-                                    <header id="_top">
-                                        <h1>{title}</h1>
-                                        {component ? (
-                                            <ComponentInfo componentName={component} />
-                                        ) : ""}
-                                    </header>
+                                <header id="_top">
+                                    <h1>{title}</h1>
+
+                                    {component ? (
+                                        <ComponentInfo
+                                            componentName={component}
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
+                                </header>
                                 <slot />
                             </article>
 
@@ -173,29 +157,27 @@ const {
                             </aside>
                         </div>
                     ) : (
-                        <pc-callout class="hero-callout" appearance="warning">
-                            <pc-icon
-                                library="default"
-                                icon-style="solid"
-                                name="circle-radiation"
-                                slot="icon"
-                            />
+                        <pc-callout class="hero-callout" appearance="primary" size="small">
+                            <span slot="icon" style="user-select: none; -webkit-user-select: none">
+                                🚀
+                            </span>
                             <div class="pc-split">
-                                <p style="flex: 1">
-                                    <strong>
-                                        The Placer Toolkit alpha has
-                                        arrived! 🎉
-                                    </strong>
-                                    <br />
-                                    Plenty of changes are coming your
-                                    way—some big, some breaking, some
-                                    even nuclear! Beware the changelog…
-                                </p>
+                                <b style="flex: 1">
+                                    Ready to build with Placer Toolkit?
+                                </b>
                                 <pc-button
-                                    appearance="warning"
-                                    href="/resources/changelog"
+                                    appearance="primary"
+                                    size="small"
+                                    href="/get-started/installation"
                                 >
-                                    Bring it on!
+                                    Get started
+                                    <pc-icon
+                                        class="arrow-right-move"
+                                        library="default"
+                                        icon-style="solid"
+                                        name="chevron-right"
+                                        slot="suffix"
+                                    ></pc-icon>
                                 </pc-button>
                             </div>
                         </pc-callout>
@@ -204,6 +186,23 @@ const {
                     )
                 }
             </main>
+
+            {showFooter ? <Footer /> : undefined}
+        </div>
+
+        <div class="spinner-overlay">
+            <div class="spinner-container">
+                <svg
+                    xmlns="http://w3.org/2000/svg"
+                    class="spinner"
+                    role="progressbar"
+                >
+                    <circle class="track"></circle>
+                    <circle class="indicator"></circle>
+                </svg>
+            </div>
+
+            Loading components…
         </div>
 
         <script>
@@ -225,8 +224,9 @@ const {
             ) as HTMLDialogElement;
             const sidebarToggle = document.querySelector(".sidebar-toggle");
 
-            sidebarToggle?.addEventListener("click", () =>
-                mobileSidebar.open = true,
+            sidebarToggle?.addEventListener(
+                "click",
+                () => (mobileSidebar.open = true),
             );
 
             // TOC generation
@@ -385,7 +385,10 @@ const {
                                 return;
                             }
 
-                            const distance = Math.abs(element.getBoundingClientRect().top - targetLine);
+                            const distance = Math.abs(
+                                element.getBoundingClientRect().top -
+                                    targetLine,
+                            );
 
                             if (distance < nearestDistance) {
                                 nearestDistance = distance;

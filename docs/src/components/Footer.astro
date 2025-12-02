@@ -1,0 +1,227 @@
+---
+import { Image } from "astro:assets";
+
+import Logo from "../assets/logo.svg";
+---
+
+<footer class="footer">
+    <div class="footer-content pc-grid pc-gap-xxl">
+        <div class="pc-split:column pc-align-items-start">
+            <div class="info pc-stack pc-gap-s" style="--min-column-size: 50ch">
+                <div class="logo-tagline pc-cluster pc-gap-s">
+                    <Image
+                        src={Logo}
+                        width="32"
+                        height="32"
+                        alt="Placer Toolkit logo"
+                    />
+                    <b class="tagline">
+                        <span>Flexible.</span>
+                        <span>Accessible.</span>
+                        <span style="white-space: nowrap">
+                            Web Components.
+                        </span>
+                    </b>
+                </div>
+                <div class="pc-body-s">
+                    <p>
+                        Placer Toolkit is an open‐source and framework‐agnostic web component library to build modern interfaces.
+                    </p>
+                    <p class="copyright">
+                        Made with
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="heart"
+                            label="love"
+                        ></pc-icon>
+                        by Placer and its contributors
+                        •
+                        <span style="white-space: nowrap">© 2025</span>
+                    </p>
+                </div>
+            </div>
+            <div class="buttons pc-cluster">
+                <pc-button
+                    size="small"
+                    variant="plain"
+                    data-dialog="open privacy-promise"
+                >
+                    <pc-icon
+                        library="default"
+                        icon-style="solid"
+                        name="cookie-bite"
+                        label="Our privacy promise"
+                        style="color: var(--pc-color-orange-50)"></pc-icon>
+                </pc-button>
+            </div>
+        </div>
+
+        <div
+            class="footer-links pc-grid pc-align-items-start pc-gap-m"
+            style="--min-column-size: 10ch"
+        >
+            <div class="pc-stack pc-gap-xs">
+                <h3 class="pc-heading-s">Docs</h3>
+                <ul class="list-links">
+                    <li>
+                        <a class="pc-link-plain" href="/get-started/installation">
+                            Installation
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/get-started/usage">
+                            Usage
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/design-tokens">
+                            Design tokens
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/components">
+                            Components
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/resources/changelog">
+                            Changelog
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pc-stack pc-gap-xs">
+                <h3 class="pc-heading-s">About</h3>
+                <ul class="list-links">
+                    <li>
+                        <a class="pc-link-plain" href="/resources/community">
+                            Community
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/resources/contributing">
+                            Contributing
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/resources/brand-assets">
+                            Brand assets
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="pc-link-plain"
+                            href="https://github.com/placer-toolkit/placer-toolkit/discussions"
+                        >
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="pc-stack pc-gap-xs">
+                <h3 class="pc-heading-s">Legal</h3>
+                <ul class="list-links">
+                    <li>
+                        <a class="pc-link-plain" href="/legal/privacy">
+                            Privacy
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/resources/accessibility">
+                            Accessibility
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/legal/code-of-conduct">
+                            Code of Conduct
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/legal/licence">
+                            Licence
+                        </a>
+                    </li>
+                    <li>
+                        <a class="pc-link-plain" href="/legal/impressum">
+                            Impressum
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        grid-area: footer;
+        padding: var(--pc-spacing-xxl) var(--pc-spacing-xxl);
+        inline-size: 100%;
+        border-block-start: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+    }
+
+    .footer .info .logo-tagline .tagline {
+        translate: 0 0.125rem;
+    }
+
+    .footer .info .copyright pc-icon[name="heart"] {
+        padding-inline: var(--pc-spacing-xxs);
+        translate: 0 0.125rem;
+        cursor: pointer;
+    }
+
+    @media (hover: hover) {
+        .footer .info .copyright pc-icon[name="heart"]:hover {
+            color: var(--pc-color-red-60);
+            animation: fa-beat 1s ease-in-out infinite;
+            transition: color var(--pc-transition-fast) ease-in-out;
+        }
+    }
+
+    @media (hover: none) {
+        .footer .info .copyright pc-icon[name="heart"]:active {
+            color: var(--pc-color-red-60);
+            animation: fa-beat 1s ease-in-out infinite;
+            transition: color var(--pc-transition-fast) ease-in-out;
+        }
+    }
+
+    .footer .footer-links {
+        flex-wrap: wrap;
+    }
+
+    .footer .footer-links h3 {
+        margin-block-end: var(--pc-spacing-xs);
+        color: var(--pc-color-text-quiet);
+    }
+
+    .footer .footer-links .list-links {
+        display: flex-start;
+        flex-direction: column;
+        gap: var(--pc-spacing-xs);
+        list-style: none;
+    }
+
+    @keyframes fa-beat {
+        0%,
+        90% {
+            transform: scale(1);
+        }
+
+        45% {
+            transform: scale(1.25);
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        .footer .footer-content {
+            grid-template-rows: repeat(
+                auto-fit,
+                minmax(min(var(--min-column-size, 20ch), 100%), 1fr)
+            );
+            grid-auto-flow: column;
+        }
+    }
+</style>
