@@ -260,10 +260,10 @@ const {
 
             // TOC generation
             document.addEventListener("DOMContentLoaded", () => {
-                const tocMobile = document.querySelector(".toc-mobile .toc-ul");
+                const tocMobile = document.querySelector(".toc-mobile .toc-ul") as HTMLUListElement;
                 const tocDesktop = document.querySelector(
                     ".toc-desktop .toc-ul",
-                );
+                ) as HTMLUListElement;
 
                 const headings = Array.from(
                     document.querySelectorAll("h2[id], h3[id]"),
@@ -299,10 +299,13 @@ const {
                 }
 
                 const overviewItem = document.createElement("li");
+
                 overviewItem.className = "toc-item depth-2";
+
                 const overviewLink = document.createElement("a");
+
                 overviewLink.href = "#_top";
-                overviewLink.textContent = tocDesktop.dataset.overview || tocMobile.dataset.overview;
+                overviewLink.textContent = tocDesktop.dataset.overview ?? tocMobile.dataset.overview ?? "";
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {
