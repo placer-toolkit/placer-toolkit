@@ -1,12 +1,7 @@
 name: Standardise Dependabot labels
 permissions:
-<<<<<<< HEAD
     contents: read
     pull-requests: write
-=======
-  contents: read
-  pull-requests: write
->>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c
 
 on:
     pull_request:
@@ -19,10 +14,6 @@ jobs:
         steps:
             - name: Check out repo
               uses: actions/checkout@v4
-<<<<<<< HEAD
-=======
-              
->>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c
             - name: Remove unwanted labels
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
