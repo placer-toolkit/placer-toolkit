@@ -4,6 +4,10 @@
 /docs/design-tokens/z-index           /docs/design-tokens                           301
 /docs/design-tokens/other-tokens      /docs/design-tokens/component-groups          301
 
+# Internal docs refactor redirects
+/:lang/*                              /:lang/docs/:splat                            301
+/*                                    /docs/:splat                                  301
+
 # 404 pages
 /:lang/*                              /:lang/404/                                   404
 /*                                    /404/                                         404
