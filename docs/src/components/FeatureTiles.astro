@@ -1,8 +1,16 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
 <div class="grid-tiles pc-grid">
     <pc-button
         class="grid-tile"
-        href="/get-started/usage"
+        href="/docs/get-started/usage"
         variant="outlined"
+
     >
         <div class="pc-stack">
             <div class="pc-split">
@@ -12,27 +20,26 @@
                             library="default"
                             icon-style="solid"
                             name="puzzle-piece"
-                            slot="icon"></pc-icon>
+                            slot="icon"
+                           ></pc-icon>
                     </pc-avatar>
-                    <h3>Entirely native</h3>
+                    <h3>{translation("featureTiles.entirelyNative")}</h3>
                 </div>
                 <pc-icon
                     class="arrow-right-move"
                     library="default"
                     icon-style="solid"
-                    name="arrow-right"></pc-icon>
+                    name="arrow-right"
+                   ></pc-icon>
             </div>
-            <p>
-                Built with web standards, Placer Toolkit works in any
-                framework—or none at all.
-                <em>No locking in, no compromises.</em>
-            </p>
+            <p set:html={translation("featureTiles.entirelyNativeMessage")}></p>
         </div>
     </pc-button>
     <pc-button
         class="grid-tile"
-        href="/get-started/localisation"
+        href="/docs/get-started/localisation"
         variant="outlined"
+
     >
         <div class="pc-stack">
             <div class="pc-split">
@@ -42,29 +49,26 @@
                             library="default"
                             icon-style="solid"
                             name="universal-access"
-                            slot="icon"></pc-icon>
+                            slot="icon"
+                           ></pc-icon>
                     </pc-avatar>
-                    <h3>Fully accessible</h3>
+                    <h3>{translation("featureTiles.fullyAccessible")}</h3>
                 </div>
                 <pc-icon
                     class="arrow-right-move"
                     library="default"
                     icon-style="solid"
-                    name="arrow-right"></pc-icon>
+                    name="arrow-right"
+                   ></pc-icon>
             </div>
-            <p>
-                Designed with
-                <span aria-label="accessibility">a11y</span>,
-                <span aria-label="internationalisation">i18n</span>
-                (71 locales out‐of‐the‐box) and strong DX in mind.
-                <em>Everyone can use it, everywhere.</em>
-            </p>
+            <p set:html={translation("featureTiles.fullyAccessibleMessage")}></p>
         </div>
     </pc-button>
     <pc-button
         class="grid-tile"
-        href="/get-started/customisation"
+        href="/docs/get-started/customisation"
         variant="outlined"
+
     >
         <div class="pc-stack">
             <div class="pc-split">
@@ -74,20 +78,19 @@
                             library="default"
                             icon-style="solid"
                             name="paint-brush"
-                            slot="icon"></pc-icon>
+                            slot="icon"
+                           ></pc-icon>
                     </pc-avatar>
-                    <h3>Flexible</h3>
+                    <h3>{translation("featureTiles.flexible")}</h3>
                 </div>
                 <pc-icon
                     class="arrow-right-move"
                     library="default"
                     icon-style="solid"
-                    name="arrow-right"></pc-icon>
+                    name="arrow-right"
+                   ></pc-icon>
             </div>
-            <p>
-                Easily restyle, customise and adapt components to match
-                your design. <em>Your website, your rules.</em>
-            </p>
+            <p set:html={translation("featureTiles.flexibleMessage")}></p>
         </div>
     </pc-button>
 </div>

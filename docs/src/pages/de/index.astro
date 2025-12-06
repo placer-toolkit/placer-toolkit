@@ -1,0 +1,187 @@
+---
+import Page from "../../layouts/Page.astro";
+
+import CodeComparison from "../../components/CodeComparison.astro";
+import FeatureTiles from "../../components/FeatureTiles.astro";
+import LandingCTA from "../../components/LandingCTA.astro";
+import Showcase from "../../components/Showcase.astro";
+import SpecialThanksGrid from "../../components/SpecialThanksGrid.astro";
+
+import "../../styles/catalog.css";
+import "../../styles/landing-override.css";
+---
+
+<!-- Space Grotesk — Bunny Fonts -->
+<link
+    rel="stylesheet"
+    href="https://fonts.bunny.net/css?family=space-grotesk:700"
+/>
+
+<Page title="Placer Toolkit" noSidebar showFooter hero>
+    <div class="landing-page">
+        <LandingCTA />
+
+        <h2 class="pc-heading-l">Was ist Placer Toolkit?</h2>
+
+        <p>
+            <strong>Placer Toolkit</strong> ist eine Open‐Source‐Bibliothek für Webkomponenten, mit der du Websites mit jedem Framework – oder ganz ohne – erstellen kannst.
+        </p>
+
+        <FeatureTiles />
+
+        <h2 class="pc-heading-l">Warum solltest du Placer Toolkit wählen?</h2>
+
+        <p>
+            Im Vergleich zu anderen Komponenten‐Toolkits basiert Placer Toolkit auf nativen Webkomponenten, was zu prägnantem und hochgradig semantischem Code führt. Dieser Vergleich zeigt die entsprechende Funktionalität in einem CSS‐basierten Toolkit wie Bootstrap und im auf Webkomponenten basierenden Placer Toolkit und verdeutlicht eine erhebliche Reduktion der Codekomplexität sowie eine verbesserte Lesbarkeit.
+        </p>
+
+        <CodeComparison />
+
+        <h2 class="pc-heading-l">Themenvorschau</h2>
+
+        <p>
+            Das Styling-System von Placer Toolkit basiert auf 18 einzigartigen Kombinationen, die sich aus drei verschiedenen Themen, drei vielseitigen Farbpaletten und zwei klaren Farbschemata ergeben. Nutze diese interaktive Vorschau, um das gestalterische Potenzial des Toolkits sofort zu erkunden.
+        </p>
+
+        <Showcase />
+
+        <h2 class="pc-heading-l">Open‐Source‐Unterstützung</h2>
+
+        <p>
+            Placer Toolkit wurde mithilfe dieser hervorragenden Open‐Source‐Bibliotheken entwickelt, die verschiedene Projektfunktionen unterstützen.
+        </p>
+
+        <SpecialThanksGrid />
+
+        <pc-dialog label="Unser Datenschutzversprechen" id="privacy-promise">
+            <p>
+                Unsere Website ist zu 100 % frei von Cookies! Wir legen großen Wert auf deine Privatsphäre und speichern daher keinerlei Cookies oder persönliche Informationen über dich.
+            </p>
+
+            <p>
+                Dein Browserverlauf bleibt sauber und deine Daten sind geschützt, ganz im Einklang mit modernen Datenschutzstandards wie der
+                <abbr title="Datenschutz-Grundverordnung">DSGVO</abbr>. Genieße deinen Besuch ganz ohne digitale Cookies! 🍪🚫
+            </p>
+
+            <p>
+                Weitere Informationen findest du in unserer <a href="/de/legal/privacy">Datenschutzerklärung</a>.
+            </p>
+
+            <pc-button
+                appearance="primary"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
+            >
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="shield-halved"
+                    slot="prefix"></pc-icon>
+                Alles klar!
+            </pc-button>
+        </pc-dialog>
+    </div>
+</Page>
+
+<script>
+    const navigationBar = document.querySelector(".navbar") as HTMLElement;
+
+    const scrollLimitPixels = 360;
+    const maxOpacity = 0.75;
+
+    function updateNavigationBarOpacity() {
+        const scrollY = document.body.scrollTop || window.scrollY;
+
+        let scrollProgressPercent = (scrollY / scrollLimitPixels) * 100;
+
+        scrollProgressPercent = Math.min(100, scrollProgressPercent);
+
+        const scrollRatioDecimal = scrollProgressPercent / 100;
+        const opacityDecimal = scrollRatioDecimal * maxOpacity;
+        const opacityPercent = opacityDecimal * 100;
+
+        navigationBar.style.setProperty(
+            "--navigation-opacity",
+            opacityPercent.toFixed(1) + "%",
+        );
+    }
+
+    window.addEventListener("load", updateNavigationBarOpacity);
+    document.body.addEventListener("scroll", updateNavigationBarOpacity);
+    window.addEventListener("resize", updateNavigationBarOpacity);
+</script>
+
+<style>
+    :global(.navbar) {
+        background: color-mix(
+            in oklab,
+            var(--pc-color-surface-default) var(--navigation-opacity),
+            transparent
+        ) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    :global(.pc-dark) :global(body) {
+        --indigo-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-indigo-05) 40%
+        );
+        --blue-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-blue-05) 40%
+        );
+        --purple-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-purple-05) 40%
+        );
+
+        background:
+            linear-gradient(135deg, var(--indigo-overlay), transparent 40%),
+            linear-gradient(215deg, var(--indigo-overlay), transparent 40%),
+            linear-gradient(315deg, var(--blue-overlay), transparent 40%),
+            linear-gradient(45deg, var(--purple-overlay), transparent 40%),
+            radial-gradient(var(--indigo-overlay), transparent 40%)
+                no-repeat -60vw -40vh / 105vw 200vh,
+            radial-gradient(var(--indigo-overlay), transparent 65%) no-repeat
+                50% calc(100% + 20rem) / 60rem 30rem;
+    }
+
+    :global(.pc-light) :global(body) {
+        --indigo-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-indigo-50) 8%
+        );
+        --blue-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-blue-50) 8%
+        );
+        --purple-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-purple-50) 5%
+        );
+
+        background:
+            linear-gradient(135deg, var(--blue-overlay-light), transparent 40%),
+            linear-gradient(215deg, var(--indigo-overlay-light), transparent 40%),
+            linear-gradient(315deg, var(--purple-overlay-light), transparent 40%),
+            radial-gradient(var(--blue-overlay-light), transparent 40%)
+                no-repeat -60vw -40vh / 105vw 200vh,
+            radial-gradient(var(--indigo-overlay-light), transparent 65%) no-repeat
+                50% calc(100% + 20rem) / 60rem 30rem;
+    }
+
+    .landing-page {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        inline-size: 100%;
+    }
+</style>

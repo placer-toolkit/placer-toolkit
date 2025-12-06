@@ -1,0 +1,169 @@
+---
+title: Stack
+description: Use the pc-stack class to arrange elements in a vertical column with even spacing, ensuring a consistent rhythm in the document flow.
+---
+
+Use the `pc-stack` class to arrange elements in a vertical column with even spacing, ensuring a consistent rhythm in the document flow.
+
+```demo:open
+<div class="stack-overview pc-stack">
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+
+<style>
+    .stack-overview div:empty {
+        min-inline-size: 4rem;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+## Demos
+
+### Forms and text
+
+Stacks are well‐suited for forms and text, which ensures consistent spacing between elements in the document flow.
+
+```demo
+<form class="pc-stack">
+    <pc-input label="E‐mail" type="email" required>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="envelope"
+            slot="prefix"
+        ></pc-icon>
+    </pc-input>
+    <pc-input label="Password" type="password" required>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="lock"
+            slot="prefix"
+        ></pc-icon>
+    </pc-input>
+    <pc-checkbox>Remember me</pc-checkbox>
+    <pc-button appearance="primary" type="submit">Log in</pc-button>
+</fo>
+```
+
+```demo
+<div class="pc-stack pc-gap-xxl">
+    <h3>Aragorn’s Squash</h3>
+    <p>
+        Altogether unleash weasel mainly well‐protected hiding Farthing excuse.
+        Falling pits oil em Hasufel levels weight rides vagabonds? Gamgee
+        hard‐won thunder merrier forests treasury. Past birthday lasts lowly
+        there’d woe Woodland pa sun’s slaying most handling.
+    </p>
+    <p>
+        Even the smallest person can change the course of the future. They
+        tempted completely other caves cloven wisest draught scrumptious cook
+        Undómiel friends. Dory crunchy huge sleepless. Unmade took nerves liquor
+        defeated Arathorn.
+    </p>
+</div>
+```
+
+### Align items
+
+By default, items stretch to fill the inline size of the `pc-stack` container. You can add any of the following [`pc-align-items-*`](/docs/layout/align-items) classes to an element with `pc-stack` to specify how items are aligned in the inline direction:
+
+- `pc-align-items-start`
+- `pc-align-items-end`
+- `pc-align-items-center`
+- `pc-align-items-stretch`
+- `pc-align-items-baseline`
+
+```demo
+<div class="stack-align-items pc-grid">
+    <div class="pc-stack pc-align-items-start">
+        <div style="min-inline-size: 4rem"></div>
+        <div style="min-inline-size: 8rem"></div>
+        <div style="min-inline-size: 6rem"></div>
+    </div>
+    <div class="pc-stack pc-align-items-end">
+        <div style="min-inline-size: 4rem"></div>
+        <div style="min-inline-size: 8rem"></div>
+        <div style="min-inline-size: 6rem"></div>
+    </div>
+    <div class="pc-stack pc-align-items-center">
+        <div style="min-inline-size: 4rem"></div>
+        <div style="min-inline-size: 8rem"></div>
+        <div style="min-inline-size: 6rem"></div>
+    </div>
+    <div class="pc-stack pc-align-items-stretch">
+        <div style="min-inline-size: 4rem"></div>
+        <div style="min-inline-size: 8rem"></div>
+        <div style="min-inline-size: 6rem"></div>
+    </div>
+</div>
+
+<style>
+    .stack-align-items > [class*="pc-stack"]:has(div:empty) {
+        padding: var(--pc-spacing-s);
+        border: var(--pc-border-width-s) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .stack-align-items div:empty {
+        min-inline-size: 4rem;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+### Gap
+
+By default, the gap between stack items uses `--pc-spacing-m` from your theme. You can add any of the following [`pc-gap-*`](/docs/layout/gap) classes to an element with `pc-cluster` to specify the gap between items.
+
+- `pc-gap-0`
+- `pc-gap-xxxs`
+- `pc-gap-xxs`
+- `pc-gap-xs`
+- `pc-gap-s`
+- `pc-gap-m`
+- `pc-gap-l`
+- `pc-gap-xl`
+- `pc-gap-xxl`
+- `pc-gap-xxxl`
+- `pc-gap-xxxxl`
+- `pc-gap-xxxxxl`
+
+```demo
+<div class="stack-gap pc-grid">
+    <div class="pc-stack pc-gap-xs">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="pc-stack pc-gap-xxxl">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<style>
+    .stack-gap > [class*="pc-stack"]:has(div:empty) {
+        padding: var(--pc-spacing-s);
+        border: var(--pc-border-width-s) dashed
+            var(--pc-color-neutral-border-normal);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .stack-gap div:empty {
+        min-inline-size: 4rem;
+        min-block-size: 4rem;
+        background-color: var(--pc-color-indigo-60);
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```

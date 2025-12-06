@@ -1,12 +1,18 @@
 ---
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
 import { Image } from "astro:assets";
 
+import LanguageSelector from "../components/LanguageSelector.astro";
 import NavigationIcons from "../components/NavigationIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
 
-import logo from "../assets/logo.svg";
+import Logo from "../assets/logo.svg";
 
 const { noSidebar = false } = Astro.props;
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
 ---
 
 <!-- Quicksand font — Bunny Fonts -->
@@ -22,6 +28,7 @@ const { noSidebar = false } = Astro.props;
                 class:list={{ "sidebar-toggle": true, "pc-mobile-only": !noSidebar }}
                 size="small"
                 variant="plain"
+
             >
                 <pc-icon
                     class="rest-only"
@@ -29,6 +36,7 @@ const { noSidebar = false } = Astro.props;
                     icon-style="solid"
                     name="bars"
                     label="Open sidebar"
+
                 />
                 <pc-icon
                     class="hover-only"
@@ -36,11 +44,12 @@ const { noSidebar = false } = Astro.props;
                     icon-style="solid"
                     name="burger"
                     label="Open sidebar"
+
                 />
             </pc-button>
             <a href="/">
                 <Image
-                    src={logo}
+                    src={Logo}
                     width={36}
                     height={36}
                     style="translate: 0 -0.125rem"
@@ -59,6 +68,7 @@ const { noSidebar = false } = Astro.props;
                 class="pc-desktop-only"
                 appearance="warning"
                 variant="filled"
+
             >
                 Alpha
             </pc-badge>
@@ -69,6 +79,7 @@ const { noSidebar = false } = Astro.props;
                 <pc-divider orientation="vertical"></pc-divider>
             </div>
             <ThemeSelector />
+            <LanguageSelector />
             <pc-divider class="pc-desktop-only" orientation="vertical"
             ></pc-divider>
             <pc-button
@@ -77,15 +88,17 @@ const { noSidebar = false } = Astro.props;
                 size="small"
                 data-dialog="open search-dialog"
                 aria-keyshortcuts="Control+K"
+
             >
                 <pc-icon
                     library="default"
                     icon-style="solid"
                     name="magnifying-glass"
-                    slot="prefix"></pc-icon>
-                <span class="label">Search</span>
+                    slot="prefix"
+                   ></pc-icon>
+                <span class="label">{translation("ui.search.button")}</span>
                 <span slot="suffix">
-                    <kbd class="search-key">Ctrl</kbd>
+                    <kbd class="search-key">{translation("ui.keyboard.ctrl")}</kbd>
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>

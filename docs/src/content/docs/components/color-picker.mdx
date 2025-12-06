@@ -1,0 +1,113 @@
+---
+title: Color Picker
+description: Colour pickers allow the user to pick a colour.
+---
+
+Colour pickers allow the user to pick a colour.
+
+```demo
+<pc-color-picker label="Pick a colour"></pc-color-picker>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="book-open"
+        slot="icon"
+    ></pc-icon>
+    This component works well with standard `<form>` elements. Please refer to the [form controls](/docs/get-started/form-controls) page to learn more about form submission and client‐side validation.
+</pc-callout>
+
+## Demos
+
+### Initial value
+
+Use the `value` attribute to set an initial value for the colour picker.
+
+```demo
+<pc-color-picker value="#493ccf" label="Pick a colour"></pc-color-picker>
+```
+
+### Opacity
+
+Use the `opacity` attribute to enable the opacity slider.
+
+```demo
+<pc-color-picker value="#493ccf80" label="Pick a colour" opacity></pc-color-picker>
+```
+
+### Formats
+
+Use the `format` attribute to set the colour picker’s format. Valid options include `hex`, `rgb`, `hsl` and `hsv`. Note that the colour picker’s input will accept any parsable format (including CSS colour names) regardless of this option.
+
+To prevent users from toggling the format themselves, add the `no-format-toggle` attribute.
+
+```demo
+<div class="pc-grid" style="--min-column-size: 15ch">
+    <pc-color-picker
+        format="hex"
+        value="#493ccf"
+        label="Pick a hex colour"
+    ></pc-color-picker>
+    <pc-color-picker
+        format="rgb"
+        value="#c32061"
+        label="Pick an RGB colour"
+    ></pc-color-picker>
+    <pc-color-picker
+        format="hsl"
+        value="#256bb1"
+        label="Pick an HSL colour"
+    ></pc-color-picker>
+    <pc-color-picker
+        format="hsv"
+        value="#b12525"
+        label="Pick an HSV colour"
+    ></pc-color-picker>
+</div>
+```
+
+### Swatches
+
+Use the `swatches` attribute to add convenient presets to the colour picker. Any format the colour picker can parse is acceptable (including CSS colour names), but each value must be separated by a semicolon (`;`). Alternatively, you can pass an array of colour values to this property using JavaScript.
+
+```demo
+<pc-color-picker
+    label="Pick a colour"
+    swatches="
+        #d92626; #d97026; #cf8f0f; #1fa84e;
+        #1696b7; #2680d9; #554aea; #9838ef;
+        #e12e7c; #181e2b; #1e2534; #262f40;
+        #435069; #7987a2; #c9cdd7; #eaebee
+    "
+></pc-color-picker>
+```
+
+### Size
+
+Use the `size` attribute to change the colour picker’s size.
+
+```demo
+<div class="pc-align-items-baseline pc-gap-l">
+    <pc-color-picker size="small" label="Pick a colour"></pc-color-picker>
+    <pc-color-picker size="medium" label="Pick a colour"></pc-color-picker>
+    <pc-color-picker size="large" label="Pick a colour"></pc-color-picker>
+</div>
+```
+
+### Disabled
+
+Use the `disabled` attribute to disable the colour picker.
+
+```demo
+<pc-color-picker label="Pick a colour" disabled></pc-color-picker>
+```
+
+### Inline
+
+The colour picker can be rendered inline instead of in a popup using the `inline` attribute.
+
+```demo
+<pc-color-picker label="Pick a colour" inline></pc-color-picker>
+```

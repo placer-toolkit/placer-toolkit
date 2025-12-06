@@ -1,0 +1,323 @@
+---
+title: Icon
+description: Icons are visual symbols that represent actions, objects or ideas.
+---
+
+Icons are visual symbols that represent actions, objects or ideas.
+
+Placer Toolkit comes bundled with over 2 000 free icons courtesy of [Font Awesome](https://fontawesome.com). These icons are part of the `default` icon library. If you prefer, you can register [custom icon libraries](#defining-a-custom-icon-library) as well as Font Awesome Pro.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="compass"
+        slot="icon"
+    ></pc-icon>
+    Not sure which icon to use? Find the perfect icon over at [Font Awesome](https://fontawesome.com/search/?o=r&ic=free&ip=brands%2Cclassic)!
+</pc-callout>
+
+## Demos
+
+### Icon styles
+
+The default icon library uses Font Awesome Free, which comes with three icon styles: Solid, Regular and Brands. If you’re a Font Awesome Pro user, you can [provide your Kit code](/docs/get-started/installation/#using-font-awesome-kit-codes) to unlock Pro icon packs and styles.
+
+```demo
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="circle-info"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="fire"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="dumpster-fire"
+></pc-icon>
+<pc-icon
+    library="default"
+    icon-style="brands"
+    name="github"
+></pc-icon>
+```
+
+### Colours
+
+Icons inherit their colour from the current text colour. Thus, you can set the `color` property on the `<pc-icon>` element or an ancestor to change the colour.
+
+```demo
+<div style="color: var(--pc-color-blue)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="box-archive"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="battery-three-quarters"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="bell"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-purple)">
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="clock"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="cloud"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="download"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="file"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-green)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="flag-checkered"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="heart"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="image"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="bolt"
+    ></pc-icon>
+</div>
+<div style="color: var(--pc-color-yellow)">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="microphone"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="magnifying-glass"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="star"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="dumpster-fire"
+    ></pc-icon>
+</div>
+```
+
+### Sizes
+
+Icons are sized relative to the current font size. To change the size of an icon, set the `font-size` property on the icon itself or on a parent element as shown below.
+
+```demo
+<div style="font-size: 1.5em">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="box-archive"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="battery-three-quarters"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="bell"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="regular"
+        name="clock"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="cloud"
+    ></pc-icon>
+</div>
+```
+
+### Labels
+
+For non‐decorative icons, use the `label` attribute to announce the label’s content to assistive devices.
+
+```demo
+<pc-icon
+    library="default"
+    icon-style="solid"
+    name="star"
+    label="Add to favourites"
+></pc-icon>
+```
+
+### Auto‐width icons
+
+By default, Font Awesome icons have a `1em` height and a fixed `1em` width. Use the `auto-width` attribute to allow the icon to use its natural variable width.
+
+```demo
+<strong>Without auto‐width</strong><br />
+<div style="color: var(--pc-color-neutral-10); font-size: 1.5em">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="exclamation"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-check"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="keyboard"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="ruler-vertical"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="ruler-horizontal"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="bullhorn"
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+</div>
+
+<strong>With auto‐width</strong><br />
+<div style="color: var(--pc-color-neutral-10); font-size: 1.5em">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="exclamation"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-check"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="keyboard"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="ruler-vertical"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="ruler-horizontal"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="bullhorn"
+        auto-width
+        style="background-color: var(--pc-color-danger-70)"
+    ></pc-icon>
+</div>
+```
+
+### Images
+
+Images that are supposed to act like icons can be loaded individually with the `src` attribute. Only SVGs on a local or CORS‐enabled endpoint are supported. If you’re using more than one custom icon, it might make sense to register a [custom icon library](#defining-a-custom-icon-library) instead.
+
+```demo
+<pc-icon src="https://placer-toolkit.netlify.app/brand/logo.svg" style="font-size: 8rem"></pc-icon>
+```
+
+### Defining a custom icon library
+
+You can register additional icons to use with the `<pc-icon>` component through custom icon libraries. Icon files can exist locally or on a CORS‐enabled endpoint (e.g., a CDN). There is no limit to how many custom icon libraries you can register and there is no cost associated with registering them, as individual icons are only requested when they’re used.
+
+Placer Toolkit ships with two built‐in icon libraries, `default` and `system`. The default icon library contains all icons in Font Awesome Free. The system icon library only contains a subset of icons in Font Awesome Free that are used internally by Placer Toolkit components.
+
+To register a custom icon library, use the `registerIconLibrary()` function exported from `utilities/icon-library.js`. At a minimum, you must provide a name and a resolver function. The resolver function translates an icon name to a URL where the corresponding SVG file exists. Refer to the examples below to better understand how it works.
+
+Here’s an example that registers an icon library located in the `/assets/icons` directory.
+
+```html
+<script type="module">
+    import { registerIconLibrary } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/icon-library.js";
+
+    registerIconLibrary("custom-icon-library", {
+        resolver: (name) => `/assets/icons/${name}.svg`,
+    });
+</script>
+```
+
+To display an icon, set the `library` and `name` attributes of a `<pc-icon>` element. The `icon-style` attribute is not set up for custom icon libraries by default, as it’s designed for the default and system icon libraries.
+
+```html
+<!-- This will show the icon located at /assets/icons/face-smile.svg -->
+<pc-icon library="custom-icon-library" name="face-smile"></pc-icon>
+```
+
+If an icon is used, before registration occurs, it will be initially empty, but shown when it gets registered.
