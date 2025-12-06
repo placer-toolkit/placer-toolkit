@@ -5,9 +5,11 @@
 /docs/design-tokens/other-tokens      /docs/design-tokens/component-groups          301
 
 # Internal docs refactor redirects
+/:lang/docs/*                         /:lang/docs/:splat                            200
 /:lang/*                              /:lang/docs/:splat                            301
+/docs/*                               /docs/:splat                                  200
 /*                                    /docs/:splat                                  301
 
 # 404 pages
+/:lang/404/*                          /:lang/404/:splat                             200
 /:lang/*                              /:lang/404/                                   404
-/*                                    /404/                                         404
