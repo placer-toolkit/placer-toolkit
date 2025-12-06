@@ -1,7 +1,12 @@
 ---
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
 import { Image } from "astro:assets";
 
 import Logo from "../assets/logo.svg";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
 ---
 
 <footer class="footer">
@@ -13,31 +18,30 @@ import Logo from "../assets/logo.svg";
                         src={Logo}
                         width="32"
                         height="32"
-                        alt="Placer Toolkit logo"
+                        alt=""
                     />
                     <b class="tagline">
-                        <span>Flexible.</span>
-                        <span>Accessible.</span>
+                        <span>{translation("landingCTA.tagline.flexible")}</span>
+                        <span>{translation("landingCTA.tagline.accessible")}</span>
                         <span style="white-space: nowrap">
-                            Web Components.
+                            {translation("landingCTA.tagline.webComponents")}
                         </span>
                     </b>
                 </div>
                 <div class="pc-body-s">
                     <p>
-                        Placer Toolkit is an open‐source and framework‐agnostic web component library to build modern interfaces.
+                        {translation("landingCTA.marketingLine.descriptive")}
                     </p>
-                    <p class="copyright">
-                        Made with
+                    <p class="copyright" set:html={translation()}>
+                        {translation("footer.copyright.left")}
                         <pc-icon
                             library="default"
                             icon-style="solid"
                             name="heart"
-                            label="love"
+                            label={translation("footer.copyright.centre")}
+
                         ></pc-icon>
-                        by Placer and its contributors
-                        •
-                        <span style="white-space: nowrap">© 2025</span>
+                        <span set:html={translation("footer.copyright.right")}></span>
                     </p>
                 </div>
             </div>
@@ -46,13 +50,15 @@ import Logo from "../assets/logo.svg";
                     size="small"
                     variant="plain"
                     data-dialog="open privacy-promise"
+
                 >
                     <pc-icon
                         library="default"
                         icon-style="solid"
                         name="cookie-bite"
-                        label="Our privacy promise"
-                        style="color: var(--pc-color-orange-50)"></pc-icon>
+                        label={translation("button.ourPrivacyPromise")}
+                        style="color: var(--pc-color-orange-50)"
+                       ></pc-icon>
                 </pc-button>
             </div>
         </div>
@@ -62,51 +68,51 @@ import Logo from "../assets/logo.svg";
             style="--min-column-size: 10ch"
         >
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">Docs</h3>
+                <h3 class="pc-heading-s">{translation("footer.heading.docs")}</h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href="/get-started/installation">
-                            Installation
+                        <a class="pc-link-plain" href={translatePath("/docs/get-started/installation")}>
+                            {translation("footer.content.docs.installation")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/get-started/usage">
-                            Usage
+                        <a class="pc-link-plain" href={translatePath("/docs/get-started/usage")}>
+                            {translation("footer.content.docs.usage")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/design-tokens">
-                            Design tokens
+                        <a class="pc-link-plain" href={translatePath("/docs/design-tokens")}>
+                            {translation("footer.content.docs.designTokens")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/components">
-                            Components
+                        <a class="pc-link-plain" href={translatePath("/docs/components")}>
+                            {translation("footer.content.docs.components")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/resources/changelog">
-                            Changelog
+                        <a class="pc-link-plain" href={translatePath("/docs/resources/changelog")}>
+                            {translation("footer.content.docs.changelog")}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">About</h3>
+                <h3 class="pc-heading-s">{translation("footer.heading.about")}</h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href="/resources/community">
-                            Community
+                        <a class="pc-link-plain" href={translatePath("/docs/resources/community")}>
+                            {translation("footer.content.about.community")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/resources/contributing">
-                            Contributing
+                        <a class="pc-link-plain" href={translatePath("/docs/resources/contributing")}>
+                            {translation("footer.content.about.contributing")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/resources/brand-assets">
-                            Brand assets
+                        <a class="pc-link-plain" href={translatePath("/docs/resources/brand-assets")}>
+                            {translation("footer.content.about.brandAssets")}
                         </a>
                     </li>
                     <li>
@@ -114,37 +120,37 @@ import Logo from "../assets/logo.svg";
                             class="pc-link-plain"
                             href="https://github.com/placer-toolkit/placer-toolkit/discussions"
                         >
-                            Support
+                            {translation("footer.content.about.support")}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">Legal</h3>
+                <h3 class="pc-heading-s">{translation("footer.heading.legal")}</h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href="/legal/privacy">
-                            Privacy
+                        <a class="pc-link-plain" href={translatePath("/docs/legal/privacy")}>
+                            {translation("footer.content.legal.privacy")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/resources/accessibility">
-                            Accessibility
+                        <a class="pc-link-plain" href={translatePath("/docs/legal/accessibility")}>
+                            {translation("footer.content.legal.accessibility")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/legal/code-of-conduct">
-                            Code of Conduct
+                        <a class="pc-link-plain" href=href={translatePath("/docs/legal/code-of-conduct")}>
+                            {translation("footer.content.legal.codeOfConduct")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/legal/licence">
-                            Licence
+                        <a class="pc-link-plain" href=href={translatePath("/docs/legal/licence")}>
+                            {translation("footer.content.legal.licence")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href="/legal/impressum">
-                            Impressum
+                        <a class="pc-link-plain" href=href={translatePath("/docs/legal/impressum")}>
+                            {translation("footer.content.legal.impressum")}
                         </a>
                     </li>
                 </ul>
@@ -215,13 +221,13 @@ import Logo from "../assets/logo.svg";
         }
     }
 
-    @media screen and (max-width: 1200px) {
-        .footer .footer-content {
-            grid-template-rows: repeat(
-                auto-fit,
-                minmax(min(var(--min-column-size, 20ch), 100%), 1fr)
-            );
-            grid-auto-flow: column;
+    @media screen and (max-width: 850px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+            flex-direction: column;
         }
     }
 </style>

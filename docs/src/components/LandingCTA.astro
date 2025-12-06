@@ -1,5 +1,11 @@
 ---
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+
 import CodeBlock from "./CodeBlock.astro";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
 ---
 
 <div class="landing-cta">
@@ -29,14 +35,14 @@ import CodeBlock from "./CodeBlock.astro";
         <span class="pc-visually-hidden">Placer Toolkit</span>
     </div>
 
-    <h1 class="headline">
-        Native web components for<br />modern interfaces
-    </h1>
+    <h1 class="headline" set:html={translation("landingCTA.marketingLine")}></h1>
 
     <h2 class="tagline">
-        <span>Flexible.</span>
-        <span>Accessible.</span>
-        <span style="white-space: nowrap">Web Components.</span>
+        <span>{translation("landingCTA.tagline.flexible")}</span>
+        <span>{translation("landingCTA.tagline.accessible")}</span>
+        <span style="white-space: nowrap">
+            {translation("landingCTA.tagline.webComponents")}
+        </span>
     </h2>
 
     <div class="splash-buttons">
@@ -47,9 +53,10 @@ import CodeBlock from "./CodeBlock.astro";
             <pc-button
                 appearance="primary"
                 variant="filled outlined"
-                href="/get-started/installation"
+                href={translatePath("/docs/get-started/installation")}
+
             >
-                Get started
+                {translation("button.getStarted")}
             </pc-button>
             <pc-button
                 appearance="neutral"
@@ -57,9 +64,14 @@ import CodeBlock from "./CodeBlock.astro";
                 href="https://github.com/placer-toolkit/placer-toolkit"
                 rel="noreferrer noopener"
                 target="_blank"
+
             >
-                <pc-icon library="default" icon-style="brands" name="github"
-                ></pc-icon>
+                <pc-icon
+                    library="default"
+                    icon-style="brands"
+                    name="github"
+                    label="GitHub"
+                   ></pc-icon>
             </pc-button>
         </div>
     </div>

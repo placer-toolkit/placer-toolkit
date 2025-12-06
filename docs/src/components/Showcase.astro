@@ -1,15 +1,21 @@
+---
+import { getLanguageFromURL, useTranslatedPath } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translatePath = useTranslatedPath(language);
+---
+
 <div class="showcase">
     <pc-comparer style="--divider-width: 0.25rem">
         <iframe
             id="before-frame"
-            src="/showcase"
+            src={translatePath("/showcase")}
             tabindex="-1"
             aria-hidden="true"
             slot="before"></iframe>
-
         <iframe
             id="after-frame"
-            src="/showcase/?color-scheme=dark"
+            src={translatePath("/showcase/?color-scheme=dark")}
             tabindex="-1"
             aria-hidden="true"
             slot="after"></iframe>

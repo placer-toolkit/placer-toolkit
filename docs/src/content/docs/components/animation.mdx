@@ -1,0 +1,232 @@
+---
+title: Animation
+description: Animate elements declaratively with nearly 100 baked‐in presets, or roll your own with custom keyframes. These animations are powered by the Web Animations API.
+---
+
+import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
+
+Animate elements declaratively with nearly 100 baked‐in presets, or roll your own with custom keyframes. These animations are powered by the [Web Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API).
+
+To animate an element, wrap it in a `<pc-animation>` element and set an an animation name. The animation will not start until you add the `play` attribute. Refer to the [properties table](#properties) for a list of all animation options.
+
+```demo:open
+<div class="animation-overview">
+    <pc-animation name="bounce" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+    <pc-animation name="jello" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+    <pc-animation name="heartBeat" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+    <pc-animation name="flip" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+</div>
+
+<style>
+    .animation-overview .box {
+        display: inline-block;
+        inline-size: 100px;
+        block-size: 100px;
+        margin: 1.5rem;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-l);
+    }
+</style>
+```
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+        slot="icon"
+    ></pc-icon>
+    The animation will only be applied to the first child element found in `<pc-animation>`.
+</pc-callout>
+
+## Demos
+
+### Animations and easings
+
+This demo demonstrates all of the baked‐in animations and easings. Animations are based on those found in the popular [Animate.css](https://animate.style) library.
+
+```demo
+<div class="animation-sandbox">
+    <pc-animation name="bounce" easing="ease-in-out" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+
+    <div class="controls">
+        <pc-select label="Animation" value="bounce"></pc-select>
+        <pc-select label="Easing" value="easeInOut"></pc-select>
+        <pc-input
+            type="number"
+            label="Playback rate"
+            min="0"
+            max="2"
+            step="0.25"
+            value="1"
+        ></pc-input>
+    </div>
+</div>
+
+<script type="module">
+    import { getAnimationNames, getEasingNames } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/animation.js";
+
+    const container = document.querySelector(".animation-sandbox");
+    const animation = container.querySelector("pc-animation");
+    const animationName = container.querySelector(".controls pc-select:nth-child(1)");
+    const easingName = container.querySelector(".controls pc-select:nth-child(2)");
+    const playbackRate = container.querySelector('pc-input[type="number"]');
+    const animations = getAnimationNames();
+    const easings = getEasingNames();
+
+    animations.map((name) => {
+        const option = Object.assign(document.createElement("pc-option"), {
+            textContent: name,
+            value: name
+        });
+        animationName.appendChild(option);
+    });
+
+    easings.map((name) => {
+        const option = Object.assign(document.createElement("pc-option"), {
+            textContent: name,
+            value: name
+        });
+        easingName.appendChild(option);
+    });
+
+    animationName.addEventListener("pc-change", () => (animation.name = animationName.value));
+    easingName.addEventListener("pc-change", () => (animation.easing = easingName.value));
+    playbackRate.addEventListener("pc-input", () => (animation.playbackRate = playbackRate.value));
+</script>
+
+<style>
+    .animation-sandbox .box {
+        inline-size: 100px;
+        block-size: 100px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-l);
+    }
+
+    .animation-sandbox .controls {
+        max-inline-size: 300px;
+        margin-block-start: var(--pc-spacing-xxxl);
+    }
+
+    .animation-sandbox .controls pc-select {
+        margin-block-end: var(--pc-spacing-l);
+    }
+</style>
+```
+
+### Intersection Observer
+
+Use an [Intersection Observer](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) to control the animation when an element enters or exits the viewport. For example, scroll the box below in and out of your screen. The animation stops when the box exits the viewport and restarts each time it enters the viewport.
+
+```demo
+<div class="animation-scroll">
+    <pc-animation
+        name="jackInTheBox"
+        duration="2000"
+        iterations="1"
+    >
+        <div class="box"></div>
+    </pc-animation>
+</div>
+
+<script>
+    const container = document.querySelector(".animation-scroll");
+    const animation = container.querySelector("pc-animation");
+    const box = animation.querySelector(".box");
+
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            animation.play = true;
+        } else {
+            animation.play = false;
+            animation.currentTime = 0;
+        }
+    });
+
+    observer.observe(box);
+</script>
+
+<style>
+    .animation-scroll .box {
+        display: inline-block;
+        inline-size: 100px;
+        block-size: 100px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-l);
+    }
+</style>
+```
+
+### Custom keyframes
+
+Supply your own keyframes to build custom animations.
+
+```demo
+<div class="animation-keyframes">
+    <pc-animation easing="ease-in-out" duration="2000" play>
+        <div class="box"></div>
+    </pc-animation>
+</div>
+
+<script>
+    const animation = document.querySelector(".animation-keyframes pc-animation");
+
+    animation.keyframes = [
+        {
+            offset: 0,
+            easing: "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+            fillMode: "both",
+            transformOrigin: "center center",
+            transform: "rotate(0deg)",
+        },
+        {
+            offset: 1,
+            easing: "cubic-bezier(0.250, 0.460, 0.450, 0.940)",
+            fillMode: "both",
+            transformOrigin: "center center",
+            transform: "rotate(90deg)",
+        },
+    ];
+</script>
+
+<style>
+    .animation-keyframes .box {
+        inline-size: 100px;
+        block-size: 100px;
+        background-color: var(--pc-color-primary-fill-loud);
+        border-radius: var(--pc-border-radius-l);
+    }
+</style>
+```
+
+### Playing animations programmatically
+
+Animations won’t play until you add the `play` attribute. You can omit it initially, then apply it programmatically such as after a user interaction. In this demo, the button will animate once every time the button is clicked.
+
+```demo
+<div class="animation-form">
+    <pc-animation name="rubberBand" duration="1000" iterations="1">
+        <pc-button appearance="primary">Click me</pc-button>
+    </pc-animation>
+</div>
+
+<script>
+    const container = document.querySelector(".animation-form");
+    const animation = container.querySelector("pc-animation");
+    const button = container.querySelector("pc-button");
+
+    button.addEventListener("click", () => {
+        animation.play = true;
+    });
+</script>
+```

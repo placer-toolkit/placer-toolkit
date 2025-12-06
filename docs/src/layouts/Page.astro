@@ -1,9 +1,12 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
+import FallbackContentWarning from "../components/FallbackContentWarning.astro";
 import Footer from "../components/Footer.astro";
 import Search from "../components/Search.astro";
 
@@ -14,9 +17,12 @@ import "../styles/main.css";
 import "../styles/fonts.css";
 import "../styles/utilities.css";
 
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
 const {
     title = "Untitled",
-    description = "Flexible. Accessible. Web Components.",
+    description = `${translation("landingCTA.tagline.flexible")} ${translation("landingCTA.tagline.accessible")} ${translation("landingCTA.tagline.webComponents")}`,
     component = "",
     hero = false,
     pagefindIgnore = false,
@@ -27,7 +33,7 @@ const {
 
 <!doctype html>
 <html
-    lang="en-gb"
+    lang={language}
     class:list={{ "pc-light": true, "no-sidebar": noSidebar }}
 >
     <head>
@@ -44,7 +50,7 @@ const {
         <meta property="og:title" content="Placer Toolkit" />
         <meta
             property="og:description"
-            content="Flexible. Accessible. Web Components."
+            content={`${translation("landingCTA.tagline.flexible")} ${translation("landingCTA.tagline.accessible")} ${translation("landingCTA.tagline.webComponents")}`}
         />
         <meta
             property="og:url"
@@ -56,8 +62,10 @@ const {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
         <script>
-            import "placer-toolkit";
+            import "placer-toolkit/dist/placer.js";
+
             import "placer-toolkit/dist/translations/en-gb.js";
+            import "placer-toolkit/dist/translations/de.js";
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
@@ -72,6 +80,7 @@ const {
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
                 data-pagefind-ignore
+
             >
                 Skip to main content
             </pc-button>
@@ -106,16 +115,18 @@ const {
                                     size="small"
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
+
                                 >
                                     Skip to table of contents
                                 </pc-button>
 
                                 <pc-details
                                     class="toc-mobile"
-                                    summary="On this page"
+                                    summary={translation("ui.toc.onThisPage")}
                                     data-pagefind-ignore
+                                    client:load
                                 >
-                                    <ul class="toc-ul" />
+                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-details>
 
                                 <header id="_top">
@@ -128,6 +139,8 @@ const {
                                     ) : (
                                         ""
                                     )}
+
+                                    <FallbackContentWarning />
                                 </header>
                                 <slot />
                             </article>
@@ -144,15 +157,17 @@ const {
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
+
                                 >
                                     Return to main content
                                 </pc-button>
-                                <h3 class="toc-heading">On this page</h3>
+                                <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
                                 <pc-scroller
                                     class="toc-scroll-fade"
                                     orientation="vertical"
+
                                 >
-                                    <ul class="toc-ul" />
+                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-scroller>
                             </aside>
                         </div>
@@ -163,20 +178,23 @@ const {
                             </span>
                             <div class="pc-split">
                                 <b style="flex: 1">
-                                    Ready to build with Placer Toolkit?
+                                    {translation("getStartedBanner.readyToStart")}
                                 </b>
                                 <pc-button
                                     appearance="primary"
                                     size="small"
-                                    href="/get-started/installation"
+                                    href="/docs/get-started/installation"
+
                                 >
-                                    Get started
+                                    {translation("button.getStarted")}
+
                                     <pc-icon
                                         class="arrow-right-move"
                                         library="default"
                                         icon-style="solid"
                                         name="chevron-right"
                                         slot="suffix"
+
                                     ></pc-icon>
                                 </pc-button>
                             </div>
@@ -190,20 +208,33 @@ const {
             {showFooter ? <Footer /> : undefined}
         </div>
 
-        <div class="spinner-overlay">
-            <div class="spinner-container">
-                <svg
-                    xmlns="http://w3.org/2000/svg"
-                    class="spinner"
-                    role="progressbar"
-                >
-                    <circle class="track"></circle>
-                    <circle class="indicator"></circle>
-                </svg>
-            </div>
+        <pc-dialog label="Contact" id="contact-info">
+            <p>
+                We’d love to hear from you. Please reach out to us with any questions or
+                inquiries you may have.
+            </p>
 
-            Loading components…
-        </div>
+            <p>
+                You can contact us via e‐mail at
+                <a href="mailto:placer.coc.reports+contact@gmail.com">
+                    placer.coc.reports+contact@gmail.com</a
+                >.
+            </p>
+
+            <p>We look forward to hearing from you!</p>
+
+            <pc-button
+                appearance="primary"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
+
+            >
+                <pc-icon library="default" icon-style="solid" name="phone" slot="prefix"
+                ></pc-icon>
+                Got it!
+            </pc-button>
+        </pc-dialog>
 
         <script>
             // Theme
@@ -273,7 +304,7 @@ const {
                 overviewItem.className = "toc-item depth-2";
                 const overviewLink = document.createElement("a");
                 overviewLink.href = "#_top";
-                overviewLink.textContent = "Overview";
+                overviewLink.textContent = tocDesktop.dataset.overview || tocMobile.dataset.overview;
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {
