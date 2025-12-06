@@ -3,7 +3,14 @@
 
 version: 2
 updates:
+<<<<<<< HEAD
     - package-ecosystem: "npm"
       directory: "/"
       schedule:
           interval: "weekly"
+=======
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+>>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c

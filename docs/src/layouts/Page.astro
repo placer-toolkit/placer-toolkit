@@ -80,6 +80,7 @@ const {
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
                 data-pagefind-ignore
+
             >
                 Skip to main content
             </pc-button>
@@ -114,6 +115,7 @@ const {
                                     size="small"
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
+
                                 >
                                     Skip to table of contents
                                 </pc-button>
@@ -122,6 +124,7 @@ const {
                                     class="toc-mobile"
                                     summary={translation("ui.toc.onThisPage")}
                                     data-pagefind-ignore
+                                    client:load
                                 >
                                     <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-details>
@@ -154,6 +157,7 @@ const {
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
+
                                 >
                                     Return to main content
                                 </pc-button>
@@ -161,6 +165,7 @@ const {
                                 <pc-scroller
                                     class="toc-scroll-fade"
                                     orientation="vertical"
+
                                 >
                                     <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-scroller>
@@ -179,6 +184,10 @@ const {
                                     appearance="primary"
                                     size="small"
                                     href="/docs/get-started/installation"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c
                                 >
                                     {translation("button.getStarted")}
 
@@ -188,6 +197,10 @@ const {
                                         icon-style="solid"
                                         name="chevron-right"
                                         slot="suffix"
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c
                                     ></pc-icon>
                                 </pc-button>
                             </div>
@@ -300,7 +313,11 @@ const {
                 const overviewLink = document.createElement("a");
 
                 overviewLink.href = "#_top";
+<<<<<<< HEAD
                 overviewLink.textContent = tocDesktop.dataset.overview ?? tocMobile.dataset.overview ?? "";
+=======
+                overviewLink.textContent = tocDesktop.dataset.overview || tocMobile.dataset.overview;
+>>>>>>> 6f79ca229b85661d02da810c654eb8f474b1494c
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {
