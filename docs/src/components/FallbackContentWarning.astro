@@ -1,17 +1,10 @@
 ---
 import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
-const currentLocale = Astro.currentLocale;
-const defaultLocale = Astro.defaultLocale;
-const fallbackLocale = "en";
-const requestedLangCode = currentLocale || defaultLocale;
-const isFallback = requestedLangCode !== fallbackLocale;
-const contentSourceCode = fallbackLocale;
-const contentSourceCodeReliable = fallbackLocale || fallbackLocale;
-const isTrueFallback = requestedLangCode !== contentSourceCodeReliable;
+const { isFallback } = Astro.props;
 
-if (!isTrueFallback) {
-    return null;
+if (!isFallback) {
+  return null;
 }
 
 const language = getLanguageFromURL(Astro.url);
