@@ -35,6 +35,7 @@ const {
 <html
     lang={language}
     class:list={{ "pc-light": true, "no-sidebar": noSidebar }}
+    data-pagefind-ignore={pagefindIgnore ? "all" : undefined}
 >
     <head>
         <meta charset="UTF-8" />
@@ -79,7 +80,6 @@ const {
                 appearance="neutral"
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
-                data-pagefind-ignore
             >
                 Skip to main content
             </pc-button>
@@ -101,12 +101,11 @@ const {
                 class:list={[{ hero: hero }]}
                 id="main-content"
                 tabindex="-1"
-                data-pagefind-ignore={pagefindIgnore ? true : undefined}
             >
                 {
                     !hero ? (
                         <div class="content-layout">
-                            <article>
+                            <article data-pagefind-body>
                                 <pc-button
                                     href="#table-of-contents"
                                     appearance="neutral"
@@ -121,7 +120,7 @@ const {
                                 <pc-details
                                     class="toc-mobile"
                                     summary={translation("ui.toc.onThisPage")}
-                                    data-pagefind-ignore
+                                    data-pagefind-ignore="all"
                                 >
                                     <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-details>
@@ -139,21 +138,17 @@ const {
 
                                     <FallbackContentWarning />
                                 </header>
+
                                 <slot />
                             </article>
 
-                            <aside
-                                class="toc toc-desktop"
-                                id="table-of-contents"
-                                data-pagefind-ignore
-                            >
+                            <aside class="toc toc-desktop" id="table-of-contents">
                                 <pc-button
                                     href="#_top"
                                     appearance="neutral"
                                     variant="filled outlined"
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
-                                    data-pagefind-ignore
                                 >
                                     Return to main content
                                 </pc-button>
@@ -167,7 +162,7 @@ const {
                             </aside>
                         </div>
                     ) : (
-                        <pc-callout class="hero-callout" appearance="primary" size="small">
+                        <pc-callout class="hero-callout" appearance="primary" size="small" data-pagefind-ignore="all">
                             <span slot="icon" style="user-select: none; -webkit-user-select: none">
                                 🚀
                             </span>

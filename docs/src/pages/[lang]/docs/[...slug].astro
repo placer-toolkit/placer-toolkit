@@ -94,20 +94,24 @@ function titleToComponentName(title: string) {
         return "";
     }
 
-    return "Pc" + title
-        .split(/\s+/)
-        .map(word => word[0].toUpperCase() + word.slice(1).toLowerCase())
-        .join("");
+    return (
+        "Pc" +
+        title
+            .split(/\s+/)
+            .map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase())
+            .join("")
+    );
 }
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 
-const slug = Astro.params.slug;
+const slug = Astro.params.slug as string;
 
 const isComponentPage = slug.startsWith("components/");
-const componentName = isComponentPage ? titleToComponentName(post.data.title) : undefined;
-const isRootSlug = slug === "docs" || slug === "docs/";
+const componentName = isComponentPage
+    ? titleToComponentName(post.data.title)
+    : undefined;
 ---
 
 <Page
@@ -117,5 +121,5 @@ const isRootSlug = slug === "docs" || slug === "docs/";
 >
     <Content components={{ CodeBlock, CodeDemo }} />
 
-    {isComponentPage && <APITable componentName={componentName} />}
+    {isComponentPage && <APITable componentName={componentName ?? ""} />}
 </Page>
