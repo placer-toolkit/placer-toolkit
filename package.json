@@ -24,13 +24,21 @@
             "import": "./dist/placer.js",
             "types": "./dist/placer.d.ts"
         },
+        "./cdn/global-shims.js": "./cdn/global-shims.js",
         "./dist/global-shims.js": "./dist/global-shims.js",
+        "./cdn/placer.js": "./cdn/placer.js",
         "./dist/placer.js": "./dist/placer.js",
+        "./cdn/placer-autoloader.js": "./cdn/placer-autoloader.js",
         "./dist/placer-autoloader.js": "./dist/placer-autoloader.js",
+        "./cdn/custom-elements.json": "./cdn/custom-elements.json",
         "./dist/custom-elements.json": "./dist/custom-elements.json",
+        "./cdn/components/*": "./cdn/components/*",
         "./dist/components/*": "./dist/components/*",
+        "./cdn/styles/*": "./cdn/styles/*",
         "./dist/styles/*": "./dist/styles/*",
+        "./cdn/translations/*": "./cdn/translations/*",
         "./dist/translations/*": "./dist/translations/*",
+        "./cdn/utilities/*": "./cdn/utilities/*",
         "./dist/utilities/*": "./dist/utilities/*"
     },
     "files": [

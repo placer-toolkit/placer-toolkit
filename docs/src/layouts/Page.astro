@@ -63,10 +63,9 @@ const {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
         <script>
-            import "placer-toolkit/dist/placer.js";
-
-            import "placer-toolkit/dist/translations/en-gb.js";
-            import "placer-toolkit/dist/translations/de.js";
+            // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
+            import "placer-toolkit/cdn/placer.js";
+            import "placer-toolkit/cdn/translations/de.js";
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
