@@ -44,10 +44,42 @@ export const ui = {
         // Labels
         "button.getStarted": "Get started",
         "button.ourPrivacyPromise": "Our privacy promise",
+        "button.gotIt": "Got it!",
+
+        "button.sidebar.open": "Open sidebar",
+
+        "button.skipToMainContent": "Skip to main content",
+        "button.returnToMainContent": "Return to main content",
+        "button.skipToTableOfContents": "Skip to table of contents",
+
+        "js.noscript":
+            "This site requires JavaScript to function properly, as it uses JavaScript‐reliant web technologies.",
+
+        "navbar.aria": "Main navigation",
+
+        "sidebar.aria": "Sidebar",
+        "sidebar.nav.aria": "Sidebar navigation",
+
+        "theme.selector": "Theme selector",
+
+        "theme.select": "Theme",
+        "theme.palette.select": "Colour palette",
+        "theme.colorScheme.select": "Colour scheme",
+
+        "theme.default": "Default",
 
         "theme.colorScheme.light": "Light colour scheme",
+        "theme.colorScheme.light.simple": "Light",
         "theme.colorScheme.dark": "Dark colour scheme",
+        "theme.colorScheme.dark.simple": "Dark",
         "theme.colorScheme.system": "System colour scheme",
+
+        // Dialogs
+        "contact.paragraph.1":
+            "We’d love to hear from you. Please reach out to us with any questions or enquiries you may have.",
+        "contact.paragraph.2":
+            'You can contact us via e‐mail at <a href="mailto:placer.coc.reports+contact@gmail.com">placer.coc.reports+contact@gmail.com</a>.',
+        "contact.paragraph.3": "We look forward to hearing from you!",
 
         // Footer headings
         "footer.heading.docs": "Docs",
@@ -55,24 +87,25 @@ export const ui = {
         "footer.heading.legal": "Legal",
 
         // Footer links (Docs)
-        "footer.content.docs.installation": "Installation",
-        "footer.content.docs.usage": "Usage",
-        "footer.content.docs.designTokens": "Design tokens",
-        "footer.content.docs.components": "Components",
-        "footer.content.docs.changelog": "Changelog",
+        "nav.content.docs.installation": "Installation",
+        "nav.content.docs.usage": "Usage",
+        "nav.content.docs.designTokens": "Design tokens",
+        "nav.content.docs.components": "Components",
+        "nav.content.docs.changelog": "Changelog",
 
         // Footer links (About)
-        "footer.content.about.community": "Community",
-        "footer.content.about.contributing": "Contributing",
-        "footer.content.about.brandAssets": "Brand assets",
-        "footer.content.about.support": "Support",
+        "nav.content.about.community": "Community",
+        "nav.content.about.contributing": "Contributing",
+        "nav.content.about.brandAssets": "Brand assets",
+        "nav.content.about.support": "Support",
 
         // Footer links (Legal)
-        "footer.content.legal.privacy": "Privacy",
-        "footer.content.legal.accessibility": "Accessibility",
-        "footer.content.legal.codeOfConduct": "Code of Conduct",
-        "footer.content.legal.licence": "Licence",
-        "footer.content.legal.impressum": "Impressum",
+        "nav.content.legal.contact": "Contact",
+        "nav.content.legal.privacy": "Privacy",
+        "nav.content.legal.accessibility": "Accessibility",
+        "nav.content.legal.codeOfConduct": "Code of Conduct",
+        "nav.content.legal.licence": "Licence",
+        "nav.content.legal.impressum": "Impressum",
 
         // Footer copyright
         "footer.copyright.left": "Made with",
@@ -116,12 +149,46 @@ export const ui = {
         // Labels
         "button.getStarted": "Los geht’s",
         "button.ourPrivacyPromise": "Unser Datenschutzversprechen",
+        "button.gotIt": "Alles klar!",
+
+        "button.sidebar.open": "Seitenleiste öffnen",
+
+        "button.skipToMainContent": "Zum Hauptinhalt springen",
+        "button.returnToMainContent": "Zum Hauptinhalt zurückspringen",
+        "button.skipToTableOfContents": "Zum Inhaltsverzeichnis springen",
+
+        "js.noscript":
+            "Diese Website erfordert JavaScript, um richtig zu funktionieren, da sie JavaScript‐abhängige Webtechnologien benutzt.",
+
+        "navbar.aria": "Hauptnavigation",
+
+        "sidebar.aria": "Seitenleiste",
+        "sidebar.nav.aria": "Seitenleisten‐Navigation",
 
         "theme.selector": "Designauswahl",
+
+        "theme.select": "Design",
+        "theme.palette.select": "Farbpalette",
+        "theme.colorScheme.select": "Farbschema",
+
         "theme.default": "Standard",
+
         "theme.colorScheme.light": "Helles Farbschema",
+        "theme.colorScheme.light.simple": "Hell",
         "theme.colorScheme.dark": "Dunkles Farbschema",
+        "theme.colorScheme.dark.simple": "Dunkel",
         "theme.colorScheme.system": "System‐Farbschema",
+
+        // Dialogs
+        "contact.paragraph.1":
+            "Wir würden uns freuen, von dir zu hören. Bitte kontaktiere uns bei Fragen oder Anliegen, die du hast.",
+        "contact.paragraph.2":
+            'Du kannst uns per E‐Mail unter <a href="mailto:placer.coc.reports+contact@gmail.com">placer.coc.reports+contact@gmail.com</a> erreichen.',
+        "contact.paragraph.3": "Wir freuen uns darauf, von dir zu hören!",
+
+        // Showcase
+        "showcase.tab.before": "Vorher",
+        "showcase.tab.after": "Nachher",
 
         // Footer headings
         "footer.heading.docs": "Docs",
@@ -129,29 +196,30 @@ export const ui = {
         "footer.heading.legal": "Rechtliches",
 
         // Footer links (Docs)
-        "footer.content.docs.installation": "Installation",
-        "footer.content.docs.usage": "Verwendung",
-        "footer.content.docs.designTokens": "Design‐Tokens",
-        "footer.content.docs.components": "Komponenten",
-        "footer.content.docs.changelog": "Changelog",
+        "nav.content.docs.installation": "Installation",
+        "nav.content.docs.usage": "Verwendung",
+        "nav.content.docs.designTokens": "Design‐Tokens",
+        "nav.content.docs.components": "Komponenten",
+        "nav.content.docs.changelog": "Changelog",
 
         // Footer links (About)
-        "footer.content.about.community": "Community",
-        "footer.content.about.contributing": "Mitwirken",
-        "footer.content.about.brandAssets": "Marken‐Assets",
-        "footer.content.about.support": "Support",
+        "nav.content.about.community": "Community",
+        "nav.content.about.contributing": "Mitwirken",
+        "nav.content.about.brandAssets": "Marken‐Assets",
+        "nav.content.about.support": "Support",
 
         // Footer links (Legal)
-        "footer.content.legal.privacy": "Datenschutz",
-        "footer.content.legal.accessibility": "Barrierefreiheit",
-        "footer.content.legal.codeOfConduct": "Verhaltenskodex",
-        "footer.content.legal.licence": "Lizenz",
-        "footer.content.legal.impressum": "Impressum",
+        "nav.content.legal.contact": "Kontakt",
+        "nav.content.legal.privacy": "Datenschutz",
+        "nav.content.legal.accessibility": "Barrierefreiheit",
+        "nav.content.legal.codeOfConduct": "Verhaltenskodex",
+        "nav.content.legal.licence": "Lizenz",
+        "nav.content.legal.impressum": "Impressum",
 
         // Footer copyright
         "footer.copyright.left": "Mit",
         "footer.copyright.centre": "Liebe",
         "footer.copyright.right":
-            'von Placer und ihren Mitwirkenden gemacht • <span style="white-space: nowrap">© 2025</span>',
+            'von Placer und seinen Mitwirkenden gemacht • <span style="white-space: nowrap">© 2025</span>',
     },
 } as const;

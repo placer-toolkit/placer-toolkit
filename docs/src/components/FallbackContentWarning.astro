@@ -4,7 +4,7 @@ import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 const { isFallback } = Astro.props;
 
 if (!isFallback) {
-  return null;
+    return null;
 }
 
 const language = getLanguageFromURL(Astro.url);
@@ -16,10 +16,9 @@ const translation = useTranslations(language);
         library="default"
         icon-style="solid"
         name="triangle-exclamation"
-        slot="icon"
+        slot="icon"></pc-icon>
 
-    ></pc-icon>
-    <p set:html={translation("ui.content.contentNotAvailableInYourLanguage")}></p>
+    <p set:html={translation("ui.content.contentNotAvailableInYourLanguage")} />
 </pc-callout>
 
 <style>

@@ -1,5 +1,9 @@
 ---
-import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
 import { Image } from "astro:assets";
 
 import Logo from "../assets/logo.svg";
@@ -14,15 +18,14 @@ const translatePath = useTranslatedPath(language);
         <div class="pc-split:column pc-align-items-start">
             <div class="info pc-stack pc-gap-s" style="--min-column-size: 50ch">
                 <div class="logo-tagline pc-cluster pc-gap-s">
-                    <Image
-                        src={Logo}
-                        width="32"
-                        height="32"
-                        alt=""
-                    />
+                    <Image src={Logo} width="32" height="32" alt="" />
                     <b class="tagline">
-                        <span>{translation("landingCTA.tagline.flexible")}</span>
-                        <span>{translation("landingCTA.tagline.accessible")}</span>
+                        <span>
+                            {translation("landingCTA.tagline.flexible")}
+                        </span>
+                        <span>
+                            {translation("landingCTA.tagline.accessible")}
+                        </span>
                         <span style="white-space: nowrap">
                             {translation("landingCTA.tagline.webComponents")}
                         </span>
@@ -32,7 +35,7 @@ const translatePath = useTranslatedPath(language);
                     <p>
                         {translation("landingCTA.marketingLine.descriptive")}
                     </p>
-                    <p class="copyright" set:html={translation()}>
+                    <p class="copyright">
                         {translation("footer.copyright.left")}
                         <pc-icon
                             library="default"
@@ -40,7 +43,9 @@ const translatePath = useTranslatedPath(language);
                             name="heart"
                             label={translation("footer.copyright.centre")}
                         ></pc-icon>
-                        <span set:html={translation("footer.copyright.right")}></span>
+                        <span
+                            set:html={translation("footer.copyright.right")}
+                        />
                     </p>
                 </div>
             </div>
@@ -55,8 +60,7 @@ const translatePath = useTranslatedPath(language);
                         icon-style="solid"
                         name="cookie-bite"
                         label={translation("button.ourPrivacyPromise")}
-                        style="color: var(--pc-color-orange-50)"
-                    ></pc-icon>
+                        style="color: var(--pc-color-orange-50)"></pc-icon>
                 </pc-button>
             </div>
         </div>
@@ -66,51 +70,81 @@ const translatePath = useTranslatedPath(language);
             style="--min-column-size: 10ch"
         >
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">{translation("footer.heading.docs")}</h3>
+                <h3 class="pc-heading-s">
+                    {translation("footer.heading.docs")}
+                </h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/get-started/installation")}>
-                            {translation("footer.content.docs.installation")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath(
+                                "/docs/get-started/installation",
+                            )}
+                        >
+                            {translation("nav.content.docs.installation")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/get-started/usage")}>
-                            {translation("footer.content.docs.usage")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/get-started/usage")}
+                        >
+                            {translation("nav.content.docs.usage")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/design-tokens")}>
-                            {translation("footer.content.docs.designTokens")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/design-tokens")}
+                        >
+                            {translation("nav.content.docs.designTokens")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/components")}>
-                            {translation("footer.content.docs.components")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/components")}
+                        >
+                            {translation("nav.content.docs.components")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/resources/changelog")}>
-                            {translation("footer.content.docs.changelog")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/resources/changelog")}
+                        >
+                            {translation("nav.content.docs.changelog")}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">{translation("footer.heading.about")}</h3>
+                <h3 class="pc-heading-s">
+                    {translation("footer.heading.about")}
+                </h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/resources/community")}>
-                            {translation("footer.content.about.community")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/resources/community")}
+                        >
+                            {translation("nav.content.about.community")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/resources/contributing")}>
-                            {translation("footer.content.about.contributing")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/resources/contributing")}
+                        >
+                            {translation("nav.content.about.contributing")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/resources/brand-assets")}>
-                            {translation("footer.content.about.brandAssets")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/resources/brand-assets")}
+                        >
+                            {translation("nav.content.about.brandAssets")}
                         </a>
                     </li>
                     <li>
@@ -118,37 +152,54 @@ const translatePath = useTranslatedPath(language);
                             class="pc-link-plain"
                             href="https://github.com/placer-toolkit/placer-toolkit/discussions"
                         >
-                            {translation("footer.content.about.support")}
+                            {translation("nav.content.about.support")}
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="pc-stack pc-gap-xs">
-                <h3 class="pc-heading-s">{translation("footer.heading.legal")}</h3>
+                <h3 class="pc-heading-s">
+                    {translation("footer.heading.legal")}
+                </h3>
                 <ul class="list-links">
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/legal/privacy")}>
-                            {translation("footer.content.legal.privacy")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/legal/privacy")}
+                        >
+                            {translation("nav.content.legal.privacy")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/legal/accessibility")}>
-                            {translation("footer.content.legal.accessibility")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/legal/accessibility")}
+                        >
+                            {translation("nav.content.legal.accessibility")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/legal/code-of-conduct")}>
-                            {translation("footer.content.legal.codeOfConduct")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/legal/code-of-conduct")}
+                        >
+                            {translation("nav.content.legal.codeOfConduct")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/legal/licence")}>
-                            {translation("footer.content.legal.licence")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/legal/licence")}
+                        >
+                            {translation("nav.content.legal.licence")}
                         </a>
                     </li>
                     <li>
-                        <a class="pc-link-plain" href={translatePath("/docs/legal/impressum")}>
-                            {translation("footer.content.legal.impressum")}
+                        <a
+                            class="pc-link-plain"
+                            href={translatePath("/docs/legal/impressum")}
+                        >
+                            {translation("nav.content.legal.impressum")}
                         </a>
                     </li>
                 </ul>

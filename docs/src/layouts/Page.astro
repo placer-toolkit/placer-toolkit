@@ -27,7 +27,8 @@ const {
     hero = false,
     pagefindIgnore = false,
     noSidebar = false,
-    showFooter = false
+    showFooter = false,
+    isFallback = false,
 } = Astro.props;
 ---
 
@@ -80,7 +81,7 @@ const {
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
             >
-                Skip to main content
+                {translation("button.skipToMainContent")}
             </pc-button>
 
             <NavigationBar noSidebar={noSidebar} />
@@ -92,8 +93,7 @@ const {
             <Search />
 
             <noscript>
-                This site requires JavaScript to function properly, as it uses
-                JavaScript‐reliant web technologies.
+                {translation("js.noscript")}
             </noscript>
 
             <main
@@ -113,7 +113,7 @@ const {
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
                                 >
-                                    Skip to table of contents
+                                    {translation("button.skipToTableOfContents")}
                                 </pc-button>
 
                                 <pc-details
@@ -135,7 +135,7 @@ const {
                                         ""
                                     )}
 
-                                    <FallbackContentWarning />
+                                    <FallbackContentWarning isFallback={isFallback} />
                                 </header>
 
                                 <slot />
@@ -149,7 +149,7 @@ const {
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
                                 >
-                                    Return to main content
+                                    {translation("button.returnToMainContent")}
                                 </pc-button>
                                 <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
                                 <pc-scroller
@@ -195,31 +195,25 @@ const {
             {showFooter ? <Footer /> : undefined}
         </div>
 
-        <pc-dialog label="Contact" id="contact-info">
+        <pc-dialog label={translation("nav.content.legal.contact")} id="contact-info">
             <p>
-                We’d love to hear from you. Please reach out to us with any questions or
-                inquiries you may have.
+                {translation("contact.paragraph.1")}
             </p>
 
-            <p>
-                You can contact us via e‐mail at
-                <a href="mailto:placer.coc.reports+contact@gmail.com">
-                    placer.coc.reports+contact@gmail.com</a
-                >.
-            </p>
+            <p set:html={translation("contact.paragraph.2")}></p>
 
-            <p>We look forward to hearing from you!</p>
+            <p>{translation("contact.paragraph.3")}</p>
 
             <pc-button
                 appearance="primary"
                 variant="plain"
                 slot="footer"
                 data-dialog="close"
-
             >
                 <pc-icon library="default" icon-style="solid" name="phone" slot="prefix"
                 ></pc-icon>
-                Got it!
+
+                {translation("button.gotIt")}
             </pc-button>
         </pc-dialog>
 

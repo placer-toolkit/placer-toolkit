@@ -26,7 +26,10 @@ const translatePath = useTranslatedPath(language);
 />
 
 <header role="banner" class="navbar">
-    <nav class="navigation-bar" aria-label="Main navigation">
+    <nav
+        class="navigation-bar"
+        aria-label={translation("navbar.aria") as string}
+    >
         <div class="left-section">
             <pc-button
                 class:list={{
@@ -41,13 +44,13 @@ const translatePath = useTranslatedPath(language);
                     library="default"
                     icon-style="solid"
                     name="bars"
-                    label="Open sidebar"></pc-icon>
+                    label={translation("button.sidebar.open")}></pc-icon>
                 <pc-icon
                     class="hover-only"
                     library="default"
                     icon-style="solid"
                     name="burger"
-                    label="Open sidebar"></pc-icon>
+                    label={translation("button.sidebar.open")}></pc-icon>
             </pc-button>
             <a href={translatePath("/")}>
                 <Image
