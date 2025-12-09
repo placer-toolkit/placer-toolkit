@@ -9,7 +9,8 @@ const docs = defineCollection({
     schema: z.object({
         title: z.string(),
         description: z.string().optional(),
-        slug: z.string().optional(),
+        order: z.number().optional(),
+        isChildOf: z.string().nullable().optional(),
     }),
 });
 

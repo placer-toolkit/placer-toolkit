@@ -18,6 +18,7 @@ export const ui = {
         "ui.keyboard.ctrl": "Ctrl",
         "ui.content.contentNotAvailableInYourLanguage":
             "This content is not available in your language yet.",
+        "ui.content.englishOnly": "(English‐only)",
 
         // Landing page and marketing
         "getStartedBanner.readyToStart": "Ready to build with Placer Toolkit?",
@@ -89,6 +90,7 @@ export const ui = {
         "ui.keyboard.ctrl": "Strg",
         "ui.content.contentNotAvailableInYourLanguage":
             "Dieser Inhalt ist noch nicht in deiner Sprache verfügbar.",
+        "ui.content.englishOnly": "(nur Englisch)",
 
         // Landing page and marketing
         "getStartedBanner.readyToStart": "Bereit, mit Placer Toolkit zu bauen?",

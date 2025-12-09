@@ -1,291 +1,325 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+type SidebarLink = {
+    title: string;
+    href: string;
+    isChildOf: string | undefined | null;
+    order: number;
+    children?: SidebarLink[];
+    isUntranslated?: boolean;
+};
+
+type SidebarCategoryConfiguration = {
+    id: string;
+    title: string;
+    sortType: "manual" | "alphabetical";
+    href?: string;
+    icon?: string;
+};
+
+type SidebarCategory = SidebarCategoryConfiguration & {
+    links: SidebarLink[];
+};
+
+type GroupedLinks = {
+    [categoryId: string]: SidebarLink[];
+};
+
+const categoriesConfiguration: SidebarCategoryConfiguration[] = [
+    { id: "get-started", title: "Get started", sortType: "manual" },
+    {
+        id: "design-tokens",
+        title: "Design tokens",
+        sortType: "manual",
+        href: "/docs/design-tokens",
+    },
+    {
+        id: "components",
+        title: "Components",
+        sortType: "alphabetical",
+        href: "/docs/components",
+        icon: "flask",
+    },
+    {
+        id: "layout",
+        title: "Layout",
+        sortType: "alphabetical",
+        href: "/docs/layout",
+    },
+    {
+        id: "style-utilities",
+        title: "Style utilities",
+        sortType: "alphabetical",
+        href: "/docs/style-utilities",
+    },
+    { id: "resources", title: "Resources", sortType: "manual" },
+];
+
+const language = getLanguageFromURL(Astro.url);
+const defaultLanguage = "en";
+const prefixLanguages = ["de"];
+
+const allDocs = await getCollection("docs");
+const englishContentMap = new Map<string, CollectionEntry<"docs">>();
+
+allDocs.forEach((entry) => {
+    const isEnglish = !prefixLanguages.some((prefix) =>
+        entry.id.startsWith(`${prefix}/`),
+    );
+
+    if (isEnglish) {
+        englishContentMap.set(entry.id, entry);
+    }
+});
+
+let currentLanguageDocs = allDocs.filter((entry) => {
+    if (prefixLanguages.includes(language)) {
+        return entry.id.startsWith(`${language}/`);
+    }
+
+    return !prefixLanguages.some((prefix) => entry.id.startsWith(`${prefix}/`));
+});
+
+function buildSidebarData(
+    currentLanguageDocs: CollectionEntry<"docs">[],
+    englishContentMap: Map<string, CollectionEntry<"docs">>,
+): SidebarCategory[] {
+    const groupedLinks: GroupedLinks = {};
+
+    const translatedIds = new Set(
+        currentLanguageDocs.map((entry) =>
+            entry.id.replace(`${language}/`, ""),
+        ),
+    );
+
+    if (language === defaultLanguage) {
+        for (const [englishId, englishEntry] of englishContentMap.entries()) {
+            const categoryId = englishId.split("/")[0];
+            const href = `/docs/${englishId}`;
+
+            if (!categoryId) {
+                continue;
+            }
+
+            if (!groupedLinks[categoryId]) {
+                groupedLinks[categoryId] = [];
+            }
+
+            groupedLinks[categoryId].push({
+                title: englishEntry.data.title,
+                href: href,
+                isChildOf: englishEntry.data.isChildOf ?? undefined,
+                order: englishEntry.data.order ?? 10000,
+                isUntranslated: false,
+            });
+        }
+    } else {
+        currentLanguageDocs.forEach((entry) => {
+            const pathSegment = entry.id.replace(`${language}/`, "");
+            const categoryId = pathSegment.split("/")[0];
+            const href = `/${language}/docs/${pathSegment}`;
+
+            if (!categoryId) {
+                return;
+            }
+
+            if (!groupedLinks[categoryId]) {
+                groupedLinks[categoryId] = [];
+            }
+
+            groupedLinks[categoryId].push({
+                title: entry.data.title,
+                href: href,
+                isChildOf: entry.data.isChildOf ?? undefined,
+                order: entry.data.order ?? 10000,
+                isUntranslated: false,
+            });
+        });
+
+        for (const [englishId, englishEntry] of englishContentMap.entries()) {
+            if (!translatedIds.has(englishId)) {
+                const categoryId = englishId.split("/")[0];
+
+                if (!categoryId) {
+                    continue;
+                }
+
+                if (!groupedLinks[categoryId]) {
+                    groupedLinks[categoryId] = [];
+                }
+
+                const expectedLangHref = `/${language}/docs/${englishId}`;
+
+                const isAlreadyPresent = groupedLinks[categoryId].some(
+                    (link) =>
+                        link.href === expectedLangHref ||
+                        link.href === `/docs/${englishId}`,
+                );
+
+                if (!isAlreadyPresent) {
+                    groupedLinks[categoryId].push({
+                        title: englishEntry.data.title,
+                        href: expectedLangHref,
+                        isChildOf: englishEntry.data.isChildOf ?? undefined,
+                        order: englishEntry.data.order ?? 10000,
+                        isUntranslated: true,
+                    });
+                }
+            }
+        }
+    }
+
+    return categoriesConfiguration.map((category) => {
+        let links: SidebarLink[] = groupedLinks[category.id] || [];
+
+        let mutableLinks = [...links];
+
+        if (category.sortType === "alphabetical") {
+            let parentLinks = mutableLinks.filter(
+                (link) => !link.isChildOf,
+            ) as SidebarLink[];
+            let childLinks = mutableLinks.filter(
+                (link) => link.isChildOf,
+            ) as SidebarLink[];
+
+            parentLinks.sort((a, b) => a.title.localeCompare(b.title));
+
+            const parentMap = new Map<string, SidebarLink>();
+
+            parentLinks.forEach((link) => {
+                link.children = [];
+                parentMap.set(link.title, link);
+            });
+
+            childLinks.forEach((child) => {
+                const parent = parentMap.get(child.isChildOf!);
+
+                if (parent) {
+                    parent.children!.push(child);
+                } else {
+                    parentLinks.push(child);
+                }
+            });
+
+            parentLinks.forEach((parent) => {
+                if (parent.children && parent.children.length > 0) {
+                    parent.children.sort((a, b) =>
+                        a.title.localeCompare(b.title),
+                    );
+                }
+            });
+
+            mutableLinks = parentLinks;
+        } else if (category.sortType === "manual") {
+            mutableLinks.sort((a, b) => a.order - b.order);
+        }
+
+        return { ...category, links: mutableLinks };
+    });
+}
+
+const translation = useTranslations(language);
+
+const sidebarNavigation = buildSidebarData(
+    currentLanguageDocs,
+    englishContentMap,
+);
+---
+
 <aside class="sidebar" role="complementary" aria-label="Sidebar" tabindex="-1">
     <nav aria-label="Sidebar navigation">
-        <pc-details
-            variant="outlined"
-            summary="Get started"
-            data-id="get-started"
-
-        >
-            <ul>
-                <li>
-                    <a href="/docs/get-started/installation">Installation</a>
-                </li>
-                <li>
-                    <a href="/docs/get-started/usage">Usage</a>
-                </li>
-                <li>
-                    <a href="/docs/get-started/customisation">Customisation</a>
-                </li>
-                <li>
-                    <a href="/docs/get-started/form-controls">Form controls</a>
-                </li>
-                <li>
-                    <a href="/docs/get-started/localisation">Localisation</a>
-                </li>
-            </ul>
-        </pc-details>
-        <pc-details variant="outlined" data-id="design-tokens">
-            <a href="/docs/design-tokens" class="summary-link" slot="summary">
-                Design tokens
-            </a>
-
-            <ul>
-                <li>
-                    <a href="/docs/design-tokens/borders">Borders</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/colour">Colour</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/focus">Focus</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/shadows">Shadows</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/spacing">Spacing</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/transitions">Transitions</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/typography">Typography</a>
-                </li>
-                <li>
-                    <a href="/docs/design-tokens/component-groups">
-                        Component groups
-                    </a>
-                </li>
-            </ul>
-        </pc-details>
-        <pc-details variant="outlined" data-id="components">
-            <a href="/docs/components" class="summary-link" slot="summary">
-                Components
-                <pc-icon library="default" icon-style="solid" name="flask"
-                ></pc-icon>
-            </a>
-
-            <ul>
-                <li>
-                    <a href="/docs/components/animation">Animation</a>
-                </li>
-                <li>
-                    <a href="/docs/components/avatar">Avatar</a>
-                </li>
-                <li>
-                    <a href="/docs/components/badge">Badge</a>
-                </li>
-                <li>
-                    <a href="/docs/components/button">Button</a>
-                </li>
-                <li>
-                    <a href="/docs/components/button-group">Button Group</a>
-                </li>
-                <li>
-                    <a href="/docs/components/callout">Callout</a>
-                </li>
-                <li>
-                    <a href="/docs/components/card">Card</a>
-                </li>
-                <li>
-                    <a href="/docs/components/checkbox">Checkbox</a>
-                </li>
-                <li>
-                    <a href="/docs/components/color-picker">Color Picker</a>
-                </li>
-                <li>
-                    <a href="/docs/components/comparer">Comparer</a>
-                </li>
-                <li>
-                    <a href="/docs/components/copy-button">Copy Button</a>
-                </li>
-                <li>
-                    <a href="/docs/components/details">Details</a>
-                </li>
-                <li>
-                    <a href="/docs/components/dialog">Dialog</a>
-                </li>
-                <li>
-                    <a href="/docs/components/divider">Divider</a>
-                </li>
-                <li>
-                    <a href="/docs/components/drawer">Drawer</a>
-                </li>
-                <li>
-                    <a href="/docs/components/dropdown">Dropdown</a>
-                    <ul>
-                        <li>
-                            <a href="/docs/components/dropdown-item">
-                                Dropdown Item
+        {
+            sidebarNavigation.map((category) => (
+                <pc-details variant="outlined" data-id={category.id}>
+                    <span slot="summary">
+                        {category.href ? (
+                            <a class="summary-link" href={category.href}>
+                                {category.title}
+                                {category.icon && (
+                                    <pc-icon
+                                        library="default"
+                                        icon-style="solid"
+                                        name={category.icon}
+                                    />
+                                )}
                             </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/docs/components/format-bytes">Format Bytes</a>
-                </li>
-                <li>
-                    <a href="/docs/components/format-date">Format Date</a>
-                </li>
-                <li>
-                    <a href="/docs/components/format-number">Format Number</a>
-                </li>
-                <li>
-                    <a href="/docs/components/icon">Icon</a>
-                </li>
-                <li>
-                    <a href="/docs/components/input">Input</a>
-                </li>
-                <li>
-                    <a href="/docs/components/mutation-observer">
-                        Mutation Observer
-                    </a>
-                </li>
-                <li>
-                    <a href="/docs/components/popup">Popup</a>
-                </li>
-                <li>
-                    <a href="/docs/components/qr-code">QR Code</a>
-                </li>
-                <li>
-                    <a href="/docs/components/radio-group">Radio Group</a>
-                    <ul>
-                        <li>
-                            <a href="/docs/components/radio">Radio</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/docs/components/rating">Rating</a>
-                </li>
-                <li>
-                    <a href="/docs/components/resize-observer">Resize Observer</a>
-                </li>
-                <li>
-                    <a href="/docs/components/scroller">Scroller</a>
-                </li>
-                <li>
-                    <a href="/docs/components/select">Select</a>
-                    <ul>
-                        <li>
-                            <a href="/docs/components/option">Option</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/docs/components/spinner">Spinner</a>
-                </li>
-                <li>
-                    <a href="/docs/components/switch">Switch</a>
-                </li>
-                <li>
-                    <a href="/docs/components/tab-group">Tab Group</a>
-                    <ul>
-                        <li>
-                            <a href="/docs/components/tab">Tab</a>
-                        </li>
-                        <li>
-                            <a href="/docs/components/tab-panel">Tab Panel</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/docs/components/tag">Tag</a>
-                </li>
-                <li>
-                    <a href="/docs/components/textarea">Textarea</a>
-                </li>
-                <li>
-                    <a href="/docs/components/tooltip">Tooltip</a>
-                </li>
-            </ul>
-        </pc-details>
-        <pc-details variant="outlined" data-id="layout">
-            <a href="/docs/layout" class="summary-link" slot="summary">Layout</a>
+                        ) : (
+                            category.title
+                        )}
+                    </span>
 
-            <ul>
-                <li>
-                    <a href="/docs/layout/align-items">Align items</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/cluster">Cluster</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/flank">Flank</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/frame">Frame</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/gap">Gap</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/grid">Grid</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/split">Split</a>
-                </li>
-                <li>
-                    <a href="/docs/layout/stack">Stack</a>
-                </li>
-            </ul>
-        </pc-details>
-        <pc-details variant="outlined" data-id="style-utilities">
-            <a href="/docs/style-utilities" class="summary-link" slot="summary">
-                Style utilities
-            </a>
+                    <ul>
+                        {category.links.map((link) => (
+                            <>
+                                <li>
+                                    <a
+                                        class:list={{
+                                            "untranslated-flag":
+                                                link.isUntranslated,
+                                        }}
+                                        href={link.href}
+                                    >
+                                        {link.title}
+                                        {link.isUntranslated && (
+                                            <span class="pc-visually-hidden">
+                                                {translation(
+                                                    "content.englishOnly",
+                                                )}
+                                            </span>
+                                        )}
+                                    </a>
 
-            <ul>
-                <li>
-                    <a href="/docs/style-utilities/native-styles">Native styles</a>
-                </li>
-                <li>
-                    <a href="/docs/style-utilities/reduce-fouce">Reduce FOUCE</a>
-                </li>
-                <li>
-                    <a href="/docs/style-utilities/rounding">Rounding</a>
-                </li>
-                <li>
-                    <a href="/docs/style-utilities/text">Text</a>
-                </li>
-                <li>
-                    <a href="/docs/style-utilities/visually-hidden">
-                        Visually Hidden
-                    </a>
-                </li>
-            </ul>
-        </pc-details>
-        <pc-details variant="outlined" summary="Resources" data-id="resources">
-            <ul>
-                <li>
-                    <a href="/docs/resources/community">Community</a>
-                </li>
-                <li>
-                    <a href="/docs/resources/contributing">Contributing</a>
-                </li>
-                <li>
-                    <a href="/docs/resources/accessibility">Accessibility</a>
-                </li>
-                <li>
-                    <a href="/docs/resources/brand-assets">Brand assets</a>
-                </li>
-                <li>
-                    <a href="/docs/resources/changelog">Changelog</a>
-                </li>
-                <li>
-                    <a
-                        href="https://github.com/placer-toolkit/placer-toolkit/discussions"
-                    >
-                        Support
-                        <pc-icon
-                            class="external-link"
-                            library="default"
-                            icon-style="solid"
-                            name="arrow-up"></pc-icon>
-                    </a>
-                </li>
-            </ul>
-        </pc-details>
+                                    {link.children &&
+                                        link.children.length > 0 && (
+                                            <ul>
+                                                {link.children.map((child) => (
+                                                    <li>
+                                                        <a
+                                                            class:list={{
+                                                                "untranslated-flag":
+                                                                    child.isUntranslated,
+                                                            }}
+                                                            href={child.href}
+                                                        >
+                                                            {child.title}
+                                                            {child.isUntranslated && (
+                                                                <span class="">
+                                                                    {translation(
+                                                                        "content.englishOnly",
+                                                                    )}
+                                                                </span>
+                                                            )}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                </li>
+                            </>
+                        ))}
+                        {category.id === "resources" && (
+                            <li>
+                                <a
+                                    href="https://github.com/placer-toolkit/placer-toolkit/discussions"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Support
+                                    <pc-icon
+                                        class="external-link"
+                                        library="default"
+                                        icon-style="solid"
+                                        name="arrow-up"
+                                    />
+                                </a>
+                            </li>
+                        )}
+                    </ul>
+                </pc-details>
+            ))
+        }
 
         <div class="other-links">
             <div class="pc-cluster">
@@ -461,17 +495,17 @@
         font-weight: var(--pc-font-weight-bold);
     }
 
-    .sidebar pc-details a[slot="summary"] {
+    .sidebar pc-details span[slot="summary"] a {
         color: var(--pc-color-text-normal);
         text-decoration: none;
     }
 
-    .sidebar pc-details a[slot="summary"] pc-icon {
+    .sidebar pc-details span[slot="summary"] a pc-icon {
         color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
     }
 
     @media (hover: hover) {
-        .sidebar pc-details a[slot="summary"]:hover {
+        .sidebar pc-details span[slot="summary"] a:hover {
             color: color-mix(
                 in oklab,
                 var(--pc-color-text-link),
@@ -480,7 +514,7 @@
         }
     }
 
-    .sidebar pc-details a[slot="summary"]:active {
+    .sidebar pc-details span[slot="summary"] a:active {
         color: color-mix(
             in oklab,
             var(--pc-color-text-link),
@@ -520,6 +554,12 @@
             transparent;
         font-weight: var(--pc-font-weight-normal);
         text-decoration: none;
+    }
+
+    .sidebar pc-details ul li a.untranslated-flag::after {
+        content: "EN";
+        font-size: calc(var(--pc-font-size-smaller) / 1.25);
+        vertical-align: super;
     }
 
     @media (hover: hover) {
