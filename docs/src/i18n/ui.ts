@@ -44,6 +44,10 @@ export const ui = {
         "button.getStarted": "Get started",
         "button.ourPrivacyPromise": "Our privacy promise",
 
+        "theme.colorScheme.light": "Light colour scheme",
+        "theme.colorScheme.dark": "Dark colour scheme",
+        "theme.colorScheme.system": "System colour scheme",
+
         // Footer headings
         "footer.heading.docs": "Docs",
         "footer.heading.about": "About",
@@ -111,6 +115,12 @@ export const ui = {
         "button.getStarted": "Los geht’s",
         "button.ourPrivacyPromise": "Unser Datenschutzversprechen",
 
+        "theme.selector": "Designauswahl",
+        "theme.default": "Standard",
+        "theme.colorScheme.light": "Helles Farbschema",
+        "theme.colorScheme.dark": "Dunkles Farbschema",
+        "theme.colorScheme.system": "System‐Farbschema",
+
         // Footer headings
         "footer.heading.docs": "Docs",
         "footer.heading.about": "Über uns",
@@ -118,7 +128,7 @@ export const ui = {
 
         // Footer links (Docs)
         "footer.content.docs.installation": "Installation",
-        "footer.content.docs.usage": "Anwendung",
+        "footer.content.docs.usage": "Verwendung",
         "footer.content.docs.designTokens": "Design‐Tokens",
         "footer.content.docs.components": "Komponenten",
         "footer.content.docs.changelog": "Changelog",

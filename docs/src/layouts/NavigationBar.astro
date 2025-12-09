@@ -1,5 +1,9 @@
 ---
-import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
 import { Image } from "astro:assets";
 
 import LanguageSelector from "../components/LanguageSelector.astro";
@@ -25,29 +29,27 @@ const translatePath = useTranslatedPath(language);
     <nav class="navigation-bar" aria-label="Main navigation">
         <div class="left-section">
             <pc-button
-                class:list={{ "sidebar-toggle": true, "pc-mobile-only": !noSidebar }}
+                class:list={{
+                    "sidebar-toggle": true,
+                    "pc-mobile-only": !noSidebar,
+                }}
                 size="small"
                 variant="plain"
-
             >
                 <pc-icon
                     class="rest-only"
                     library="default"
                     icon-style="solid"
                     name="bars"
-                    label="Open sidebar"
-
-                />
+                    label="Open sidebar"></pc-icon>
                 <pc-icon
                     class="hover-only"
                     library="default"
                     icon-style="solid"
                     name="burger"
-                    label="Open sidebar"
-
-                />
+                    label="Open sidebar"></pc-icon>
             </pc-button>
-            <a href="/">
+            <a href={translatePath("/")}>
                 <Image
                     src={Logo}
                     width={36}
@@ -68,7 +70,6 @@ const translatePath = useTranslatedPath(language);
                 class="pc-desktop-only"
                 appearance="warning"
                 variant="filled"
-
             >
                 Alpha
             </pc-badge>
@@ -88,17 +89,17 @@ const translatePath = useTranslatedPath(language);
                 size="small"
                 data-dialog="open search-dialog"
                 aria-keyshortcuts="Control+K"
-
             >
                 <pc-icon
                     library="default"
                     icon-style="solid"
                     name="magnifying-glass"
-                    slot="prefix"
-                   ></pc-icon>
+                    slot="prefix"></pc-icon>
                 <span class="label">{translation("ui.search.button")}</span>
                 <span slot="suffix">
-                    <kbd class="search-key">{translation("ui.keyboard.ctrl")}</kbd>
+                    <kbd class="search-key"
+                        >{translation("ui.keyboard.ctrl")}</kbd
+                    >
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>

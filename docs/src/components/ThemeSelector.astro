@@ -1,3 +1,10 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
 <pc-dropdown class="theme-selector" value="default">
     <pc-button size="small" variant="outlined" slot="trigger">
         <pc-icon
@@ -5,10 +12,12 @@
             library="default"
             icon-style="solid"
             name="paintbrush"
-            label="Theme selector"></pc-icon>
+            label={translation("theme.selector")}></pc-icon>
     </pc-button>
 
-    <pc-dropdown-item value="default">Default</pc-dropdown-item>
+    <pc-dropdown-item value="default">
+        {translation("theme.default")}
+    </pc-dropdown-item>
     <pc-dropdown-item value="utility">Utility</pc-dropdown-item>
     <pc-dropdown-item value="serene">Serene</pc-dropdown-item>
 </pc-dropdown>
@@ -19,8 +28,10 @@
         library="default"
         icon-style="solid"
         name="circle-half-stroke"
-        label="System theme"
-       ></pc-icon>
+        label={translation("theme.colorScheme.system")}
+        data-light={translation("theme.colorScheme.light")}
+        data-dark={translation("theme.colorScheme.dark")}
+        data-system={translation("theme.colorScheme.system")}></pc-icon>
 </pc-button>
 
 <script>
@@ -70,10 +81,13 @@
 
         if (theme === "light") {
             icon.name = "sun";
+            icon.label = icon.dataset.light ?? "";
         } else if (theme === "dark") {
             icon.name = "moon";
+            icon.label = icon.dataset.dark ?? "";
         } else {
             icon.name = "circle-half-stroke";
+            icon.label = icon.dataset.system ?? "";
         }
     }
 
@@ -93,13 +107,6 @@
         }
 
         currentTheme = theme;
-
-        const label = theme === null ? "System" : theme;
-        const icon = document.querySelector(".color-scheme-icon") as PcIcon | null;
-
-        if (icon) {
-            icon.label = `${label} theme`;
-        }
 
         updateIcon(theme);
     }
