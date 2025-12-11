@@ -24,8 +24,6 @@ Some properties are boolean, so they only have true/false values. To activate a 
 
 In rare cases, a property may require an array, an object or a function. For example, to customise the colour picker’s list of preset swatches, you set the `swatches` property to an array of colours. This must be done with JavaScript.
 
-{/* This component is not available yet, this is for future proofing. */}
-
 ```html
 <pc-color-picker></pc-color-picker>
 
@@ -94,6 +92,7 @@ Some components also have named slots. A named slot can be populated by adding a
         name="gear"
         slot="prefix"
     ></pc-icon>
+
     Settings
 </pc-button>
 ```
@@ -135,7 +134,7 @@ For example, `<button>` and `<pc-button>` both have a `type` attribute, but the 
 
 Web Components are registered with JavaScript, so depending on how and when you load Placer Toolkit, you may notice a Flash of Undefined Custom Elements (FOUCE) when the page loads. There are a couple ways to prevent this with an opt‐in utility, a custom CSS style or a JS‐based promise.
 
-One option is to use our FOUCE utility to prevent FOUCE from happening. This may not work if you load all components at once. This file is automatically loaded when loading `placer.css`.
+One option is to use our FOUCE utility to prevent FOUCE from happening. This file is automatically loaded when loading `placer.css`.
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/utilities/fouce.css" />

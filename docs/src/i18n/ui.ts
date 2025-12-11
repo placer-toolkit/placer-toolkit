@@ -81,6 +81,10 @@ export const ui = {
             'You can contact us via e‐mail at <a href="mailto:placer.coc.reports+contact@gmail.com">placer.coc.reports+contact@gmail.com</a>.',
         "contact.paragraph.3": "We look forward to hearing from you!",
 
+        // Showcase
+        "showcase.tab.before": "Before",
+        "showcase.tab.after": "After",
+
         // Footer headings
         "footer.heading.docs": "Docs",
         "footer.heading.about": "About",

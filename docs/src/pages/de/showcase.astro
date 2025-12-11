@@ -15,12 +15,9 @@ import "../../styles/fonts.css";
             rel="stylesheet"
             href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
         />
-        <script
-            type="module"
-            src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"
-        ></script>
         <script>
-            import "placer-toolkit/dist/translations/de.js";
+            import "placer-toolkit/cdn/placer.js";
+            import "placer-toolkit/cdn/translations/de.js";
 
             const htmlElement = document.documentElement;
 
@@ -75,7 +72,7 @@ import "../../styles/fonts.css";
                 }
             });
         </script>
-        <title>Themenvorschau | Placer Toolkit</title>
+        <title>Designvorschau | Placer Toolkit</title>
     </head>
     <body>
         <div class="showcase-examples-wrapper">
@@ -138,7 +135,8 @@ import "../../styles/fonts.css";
                             <strong>2 227,48 €</strong>
                         </div>
                         <span class="pc-caption-m">
-                            Versandkosten und MwSt. werden beim Bezahlen berechnet.
+                            Versandkosten und Steuern werden beim Bezahlen
+                            berechnet.
                         </span>
                         <pc-button
                             appearance="primary"
@@ -169,7 +167,9 @@ import "../../styles/fonts.css";
                         class="pc-body-l"
                         style="margin: 0; font-family: var(--pc-font-serif)"
                     >
-                        „Am Ende werden wir uns nicht an die Worte unserer Feinde erinnern, sondern an das Schweigen unserer Freunde.“
+                        „Am Ende werden wir uns nicht an die Worte unserer
+                        Feinde erinnern, sondern an das Schweigen unserer
+                        Freunde.“
                     </p>
                 </pc-card>
                 <pc-card>
@@ -219,7 +219,8 @@ import "../../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="list-check"
-                                        label="Alle erledigten anzeigen"></pc-icon>
+                                        label="Alle erledigten anzeigen"
+                                    ></pc-icon>
                                 </pc-button>
                                 <pc-button size="small" variant="plain">
                                     <pc-icon
@@ -236,7 +237,9 @@ import "../../styles/fonts.css";
                         <pc-checkbox checked>
                             Zahnarzttermin vereinbaren
                         </pc-checkbox>
-                        <pc-checkbox>Ein Kapitel aus einem Buch lesen</pc-checkbox>
+                        <pc-checkbox
+                            >Ein Kapitel aus einem Buch lesen</pc-checkbox
+                        >
                         <pc-checkbox>Wäsche waschen</pc-checkbox>
                     </div>
                 </pc-card>
@@ -340,8 +343,9 @@ import "../../styles/fonts.css";
                                 aria-labelledby="odds-label"></pc-switch>
                         </div>
                         <p class="pc-body-s">
-                            Erlaube dem System, Wahrscheinlichkeitsvorhersagen auszugeben,
-                            z. B. die Regenwahrscheinlichkeit während deines Arbeitswegs.
+                            Erlaube dem System, Wahrscheinlichkeitsvorhersagen
+                            auszugeben, z. B. die Regenwahrscheinlichkeit
+                            während deines Arbeitswegs.
                         </p>
                     </div>
                 </pc-card>
@@ -485,7 +489,8 @@ import "../../styles/fonts.css";
                         </div>
                         <pc-avatar
                             image="https://avatars.githubusercontent.com/u/150704902"
-                            label="GitHub‐Avatar von @randomguy-2650"></pc-avatar>
+                            label="GitHub‐Avatar von @randomguy-2650"
+                        ></pc-avatar>
                     </div>
                     <div class="pc-gap-s" slot="footer">
                         <pc-button variant="outlined" style="inline-size: 100%">
