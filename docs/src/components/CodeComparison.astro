@@ -1,0 +1,266 @@
+---
+import CodeBlock from "./CodeBlock.astro";
+---
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="dialog">Dialog</pc-tab>
+    <pc-tab slot="navigation" panel="checkbox">Checkbox</pc-tab>
+    <pc-tab slot="navigation" panel="button">Button</pc-tab>
+    <pc-tab slot="navigation" panel="spinner">Spinner</pc-tab>
+
+    <pc-tab-panel name="dialog">
+        <div class="code-comparison">
+            <pc-comparer>
+                <div slot="before">
+                    <CodeBlock language="html">
+{`<!-- Bootstrap -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-label">Dialog</h1>
+
+                <button
+                    class="btn-close"
+                    type="button"
+                    aria-label="Close"
+                    data-bs-dismiss="modal"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </div>
+
+            <div class="modal-footer">
+                <button
+                    class="btn btn-secondary"
+                    type="button"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modal">
+    Open dialog
+</button>`}
+                    </CodeBlock>
+                </div>
+                <div slot="after">
+                    <CodeBlock language="html">
+{`<!-- Placer Toolkit -->
+<pc-dialog label="Dialog" id="dialog">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button data-dialog="open dialog">
+    Open dialog
+</pc-button>`}
+                    </CodeBlock>
+                </div>
+            </pc-comparer>
+
+            <div class="preview">
+                <pc-dialog label="Dialog" id="dialog">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+                    <pc-button variant="plain" slot="footer" data-dialog="close">
+                        Close
+                    </pc-button>
+                </pc-dialog>
+
+                <pc-button data-dialog="open dialog">
+                    Open dialog
+                </pc-button>
+            </div>
+        </div>
+    </pc-tab-panel>
+    <pc-tab-panel name="checkbox">
+        <div class="code-comparison">
+            <pc-comparer>
+                <div slot="before">
+                    <CodeBlock language="html">
+{`<!-- Bootstrap -->
+<div class="form-check">
+    <input class="form-check-input" id="option-1" type="checkbox" value="" />
+    <label class="form-check-label" for="option-1">Option 1</label>
+</div>
+<div class="form-check">
+    <input
+        class="form-check-input"
+        id="option-2"
+        type="checkbox"
+        value=""
+        checked
+    />
+    <label class="form-check-label" for="option-2">Option 2</label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" id="option-3" type="checkbox" value="" />
+    <label class="form-check-label" for="option-3">Option 3</label>
+</div>`}
+                    </CodeBlock>
+                </div>
+                <div slot="after">
+                    <CodeBlock language="html">
+{`<!-- Placer Toolkit -->
+<div class="checkboxes">
+    <pc-checkbox>Option 1</pc-checkbox>
+    <pc-checkbox checked>Option 2</pc-checkbox>
+    <pc-checkbox>Option 3</pc-checkbox>
+</div>
+
+<style>
+    .checkboxes pc-checkbox {
+        display: block;
+    }
+</style>`}
+                    </CodeBlock>
+                </div>
+            </pc-comparer>
+
+            <div class="preview">
+                <div class="checkboxes">
+                    <pc-checkbox>Option 1</pc-checkbox>
+                    <pc-checkbox checked>Option 2</pc-checkbox>
+                    <pc-checkbox>Option 3</pc-checkbox>
+                </div>
+
+                <style>
+                    .checkboxes pc-checkbox {
+                        display: block;
+                    }
+                </style>
+            </div>
+        </div>
+    </pc-tab-panel>
+    <pc-tab-panel name="button">
+        <div class="code-comparison">
+            <pc-comparer>
+                <div slot="before">
+                    <CodeBlock language="html">
+{`<!-- Bootstrap -->
+<button class="btn btn-primary" type="button">Primary</button>
+<button class="btn btn-secondary" type="button">Secondary</button>
+<button class="btn btn-success" type="button">Success</button>
+<button class="btn btn-warning" type="button">Warning</button>
+<button class="btn btn-danger" type="button">Danger</button>`}
+                    </CodeBlock>
+                </div>
+                <div slot="after">
+                    <CodeBlock language="html">
+{`<!-- Placer Toolkit -->
+<pc-button appearance="neutral">Neutral</pc-button>
+<pc-button appearance="primary">Primary</pc-button>
+<pc-button appearance="success">Success</pc-button>
+<pc-button appearance="warning">Warning</pc-button>
+<pc-button appearance="danger">Danger</pc-button>`}
+                    </CodeBlock>
+                </div>
+            </pc-comparer>
+
+            <div class="preview">
+                <pc-button appearance="neutral">Neutral</pc-button>
+                <pc-button appearance="primary">Primary</pc-button>
+                <pc-button appearance="success">Success</pc-button>
+                <pc-button appearance="warning">Warning</pc-button>
+                <pc-button appearance="danger">Danger</pc-button>
+            </div>
+        </div>
+    </pc-tab-panel>
+    <pc-tab-panel name="spinner">
+        <div class="code-comparison">
+            <pc-comparer>
+                <div slot="before">
+                    <CodeBlock language="html">
+{`<!-- Bootstrap -->
+<div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading…</span>
+</div>`}
+                    </CodeBlock>
+                </div>
+                <div slot="after">
+                    <CodeBlock language="html">
+{`<!-- Placer Toolkit -->
+<pc-spinner></pc-spinner>`}
+                    </CodeBlock>
+                </div>
+            </pc-comparer>
+
+            <div class="preview">
+                <pc-spinner></pc-spinner>
+            </div>
+        </div>
+    </pc-tab-panel>
+</pc-tab-group>
+
+<style>
+    .code-comparison {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: var(--pc-spacing-xl);
+        margin-block-end: var(--pc-spacing-xxl);
+    }
+
+    pc-comparer {
+        inline-size: 100%;
+        block-size: 100%;
+        overflow: hidden;
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    pc-comparer div {
+        display: flex;
+        position: relative;
+        align-items: stretch;
+        inline-size: 100%;
+        block-size: 100%;
+    }
+
+    pc-comparer div :global(.code-block-container) {
+        display: flex;
+        flex: 1;
+        margin-block-end: 0;
+        inline-size: 100%;
+        block-size: 100%;
+    }
+
+    pc-comparer div :global(.code-block-container .code-block) {
+        block-size: 100%;
+        flex: 1;
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    pc-comparer div :global(.code-block-container pc-copy-button) {
+        display: none;
+    }
+
+    .preview {
+        padding: var(--pc-spacing-l);
+        min-inline-size: 35%;
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    @media screen and (max-width: 992px) {
+        .code-comparison {
+            flex-direction: column-reverse;
+        }
+
+        .preview {
+            min-inline-size: unset;
+            min-block-size: 35%;
+        }
+    }
+</style>

@@ -1,0 +1,38 @@
+---
+title: Focus
+description: A consistent focus ring helps with predictable keyboard navigation. Together with --pc-color-focus, these tokens create a uniform focus state for Placer Toolkit components.
+order: 3
+---
+
+A consistent focus ring helps with predictable keyboard navigation. Together with [`--pc-color-focus`](/docs/design-tokens/colour/#interactions), these tokens create a uniform focus state for Placer Toolkit components.
+
+| Custom property          | Default value                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| `--pc-focus-ring-width`  | `0.1875rem` (3 px)                                                            |
+| `--pc-focus-ring-style`  | `solid`                                                                       |
+| `--pc-focus-ring`        | `var(--pc-focus-ring-width) var(--pc-focus-ring-style) var(--pc-color-focus)` |
+| `--pc-focus-ring-offset` | `0.0625rem` (1 px)                                                            |
+
+See the focus ring in action by navigating this form example with your keyboard.
+
+```demo
+<form>
+    <pc-input label="Text input">
+        <span slot="hint">
+            Press <kbd>Tab</kbd> to move focus to other interactive elements.
+        </span>
+    </pc-input>
+
+    <pc-checkbox>Checkbox</pc-checkbox>
+
+    <pc-button>Button</pc-button>
+</form>
+
+<style>
+    form > * + * {
+        display: block;
+        inline-size: fit-content;
+        margin-block-start: var(--pc-spacing-m);
+    }
+</style>
+```

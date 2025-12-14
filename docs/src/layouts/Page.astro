@@ -1,9 +1,13 @@
 ---
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
+import FallbackContentWarning from "../components/FallbackContentWarning.astro";
+import Footer from "../components/Footer.astro";
 import Search from "../components/Search.astro";
 
 import "placer-toolkit/dist/styles/placer.css";
@@ -13,17 +17,35 @@ import "../styles/main.css";
 import "../styles/fonts.css";
 import "../styles/utilities.css";
 
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+const enPathname = Astro.url.pathname.replace(/^\/de/, "");
+
+const enURL = new URL(enPathname, Astro.site).href;
+const deURL = new URL(`/de${enPathname}`, Astro.site).href;
+
 const {
     title = "Untitled",
-    description = "Flexible. Accessible. Web Components.",
+    description = `${translation("landingCTA.tagline.flexible")} ${translation("landingCTA.tagline.accessible")} ${translation("landingCTA.tagline.webComponents")}`,
     component = "",
     hero = false,
     pagefindIgnore = false,
+    noSidebar = false,
+    showFooter = false,
+    isFallback = false,
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en-gb" class="pc-light pc-cloak">
+<html
+    lang={language}
+    class:list={{ "pc-light": true, "no-sidebar": noSidebar, "hero": hero }}
+    data-pagefind-ignore={pagefindIgnore ? "all" : undefined}
+>
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +60,7 @@ const {
         <meta property="og:title" content="Placer Toolkit" />
         <meta
             property="og:description"
-            content="Flexible. Accessible. Web Components."
+            content={`${translation("landingCTA.tagline.flexible")} ${translation("landingCTA.tagline.accessible")} ${translation("landingCTA.tagline.webComponents")}`}
         />
         <meta
             property="og:url"
@@ -46,12 +68,16 @@ const {
         />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Placer Toolkit" />
+        <link rel="canonical" href={canonicalURL} />
+        <link rel="alternate" hreflang="en" href={enURL} />
+        <link rel="alternate" hreflang="de" href={deURL} />
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"></script>
         <script>
-            import "placer-toolkit/dist/translations/en-gb.js";
+            // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
+            import "placer-toolkit/cdn/placer.js";
+            import("placer-toolkit/cdn/translations/de.js");
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
@@ -59,40 +85,39 @@ const {
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
     <body>
-        <div class="layout-container">
+        <div class="layout-container pc-cloak">
             <pc-button
                 href="#main-content"
                 appearance="neutral"
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
-                data-pagefind-ignore
             >
-                Skip to main content
+                {translation("button.skipToMainContent")}
             </pc-button>
 
-            <NavigationBar />
+            <NavigationBar noSidebar={noSidebar} />
 
             <MobileSidebar />
 
-            <Sidebar />
+            {!noSidebar ? <Sidebar /> : undefined}
 
             <Search />
 
             <noscript>
-                This site requires JavaScript to function properly, as it uses
-                JavaScript‐reliant web technologies.
+                {translation("js.noscript")}
             </noscript>
 
             <main
+                lang={isFallback ? "en" : undefined}
+                dir={isFallback ? "ltr" : undefined}
                 class:list={[{ hero: hero }]}
                 id="main-content"
                 tabindex="-1"
-                data-pagefind-ignore={pagefindIgnore ? true : undefined}
             >
                 {
                     !hero ? (
                         <div class="content-layout">
-                            <article>
+                            <article data-pagefind-body>
                                 <pc-button
                                     href="#table-of-contents"
                                     appearance="neutral"
@@ -101,101 +126,76 @@ const {
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
                                 >
-                                    Skip to table of contents
+                                    {translation("button.skipToTableOfContents")}
                                 </pc-button>
-
-                                <pc-callout class="hero-callout" appearance="warning">
-                                    <pc-icon
-                                        library="default"
-                                        icon-style="solid"
-                                        name="circle-radiation"
-                                        slot="icon"
-                                    />
-                                    <div class="pc-split">
-                                        <p style="flex: 1">
-                                            <strong>
-                                                The Placer Toolkit alpha has
-                                                arrived! 🎉
-                                            </strong>
-                                            <br />
-                                            Plenty of changes are coming your
-                                            way—some big, some breaking, some
-                                            even nuclear! Beware the changelog…
-                                        </p>
-                                        <pc-button
-                                            appearance="warning"
-                                            href="/resources/changelog"
-                                        >
-                                            Bring it on!
-                                        </pc-button>
-                                    </div>
-                                </pc-callout>
 
                                 <pc-details
                                     class="toc-mobile"
-                                    summary="On this page"
-                                    data-pagefind-ignore
+                                    summary={translation("ui.toc.onThisPage")}
+                                    data-pagefind-ignore="all"
                                 >
-                                    <ul class="toc-ul" />
+                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-details>
 
-                                    <header id="_top">
-                                        <h1>{title}</h1>
-                                        {component ? (
-                                            <ComponentInfo componentName={component} />
-                                        ) : ""}
-                                    </header>
+                                <header id="_top">
+                                    <h1>{title}</h1>
+
+                                    {component ? (
+                                        <ComponentInfo
+                                            componentName={component}
+                                        />
+                                    ) : (
+                                        ""
+                                    )}
+
+                                    <FallbackContentWarning isFallback={isFallback} />
+                                </header>
+
                                 <slot />
                             </article>
 
-                            <aside
-                                class="toc toc-desktop"
-                                id="table-of-contents"
-                                data-pagefind-ignore
-                            >
+                            <aside class="toc toc-desktop" id="table-of-contents">
                                 <pc-button
                                     href="#_top"
                                     appearance="neutral"
                                     variant="filled outlined"
                                     size="small"
                                     class="return-to-main-content pc-desktop-only pc-visually-hidden"
-                                    data-pagefind-ignore
                                 >
-                                    Return to main content
+                                    {translation("button.returnToMainContent")}
                                 </pc-button>
-                                <h3 class="toc-heading">On this page</h3>
+                                <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
                                 <pc-scroller
                                     class="toc-scroll-fade"
                                     orientation="vertical"
                                 >
-                                    <ul class="toc-ul" />
+                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
                                 </pc-scroller>
                             </aside>
                         </div>
                     ) : (
-                        <pc-callout class="hero-callout" appearance="warning">
-                            <pc-icon
-                                library="default"
-                                icon-style="solid"
-                                name="circle-radiation"
-                                slot="icon"
-                            />
+                        <pc-callout class="hero-callout" appearance="primary" size="small" data-pagefind-ignore="all">
+                            <span slot="icon" style="user-select: none; -webkit-user-select: none">
+                                🚀
+                            </span>
                             <div class="pc-split">
-                                <p style="flex: 1">
-                                    <strong>
-                                        The Placer Toolkit alpha has
-                                        arrived! 🎉
-                                    </strong>
-                                    <br />
-                                    Plenty of changes are coming your
-                                    way—some big, some breaking, some
-                                    even nuclear! Beware the changelog…
-                                </p>
+                                <b style="flex: 1">
+                                    {translation("getStartedBanner.readyToStart")}
+                                </b>
                                 <pc-button
-                                    appearance="warning"
-                                    href="/resources/changelog"
+                                    appearance="primary"
+                                    size="small"
+                                    href={translatePath("/docs/get-started/installation")}
                                 >
-                                    Bring it on!
+                                    {translation("button.getStarted")}
+
+                                    <pc-icon
+                                        class="arrow-right-move"
+                                        library="default"
+                                        icon-style="solid"
+                                        name="chevron-right"
+                                        slot="suffix"
+                                    ></pc-icon>
                                 </pc-button>
                             </div>
                         </pc-callout>
@@ -204,7 +204,69 @@ const {
                     )
                 }
             </main>
+
+            {showFooter ? <Footer /> : undefined}
         </div>
+
+        <pc-dialog label={translation("nav.content.legal.contact")} id="contact-info">
+            <p>
+                {translation("contact.paragraph.1")}
+            </p>
+
+            <p set:html={translation("contact.paragraph.2")}></p>
+
+            <p>{translation("contact.paragraph.3")}</p>
+
+            <pc-button
+                appearance="primary"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
+            >
+                <pc-icon library="default" icon-style="solid" name="phone" slot="prefix"
+                ></pc-icon>
+
+                {translation("button.gotIt")}
+            </pc-button>
+        </pc-dialog>
+
+        <pc-dialog id="v0-site-warning">
+            <span slot="label">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="triangle-exclamation"
+                    style="margin-inline-end: var(--pc-spacing-xs); translate: 0 0.25rem; color: var(--pc-color-warning-on-quiet)"
+                ></pc-icon>
+                {translation("dangerousLands.label")}
+            </span>
+
+            <p set:html={translation("dangerousLands.paragraph.1")}></p>
+
+            <p>
+                {translation("dangerousLands.paragraph.2")}
+            </p>
+
+            <pc-button
+                href="https://v0-placer-toolkit.netlify.app"
+                appearance="danger"
+                variant="plain"
+                slot="footer"
+            >
+                <pc-icon library="default" icon-style="solid" name="fire" slot="prefix"></pc-icon>
+                {translation("button.yikes")}
+            </pc-button>
+            <!-- Appearances in buttons are purely visual, no accessibility affected! -->
+            <pc-button
+                appearance="warning"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
+            >
+                <pc-icon library="default" icon-style="solid" name="star" slot="prefix"></pc-icon>
+                {translation("button.powerUp")}
+            </pc-button>
+        </pc-dialog>
 
         <script>
             // Theme
@@ -225,16 +287,17 @@ const {
             ) as HTMLDialogElement;
             const sidebarToggle = document.querySelector(".sidebar-toggle");
 
-            sidebarToggle?.addEventListener("click", () =>
-                mobileSidebar.open = true,
+            sidebarToggle?.addEventListener(
+                "click",
+                () => (mobileSidebar.open = true),
             );
 
             // TOC generation
             document.addEventListener("DOMContentLoaded", () => {
-                const tocMobile = document.querySelector(".toc-mobile .toc-ul");
+                const tocMobile = document.querySelector(".toc-mobile .toc-ul") as HTMLUListElement;
                 const tocDesktop = document.querySelector(
                     ".toc-desktop .toc-ul",
-                );
+                ) as HTMLUListElement;
 
                 const headings = Array.from(
                     document.querySelectorAll("h2[id], h3[id]"),
@@ -270,10 +333,13 @@ const {
                 }
 
                 const overviewItem = document.createElement("li");
+
                 overviewItem.className = "toc-item depth-2";
+
                 const overviewLink = document.createElement("a");
+
                 overviewLink.href = "#_top";
-                overviewLink.textContent = "Overview";
+                overviewLink.textContent = tocDesktop.dataset.overview ?? tocMobile.dataset.overview ?? "";
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {
@@ -385,7 +451,10 @@ const {
                                 return;
                             }
 
-                            const distance = Math.abs(element.getBoundingClientRect().top - targetLine);
+                            const distance = Math.abs(
+                                element.getBoundingClientRect().top -
+                                    targetLine,
+                            );
 
                             if (distance < nearestDistance) {
                                 nearestDistance = distance;

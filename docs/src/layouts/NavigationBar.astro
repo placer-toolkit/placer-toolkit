@@ -1,10 +1,23 @@
 ---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
 import { Image } from "astro:assets";
 
+import LanguageSelector from "../components/LanguageSelector.astro";
 import NavigationIcons from "../components/NavigationIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
+import Version from "../components/Version.astro";
 
-import logo from "../assets/logo.svg";
+import Logo from "../assets/logo.svg";
+
+const { noSidebar = false } = Astro.props;
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
 ---
 
 <!-- Quicksand font — Bunny Fonts -->
@@ -14,10 +27,16 @@ import logo from "../assets/logo.svg";
 />
 
 <header role="banner" class="navbar">
-    <nav class="navigation-bar" aria-label="Main navigation">
+    <nav
+        class="navigation-bar"
+        aria-label={translation("navbar.aria") as string}
+    >
         <div class="left-section">
             <pc-button
-                class="sidebar-toggle pc-mobile-only"
+                class:list={{
+                    "sidebar-toggle": true,
+                    "pc-mobile-only": !noSidebar,
+                }}
                 size="small"
                 variant="plain"
             >
@@ -26,17 +45,17 @@ import logo from "../assets/logo.svg";
                     library="default"
                     icon-style="solid"
                     name="bars"
-                    label="Open sidebar"></pc-icon>
+                    label={translation("button.sidebar.open")}></pc-icon>
                 <pc-icon
                     class="hover-only"
                     library="default"
                     icon-style="solid"
                     name="burger"
-                    label="Open sidebar"></pc-icon>
+                    label={translation("button.sidebar.open")}></pc-icon>
             </pc-button>
-            <a href="/">
+            <a href={translatePath("/")}>
                 <Image
-                    src={logo}
+                    src={Logo}
                     width={36}
                     height={36}
                     style="translate: 0 -0.125rem"
@@ -50,7 +69,9 @@ import logo from "../assets/logo.svg";
                     Placer Toolkit
                 </span>
             </a>
-            <small class="pc-desktop-only">1.0.0-alpha.2</small>
+            <small class="pc-desktop-only">
+                <Version />
+            </small>
             <pc-badge
                 class="pc-desktop-only"
                 appearance="warning"
@@ -65,6 +86,7 @@ import logo from "../assets/logo.svg";
                 <pc-divider orientation="vertical"></pc-divider>
             </div>
             <ThemeSelector />
+            <LanguageSelector />
             <pc-divider class="pc-desktop-only" orientation="vertical"
             ></pc-divider>
             <pc-button
@@ -79,9 +101,11 @@ import logo from "../assets/logo.svg";
                     icon-style="solid"
                     name="magnifying-glass"
                     slot="prefix"></pc-icon>
-                <span class="label">Search</span>
+                <span class="label">{translation("ui.search.button")}</span>
                 <span slot="suffix">
-                    <kbd class="search-key">Ctrl</kbd>
+                    <kbd class="search-key"
+                        >{translation("ui.keyboard.ctrl")}</kbd
+                    >
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>
