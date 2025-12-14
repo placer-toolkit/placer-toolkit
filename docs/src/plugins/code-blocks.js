@@ -1,4 +1,15 @@
 import { visit } from "unist-util-visit";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const pkgPath = join(
+    process.cwd(),
+    "node_modules",
+    "placer-toolkit",
+    "package.json",
+);
+const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+const packageVersion = pkg.version ?? "latest";
 
 export default function remarkCodeBlockToComponent() {
     return function transformer(tree) {
@@ -6,6 +17,11 @@ export default function remarkCodeBlockToComponent() {
             if (!parent || typeof index !== "number") {
                 return;
             }
+
+            node.value = node.value.replaceAll(
+                "__PLACER_VERSION__",
+                packageVersion,
+            );
 
             const rawLang = node.language || node.lang || "";
             const [language, ...modifiers] = rawLang.split(":");

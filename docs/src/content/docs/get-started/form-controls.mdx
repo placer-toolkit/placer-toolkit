@@ -34,7 +34,7 @@ const data = new FormData(form);
 However, some people find `FormData` tricky to work wth or they need to pass a JSON payload to their server. To accommodate this, Placer Toolkit offers a serialisation utility that gathers form data and returns a simple JavaScript object instead.
 
 ```javascript
-import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/form.js";
+import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
 
 const form = document.querySelector("form");
 const data = serialize(form);
@@ -77,20 +77,20 @@ To make a field required, use the `required` attribute. Required fields will aut
 This form will not be submitted if a required field is incomplete.
 
 ```demo
-<form class="input-validation-required">
+<form class="input-validation-required pc-stack">
     <pc-input label="Name" name="name" required></pc-input>
-    <br />
+
     <pc-select label="Favourite animal" clearable required>
         <pc-option value="birds">Birds</pc-option>
         <pc-option value="cats">Cats</pc-option>
         <pc-option value="dogs">Dogs</pc-option>
         <pc-option value="other">Other</pc-option>
     </pc-select>
-    <br />
+
     <pc-textarea label="Comment" name="comment" required></pc-textarea>
-    <br />
+
     <pc-checkbox required>Check me before submitting</pc-checkbox>
-    <br /><br />
+
     <pc-button appearance="primary" type="submit">Submit</pc-button>
 </form>
 
@@ -119,16 +119,18 @@ This form will not be submitted if a required field is incomplete.
 To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern), use the `pattern` attribute. This example only allows the letters A–Z, so the form will not submit if a number or symbol is entered. This only works with `<pc-input>` elements.
 
 ```demo
-<form class="input-validation-pattern">
+<form class="input-validation-pattern pc-stack">
     <pc-input
         label="Letters"
         name="letters"
         pattern="[A-Za-z]+"
         required
     ></pc-input>
-    <br />
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button type="reset">Reset</pc-button>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script type="module">
@@ -152,23 +154,24 @@ To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/
 Some input types will automatically trigger constraints, such as `email` and `url`.
 
 ```demo
-<form class="input-validation-type">
+<form class="input-validation-type pc-stack">
     <pc-input
         label="E‐mail"
         type="email"
         placeholder="example@email.com"
         required
     ></pc-input>
-    <br />
     <pc-input
         label="URL"
         type="url"
         placeholder="https://example.com"
         required
     ></pc-input>
-    <br />
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button type="reset">Reset</pc-button>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script type="module">
@@ -192,11 +195,13 @@ Some input types will automatically trigger constraints, such as `email` and `ur
 To create a custom validation error, pass a non‐empty string to the `setCustomValidity()` method. This will override any existing validation constraints. The form will not be submitted when a custom validity is set and the browser will show a validation error when the containing form is submitted. To make the input valid again, call `setCustomValidity()` again with an empty string.
 
 ```demo
-<form class="input-validation-custom">
+<form class="input-validation-custom pc-stack">
     <pc-input label="Type “placer toolkit”" required></pc-input>
-    <br />
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button type="reset">Reset</pc-button>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script type="module">
@@ -264,7 +269,7 @@ You can target validity using any of the aforementioned data attributes, but it�
 This example demonstrates custom validation styles using `data-user-invalid` and `data-user-valid`. Try typing in the fields to see how validity changes with user input.
 
 ```demo
-<form class="input-validation-custom-styles">
+<form class="input-validation-custom-styles pc-stack">
     <pc-input
         label="Name"
         name="name"
@@ -273,7 +278,6 @@ This example demonstrates custom validation styles using `data-user-invalid` and
         clearable
         required
     ></pc-input>
-
     <pc-select
         name="animal"
         label="Favourite animal"
@@ -286,13 +290,14 @@ This example demonstrates custom validation styles using `data-user-invalid` and
         <pc-option value="dogs">Dogs</pc-option>
         <pc-option value="other">Other</pc-option>
     </pc-select>
-
     <pc-checkbox value="accept" required>
         I have read and accepted the Terms of Service
     </pc-checkbox>
 
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button type="reset">Reset</pc-button>
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script type="module">
@@ -314,13 +319,6 @@ This example demonstrates custom validation styles using `data-user-invalid` and
 </script>
 
 <style>
-    .input-validation-custom-styles pc-input,
-    .input-validation-custom-styles pc-select,
-    .input-validation-custom-styles pc-checkbox {
-        display: block;
-        margin-block-end: var(--pc-spacing-l);
-    }
-
     /* User invalid styles */
     .input-validation-custom-styles pc-input[data-user-invalid]::part(input),
     .input-validation-custom-styles pc-select[data-user-invalid]::part(combobox),
@@ -391,15 +389,17 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 
     <div id="name-error" aria-live="polite" hidden></div>
 
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button type="reset">Reset</pc-button>
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script type="module">
     const form = document.querySelector(".input-validation-inline");
     const nameError = document.querySelector("#name-error");
 
-    // Wait for components to be defined before attaching event listeners to the form
+    // Wait for components to be defined before attaching the event listener to the form
     await Promise.all([
         customElements.whenDefined("pc-button"),
         customElements.whenDefined("pc-input"),
@@ -409,9 +409,20 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
             (event) => {
                 event.preventDefault();
 
-                nameError.textContent = event.target.validationMessage;
-                nameError.hidden = false;
+                nameError.innerHTML = `
+                    <pc-icon
+                        library="default"
+                        icon-style="solid"
+                        name="circle-exclamation"
+                        style="
+                            translate: 0 0.125rem;
+                            margin-inline-end: 0.125rem;
+                        "
+                    ></pc-icon>
+                    ${event.target.validationMessage}
+                `;
 
+                nameError.hidden = false;
                 event.target.focus();
             },
             { capture: true },
@@ -420,59 +431,25 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             nameError.hidden = true;
-            nameError.textContent = "";
+            nameError.innerHTML = "";
             setTimeout(() => alert("All fields are valid!"), 50);
         });
 
         form.addEventListener("reset", (event) => {
             nameError.hidden = true;
-            nameError.textContent = "";
+            nameError.innerHTML = "";
         });
     });
 </script>
 
 <style>
-    .input-validation-inline pc-input {
-        display: block;
-    }
-
     .input-validation-inline #name-error {
-        font-size: var(--pc-input-hint-font-size-m);
         color: var(--pc-color-danger-on-quiet);
+        font-size: var(--pc-font-size-smaller);
     }
 
-    .input-validation-inline #name-error ~ pc-button {
+    .input-validation-inline .buttons {
         margin-block-start: var(--pc-spacing-l);
-    }
-
-    /* User invalid styles */
-    .input-validation-inline pc-input[data-user-invalid]::part(input) {
-        border-color: var(--pc-color-danger-border-loud);
-    }
-
-    .input-validation-inline pc-input[data-user-invalid]::part(label),
-    .input-validation-inline pc-input[data-user-invalid]::part(hint) {
-        color: var(--pc-color-danger-on-quiet);
-    }
-
-    .input-validation-inline pc-input:focus-within[data-user-invalid]::part(input) {
-        border-color: var(--pc-color-danger-border-loud);
-        outline-color: var(--pc-color-danger-border-loud);
-    }
-
-    /* User valid styles */
-    .input-validation-inline pc-input[data-user-valid]::part(input) {
-        border-color: var(--pc-color-success-border-loud);
-    }
-
-    .input-validation-inline pc-input[data-user-valid]::part(label),
-    .input-validation-inline pc-input[data-user-valid]::part(hint) {
-        color: var(--pc-color-success-on-quiet);
-    }
-
-    .input-validation-inline pc-input:focus-within[data-user-valid]::part(input) {
-        border-color: var(--pc-color-success-border-loud);
-        outline-color: var(--pc-color-success-border-loud);
     }
 </style>
 ```
@@ -492,7 +469,7 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of return an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
 
 ```javascript
-import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/form.js";
+import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
 
 const form = document.querySelector("#my-form");
 const formControls = getFormControls(form);

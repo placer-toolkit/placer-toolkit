@@ -38,7 +38,7 @@ Weitere Informationen zu allen Eigenschaften einer Komponente findest du in der 
 
 ## Events
 
-Du kannst auf Standard‐Events wie `click`, `mouseover`, `mouseout` usw. hören, wie du es normalerweise tun würden. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Benutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
+Du kannst auf Standard‐Events wie `click`, `mouseover`, `mouseout` usw. hören, wie du es normalerweise tun würden. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Nutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
 
 Daher solltest du fast immer auf Custom Events hören. Anstatt z. B. auf `click` zu hören, um zu erkennen, wann ein `<pc-checkbox>` umgeschaltet wird, hörst du auf `pc-change`.
 
@@ -117,7 +117,7 @@ Custom Elements dürfen keine Self‐Closing Tags haben. Ähnlich wie bei `<scri
 
 Man könnte erwarten, dass ähnlich benannte Elemente die gleiche API wie native HTML‐Elemente haben, aber das ist nicht immer der Fall. Placer Toolkit‐Komponenten **sind nicht** als eins‐zu‐eins‐Ersatz für ihre HTML‐Pendants konzipiert. Obwohl sie in der Regel die gleiche API teilen, kann es subtile Unterschiede geben.
 
-Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, aber das native Element verwendet standardmäßig `submit`, während das Placer Toolkit‐Element standardmäßig `button` verwendet, da dies für die meisten Benutzer:innen eine bessere Voreinstellung ist.
+Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, aber das native Element verwendet standardmäßig `submit`, während das Placer Toolkit‐Element standardmäßig `button` verwendet, da dies für die meisten Nutzer:innen eine bessere Voreinstellung ist.
 
 <pc-callout appearance="warning">
     <pc-icon
@@ -137,7 +137,7 @@ Web Components werden mit JavaScript registriert, daher kann es je nach Art und 
 Eine Möglichkeit ist die Verwendung unseres FOUCE‐Utilities, um FOUCE zu verhindern. Diese Datei wird automatisch beim Laden von `placer.css` geladen.
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/utilities/fouce.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/utilities/fouce.css" />
 ```
 
 Du musst außerdem die Klasse `pc-cloak` zum `<html>`‐Element hinzufügen, damit das FOUCE‐Utility angewendet wird.

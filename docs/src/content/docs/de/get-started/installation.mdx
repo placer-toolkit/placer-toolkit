@@ -4,6 +4,8 @@ description: Du kannst Placer Toolkit über das CDN laden oder lokal installiere
 order: 1
 ---
 
+import Version from "../../../../components/Version.astro";
+
 Du kannst Placer Toolkit über das CDN laden oder lokal installieren. Wir haben viele Optionen, Placer Toolkit zu installieren, abhängig von deinem Setup.
 
 ## CDN-Installation
@@ -19,17 +21,17 @@ Du kannst Placer Toolkit über das CDN laden oder lokal installieren. Wir haben 
 
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer-autoloader.js"></script>
         ```
     </pc-tab-panel>
     <pc-tab-panel name="standard-loader">
-        Der Standard‐Loader registriert alle Webkomponenten von Placer Toolkit direkt beim Laden. Wenn du jedoch nur eine Handvoll Komponenten nutzt, ist der Auto‐Loader deutlich effizienter. Alternativ kannst du auch [Komponente einzeln importieren](#komponentencherrypicking-%C3%BCber-das-cdn), wenn du sie nur im Voraus laden willst. Denk daran, `pc-cloak` zum Wurzel‐HTML‐Element hinzuzufügen, um den FOUCE‐Patch global anzuwenden.
+        Der Standard‐Loader registriert alle Webkomponenten von Placer Toolkit direkt beim Laden. Wenn du jedoch nur eine Handvoll Komponenten nutzt, ist der Auto‐Loader deutlich effizienter. Alternativ kannst du auch [Komponenten einzeln importieren](#komponentencherrypicking-%C3%BCber-das-cdn), wenn du sie nur im Voraus laden willst. Denk daran, `pc-cloak` zum Wurzel‐HTML‐Element hinzuzufügen, um den FOUCE‐Patch global anzuwenden.
 
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer.js"></script>
         ```
     </pc-tab-panel>
 </pc-tab-group>
@@ -44,13 +46,13 @@ Nutzer:innen von Font Awesome Pro und Pro+ können ihren Kit‐Code setzen, um d
 <!-- Option 1: data-fa-kit-code Attribut -->
 <script
     type="module"
-    src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"
+    src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer-autoloader.js"
     data-fa-kit-code="42deadbeef"
 ></script>
 
 <!-- Option 2: setKitCode() Funktion -->
 <script type="module">
-    import { setKitCode } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/kit-code.js";
+    import { setKitCode } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/kit-code.js";
 
     setKitCode("42deadbeef");
 </script>
@@ -86,10 +88,10 @@ Hier ist ein Beispiel, das nur die Button‐Komponente lädt:
 
 ```html
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
 
 <script type="module">
-    import "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/components/button/button.js";
+    import "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/components/button/button.js";
 
     // <pc-button> ist registriert und einsatzbereit!
 </script>
@@ -196,17 +198,17 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
 
             <pc-tab-panel name="npm">
                 ```bash
-                npm install placer-toolkit-1.0.0-alpha.2.tgz
+                npm install placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
             <pc-tab-panel name="yarn">
                 ```bash
-                yarn add placer-toolkit-1.0.0-alpha.2.tgz
+                yarn add placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
             <pc-tab-panel name="pnpm">
                 ```bash
-                pnpm add placer-toolkit-1.0.0-alpha.2.tgz
+                pnpm add placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
         </pc-tab-group>

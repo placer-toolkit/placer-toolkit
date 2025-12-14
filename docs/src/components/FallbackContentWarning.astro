@@ -11,7 +11,12 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<pc-callout class="fallback-content-warning" appearance="warning" size="small">
+<pc-callout
+    lang={language}
+    class="fallback-content-warning"
+    appearance="warning"
+    size="small"
+>
     <pc-icon
         library="default"
         icon-style="solid"

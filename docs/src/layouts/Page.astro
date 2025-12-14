@@ -1,5 +1,5 @@
 ---
-import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
 
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
@@ -19,6 +19,14 @@ import "../styles/utilities.css";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+
+const enPathname = Astro.url.pathname.replace(/^\/de/, "");
+
+const enURL = new URL(enPathname, Astro.site).href;
+const deURL = new URL(`/de${enPathname}`, Astro.site).href;
 
 const {
     title = "Untitled",
@@ -35,7 +43,7 @@ const {
 <!doctype html>
 <html
     lang={language}
-    class:list={{ "pc-light": true, "no-sidebar": noSidebar }}
+    class:list={{ "pc-light": true, "no-sidebar": noSidebar, "hero": hero }}
     data-pagefind-ignore={pagefindIgnore ? "all" : undefined}
 >
     <head>
@@ -60,14 +68,16 @@ const {
         />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Placer Toolkit" />
-        <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+        <link rel="canonical" href={canonicalURL} />
+        <link rel="alternate" hreflang="en" href={enURL} />
+        <link rel="alternate" hreflang="de" href={deURL} />
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
         <script>
             // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
             import "placer-toolkit/cdn/placer.js";
-            import "placer-toolkit/cdn/translations/de.js";
+            import("placer-toolkit/cdn/translations/de.js");
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
@@ -98,6 +108,8 @@ const {
             </noscript>
 
             <main
+                lang={isFallback ? "en" : undefined}
+                dir={isFallback ? "ltr" : undefined}
                 class:list={[{ hero: hero }]}
                 id="main-content"
                 tabindex="-1"
@@ -173,7 +185,7 @@ const {
                                 <pc-button
                                     appearance="primary"
                                     size="small"
-                                    href="/docs/get-started/installation"
+                                    href={translatePath("/docs/get-started/installation")}
                                 >
                                     {translation("button.getStarted")}
 
@@ -215,6 +227,44 @@ const {
                 ></pc-icon>
 
                 {translation("button.gotIt")}
+            </pc-button>
+        </pc-dialog>
+
+        <pc-dialog id="v0-site-warning">
+            <span slot="label">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="triangle-exclamation"
+                    style="margin-inline-end: var(--pc-spacing-xs); translate: 0 0.25rem; color: var(--pc-color-warning-on-quiet)"
+                ></pc-icon>
+                {translation("dangerousLands.label")}
+            </span>
+
+            <p set:html={translation("dangerousLands.paragraph.1")}></p>
+
+            <p>
+                {translation("dangerousLands.paragraph.2")}
+            </p>
+
+            <pc-button
+                href="https://v0-placer-toolkit.netlify.app"
+                appearance="danger"
+                variant="plain"
+                slot="footer"
+            >
+                <pc-icon library="default" icon-style="solid" name="fire" slot="prefix"></pc-icon>
+                {translation("button.yikes")}
+            </pc-button>
+            <!-- Appearances in buttons are purely visual, no accessibility affected! -->
+            <pc-button
+                appearance="warning"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
+            >
+                <pc-icon library="default" icon-style="solid" name="star" slot="prefix"></pc-icon>
+                {translation("button.powerUp")}
             </pc-button>
         </pc-dialog>
 

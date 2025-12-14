@@ -9,6 +9,7 @@ import { Image } from "astro:assets";
 import LanguageSelector from "../components/LanguageSelector.astro";
 import NavigationIcons from "../components/NavigationIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
+import Version from "../components/Version.astro";
 
 import Logo from "../assets/logo.svg";
 
@@ -68,7 +69,9 @@ const translatePath = useTranslatedPath(language);
                     Placer Toolkit
                 </span>
             </a>
-            <small class="pc-desktop-only">1.0.0-alpha.2</small>
+            <small class="pc-desktop-only">
+                <Version />
+            </small>
             <pc-badge
                 class="pc-desktop-only"
                 appearance="warning"

@@ -305,7 +305,7 @@ Here’s an example that registers an icon library located in the `/assets/icons
 
 ```html
 <script type="module">
-    import { registerIconLibrary } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/icon-library.js";
+    import { registerIconLibrary } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/icon-library.js";
 
     registerIconLibrary("custom-icon-library", {
         resolver: (name) => `/assets/icons/${name}.svg`,

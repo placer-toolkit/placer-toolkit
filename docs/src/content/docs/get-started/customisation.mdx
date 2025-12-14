@@ -59,13 +59,13 @@ To use a theme, simply add a link to the theme’s stylesheet to the `<head>` of
     <pc-tab-panel name="utility">
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/themes/utility.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/themes/utility.css" />
         ```
     </pc-tab-panel>
     <pc-tab-panel name="serene">
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/themes/serene.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/themes/serene.css" />
         ```
     </pc-tab-panel>
 </pc-tab-group>
@@ -190,7 +190,7 @@ To customise a default animation, use the `setDefaultAnimation()` method. The fu
 This example will make all dialogs use a custom show animation.
 
 ```javascript
-import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/animation-registry.js";
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/animation-registry.js";
 
 // Change the default animation for all dialogs
 setDefaultAnimation("dialog.show", {
@@ -217,7 +217,7 @@ If you only want to target a single component, use the `setAnimation()` method i
 In this example, only the target dialog will use the custom show animation.
 
 ```javascript
-import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/animation-registry.js";
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/animation-registry.js";
 
 // Change the default animation for a single dialog
 const dialog = document.querySelector("#my-dialog");

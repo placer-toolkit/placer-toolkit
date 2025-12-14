@@ -19,8 +19,8 @@ You can load Placer Toolkit via the CDN or by installing it locally. We have man
 
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer-autoloader.js"></script>
         ```
     </pc-tab-panel>
     <pc-tab-panel name="standard-loader">
@@ -28,8 +28,8 @@ You can load Placer Toolkit via the CDN or by installing it locally. We have man
 
         ```html
         <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
-        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
+        <script type="module" src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer.js"></script>
         ```
     </pc-tab-panel>
 </pc-tab-group>
@@ -44,13 +44,13 @@ Font Awesome Pro and Pro+ users can set their Kit code to unlock the premium set
 <!-- Option 1: The data-fa-kit-code attribute -->
 <script
     type="module"
-    src="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/placer-autoloader.js"
+    src="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/placer-autoloader.js"
     data-fa-kit-code="42deadbeef"
 ></script>
 
 <!-- Option 2: The setKitCode() function -->
 <script type="module">
-    import { setKitCode } from "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/utilities/kit-code.js";
+    import { setKitCode } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/kit-code.js";
 
     setKitCode("42deadbeef");
 </script>
@@ -86,10 +86,10 @@ Here’s an example that only loads the Button component.
 
 ```html
 <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/styles/placer.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/placer.css" />
 
 <script type="module">
-    import "https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.2/cdn/components/button/button.js";
+    import "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/components/button/button.js";
 
     // <pc-button> is registered and ready to use!
 </script>
@@ -195,17 +195,17 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
 
             <pc-tab-panel name="npm">
                 ```bash
-                npm install placer-toolkit-1.0.0-alpha.2.tgz
+                npm install placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
             <pc-tab-panel name="yarn">
                 ```bash
-                yarn add placer-toolkit-1.0.0-alpha.2.tgz
+                yarn add placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
             <pc-tab-panel name="pnpm">
                 ```bash
-                pnpm add placer-toolkit-1.0.0-alpha.2.tgz
+                pnpm add placer-toolkit-__PLACER_VERSION__.tgz
                 ```
             </pc-tab-panel>
         </pc-tab-group>

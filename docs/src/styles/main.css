@@ -34,58 +34,19 @@ html {
     overflow-y: hidden;
 }
 
-/* Loading overlay */
-.spinner-overlay {
-    display: none;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: var(--pc-spacing-m);
-    inline-size: 100dvw;
-    block-size: 100dvh;
-    z-index: 10000;
+/* Language‐specific word break optimisations */
+[lang~="de"] {
+    hyphens: auto;
+    overflow-wrap: break-word;
 }
 
-.pc-cloak:has(:not(:defined)) ~ .spinner-overlay {
-    display: flex;
-}
-
-.spinner-overlay .spinner-container {
-    display: inline-flex;
-    flex: none;
-    inline-size: 1em;
-    block-size: 1em;
-    font-size: var(--pc-font-size-xxl);
-}
-
-.spinner-overlay .spinner {
-    flex: 1 1 auto;
-    inline-size: 100%;
-    block-size: 100%;
-    overflow: visible;
-}
-
-.spinner-overlay .spinner .track,
-.spinner-overlay .spinner .indicator {
-    fill: none;
-    stroke-width: 0.125em;
-    r: calc(0.5em - 0.125em / 2);
-    cx: 0.5em;
-    cy: 0.5em;
-    transform-origin: 50% 50%;
-}
-
-.spinner-overlay .spinner .track {
-    stroke: var(--pc-color-neutral-fill-normal);
-    transform-origin: 0% 0%;
-}
-
-.spinner-overlay .spinner .indicator {
-    stroke: var(--pc-color-primary-fill-loud);
-    stroke-linecap: round;
-    stroke-dasharray: 150% 75%;
-    animation: spin 2s linear infinite;
+code,
+pre,
+kbd,
+samp,
+var {
+    hyphens: none;
+    overflow-wrap: normal;
 }
 
 /* Layout container — Main grid */
@@ -124,6 +85,25 @@ html.no-sidebar .layout-container {
     inset-block-start: var(--pc-spacing-m);
     inset-inline-start: var(--pc-spacing-m);
     z-index: 100;
+}
+
+/* Dialog and drawer re‐style */
+html.hero pc-dialog::part(dialog) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-surface-raised),
+        transparent 30%
+    );
+    backdrop-filter: blur(8px);
+}
+
+html.hero pc-drawer::part(drawer) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-surface-raised),
+        transparent 30%
+    ) !important;
+    backdrop-filter: blur(8px);
 }
 
 /* Main content area */

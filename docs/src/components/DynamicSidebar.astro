@@ -36,36 +36,37 @@ type GroupedLinks = {
 };
 
 const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
 const translatePath = useTranslatedPath(language);
 
 const categoriesConfiguration: SidebarCategoryConfiguration[] = [
-    { id: "get-started", title: "Get started", sortType: "manual" },
+    { id: "get-started", title: translation("sidebar.section.getStarted"), sortType: "manual" },
     {
         id: "design-tokens",
-        title: "Design tokens",
+        title: translation("sidebar.section.designTokens"),
         sortType: "manual",
         href: translatePath("/docs/design-tokens"),
     },
     {
         id: "components",
-        title: "Components",
+        title: translation("sidebar.section.components"),
         sortType: "alphabetical",
         href: translatePath("/docs/components"),
         icon: "flask",
     },
     {
         id: "layout",
-        title: "Layout",
+        title: translation("sidebar.section.layout"),
         sortType: "alphabetical",
         href: translatePath("/docs/layout"),
     },
     {
         id: "style-utilities",
-        title: "Style utilities",
+        title: translation("sidebar.section.styleUtilities"),
         sortType: "alphabetical",
         href: translatePath("/docs/style-utilities"),
     },
-    { id: "resources", title: "Resources", sortType: "manual" },
+    { id: "resources", title: translation("sidebar.section.resources"), sortType: "manual" },
 ];
 
 const defaultLanguage = "en";
@@ -74,7 +75,7 @@ const prefixLanguages = ["de"];
 const allDocs = await getCollection("docs");
 const englishContentMap = new Map<string, CollectionEntry<"docs">>();
 
-allDocs.forEach((entry) => {
+allDocs.forEach((entry: CollectionEntry<"docs">) => {
     const isEnglish = !prefixLanguages.some((prefix) =>
         entry.id.startsWith(`${prefix}/`),
     );
@@ -84,7 +85,7 @@ allDocs.forEach((entry) => {
     }
 });
 
-let currentLanguageDocs = allDocs.filter((entry) => {
+let currentLanguageDocs = allDocs.filter((entry: CollectionEntry<"docs">) => {
     if (prefixLanguages.includes(language)) {
         return entry.id.startsWith(`${language}/`);
     }
@@ -230,8 +231,6 @@ function buildSidebarData(
     });
 }
 
-const translation = useTranslations(language);
-
 const sidebarNavigation = buildSidebarData(
     currentLanguageDocs,
     englishContentMap,
@@ -368,353 +367,389 @@ const { isMobile = false } = Astro.props;
             </a>
         </span>
     </div>
+</nav>
 
-    <script>
-        import type { PcDetails } from "placer-toolkit/dist/components/details/details.js";
-        import type { PcDrawer } from "placer-toolkit/dist/components/drawer/drawer.js";
+<script>
+    import type { PcDetails } from "placer-toolkit/dist/components/details/details.js";
+    import type { PcDrawer } from "placer-toolkit/dist/components/drawer/drawer.js";
 
-        declare global {
-            interface Window {
-                __sidebarLinks__: string[];
+    declare global {
+        interface Window {
+            __sidebarLinks__: string[];
+            __sidebarResizeHandlerAttached__?: boolean;
+        }
+    }
+
+    function initializeSidebarInstance(container: Element) {
+        const isMobile = container.classList.contains("mobile-sidebar");
+        const drawer: PcDrawer | null = isMobile ? (container as PcDrawer) : null;
+
+        const currentPath = window.location.pathname.replace(/\/$/, "");
+        const links = container.querySelectorAll("nav a");
+        const detailsElements =
+            container.querySelectorAll<PcDetails>("pc-details");
+
+        links.forEach((link) => {
+            const href = link.getAttribute("href");
+            const linkPath = href ? href.replace(/\/$/, "") : "";
+
+            if (linkPath === currentPath) {
+                link.setAttribute("aria-current", "page");
+
+                let parentDetails = link.closest("pc-details");
+
+                if (parentDetails && !parentDetails.hasAttribute("open")) {
+                    parentDetails.show();
+                }
+            } else {
+                link.removeAttribute("aria-current");
             }
+        });
+
+        if (!isMobile && !window.__sidebarLinks__) {
+            const sidebarLinks = Array.from(
+                container.querySelectorAll("pc-details a"),
+            )
+                .map((a) => a.getAttribute("href"))
+                .filter(
+                    (href) =>
+                        href &&
+                        !href.startsWith("http") &&
+                        !href.startsWith("/docs/legal"),
+                );
+
+            window.__sidebarLinks__ = sidebarLinks as string[];
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const navElement = document.querySelector("nav[data-is-mobile]");
+        function updateSidebarState() {
+            setTimeout(() => {
+                const currentlyOpen = Array.from(detailsElements)
+                    .filter(
+                        (detail) =>
+                            detail.hasAttribute("open") &&
+                            detail.getAttribute("data-id"),
+                    )
+                    .map((detail) => detail.getAttribute("data-id"))
+                    .filter((id): id is string => id !== null);
 
-            if (!navElement) {
+                localStorage.setItem(
+                    "open-sidebar-sections",
+                    JSON.stringify(currentlyOpen),
+                );
+            }, 0);
+        }
+
+        let isInitializing = true;
+
+        detailsElements.forEach((element) => {
+            const id = element.getAttribute("data-id");
+
+            if (!id) {
                 return;
             }
 
-            const isMobile =
-                navElement.getAttribute("data-is-mobile") === "true";
-            const sidebarClassName = isMobile ? ".mobile-sidebar" : ".sidebar";
-            const container = document.querySelector(sidebarClassName);
-            const drawer: PcDrawer | null = isMobile
-                ? document.querySelector(sidebarClassName)
-                : null;
-
-            if (!container) {
-                return;
-            }
-
-            const currentPath = window.location.pathname.replace(/\/$/, "");
-            const links = container.querySelectorAll("nav a");
-            const detailsElements =
-                container.querySelectorAll<PcDetails>("pc-details");
-
-            links.forEach((link) => {
-                const href = link.getAttribute("href");
-                const linkPath = href ? href.replace(/\/$/, "") : "";
-                if (linkPath === currentPath) {
-                    link.setAttribute("aria-current", "page");
-                } else {
-                    link.removeAttribute("aria-current");
+            element.addEventListener("pc-show", () => {
+                if (!isInitializing) {
+                    updateSidebarState();
                 }
             });
 
-            if (!isMobile) {
-                const sidebarLinks = Array.from(
-                    container.querySelectorAll("pc-details a"),
-                )
-                    .map((a) => a.getAttribute("href"))
-                    .filter(
-                        (href) =>
-                            href &&
-                            !href.startsWith("http") &&
-                            !href.startsWith("/docs/legal"),
-                    );
+            element.addEventListener("pc-hide", () => {
+                if (!isInitializing) {
+                    updateSidebarState();
+                }
+            });
+        });
 
-                window.__sidebarLinks__ = sidebarLinks as string[];
-            }
-
-            function updateSidebarState() {
-                setTimeout(() => {
-                    const currentlyOpen = Array.from(detailsElements)
-                        .filter(
-                            (detail) =>
-                                detail.hasAttribute("open") &&
-                                detail.getAttribute("data-id"),
-                        )
-                        .map((detail) => detail.getAttribute("data-id"))
-                        .filter((id): id is string => id !== null);
-
-                    localStorage.setItem(
-                        "open-sidebar-sections",
-                        JSON.stringify(currentlyOpen),
-                    );
-                }, 0);
-            }
-
-            let isInitializing = true;
+        try {
+            const stored = localStorage.getItem("open-sidebar-sections");
+            const openIds = stored ? JSON.parse(stored) : ["get-started"];
 
             detailsElements.forEach((element) => {
                 const id = element.getAttribute("data-id");
 
-                if (!id) {
-                    return;
-                }
+                if (id) {
+                    const isActive = container.querySelector(
+                        `a[aria-current="page"]`,
+                    )?.closest(`pc-details[data-id="${id}"]`);
 
-                element.addEventListener("pc-show", () => {
-                    if (!isInitializing) {
-                        updateSidebarState();
-                    }
-                });
-
-                element.addEventListener("pc-hide", () => {
-                    if (!isInitializing) {
-                        updateSidebarState();
-                    }
-                });
-            });
-
-            try {
-                const stored = localStorage.getItem("open-sidebar-sections");
-                const openIds = stored ? JSON.parse(stored) : ["get-started"];
-
-                detailsElements.forEach((element) => {
-                    const id = element.getAttribute("data-id");
-
-                    if (id) {
-                        if (openIds.includes(id)) {
-                            element.show();
-                        } else {
-                            element.hide();
-                        }
-                    }
-                });
-            } catch (error) {
-                console.warn(`Could not restore sidebar state: ${error}`);
-                detailsElements.forEach((element) => {
-                    const id = element.getAttribute("data-id");
-                    if (id === "get-started") {
+                    if (openIds.includes(id) || isActive) {
                         element.show();
                     } else {
                         element.hide();
                     }
-                });
-            }
+                }
+            });
+        } catch (error) {
+            console.warn(`Could not restore sidebar state: ${error}`);
 
-            if (isMobile) {
+            detailsElements.forEach((element) => {
+                const id = element.getAttribute("data-id");
+
+                if (id === "get-started") {
+                    element.show();
+                } else {
+                    element.hide();
+                }
+            });
+        }
+
+        const summaryLinks = container.querySelectorAll(".summary-link");
+
+        summaryLinks.forEach((link) => {
+            link.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            link.addEventListener("keydown", (event) => {
+                event.stopPropagation();
+            });
+        });
+
+        setTimeout(() => {
+            isInitializing = false;
+        }, 100);
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const allMobileContainers = document.querySelectorAll(".mobile-sidebar");
+        const allDesktopContainers = document.querySelectorAll(".sidebar");
+
+        const allContainers = [...Array.from(allMobileContainers), ...Array.from(allDesktopContainers)];
+
+        if (allContainers.length === 0) {
+            return;
+        }
+
+        let firstMobileDrawer: PcDrawer | null = null;
+
+        allContainers.forEach((container) => {
+            initializeSidebarInstance(container);
+
+            if (container.classList.contains("mobile-sidebar") && !firstMobileDrawer) {
+                firstMobileDrawer = container as PcDrawer;
+            }
+        });
+
+        if (firstMobileDrawer) {
+            if (!window.__sidebarResizeHandlerAttached__) {
+                const drawerInstance = firstMobileDrawer;
+
                 function handleResize() {
                     if (window.innerWidth > 1440) {
-                        if (drawer) {
-                            drawer.open = false;
-                        }
+                        drawerInstance.open = false;
                     }
                 }
 
                 window.addEventListener("resize", handleResize);
                 handleResize();
-            }
-
-            setTimeout(() => {
-                isInitializing = false;
-            }, 100);
-
-            const summaryLinks = container.querySelectorAll(".summary-link");
-
-            summaryLinks.forEach((link) => {
-                link.addEventListener("click", (event) => {
-                    event.stopPropagation();
-                });
-
-                link.addEventListener("keydown", (event) => {
-                    event.stopPropagation();
-                });
-            });
-        });
-    </script>
-
-    <style>
-        pc-details:not(:last-of-type) {
-            margin-block-end: var(--pc-spacing-s);
-        }
-
-        pc-details::part(base) {
-            background-color: transparent;
-        }
-
-        pc-details::part(summary) {
-            font-weight: var(--pc-font-weight-bold);
-        }
-
-        pc-details span[slot="summary"] a {
-            color: var(--pc-color-text-normal);
-            text-decoration: none;
-        }
-
-        pc-details span[slot="summary"] a pc-icon {
-            color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
-        }
-
-        @media (hover: hover) {
-            pc-details span[slot="summary"] a:hover {
-                color: color-mix(
-                    in oklab,
-                    var(--pc-color-text-link),
-                    var(--pc-color-mix-hover)
-                );
+                window.__sidebarResizeHandlerAttached__ = true;
             }
         }
+    });
+</script>
 
-        pc-details span[slot="summary"] a:active {
+<style>
+    pc-details:not(:last-of-type) {
+        margin-block-end: var(--pc-spacing-s);
+    }
+
+    pc-details::part(base) {
+        background-color: transparent;
+    }
+
+    pc-details::part(summary) {
+        font-weight: var(--pc-font-weight-bold);
+    }
+
+    pc-details span[slot="summary"] a {
+        color: var(--pc-color-text-normal);
+        text-decoration: none;
+    }
+
+    pc-details span[slot="summary"] a pc-icon {
+        color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
+    }
+
+    @media (hover: hover) {
+        pc-details span[slot="summary"] a:hover {
             color: color-mix(
                 in oklab,
                 var(--pc-color-text-link),
-                var(--pc-color-mix-active)
+                var(--pc-color-mix-hover)
             );
         }
+    }
 
-        pc-details ul {
-            display: flex;
-            flex-direction: column;
-            gap: var(--pc-spacing-s);
-            margin-inline-start: var(--pc-spacing-xs);
-            padding-inline-start: var(--pc-spacing-l);
-            border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
-                var(--pc-color-neutral-border-quiet);
-            list-style: none;
+    pc-details span[slot="summary"] a:active {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-text-link),
+            var(--pc-color-mix-active)
+        );
+    }
+
+    pc-details ul {
+        display: flex;
+        flex-direction: column;
+        gap: var(--pc-spacing-s);
+        margin-inline-start: var(--pc-spacing-xs);
+        padding-inline-start: var(--pc-spacing-l);
+        border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-neutral-border-quiet);
+        list-style: none;
+    }
+
+    pc-details > ul {
+        margin-block-start: calc(-1 * var(--pc-spacing-l));
+    }
+
+    pc-details ul li {
+        margin-inline-start: calc(
+            -1 * (var(--pc-spacing-l) + var(--pc-border-width-s))
+        );
+        padding-inline-start: calc(
+            var(--pc-spacing-l) - var(--pc-border-width-s)
+        );
+        border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
+            transparent;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        pc-details ul li:has(> a:hover) {
+            border-color: var(--pc-color-neutral-on-quiet);
         }
+    }
 
-        pc-details > ul {
-            margin-block-start: calc(-1 * var(--pc-spacing-l));
-        }
+    pc-details ul li:has(> a:active) {
+        border-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-on-quiet),
+            var(--pc-color-mix-active)
+        );
+    }
 
-        pc-details ul li a {
-            margin-inline-start: calc(
-                -1 * (var(--pc-spacing-l) + var(--pc-border-width-s))
-            );
-            padding-inline-start: calc(
-                var(--pc-spacing-l) - var(--pc-border-width-s)
-            );
-            color: color-mix(
-                in oklab,
-                var(--pc-color-text-normal),
-                var(--pc-color-surface-default) 15%
-            );
-            border-radius: 0;
-            border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
-                transparent;
-            font-weight: var(--pc-font-weight-normal);
-            text-decoration: none;
-        }
+    pc-details ul li:has(> a[aria-current="page"]) {
+        border-color: var(--pc-color-primary-on-quiet);
+    }
 
-        pc-details ul li a.untranslated-flag::after {
-            content: "EN";
-            font-size: calc(var(--pc-font-size-smaller) / 1.25);
-            vertical-align: super;
-        }
+    pc-details ul li a {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-text-normal),
+            var(--pc-color-surface-default) 15%
+        );
+        font-weight: var(--pc-font-weight-normal);
+        text-decoration: none;
+    }
 
-        @media (hover: hover) {
-            pc-details ul li a:hover {
-                color: var(--pc-color-text-normal);
-                border-color: var(--pc-color-neutral-on-quiet);
-            }
-        }
+    pc-details ul li a.untranslated-flag::after {
+        content: "EN";
+        font-size: calc(var(--pc-font-size-smaller) / 1.25);
+        vertical-align: super;
+    }
 
-        pc-details ul li a:active {
-            color: color-mix(
-                in oklab,
-                var(--pc-color-text-normal),
-                var(--pc-color-mix-active)
-            );
-            border-color: color-mix(
-                in oklab,
-                var(--pc-color-neutral-on-quiet),
-                var(--pc-color-mix-active)
-            );
-        }
-
-        pc-details ul li a[aria-current="page"] {
-            color: var(--pc-color-primary-on-quiet);
-            border-color: var(--pc-color-primary-on-quiet);
-            font-weight: var(--pc-font-weight-semibold);
-        }
-
-        pc-details ul li a pc-icon.external-link {
-            margin-inline-start: var(--pc-spacing-s);
-            color: var(--pc-color-text-quiet);
-            rotate: 45deg;
-            translate: 0 0.125rem;
-        }
-
-        pc-details ul li ul {
-            margin-block-start: var(--pc-spacing-s);
-        }
-
-        .other-links {
-            margin-block-start: var(--pc-spacing-l);
-            margin-inline: var(--pc-spacing-s);
-        }
-
-        .other-links div.pc-cluster {
-            row-gap: var(--pc-spacing-xxxs);
-        }
-
-        .other-links button {
-            all: unset;
-            border-radius: var(--pc-border-radius-s);
-            cursor: pointer;
-            transition: all var(--pc-transition-fast) ease-in-out;
-        }
-
-        .other-links button:focus-visible {
-            outline: var(--pc-focus-ring);
-            outline-offset: var(--pc-focus-ring-offset);
-            animation: focus-ring-animation var(--pc-transition-medium)
-                cubic-bezier(0.33, 1, 0.68, 1);
-        }
-
-        .other-links button,
-        .other-links a {
-            color: var(--pc-color-neutral-on-quiet);
-            font-weight: var(--pc-font-weight-semibold);
-            font-size: var(--pc-font-size-smaller);
-            text-decoration: none;
-        }
-
-        @media (hover: hover) {
-            .other-links button:hover,
-            .other-links a:hover {
-                color: color-mix(
-                    in oklab,
-                    var(--pc-color-neutral-on-quiet),
-                    var(--pc-color-mix-hover)
-                );
-                text-decoration: var(--pc-link-decoration-hover);
-            }
-        }
-
-        .other-links button:active,
-        .other-links a:active {
-            color: color-mix(
-                in oklab,
-                var(--pc-color-neutral-on-quiet),
-                var(--pc-color-mix-active)
-            );
-            text-decoration: var(--pc-link-decoration-active);
-        }
-
-        :global(.pc-theme-utility)
-            .other-links
-            :is(button, a):is(:hover, :active) {
+    @media (hover: hover) {
+        pc-details ul li a:hover {
             color: var(--pc-color-text-normal);
         }
+    }
 
-        .other-links .attribution {
-            display: inline-block;
-            align-items: center;
-            margin-block-start: var(--pc-spacing-xs);
-            color: var(--pc-color-neutral-on-quiet);
-            font-size: var(--pc-font-size-smaller);
-            font-weight: var(--pc-font-weight-medium);
-        }
+    pc-details ul li a:active {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-text-normal),
+            var(--pc-color-mix-active)
+        );
+    }
 
-        .other-links .attribution img {
-            position: relative;
-            inset-block-start: var(--pc-spacing-xs);
-            border-radius: 0;
+    pc-details ul li a[aria-current="page"] {
+        color: var(--pc-color-primary-on-quiet);
+        font-weight: var(--pc-font-weight-semibold);
+    }
+
+    pc-details ul li a pc-icon.external-link {
+        margin-inline-start: var(--pc-spacing-s);
+        color: var(--pc-color-text-quiet);
+        rotate: 45deg;
+        translate: 0 0.125rem;
+    }
+
+    pc-details ul li ul {
+        margin-block-start: var(--pc-spacing-s);
+    }
+
+    .other-links {
+        margin-block-start: var(--pc-spacing-l);
+        margin-inline: var(--pc-spacing-s);
+    }
+
+    .other-links div.pc-cluster {
+        row-gap: var(--pc-spacing-xxxs);
+    }
+
+    .other-links button {
+        all: unset;
+        border-radius: var(--pc-border-radius-s);
+        cursor: pointer;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    .other-links button:focus-visible {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .other-links button,
+    .other-links a {
+        color: var(--pc-color-neutral-on-quiet);
+        font-weight: var(--pc-font-weight-semibold);
+        font-size: var(--pc-font-size-smaller);
+        text-decoration: none;
+    }
+
+    @media (hover: hover) {
+        .other-links button:hover,
+        .other-links a:hover {
+            color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-on-quiet),
+                var(--pc-color-mix-hover)
+            );
+            text-decoration: var(--pc-link-decoration-hover);
         }
-    </style>
-</nav>
+    }
+
+    .other-links button:active,
+    .other-links a:active {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-on-quiet),
+            var(--pc-color-mix-active)
+        );
+        text-decoration: var(--pc-link-decoration-active);
+    }
+
+    :global(.pc-theme-utility) .other-links :is(button, a):is(:hover, :active) {
+        color: var(--pc-color-text-normal);
+    }
+
+    .other-links .attribution {
+        display: inline-block;
+        align-items: center;
+        margin-block-start: var(--pc-spacing-xs);
+        color: var(--pc-color-neutral-on-quiet);
+        font-size: var(--pc-font-size-smaller);
+        font-weight: var(--pc-font-weight-medium);
+    }
+
+    .other-links .attribution img {
+        position: relative;
+        inset-block-start: var(--pc-spacing-xs);
+        border-radius: 0;
+    }
+</style>
