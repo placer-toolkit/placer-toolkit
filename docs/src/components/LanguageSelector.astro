@@ -1,0 +1,81 @@
+---
+const fullPath = Astro.url.pathname;
+const firstSegment = fullPath.split("/")[1];
+
+// This array does not include English, as English is the default locale
+const knownLocales = ["de"];
+
+let slugWithoutLocale = fullPath;
+
+if (knownLocales.includes(firstSegment)) {
+    slugWithoutLocale = fullPath.slice(firstSegment.length + 1);
+}
+
+const cleanLanguageSlug = slugWithoutLocale.replace(/\/$/, "");
+const cleanLanguageSlugLocalized = slugWithoutLocale.replace(/^\/|\/$/g, "");
+---
+
+<pc-dropdown class="language-selector" placement="bottom-end" role="list">
+    <pc-button size="small" variant="outlined" slot="trigger">
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="solid"
+            name="language"
+            label="Language selector"
+
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value={cleanLanguageSlug} role="link">
+        English
+    </pc-dropdown-item>
+    <pc-dropdown-item value=`/de/${cleanLanguageSlugLocalized}` role="link">
+        Deutsch
+        <pc-badge appearance="warning" variant="filled" slot="details">
+            WIP
+        </pc-badge>
+    </pc-dropdown-item>
+</pc-dropdown>
+
+<script>
+    import type { PcDropdown } from "placer-toolkit/dist/components/dropdown/dropdown.js";
+    import type { PcDropdownItem } from "placer-toolkit/dist/components/dropdown-item/dropdown-item.js";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const languageSelector = document.querySelector<PcDropdown>(".language-selector");
+
+        if (!languageSelector) {
+            return;
+        }
+
+        languageSelector.addEventListener("pc-select", (event) => {
+            window.location.pathname = event.detail.item.value;
+        });
+
+        const itemsToForceLink = languageSelector.querySelectorAll<PcDropdownItem>("pc-dropdown-item");
+
+        itemsToForceLink.forEach((item) => {
+            const observer = new MutationObserver((mutationsList, observer) => {
+                for (const mutation of mutationsList) {
+                    if (
+                        mutation.type === "attributes" &&
+                        mutation.attributeName === "role" &&
+                        item.getAttribute("role") !== "link"
+                    ) {
+                        item.setAttribute("role", "link");
+                    }
+                }
+            });
+
+            observer.observe(item, { attributes: true });
+        });
+    });
+</script>
+
+<style>
+    pc-dropdown-item > pc-badge {
+        padding-inline: 0.35em;
+        font-size: var(--pc-font-size-xxs);
+    }
+</style>

@@ -1,0 +1,222 @@
+---
+title: Verwendung
+description: Placer Toolkit‐Komponenten sind einfach normale HTML‐Elemente oder genauer gesagt [Custom Elements](https://developer.mozilla.org/de/docs/Web/API/Web_components/Using_custom_elements). Du kannst sie wie jedes andere Element verwenden. Jede Komponente verfügt über eine detaillierte Dokumentation, die ihre vollständige API beschreibt, einschließlich Eigenschaften, Events, Methoden und mehr.
+order: 2
+---
+
+Placer Toolkit‐Komponenten sind einfach normale HTML‐Elemente oder genauer gesagt [Custom Elements](https://developer.mozilla.org/de/docs/Web/API/Web_components/Using_custom_elements). Du kannst sie wie jedes andere Element verwenden. Jede Komponente verfügt über eine detaillierte Dokumentation, die ihre vollständige API beschreibt, einschließlich Eigenschaften, Events, Methoden und mehr.
+
+Wenn du neu bei Custom Elements bist, die oft als „Web Components“ bezeichnet werden, wird dich dieser Abschnitt mit deren Nutzung vertraut machen.
+
+## Attribute und Eigenschaften
+
+Viele Komponenten haben Eigenschaften, die über Attribute gesetzt werden können. Zum Beispiel akzeptieren Buttons ein `size`‐Attribut, das der `size`‐Eigenschaft entspricht und die Größe des Buttons bestimmt.
+
+```html
+<pc-button size="small">Klick mich</pc-button>
+```
+
+Einige Eigenschaften sind boolean, d. h. sie haben nur die Werte true/false. Um eine Boolean‐Eigenschaft zu aktivieren, füge das entsprechende Attribut ohne Wert hinzu.
+
+```html
+<pc-button disabled>Klick mich</pc-button>
+```
+
+In seltenen Fällen kann eine Eigenschaft ein Array, ein Objekt oder eine Funktion erfordern. Um beispielsweise die Liste vordefinierter Farbfelder des Color Pickers anzupassen, setze die `swatches`‐Eigenschaft auf ein Array von Farben. Dies muss mit JavaScript erfolgen.
+
+```html
+<pc-color-picker></pc-color-picker>
+
+<script>
+    const colorPicker = document.querySelector("pc-color-picker");
+
+    colorPicker.swatches = ["red", "orange", "yellow", "green", "blue", "purple"];
+</script>
+```
+
+Weitere Informationen zu allen Eigenschaften einer Komponente findest du in der jeweiligen Dokumentation.
+
+## Events
+
+Du kannst auf Standard‐Events wie `click`, `mouseover`, `mouseout` usw. hören, wie du es normalerweise tun würden. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Nutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
+
+Daher solltest du fast immer auf Custom Events hören. Anstatt z. B. auf `click` zu hören, um zu erkennen, wann ein `<pc-checkbox>` umgeschaltet wird, hörst du auf `pc-change`.
+
+```html
+<pc-checkbox>Kreuz mich an</pc-checkbox>
+
+<script>
+    const checkbox = document.querySelector("pc-checkbox");
+
+    checkbox.addEventListener("pc-change", (event) => {
+        console.log(event.target.checked ? "angekreuzt" : "nicht angekreuzt");
+    });
+</script>
+```
+
+Alle Custom Events haben das Präfix `pc-`, um Kollisionen mit Standard‐Events und anderen Bibliotheken zu vermeiden. Weitere Informationen zu allen Custom Events einer Komponente findest du in der jeweiligen Dokumentation.
+
+## Methoden
+
+Einige Komponenten haben Methoden, die du aufrufen kannst, um bestimmte Verhaltensweisen auszulösen. Zum Beispiel kannst du den Fokus auf ein Placer Toolkit‐Input setzen, indem du die `focus()`‐Methode verwendest.
+
+```html
+<pc-input></pc-input>
+
+<script>
+    const input = document.querySelector("pc-input");
+
+    input.focus();
+</script>
+```
+
+Weitere Informationen zu allen Methoden und deren Argumenten einer Komponente findest du in der jeweiligen Dokumentation.
+
+## Slots
+
+Viele Komponenten verwenden Slots, um Inhalte innerhalb von ihnen aufzunehmen. Der am häufigsten verwendete Slot ist der Standard‐Slot, der alle Inhalte innerhalb der Komponente enthält, die kein `slot`‐Attribut besitzen.
+
+Zum Beispiel wird der Standard‐Slot eines Buttons verwendet, um dessen Beschriftung anzuzeigen.
+
+```html
+<pc-button>Klick mich</pc-button>
+```
+
+Einige Komponenten haben auch benannte Slots. Ein benannter Slot kann durch Hinzufügen eines Kindelements mit dem entsprechenden `slot`‐Attribut gefüllt werden. Beachte, wie das Icon unten das Attribut `slot="prefix"` hat? Dies teilt der Komponente mit, das Icon in ihren `prefix`‐Slot zu setzen.
+
+```html
+<pc-button>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="gear"
+        slot="prefix"
+    ></pc-icon>
+
+    Einstellungen
+</pc-button>
+```
+
+Die Position eines benannten Slots spielt keine Rolle. Du kannst ihn überall innerhalb der Komponente platzieren und der Browser bewegt ihn automatisch an die richtige Stelle!
+
+Weitere Informationen zu allen verfügbaren Slots einer Komponente findest du in der jeweiligen Dokumentation.
+
+## Keine Self‐Closing Tags verwenden
+
+Custom Elements dürfen keine Self‐Closing Tags haben. Ähnlich wie bei `<script>` und `<textarea>` musst du immer das vollständige schließende Tag einfügen.
+
+```html
+<!-- ❌ Nicht so machen -->
+<pc-input />
+
+<!-- ✔️ Immer so machen -->
+<pc-input></pc-input>
+```
+
+## Unterschiede zu nativen Elementen
+
+Man könnte erwarten, dass ähnlich benannte Elemente die gleiche API wie native HTML‐Elemente haben, aber das ist nicht immer der Fall. Placer Toolkit‐Komponenten **sind nicht** als eins‐zu‐eins‐Ersatz für ihre HTML‐Pendants konzipiert. Obwohl sie in der Regel die gleiche API teilen, kann es subtile Unterschiede geben.
+
+Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, aber das native Element verwendet standardmäßig `submit`, während das Placer Toolkit‐Element standardmäßig `button` verwendet, da dies für die meisten Nutzer:innen eine bessere Voreinstellung ist.
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="book-open"
+        slot="icon"
+    ></pc-icon>
+    <strong>Treffe keine Annahmen über die API einer Komponente!</strong><br />
+    Um unerwartetes Verhalten zu vermeiden, nehme sich bitte die Zeit, die Dokumentation zu prüfen und sicherzustellen, dass du verstehst, was jedes Attribut, jede Eigenschaft, Methode und jedes Event bewirken soll.
+</pc-callout>
+
+## Warten auf das Laden von Komponenten
+
+Web Components werden mit JavaScript registriert, daher kann es je nach Art und Zeitpunkt des Ladens von Placer Toolkit zu einem Flash of Undefined Custom Elements (FOUCE) kommen, wenn die Seite geladen wird. Es gibt mehrere Möglichkeiten, dies zu verhindern – mit einem Opt‐In Utility, einer Custom‐CSS‐Regel oder einem JS‐basierten Promise.
+
+Eine Möglichkeit ist die Verwendung unseres FOUCE‐Utilities, um FOUCE zu verhindern. Diese Datei wird automatisch beim Laden von `placer.css` geladen.
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/utilities/fouce.css" />
+```
+
+Du musst außerdem die Klasse `pc-cloak` zum `<html>`‐Element hinzufügen, damit das FOUCE‐Utility angewendet wird.
+
+Eine weitere Möglichkeit besteht darin, die [`:defined`](https://developer.mozilla.org/en-US/docs/Web/CSS/:defined) CSS‐Pseudoklasse zu verwenden, um Custom Elements, die noch nicht registriert sind, „zu verbergen“. Du kannst dies auf bestimmte Tags anwenden oder alle nicht definierten Custom Elements wie unten gezeigt ausblenden.
+
+```css
+:not(:defined) {
+    visibility: hidden;
+}
+```
+
+Sobald ein Custom Element registriert ist, wird es sofort mit allen seinen Styles angezeigt, wodurch FOUCE effektiv eliminiert wird. Beachte, dass `visibility: hidden` anstelle von `display: none` verwendet wird, um Verschiebungen beim Registrieren der Elemente zu reduzieren. Der Nachteil dieser Methode ist, dass Custom Elements möglicherweise einzeln statt alle gleichzeitig erscheinen. Deshalb empfehlen wir die Verwendung des FOUCE‐Utilities.
+
+Es gibt noch eine weitere Möglichkeit. Du kannst [`customElements.whenDefined()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/whenDefined) verwenden, das ein Promise zurückgibt, das aufgelöst wird, wenn das angegebene Element registriert wird. Du wirst es wahrscheinlich mit [`Promise.allSettled()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) kombinieren wollen, falls ein Element aus irgendeinem Grund nicht geladen wird.
+
+Eine clevere Möglichkeit, diese Methode zu verwenden, besteht darin, den `<body>` mit `opacity: 0` auszublenden und eine Klasse hinzuzufügen, die ihn einblendet, sobald alle Custom Elements definiert sind.
+
+```html
+<script>
+    await Promise.allSettled([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-card"),
+        customElements.whenDefined("pc-rating"),
+    ]);
+
+    /* Die Button‐, Card‐ und Rating‐Komponenten sind jetzt registriert!
+       Füge die Klasse “ready” hinzu, damit die UI eingeblendet wird. */
+    document.body.classList.add("ready");
+</script>
+
+<style>
+    body {
+        opacity: 0;
+        transition: opacity var(--pc-transition-slow) step-end;
+    }
+
+    body.ready {
+        opacity: 1;
+    }
+</style>
+```
+
+## Komponenten‐Rendering und ‐Aktualisierung
+
+Placer Toolkit‐Komponenten werden mit [Lit](https://lit.dev) erstellt, einer Bibliothek, die das Erstellen von Custom Elements einfacher, wartbarer und deutlich spaßiger macht als Vanilla Web Components. Hier sind einige nützliche Hinweise zum Rendering und zur Aktualisierung, die du kennen solltest.
+
+Um die Performance zu optimieren und unnötige Re‐Renders zu vermeiden, bündelt Lit Komponentendaten&shy;änderungen. Das bedeutet, dass mehrere Attribut‐ oder Eigenschaftsänderungen gleichzeitig nur zu einem einzigen Re‐Render führen. In den meisten Fällen ist dies unproblematisch, aber manchmal musst du auf die Aktualisierung der Komponente warten, bevor du fortfährst.
+
+Betrachte dieses Beispiel. Wir ändern die `checked`‐Eigenschaft der Checkbox und beobachten das entsprechende `checked`‐Attribut, das zufällig reflektiert wird.
+
+```javascript
+const checkbox = document.querySelector("pc-checkbox");
+
+checkbox.checked = true;
+
+console.log(checkbox.hasAttribute("checked")); // Gibt false zurück
+```
+
+Die meisten Entwickler:innen erwarten hier `true` statt `false`, aber die Komponente hatte noch keine Gelegenheit, neu zu rendern, sodass das Attribut beim Aufruf von `hasAttribute()` noch nicht existiert. Da Änderungen gebündelt werden, müssen wir auf die Aktualisierung warten. Dies kann über die `updateComplete`‐Eigenschaft erfolgen, die bei allen Lit‐basierten Komponenten verfügbar ist.
+
+```javascript
+const checkbox = document.querySelector("pc-checkbox");
+
+checkbox.checked = true;
+
+checkbox.updateComplete.then(() => {
+    console.log(checkbox.hasAttribute("checked")); // Gibt true zurück
+});
+```
+
+Dieses Mal sehen wir einen leeren String, was bedeutet, dass das Boolean‐Attribut jetzt vorhanden ist!
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="clock"
+        slot="icon"
+    ></pc-icon>
+    Vermeide die Verwendung von `setTimeout()` oder `requestAnimationFrame()` in solchen Situationen. Sie könnten funktionieren, aber es ist wesentlich zuverlässiger, stattdessen `updateComplete` zu verwenden.
+</pc-callout>

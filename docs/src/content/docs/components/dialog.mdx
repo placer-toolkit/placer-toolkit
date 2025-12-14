@@ -1,0 +1,244 @@
+---
+title: Dialog
+description: Dialogs, sometimes called “modals”, appear above the page and draw the user’s immediate attention.
+---
+
+import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
+
+Dialogs, sometimes called “modals”, appear above the page and draw the user’s immediate attention.
+
+```demo:open
+<pc-dialog label="Dialog" class="dialog-overview">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-overview");
+    const openButton = dialog.nextElementSibling;
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```
+
+## Demos
+
+### Opening and closing dialogs declaratively
+
+You can open and close dialogs with JavaScript by toggling the `open` attribute, but you can also do it declaratively. Add the `data-dialog="open id"` to any button on the page, where `id` is the id of the dialog you want to open.
+
+```demo
+<pc-dialog label="Dialog" id="dialog-open-declarative">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button data-dialog="open dialog-open-declarative">
+    Open dialog
+</pc-button>
+```
+
+Similarly, you can add `data-dialog="close"` to a button _inside_ of the dialog to tell it to close it.
+
+```demo
+<pc-dialog label="Dialog" id="dialog-dismiss-declarative">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button data-dialog="open dialog-dismiss-declarative">
+    Open dialog
+</pc-button>
+```
+
+### Custom width
+
+Use the `--width` custom property to set the dialog’s width.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-width" style="--width: 50vw">
+    This dialog is always 50 % of the viewport.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-width");
+    const openButton = dialog.nextElementSibling;
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```
+
+### Scrolling
+
+By design, a dialog’s height will never exceed that of the viewport. As such, dialogs will not scroll with the page ensuring the header and footer are always accessible to the user.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-scrolling">
+    <div
+        style="
+            padding: var(--pc-spacing-l);
+            block-size: 150dvh;
+            border: var(--pc-border-width-m) dashed
+                var(--pc-color-neutral-border-normal);
+            border-radius: var(--pc-border-radius-l);
+        "
+    >
+        <p>Scroll down and give it a try! ⬇️</p>
+    </div>
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-scrolling");
+    const openButton = dialog.nextElementSibling;
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```
+
+### Header actions
+
+The header shows a functional close button by default. You can use the `header-actions` slot to add additional [icon buttons](/docs/components/button/#icon-buttons) if needed.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-header-actions">
+    <pc-button
+        class="new-window"
+        size="small"
+        variant="plain"
+        slot="header-actions"
+    >
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-up-right-from-square"
+            label="Open this page in a new window"
+        ></pc-icon>
+    </pc-button>
+
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-header-actions");
+    const openButton = dialog.nextElementSibling;
+    const closeButton = dialog.querySelector('pc-button[slot="footer"]');
+    const newWindowButton = dialog.querySelector(".new-window");
+
+    openButton.addEventListener("click", () => dialog.show());
+    closeButton.addEventListener("click", () => dialog.hide());
+    newWindowButton.addEventListener("click", () => window.open(location.href));
+</script>
+```
+
+### Prevent light dismissal
+
+If you want to prevent the dialog from closing if the user clicks on the overlay, add the `no-light-dismiss` attribute.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-no-light-dismiss" no-light-dismiss>
+    This dialog will not close when you click on the overlay.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-no-light-dismiss");
+    const openButton = dialog.nextElementSibling;
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```
+
+### Prevent dialog from closing
+
+By default, dialogs will close when the user clicks the close button, clicks the overlay or presses the <kbd aria-label="Escape">Esc</kbd> key. In most cases, the default behaviour is the best behaviour in terms of UX. However, there are situations where this may be undesirable, such as when data loss will occur.
+
+To keep the dialog open in such cases, you can cancel the `pc-hide` event. When cancelled, the dialog will remain open and pulse briefly to draw the user’s attention to it.
+
+You can use `event.detail.source` to check what triggered the close request. In this example, the dialog will only close when a custom close button inside the footer is clicked. Clicking the overlay, pressing <kbd aria-label="Escape">Esc</kbd> or using the built‐in header close button will all be prevented.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-deny-close">
+    This dialog will only close if you click on the button below.
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-deny-close");
+    const openButton = dialog.nextElementSibling;
+    const closeButton = dialog.querySelector('pc-button[slot="footer"]');
+
+    dialog.addEventListener("pc-hide", (event) => {
+        if (event.detail.source !== closeButton) {
+            event.preventDefault();
+        }
+    });
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```
+
+### Customise initial focus
+
+By default, the dialog’s panel will gain focus when opened. This allows a subsequent tab press to focus on the first tabbable element in the dialog. If you want a different element to have focus, add the `autofocus` attribute to it as shown below.
+
+```demo
+<pc-dialog label="Dialog" class="dialog-focus">
+    <pc-input
+        placeholder="I will have focus when the dialog is opened"
+        aria-label="I will have focus when the dialog is opened"
+        autofocus
+    ></pc-input>
+
+    <pc-button variant="plain" slot="footer" data-dialog="close">
+        Close
+    </pc-button>
+</pc-dialog>
+
+<pc-button>Open dialog</pc-button>
+
+<script>
+    const dialog = document.querySelector(".dialog-focus");
+    const openButton = dialog.nextElementSibling;
+
+    openButton.addEventListener("click", () => (dialog.open = true));
+</script>
+```

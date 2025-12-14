@@ -1,0 +1,244 @@
+---
+title: Anpassung
+description: Placer Toolkit‐Komponenten können auf hohem Niveau über Design‐Tokens angepasst werden. Dies gibt dir Kontrolle über Design‐Einstellungen und allgemeines Styling. Für fortgeschrittene Anpassungen können CSS‐Parts und benutzerdefinierte Eigenschaften genutzt werden, um einzelne Komponenten gezielt zu steuern.
+order: 3
+---
+
+Placer Toolkit‐Komponenten können auf hohem Niveau über Design‐Tokens angepasst werden. Dies gibt dir Kontrolle über Design‐Einstellungen und allgemeines Styling. Für fortgeschrittene Anpassungen können CSS‐Parts und benutzerdefinierte Eigenschaften genutzt werden, um einzelne Komponenten gezielt zu steuern.
+
+## Farbschemata
+
+Placer Toolkit bietet zwei eingebaute Farbschemata – helles und dunkles Farbschema – die es Nutzer:innen ermöglichen, das Farbschema basierend auf den Lichtverhältnissen oder persönlichen ästhetischen Vorlieben zu wechseln.
+
+Diese Farbschemata funktionieren, indem spezifische CSS‐benutzerdefinierte Eigenschaften (hauptsächlich [Farbtokens](/de/docs/design-tokens/colour)) definiert werden, die gegenüberliegende Seiten der Farbtonskala nutzen, um in jedem Farbschema optimalen Kontrast zu gewährleisten.
+
+Die beiden verfügbaren Farbschemata sind:
+
+- **Helles Farbschema (Standard):** Dunkler Inhalt auf hellem Hintergrund.
+- **Dunkles Farbschema:** Heller Inhalt auf dunklem Hintergrund, um die Augen bei schlechten Lichtverhältnissen zu schonen.
+
+Du kannst ein Farbschema aktivieren, indem du eine einzelne Klasse auf das entsprechende HTML‐Element anwenden.
+
+Um das dunkle Farbschema auf der gesamten Seite anzuwenden, füge die Klasse `pc-dark` zum `<html>`-Element hinzu.
+
+```diff
+ <!DOCTYPE html>
+-<html>
++<html class="pc-dark">
+     <head>
+         <!-- … -->
+     </head>
+     <body>
+         <!-- … -->
+     </body>
+ </html>
+```
+
+Wenn du den Dunkelmodus nur auf ein bestimmtes Element anwenden möchtest, kannst du die Klasse `pc-dark` direkt auf dieses Element setzen.
+
+Das helle Farbschema ist das Standardfarbschema. Das bedeutet, dass du keine Klasse (wie `pc-light`) angeben müssen, um es zu aktivieren. Die Klasse `pc-light` steht jedoch zur Verfügung, falls du sie für spezifische Designwechsellogik oder komponentenbezogene Überschreibungen benötigst.
+
+## Designs
+
+Placer Toolkit verwendet Designs, um ein einheitliches Erscheinungsbild über die gesamte Bibliothek zu gewährleisten. Designs basieren auf einer Sammlung vordefinierter CSS‐benutzerdefinierter Eigenschaften, die wir [Design‐Tokens](/de/docs/design-tokens) nennen, und du kannst das Styling mit 18 einzigartigen Möglichkeiten kombinieren.
+
+Um ein Design zu verwenden, füge einfach einen Link zum Stylesheet des Designs in den `<head>` deiner Seite ein. Zum Beispiel kannst du diesen Code‐Snippet zusammen mit dem [Installationscode](/de/docs/get-started/installation) verwenden, um das entsprechende Design zu nutzen.
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="default">Standard</pc-tab>
+    <pc-tab slot="navigation" panel="utility">Utility</pc-tab>
+    <pc-tab slot="navigation" panel="serene">Serene</pc-tab>
+
+    <pc-tab-panel name="default">
+        Das Standard‐Design dient als Standard‐Design für Placer Toolkit, daher muss es nicht separat importiert werden. Wir listen hier jedoch den Schriftimport erneut auf.
+
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="utility">
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=ibm-plex-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i|inter:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/themes/utility.css" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="serene">
+        ```html
+        <link rel="stylesheet" href="https://fonts.bunny.net/css?family=lora:400,400i,500,500i,600,600i,700,700i|montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|source-code-pro:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/themes/serene.css" />
+        ```
+    </pc-tab-panel>
+</pc-tab-group>
+
+## Design‐Tokens
+
+Design‐Tokens werden über CSS‐benutzerdefinierte Eigenschaften genutzt, die im Theme definiert sind. Da Design‐Tokens auf Seitenebene existieren, sind sie mit `--pc-` vorangestellt, um Kollisionen mit anderen Bibliotheken zu vermeiden.
+
+Um ein Design‐Token anzupassen, überschreibe es einfach in deinem Stylesheet innerhalb eines `:root`‐Blocks. Hier ist ein interaktives Beispiel, das die Akzentfarbe basierend auf bestehenden Design‐Tokens auf Indigo ändert.
+
+```css
+:root,
+.pc-light {
+    --pc-color-primary-fill-quiet: var(--pc-color-indigo-95);
+    --pc-color-primary-fill-normal: var(--pc-color-indigo-90);
+    --pc-color-primary-fill-loud: var(--pc-color-indigo-50);
+    --pc-color-primary-border-quiet: var(--pc-color-indigo-90);
+    --pc-color-primary-border-normal: var(--pc-color-indigo-80);
+    --pc-color-primary-border-loud: var(--pc-color-indigo-60);
+    --pc-color-primary-on-quiet: var(--pc-color-indigo-40);
+    --pc-color-primary-on-normal: var(--pc-color-indigo-30);
+    --pc-color-primary-on-loud: oklch(100% 0 0);
+}
+
+.pc-dark {
+    --pc-color-primary-fill-quiet: var(--pc-color-indigo-10);
+    --pc-color-primary-fill-normal: var(--pc-color-indigo-20);
+    --pc-color-primary-fill-loud: var(--pc-color-indigo-50);
+    --pc-color-primary-border-quiet: var(--pc-color-indigo-20);
+    --pc-color-primary-border-normal: var(--pc-color-indigo-30);
+    --pc-color-primary-border-loud: var(--pc-color-indigo-40);
+    --pc-color-primary-on-quiet: var(--pc-color-indigo-60);
+    --pc-color-primary-on-normal: var(--pc-color-indigo-70);
+    --pc-color-primary-on-loud: oklch(100% 0 0);
+}
+```
+
+Viele Design‐Tokens werden später in dieser Dokumentation noch weiter beschrieben. Eine vollständige Liste findest du in den Farbschemata‐ und Palette‐Dateien im Projektquellcode unter [`src/styles`](https://github.com/placer-toolkit/placer-toolkit/tree/main/src/styles). Sie enthalten alle Tokens, die in Placer Toolkit verwendet werden.
+
+## CSS‐Parts
+
+Während Design‐Tokens eine High‐Level‐Anpassung der Bibliothek ermöglichen, bieten CSS‐Parts eine Low‐Level‐Methode zur Anpassung einzelner Komponenten. Dies geschieht wieder mit reinem CSS – kein Preprocessor erforderlich.
+
+Placer Toolkit‐Komponenten verwenden ein [Shadow DOM](https://developer.mozilla.org/de/docs/Web/Web_Components/Using_shadow_DOM), um ihre Styles und Verhaltensweisen zu kapseln. Daher kannst du deren Interna nicht einfach mit üblichen CSS‐Selektoren ansprechen. Stattdessen bieten Komponenten „Parts“, die mit dem [CSS‐Part‐Selector](https://developer.mozilla.org/de/docs/Web/CSS/::part) oder `::part()` gezielt gesteuert werden können.
+
+Hier ist ein Beispiel, das den Button mit der Klasse `tomato-button` modifiziert.
+
+```demo
+<pc-button class="tomato-button" pill>
+    <span slot="prefix">🍅</span>
+    Tomato Button
+</pc-button>
+
+<style>
+    .tomato-button::part(base) {
+        background-color: transparent;
+        color: var(--pc-color-neutral-on-normal);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-neutral-border-normal);
+    }
+
+    @media (hover: hover) {
+        .tomato-button::part(base):hover {
+            background-color: oklch(69.6% 0.195 32.3 / 10%);
+            color: oklch(69.6% 0.195 32.3);
+            border-color: oklch(69.6% 0.195 32.3);
+            scale: 1.05;
+        }
+    }
+
+    .tomato-button::part(base):active {
+        background-color: oklch(69.6% 0.195 32.3 / 20%);
+        color: oklch(69.6% 0.195 32.3);
+        border-color: oklch(69.6% 0.195 32.3);
+        scale: 0.95;
+    }
+</style>
+```
+
+Auf den ersten Blick mag dieser Ansatz etwas umständlich oder einschränkend wirken, aber er bietet einige wichtige Vorteile:
+
+- Anpassungen können explizit über Selektoren wie `::part(base)` erfolgen, anstatt über implizite Selektoren wie `.button > div > span > .icon`, die deutlich fragiler sind.
+- Die interne Struktur einer Komponente kann sich im Laufe der Zeit ändern. Durch die Bereitstellung von CSS‐Parts über eine API können Interna überarbeitet werden, ohne dass Anpassungen brechen, solange die Parts erhalten bleiben.
+- Es regt dazu an, über das Design der Komponenten und die erlaubten Anpassungen nachzudenken, bevor Nutzer:innen sie nutzen. Sobald ein Part in die API der Komponente aufgenommen wird, ist seine Unterstützung garantiert und kann erst mit einer Hauptversion der Bibliothek entfernt werden.
+
+Die meisten (aber nicht alle) Komponenten bieten Parts. Diese findest du in der API‐Dokumentation jeder Komponente im Abschnitt **Parts**.
+
+## Benutzerdefinierte Eigenschaften
+
+Einige Komponenten bieten CSS‐benutzerdefinierte Eigenschaften, die du überschreiben kannst. Diese sind keine Design‐Tokens und haben nicht das gleiche `--pc-`‐Präfix, da sie auf eine Komponente beschränkt sind.
+
+Du kannst benutzerdefinierte Eigenschaften auf einer Komponente in deinem Stylesheet setzen.
+
+```css
+pc-avatar {
+    --size: 6rem;
+}
+```
+
+Dies funktioniert auch, wenn du nur eine Teilmenge von Komponenten mit einer bestimmten Klasse ansprechen möchtest.
+
+```css
+pc-avatar.your-class {
+    --size: 6rem;
+}
+```
+
+Alternativ kannst du sie direkt inline auf dem Element setzen.
+
+```html
+<pc-avatar style="--size: 6rem"></pc-avatar>
+```
+
+Nicht alle Komponenten bieten CSS‐benutzerdefinierte Eigenschaften. Die, die es tun, findest du in der API‐Dokumentation der jeweiligen Komponente.
+
+## Animationen
+
+Einige Komponenten verwenden Animationen, z. B. beim Anzeigen oder Verbergen eines Dialogs. Animationen werden über die [Web Animations API](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API) ausgeführt, nicht über CSS. Du kannst sie jedoch über das Animations‐Registry von Placer Toolkit anpassen. Wenn eine Komponente anpassbare Animationen hat, werden diese im Abschnitt **Animationen** der Dokumentation aufgeführt.
+
+Um eine Standardanimation anzupassen, verwende die Methode `setDefaultAnimation()`. Die Funktion akzeptiert einen Animationsnamen (in der Dokumentation der Komponente zu finden) und ein Objekt mit `keyframes`, `options` oder `null`, um die Animation zu deaktivieren.
+
+Dieses Beispiel sorgt dafür, dass alle Dialoge eine benutzerdefinierte Show‐Animation nutzen.
+
+```javascript
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/animation-registry.js";
+
+// Ändere die Standardanimation für alle Dialoge
+setDefaultAnimation("dialog.show", {
+    keyframes: [
+        { transform: "rotate(-10deg) scale(0.5)", opacity: "0" },
+        { transform: "rotate(0deg) scale(1)", opacity: "1" },
+    ],
+    options: { duration: 500 },
+});
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="language"
+        slot="icon"
+    ></pc-icon>
+    Um RTL‐Sprachen in deiner Animation zu unterstützen, kannst du eine zusätzliche Eigenschaft `rtlKeyframes` übergeben. Diese Eigenschaft hat denselben Typ wie `keyframes` und wird automatisch verwendet, wenn die Richtung der Komponente RTL ist. Wird `rtlKeyframes` nicht angegeben, werden `keyframes` als Fallback genutzt.
+</pc-callout>
+
+Wenn du nur eine einzelne Komponente ansprechen möchtest, verwende stattdessen die Methode `setAnimation()`. Diese Funktion akzeptiert ein Element, einen Animationsnamen und ein Objekt mit Animations‐`keyframes` und `options`.
+
+In diesem Beispiel nutzt nur der Ziel‐Dialog die benutzerdefinierte Show‐Animation.
+
+```javascript
+import { setDefaultAnimation } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/animation-registry.js";
+
+// Ändere die Standardanimation für einen einzelnen Dialog
+const dialog = document.querySelector("#my-dialog");
+
+setDefaultAnimation(dialog, "dialog.show", {
+    keyframes: [
+        { transform: "rotate(-10deg) scale(0.5)", opacity: "0" },
+        { transform: "rotate(0deg) scale(1)", opacity: "1" },
+    ],
+    options: { duration: 500 },
+});
+```
+
+Weitere Informationen zum Erstellen von Web‐Animationen mit der [Web Animations API](https://developer.mozilla.org/de/docs/Web/API/Web_Animations_API) findest du in der Dokumentation zu [`Element.animate()`](https://developer.mozilla.org/de/docs/Web/API/Element/animate).
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="universal-access"
+        slot="icon"
+    ></pc-icon>
+    Animationen respektieren die `prefers-reduced-motion`‐Einstellung des/der Nutzer:in. Ist diese aktiviert, werden Animationen nicht abgespielt. Um Animationen für alle Nutzer:innen zu deaktivieren, übergebe statt eines `keyframes/options`‐Objekts `null`.
+</pc-callout>

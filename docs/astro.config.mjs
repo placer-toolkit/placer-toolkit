@@ -32,12 +32,19 @@ export default defineConfig({
         }),
         sitemap(),
     ],
+    i18n: {
+        locales: ["en", "de"],
+        defaultLocale: "en",
+        routing: {
+            prefixDefaultLocale: false,
+        },
+    },
     markdown: {
         remarkPlugins: [
             [
                 remarkGitHubLinker,
                 {
-                    owner: "randomguy-2650",
+                    owner: "placer-toolkit",
                     repo: "placer-toolkit",
                     /* Acquire your own GitHub secret token to display the GitHub issue
                        linking Markdown syntax in your dev and build environment correctly. */
