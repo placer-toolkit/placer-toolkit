@@ -10,9 +10,6 @@
 /docs/*                               /docs/:splat                                  200
 /*                                    /docs/:splat                                  301
 
-# Test redirect
-/hello   /docs/   301
-
 # 404 pages
 /de/404/*                             /de/404/:splat                                200
 /de/*                                 /de/404/                                      404
