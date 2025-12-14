@@ -1,4 +1,15 @@
-/components/visually-hidden      /style-utilities/visually-hidden         301
-/design-tokens/border-radius     /design-tokens/borders/#border-radius    301
-/design-tokens/z-index           /design-tokens                           301
-/design-tokens/other-tokens      /design-tokens/component-groups          301
+# Old page redirects
+/components/visually-hidden           /style-utilities/visually-hidden              301
+/docs/design-tokens/border-radius     /docs/design-tokens/borders/#border-radius    301
+/docs/design-tokens/z-index           /docs/design-tokens                           301
+/docs/design-tokens/other-tokens      /docs/design-tokens/component-groups          301
+
+# Internal docs refactor redirects
+/de/docs/*                            /de/docs/:splat                               200
+/de/*                                 /de/docs/:splat                               301
+/docs/*                               /docs/:splat                                  200
+/*                                    /docs/:splat                                  301
+
+# 404 pages
+/de/404/*                             /de/404/:splat                                200
+/de/*                                 /de/404/                                      404

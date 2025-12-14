@@ -1,0 +1,155 @@
+---
+title: Checkbox
+description: Checkboxes allow the user to toggle an option on or off.
+---
+
+Checkboxes allow the user to toggle an option on or off.
+
+```demo
+<pc-checkbox>Checkbox</pc-checkbox>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="book-open"
+        slot="icon"
+    ></pc-icon>
+    This component works well with standard `<form>` elements. Please refer to the [form controls](/docs/get-started/form-controls) page to learn more about form submission and client‐side validation.
+</pc-callout>
+
+## Demos
+
+### Checked
+
+Use the `checked` attribute to enable the checkbox.
+
+```demo
+<pc-checkbox checked>Checked</pc-checkbox>
+```
+
+### Indeterminate
+
+Use the `indeterminate` attribute to make the checkbox indeterminate.
+
+```demo
+<div class="checkbox-indeterminate">
+    <pc-checkbox data-role="all">All options</pc-checkbox>
+
+    <pc-checkbox data-role="option">Option 1</pc-checkbox>
+    <pc-checkbox data-role="option" checked>Option 2</pc-checkbox>
+    <pc-checkbox data-role="option">Option 3</pc-checkbox>
+</div>
+
+<script>
+    const group = document.querySelector(".checkbox-indeterminate");
+    const allCheckboxes = group.querySelector('[data-role="all"]');
+    const optionCheckboxes = Array.from(group.querySelectorAll('[data-role="option"]'));
+
+    function updateAllCheckboxes() {
+        const checkedCount = optionCheckboxes.filter((checkbox) => checkbox.checked).length;
+
+        if (checkedCount === optionCheckboxes.length) {
+            allCheckboxes.checked = true;
+            allCheckboxes.indeterminate = false;
+        } else if (checkedCount === 0) {
+            allCheckboxes.checked = false;
+            allCheckboxes.indeterminate = false;
+        } else {
+            allCheckboxes.checked = false;
+            allCheckboxes.indeterminate = true;
+        }
+    }
+
+    allCheckboxes.addEventListener("pc-change", () => {
+        const isChecked = allCheckboxes.checked;
+        allCheckboxes.indeterminate = false;
+        optionCheckboxes.forEach((checkbox) => checkbox.checked = isChecked);
+    });
+
+    optionCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("pc-change", updateAllCheckboxes);
+    });
+
+    updateAllCheckboxes();
+</script>
+
+<style>
+    .checkbox-indeterminate pc-checkbox {
+        display: block;
+    }
+
+    .checkbox-indeterminate pc-checkbox[data-role="all"] {
+        margin-block-end: 0.125em;
+    }
+
+    .checkbox-indeterminate pc-checkbox[data-role="option"] {
+        padding-inline-start: 0.75em;
+        border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+    }
+</style>
+```
+
+### Disabled
+
+Use the `disabled` attribute to disable the checkbox.
+
+```demo
+<pc-checkbox disabled>Disabled</pc-checkbox>
+```
+
+### Sizes
+
+Use the `size` attribute to change the checkbox’s size.
+
+```demo
+<pc-checkbox size="small">Small</pc-checkbox>
+<br />
+<pc-checkbox size="medium">Medium</pc-checkbox>
+<br />
+<pc-checkbox size="large">Large</pc-checkbox>
+```
+
+### Hint
+
+Add a hint to a checkbox with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
+
+```demo
+<pc-checkbox hint="What should the user know about the checkbox?">
+    Label
+</pc-checkbox>
+```
+
+### Custom validity
+
+Use the `setCustomValidity()` method to set a custom validation message. This will prevent the form from submitting and make the browser display the error message you provide. To clear the error, call this function with an empty string.
+
+```demo
+<form class="custom-validity">
+    <pc-checkbox>Check me</pc-checkbox>
+    <br /><br />
+    <pc-button appearance="primary" type="submit">Submit</pc-button>
+</form>
+
+<script>
+    const form = document.querySelector(".custom-validity");
+    const checkbox = form.querySelector("pc-checkbox");
+
+    // Set initial validity as soon as the element is defined
+    customElements.whenDefined("pc-checkbox").then(async () => {
+        await checkbox.updateComplete;
+        checkbox.setCustomValidity("Don’t forget to check me!");
+    });
+
+    checkbox.addEventListener("pc-change", () => {
+        checkbox.setCustomValidity(checkbox.checked ? "" : "Don’t forget to check me!");
+    });
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        alert("All fields are valid!");
+    });
+</script>
+```

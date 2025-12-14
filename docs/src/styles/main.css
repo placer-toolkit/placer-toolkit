@@ -6,6 +6,17 @@
     scroll-behavior: smooth;
 }
 
+html ::selection,
+html.pc-light ::selection {
+    background-color: var(--pc-color-primary-95);
+    color: var(--pc-color-primary-30);
+}
+
+html.pc-dark ::selection {
+    background-color: var(--pc-color-primary-30);
+    color: var(--pc-color-primary-90);
+}
+
 html,
 body {
     margin: 0;
@@ -14,6 +25,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-padding-block-start: 4.5rem;
+    font-feature-settings: "ss01" on;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -22,15 +34,35 @@ html {
     overflow-y: hidden;
 }
 
+/* Language‐specific word break optimisations */
+[lang~="de"] {
+    hyphens: auto;
+    overflow-wrap: break-word;
+}
+
+code,
+pre,
+kbd,
+samp,
+var {
+    hyphens: none;
+    overflow-wrap: normal;
+}
+
 /* Layout container — Main grid */
 .layout-container {
     display: grid;
     grid-template-areas:
         "navbar navbar"
-        "sidebar main";
+        "sidebar main"
+        "sidebar footer";
     grid-template-columns: 300px 1fr;
-    grid-template-rows: 3.5rem 1fr;
+    grid-template-rows: 3.5rem 1fr auto;
     min-block-size: 100dvh;
+}
+
+html.no-sidebar .layout-container {
+    grid-template-columns: 0 1fr;
 }
 
 /* Skip links */
@@ -53,6 +85,25 @@ html {
     inset-block-start: var(--pc-spacing-m);
     inset-inline-start: var(--pc-spacing-m);
     z-index: 100;
+}
+
+/* Dialog and drawer re‐style */
+html.hero pc-dialog::part(dialog) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-surface-raised),
+        transparent 30%
+    );
+    backdrop-filter: blur(8px);
+}
+
+html.hero pc-drawer::part(drawer) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-surface-raised),
+        transparent 30%
+    ) !important;
+    backdrop-filter: blur(8px);
 }
 
 /* Main content area */
@@ -230,11 +281,29 @@ main {
 }
 
 .hero-callout {
-    inline-size: 50vmax;
+    inline-size: auto;
 }
 
 .content-layout .hero-callout {
     inline-size: 100%;
+}
+
+/* Keyframes */
+@keyframes spin {
+    0% {
+        rotate: 0deg;
+        stroke-dasharray: 0% 314.159%;
+    }
+
+    50% {
+        rotate: 450deg;
+        stroke-dasharray: 157.08% 157.08%;
+    }
+
+    100% {
+        rotate: 1080deg;
+        stroke-dasharray: 0% 314.159%;
+    }
 }
 
 /* Desktop styles */
@@ -253,9 +322,10 @@ main {
     .layout-container {
         grid-template-areas:
             "navbar"
-            "main";
-        grid-template-columns: 1fr;
-        grid-template-rows: 3.5rem 1fr;
+            "main"
+            "footer";
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 3.5rem 1fr auto;
     }
 
     main {
@@ -290,7 +360,7 @@ main {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 768px) {
     .hero-callout {
         inline-size: 100%;
     }

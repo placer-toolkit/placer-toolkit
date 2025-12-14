@@ -1,0 +1,299 @@
+---
+title: Button Group
+description: Button groups can be sued to group related buttons into groups.
+---
+
+Button groups can be used to group related buttons into groups.
+
+```demo:open
+<pc-button-group label="Alignment">
+    <pc-button>Left</pc-button>
+    <pc-button>Centre</pc-button>
+    <pc-button>Right</pc-button>
+</pc-button-group>
+```
+
+## Demos
+
+### Sizes
+
+All button sizes are supported, but avoid mixing sizes within the same button group.
+
+```demo
+<pc-button-group label="Alignment">
+    <pc-button size="small">Left</pc-button>
+    <pc-button size="small">Centre</pc-button>
+    <pc-button size="small">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button size="medium">Left</pc-button>
+    <pc-button size="medium">Centre</pc-button>
+    <pc-button size="medium">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button size="large">Left</pc-button>
+    <pc-button size="large">Centre</pc-button>
+    <pc-button size="large">Right</pc-button>
+</pc-button-group>
+```
+
+### Appearances
+
+Themed buttons are supported through the button’s `appearance` attribute.
+
+```demo
+<pc-button-group label="Alignment">
+    <pc-button appearance="neutral">Left</pc-button>
+    <pc-button appearance="neutral">Centre</pc-button>
+    <pc-button appearance="neutral">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button appearance="primary">Left</pc-button>
+    <pc-button appearance="primary">Centre</pc-button>
+    <pc-button appearance="primary">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button appearance="success">Left</pc-button>
+    <pc-button appearance="success">Centre</pc-button>
+    <pc-button appearance="success">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button appearance="warning">Left</pc-button>
+    <pc-button appearance="warning">Centre</pc-button>
+    <pc-button appearance="warning">Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button appearance="danger">Left</pc-button>
+    <pc-button appearance="danger">Centre</pc-button>
+    <pc-button appearance="danger">Right</pc-button>
+</pc-button-group>
+```
+
+### Pill shape
+
+Pill‐shaped buttons are supported through the button’s `pill` attribute.
+
+```demo
+<pc-button-group label="Alignment">
+    <pc-button size="small" pill>Left</pc-button>
+    <pc-button size="small" pill>Centre</pc-button>
+    <pc-button size="small" pill>Right</pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button size="medium" pill>
+        Left
+    </pc-button>
+    <pc-button size="medium" pill>
+        Centre
+    </pc-button>
+    <pc-button size="medium" pill>
+        Right
+    </pc-button>
+</pc-button-group>
+
+<br />
+<br />
+
+<pc-button-group label="Alignment">
+    <pc-button size="large" pill>Left</pc-button>
+    <pc-button size="large" pill>Centre</pc-button>
+    <pc-button size="large" pill>Right</pc-button>
+</pc-button-group>
+```
+
+### Dropdowns in button groups
+
+Dropdowns can be placed inside button groups as long as the trigger is a `<pc-button>` element.
+
+```demo
+<pc-button-group label="Example button group">
+    <pc-button>Left</pc-button>
+    <pc-button>Centre</pc-button>
+    <pc-dropdown>
+        <pc-button slot="trigger">
+            Right
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="chevron-down"
+                slot="suffix"
+            ></pc-icon>
+        </pc-button>
+        <pc-dropdown-item>Item 1</pc-dropdown-item>
+        <pc-dropdown-item>Item 2</pc-dropdown-item>
+        <pc-dropdown-item>Item 3</pc-dropdown-item>
+    </pc-dropdown>
+</pc-button-group>
+```
+
+### Split buttons
+
+Create a split button using a button and a dropdown. Use a [visually hidden](/docs/style-utilities/visually-hidden) label to ensure the dropdown is accessible to users with assistive devices.
+
+```demo
+<pc-button-group label="Example button group">
+    <pc-button appearance="primary">Save</pc-button>
+    <pc-dropdown placement="bottom-end">
+        <pc-button appearance="primary" slot="trigger">
+            <span class="pc-visually-hidden">More options</span>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="chevron-down"
+            ></pc-icon>
+        </pc-button>
+        <pc-dropdown-item>Save</pc-dropdown-item>
+        <pc-dropdown-item>Save as…</pc-dropdown-item>
+        <pc-dropdown-item>Save all</pc-dropdown-item>
+    </pc-dropdown>
+</pc-button-group>
+```
+
+### Tooltips in button groups
+
+Buttons can be wrapped in tooltips to provide more detail when the user interacts with them.
+
+```demo
+<pc-button-group label="Alignment">
+    <pc-tooltip content="I’m on the left!">
+        <pc-button>Left</pc-button>
+    </pc-tooltip>
+    <pc-tooltip content="I’m in the centre!">
+        <pc-button>Centre</pc-button>
+    </pc-tooltip>
+    <pc-tooltip content="I’m on the right!">
+        <pc-button>Right</pc-button>
+    </pc-tooltip>
+</pc-button-group>
+```
+
+### Toolbar with button groups
+
+Create interactive toolbars with button groups.
+
+```demo
+<div class="button-group-toolbar">
+    <pc-button-group label="History">
+        <pc-tooltip content="Undo">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-rotate-left"
+                    label="Undo"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+        <pc-tooltip content="Redo">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-rotate-right"
+                    label="Redo"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+    </pc-button-group>
+
+    <pc-button-group label="Formatting">
+        <pc-tooltip content="Bold">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="bold"
+                    label="Bold"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+        <pc-tooltip content="Italic">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="italic"
+                    label="Italic"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+        <pc-tooltip content="Underline">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="underline"
+                    label="Underline"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+    </pc-button-group>
+
+    <pc-button-group label="Alignment">
+        <pc-tooltip content="Align left">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="align-left"
+                    label="Align left"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+        <pc-tooltip content="Align centre">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="align-center"
+                    label="Align centre"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+        <pc-tooltip content="Align right">
+            <pc-button>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="align-right"
+                    label="Align right"
+                ></pc-icon>
+            </pc-button>
+        </pc-tooltip>
+    </pc-button-group>
+</div>
+
+<style>
+    .button-group-toolbar pc-button-group:not(:last-of-type) {
+        margin-inline-end: var(--pc-spacing-xs);
+    }
+</style>
+```

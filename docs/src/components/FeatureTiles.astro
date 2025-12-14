@@ -1,0 +1,151 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<div class="grid-tiles pc-grid">
+    <pc-button
+        class="grid-tile"
+        href="/docs/get-started/usage"
+        variant="outlined"
+    >
+        <div class="pc-stack">
+            <div class="pc-split">
+                <div class="pc-cluster">
+                    <pc-avatar shape="rounded">
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="puzzle-piece"
+                            slot="icon"></pc-icon>
+                    </pc-avatar>
+                    <h3>{translation("featureTiles.entirelyNative")}</h3>
+                </div>
+                <pc-icon
+                    class="arrow-right-move"
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-right"></pc-icon>
+            </div>
+            <p set:html={translation("featureTiles.entirelyNativeMessage")} />
+        </div>
+    </pc-button>
+    <pc-button
+        class="grid-tile"
+        href="/docs/get-started/localisation"
+        variant="outlined"
+    >
+        <div class="pc-stack">
+            <div class="pc-split">
+                <div class="pc-cluster">
+                    <pc-avatar shape="rounded">
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="universal-access"
+                            slot="icon"></pc-icon>
+                    </pc-avatar>
+                    <h3>{translation("featureTiles.fullyAccessible")}</h3>
+                </div>
+                <pc-icon
+                    class="arrow-right-move"
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-right"></pc-icon>
+            </div>
+            <p set:html={translation("featureTiles.fullyAccessibleMessage")} />
+        </div>
+    </pc-button>
+    <pc-button
+        class="grid-tile"
+        href="/docs/get-started/customisation"
+        variant="outlined"
+    >
+        <div class="pc-stack">
+            <div class="pc-split">
+                <div class="pc-cluster">
+                    <pc-avatar shape="rounded">
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="paint-brush"
+                            slot="icon"></pc-icon>
+                    </pc-avatar>
+                    <h3>{translation("featureTiles.flexible")}</h3>
+                </div>
+                <pc-icon
+                    class="arrow-right-move"
+                    library="default"
+                    icon-style="solid"
+                    name="arrow-right"></pc-icon>
+            </div>
+            <p set:html={translation("featureTiles.flexibleMessage")} />
+        </div>
+    </pc-button>
+</div>
+
+<style>
+    .grid-tiles {
+        --min-column-size: 20rem;
+
+        margin-block-end: var(--pc-spacing-xxl);
+    }
+
+    .grid-tiles .grid-tile pc-avatar {
+        --size: 1.3lh;
+    }
+
+    .grid-tiles
+        .grid-tile
+        pc-avatar:has(> pc-icon[name="puzzle-piece"])::part(base) {
+        background-color: var(--pc-color-green-50);
+        color: var(--pc-color-green-90);
+    }
+
+    .grid-tiles
+        .grid-tile
+        pc-avatar:has(> pc-icon[name="universal-access"])::part(base) {
+        background-color: var(--pc-color-cyan-50);
+        color: var(--pc-color-cyan-90);
+    }
+
+    .grid-tiles
+        .grid-tile
+        pc-avatar:has(> pc-icon[name="paint-brush"])::part(base) {
+        background-color: var(--pc-color-pink-50);
+        color: var(--pc-color-pink-90);
+    }
+
+    .grid-tiles .grid-tile h3 {
+        font-size: var(--pc-font-size-m);
+    }
+
+    .grid-tiles .grid-tile p {
+        font-weight: var(--pc-font-weight-normal);
+        font-size: var(--pc-font-size-s);
+    }
+
+    .grid-tiles .grid-tile .pc-split pc-icon[name="arrow-right"] {
+        color: var(--pc-color-neutral-on-quiet);
+    }
+
+    .grid-tiles .grid-tile::part(base) {
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding: var(--pc-spacing-xl);
+        inline-size: 100%;
+        block-size: 100%;
+        color: var(--pc-color-text-normal);
+        border-radius: var(--pc-border-radius-l);
+        line-height: var(--pc-line-height-normal);
+        text-align: start;
+        white-space: wrap;
+    }
+
+    .grid-tiles .grid-tile::part(label) {
+        flex-direction: column;
+        inline-size: 100%;
+    }
+</style>
