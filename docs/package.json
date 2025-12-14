@@ -15,7 +15,6 @@
         "astro": "^5.16.0",
         "highlight.js": "^11.11.1",
         "node-fetch": "^3.3.2",
-        "placer-toolkit": "file:../placer-toolkit-1.0.0-alpha.2.tgz",
         "sharp": "^0.34.4"
     },
     "devDependencies": {
