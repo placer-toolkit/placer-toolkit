@@ -8,6 +8,44 @@ pc-icon.icon-shrink {
 }
 /* #endregion */
 
+/* #region — Arrow move animations (desktop only) */
+.arrow-up-move,
+.arrow-right-move,
+.arrow-down-move,
+.arrow-left-move {
+    transition: transform var(--pc-transition-medium)
+        cubic-bezier(0.7, 0, 0.5, 1.8);
+}
+
+pc-button:hover,
+pc-button:active {
+    .arrow-up-move {
+        transform: translateY(-0.25em);
+        transition: transform var(--pc-transition-medium)
+            cubic-bezier(0.22, 1.5, 0.36, 1);
+    }
+
+    .arrow-right-move {
+        transform: translateX(0.25em);
+        transition: transform var(--pc-transition-medium)
+            cubic-bezier(0.22, 2, 0.36, 1);
+    }
+
+    .arrow-down-move {
+        transform: translateY(0.25em);
+        transition: transform var(--pc-transition-medium)
+            cubic-bezier(0.22, 1.5, 0.36, 1);
+    }
+
+    .arrow-left-move {
+        transform: translateX(-0.25em);
+        transition: transform var(--pc-transition-medium)
+            cubic-bezier(0.22, 1.5, 0.36, 1);
+    }
+}
+
+/* #endregion */
+
 /* #region — Icon visibility based on button state */
 @media (hover: hover) {
     pc-button:hover .rest-only,

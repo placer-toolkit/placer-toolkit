@@ -1,15 +1,26 @@
+---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+---
+
 <div class="showcase">
     <pc-comparer style="--divider-width: 0.25rem">
         <iframe
             id="before-frame"
-            src="/showcase"
+            src={translatePath("/showcase")}
             tabindex="-1"
             aria-hidden="true"
             slot="before"></iframe>
-
         <iframe
             id="after-frame"
-            src="/showcase/?color-scheme=dark"
+            src={translatePath("/showcase/?color-scheme=dark")}
             tabindex="-1"
             aria-hidden="true"
             slot="after"></iframe>
@@ -17,62 +28,90 @@
 
     <div class="showcase-controls">
         <pc-tab-group>
-            <pc-tab slot="navigation" panel="before">Before</pc-tab>
-            <pc-tab slot="navigation" panel="after">After</pc-tab>
+            <pc-tab slot="navigation" panel="before">
+                {translation("showcase.tab.before")}
+            </pc-tab>
+            <pc-tab slot="navigation" panel="after">
+                {translation("showcase.tab.after")}
+            </pc-tab>
 
             <pc-tab-panel name="before">
                 <div class="pc-stack">
-                    <pc-select name="theme" label="Theme" value="default">
-                        <pc-option value="default">Default</pc-option>
+                    <pc-select
+                        name="theme"
+                        label={translation("theme.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
                         <pc-option value="utility">Utility</pc-option>
                         <pc-option value="serene">Serene</pc-option>
                     </pc-select>
 
                     <pc-select
                         name="palette"
-                        label="Colour palette"
+                        label={translation("theme.palette.select")}
                         value="default"
                     >
-                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
                         <pc-option value="vibrant">Vibrant</pc-option>
                         <pc-option value="muted">Muted</pc-option>
                     </pc-select>
 
                     <pc-select
                         name="color-scheme"
-                        label="Colour scheme"
+                        label={translation("theme.colorScheme.select")}
                         value="light"
                     >
-                        <pc-option value="light">Light</pc-option>
-                        <pc-option value="dark">Dark</pc-option>
+                        <pc-option value="light">
+                            {translation("theme.colorScheme.light.simple")}
+                        </pc-option>
+                        <pc-option value="dark">
+                            {translation("theme.colorScheme.dark.simple")}
+                        </pc-option>
                     </pc-select>
                 </div>
             </pc-tab-panel>
             <pc-tab-panel name="after">
                 <div class="pc-stack">
-                    <pc-select name="theme" label="Theme" value="default">
-                        <pc-option value="default">Default</pc-option>
+                    <pc-select
+                        name="theme"
+                        label={translation("theme.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
                         <pc-option value="utility">Utility</pc-option>
                         <pc-option value="serene">Serene</pc-option>
                     </pc-select>
 
                     <pc-select
                         name="palette"
-                        label="Colour palette"
+                        label={translation("theme.palette.select")}
                         value="default"
                     >
-                        <pc-option value="default">Default</pc-option>
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
                         <pc-option value="vibrant">Vibrant</pc-option>
                         <pc-option value="muted">Muted</pc-option>
                     </pc-select>
 
                     <pc-select
                         name="color-scheme"
-                        label="Colour scheme"
+                        label={translation("theme.colorScheme.select")}
                         value="dark"
                     >
-                        <pc-option value="light">Light</pc-option>
-                        <pc-option value="dark">Dark</pc-option>
+                        <pc-option value="light">
+                            {translation("theme.colorScheme.light.simple")}
+                        </pc-option>
+                        <pc-option value="dark">
+                            {translation("theme.colorScheme.dark.simple")}
+                        </pc-option>
                     </pc-select>
                 </div>
             </pc-tab-panel>

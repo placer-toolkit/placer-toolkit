@@ -1,0 +1,533 @@
+---
+title: Button
+description: Buttons represent actions that are available to the user.
+---
+
+import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
+
+Buttons represent actions that are available to the user.
+
+```demo:open
+<pc-button>Button</pc-button>
+```
+
+## Demos
+
+### Appearances
+
+Use the `appearance` attribute to set the button’s appearance.
+
+```demo
+<pc-button appearance="neutral">Neutral</pc-button>
+<pc-button appearance="primary">Primary</pc-button>
+<pc-button appearance="success">Success</pc-button>
+<pc-button appearance="warning">Warning</pc-button>
+<pc-button appearance="danger">Danger</pc-button>
+```
+
+### Variants
+
+Use the `variant` attribute to set the button’s variant.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="primary" variant="accent">Accent</pc-button>
+    <pc-button appearance="primary" variant="filled outlined">F + O</pc-button>
+    <pc-button appearance="primary" variant="filled">Filled</pc-button>
+    <pc-button appearance="primary" variant="outlined">Outlined</pc-button>
+    <pc-button appearance="primary" variant="plain">Plain</pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="success" variant="accent">Accent</pc-button>
+    <pc-button appearance="success" variant="filled outlined">F + O</pc-button>
+    <pc-button appearance="success" variant="filled">Filled</pc-button>
+    <pc-button appearance="success" variant="outlined">Outlined</pc-button>
+    <pc-button appearance="success" variant="plain">Plain</pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="neutral" variant="accent">Accent</pc-button>
+    <pc-button appearance="neutral" variant="filled outlined">F + O</pc-button>
+    <pc-button appearance="neutral" variant="filled">Filled</pc-button>
+    <pc-button appearance="neutral" variant="outlined">Outlined</pc-button>
+    <pc-button appearance="neutral" variant="plain">Plain</pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="warning" variant="accent">Accent</pc-button>
+    <pc-button appearance="warning" variant="filled outlined">F + O</pc-button>
+    <pc-button appearance="warning" variant="filled">Filled</pc-button>
+    <pc-button appearance="warning" variant="outlined">Outlined</pc-button>
+    <pc-button appearance="warning" variant="plain">Plain</pc-button>
+</div>
+<div>
+    <pc-button appearance="danger" variant="accent">Accent</pc-button>
+    <pc-button appearance="danger" variant="filled outlined">F + O</pc-button>
+    <pc-button appearance="danger" variant="filled">Filled</pc-button>
+    <pc-button appearance="danger" variant="outlined">Outlined</pc-button>
+    <pc-button appearance="danger" variant="plain">Plain</pc-button>
+</div>
+```
+
+### Sizes
+
+Use the `size` attribute to change the button’s size.
+
+```demo
+<pc-button size="small">Small</pc-button>
+<pc-button size="medium">Medium</pc-button>
+<pc-button size="large">Large</pc-button>
+```
+
+### Pill
+
+Use the `pill` attribute to give buttons a pill‐shaped look.
+
+```demo
+<pc-button size="small" pill>Small</pc-button>
+<pc-button size="medium" pill>Medium</pc-button>
+<pc-button size="large" pill>Large</pc-button>
+```
+
+### Links
+
+It’s often helpful to have a button that works like a link. This is possible by setting the `href` attribute, which will make the component render as an `<a>` under the hood. This gives you all the default link behaviour the browser provides (e.g., <AutoKeyboardSwitch keyName="ctrl" /> or <AutoKeyboardSwitch keyName="shift" /> + <pc-icon library="default" icon-style="solid" name="arrow-pointer" onmouseover="this.name = 'hand-pointer'" onmouseout="this.name = 'arrow-pointer'" style="cursor: pointer" aria-label="Click"></pc-icon>) and exposes the `target` and `download` attributes.
+
+```demo
+<pc-button href="https://example.com">Link</pc-button>
+<pc-button href="https://example.com" target="_blank">New window</pc-button>
+<pc-button href="https://placer-toolkit.netlify.app/brand/logo.svg" download>Download</pc-button>
+<pc-button href="https://example.com" disabled>Disabled</pc-button>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="shield-halved"
+        slot="icon"
+    ></pc-icon>
+    When a `target` is set, the link will receive `rel="noreferrer noopener"` for [security reasons](https://mathiasbynens.github.io/rel-noopener).
+</pc-callout>
+
+### Icon buttons
+
+When only an [icon](/docs/components/icon) is slotted into the default slot, the button becomes an icon button. In this case, it’s important to give the icon a label for users with assistive devices. Icon buttons can use any appearance or variant.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="primary" variant="accent">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Accent"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="primary" variant="filled outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled + Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="primary" variant="filled">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="primary" variant="outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="primary" variant="plain">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Plain"
+        ></pc-icon>
+    </pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="success" variant="accent">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Accent"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="success" variant="filled outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled + Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="success" variant="filled">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="success" variant="outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="success" variant="plain">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Plain"
+        ></pc-icon>
+    </pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="neutral" variant="accent">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Accent"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="neutral" variant="filled outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled + Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="neutral" variant="filled">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="neutral" variant="outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="neutral" variant="plain">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Plain"
+        ></pc-icon>
+    </pc-button>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button appearance="warning" variant="accent">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Accent"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="warning" variant="filled outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled + Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="warning" variant="filled">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="warning" variant="outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="warning" variant="plain">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Plain"
+        ></pc-icon>
+    </pc-button>
+</div>
+<div>
+    <pc-button appearance="danger" variant="accent">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Accent"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="danger" variant="filled outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled + Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="danger" variant="filled">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Filled"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="danger" variant="outlined">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Outlined"
+        ></pc-icon>
+    </pc-button>
+    <pc-button appearance="danger" variant="plain">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            label="Plain"
+        ></pc-icon>
+    </pc-button>
+</div>
+```
+
+### Custom width
+
+As expected, buttons can be given a custom width by passing inline styles to the component (or using a class). This is useful for making buttons span the full width of their container on smaller screens.
+
+```demo
+<pc-button size="small" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Small</pc-button>
+<pc-button size="medium" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Medium</pc-button>
+<pc-button size="large" style="inline-size: 100%">Large</pc-button>
+```
+
+### Prefixes and suffixes
+
+Use the `prefix` and `suffix` slots to add icons.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button size="small">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="gear"
+            slot="prefix"
+        ></pc-icon>
+        Settings
+    </pc-button>
+
+    <pc-button size="small">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-rotate-right"
+            slot="suffix"
+        ></pc-icon>
+        Refresh
+    </pc-button>
+
+    <pc-button size="small">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="link"
+            slot="prefix"
+        ></pc-icon>
+        Open
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-up-right-from-square"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+</div>
+
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-button size="medium">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="gear"
+            slot="prefix"
+        ></pc-icon>
+        Settings
+    </pc-button>
+
+    <pc-button size="medium">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-rotate-right"
+            slot="suffix"
+        ></pc-icon>
+        Refresh
+    </pc-button>
+
+    <pc-button size="medium">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="link"
+            slot="prefix"
+        ></pc-icon>
+        Open
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-up-right-from-square"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+</div>
+
+<div>
+    <pc-button size="large">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="gear"
+            slot="prefix"
+        ></pc-icon>
+        Settings
+    </pc-button>
+
+    <pc-button size="large">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-rotate-right"
+            slot="suffix"
+        ></pc-icon>
+        Refresh
+    </pc-button>
+
+    <pc-button size="large">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="link"
+            slot="prefix"
+        ></pc-icon>
+        Open
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-up-right-from-square"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+</div>
+```
+
+### Disabled
+
+Use the `disabled` attribute to disable a button.
+
+```demo
+<pc-button appearance="neutral" disabled>Default</pc-button>
+<pc-button appearance="primary" disabled>Primary</pc-button>
+<pc-button appearance="success" disabled>Success</pc-button>
+<pc-button appearance="warning" disabled>Warning</pc-button>
+<pc-button appearance="danger" disabled>Danger</pc-button>
+```
+
+### Custom styles
+
+This example demonstrates how to style buttons using a custom class. This is the recommended approach if you need to add additional appearances. To customise an existing appearance, modify the selector to target the button’s `appearance` attribute instead of a class (e.g., `pc-button[appearance="primary"]`).
+
+```demo
+<pc-button class="awesome-button">Awesome Button</pc-button>
+
+<style>
+    pc-button.awesome-button::part(base) {
+        background-color: var(--pc-color-warning-fill-normal);
+        color: var(--pc-color-warning-on-normal);
+        border: var(--pc-border-width-m) var(--pc-border-style)
+            var(--pc-color-warning-border-normal);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.25rem 0 var(--pc-color-warning-border-normal);
+        transition: none;
+    }
+
+    @media (hover: hover) {
+        pc-button.awesome-button::part(base):hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-warning-fill-normal),
+                var(--pc-color-mix-hover)
+            );
+            color: color-mix(
+                in oklab,
+                var(--pc-color-warning-on-normal),
+                var(--pc-color-mix-hover)
+            );
+            border-color: color-mix(
+                in oklab,
+                var(--pc-color-warning-border-normal),
+                var(--pc-color-mix-hover)
+            );
+            box-shadow: 0 0.25rem 0 color-mix(
+                in oklab,
+                var(--pc-color-warning-border-normal),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
+    pc-button.awesome-button::part(base):active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-warning-border-normal),
+            var(--pc-color-mix-hover)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-warning-on-normal),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-color-warning-border-normal),
+            var(--pc-color-mix-hover)
+        );
+        box-shadow: none;
+        translate: 0 0.25rem;
+    }
+</style>
+```

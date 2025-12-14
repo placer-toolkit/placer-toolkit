@@ -1,15 +1,19 @@
 ---
+import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+
 import "@pagefind/default-ui/css/ui.css";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
 ---
 
 <pc-dialog class="search-dialog" id="search-dialog" no-header>
     {
         import.meta.env.MODE === "development" && (
-            <p class="dev-warning">
-                Search is only available in production builds.
-                <br />
-                Try building and previewing the site to test it out locally.
-            </p>
+            <p
+                class="dev-warning"
+                set:html={translation("ui.search.searchNotAvailableInDevBuilds")}
+            ></p>
         )
     }
     {import.meta.env.MODE === "production" && <div id="search" />}
@@ -63,9 +67,6 @@ import "@pagefind/default-ui/css/ui.css";
                 element: "#search",
                 showImages: false,
                 showSubResults: true,
-                translations: {
-                    searchingFor: "Searching for [SEARCH_TERM]…",
-                },
             });
 
             setTimeout(() => {
