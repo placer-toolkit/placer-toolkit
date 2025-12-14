@@ -1,0 +1,64 @@
+---
+title: Text
+description: Placer Toolkit includes classes to set multiple text properties at once to style body text, headings and captions.
+---
+
+Placer Toolkit includes classes to set multiple text properties at once to style body text, headings and captions.
+
+## Body
+
+Use body classes to style the main content of your pages. Each `pc-body-*` class specifies the following properties:
+
+- `font-family: var(--pc-font-sans)`
+- `font-weight: var(--pc-font-weight-normal)`
+- `line-height: var(--pc-line-height-normal)`
+
+Additionally, each class specifies a `font-size` that corresponds to a [`--pc-font-size-*`](/docs/design-tokens/typography/#font-size) token from your theme.
+
+| Class name   | `font-size` value   | Preview                                                               |
+| ------------ | ------------------- | --------------------------------------------------------------------- |
+| `pc-body-xs` | `--pc-font-size-xs` | <span class="pc-body-xs">Sphinx of black quartz, judge my vow.</span> |
+| `pc-body-s`  | `--pc-font-size-s`  | <span class="pc-body-s">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-body-m`  | `--pc-font-size-m`  | <span class="pc-body-m">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-body-l`  | `--pc-font-size-l`  | <span class="pc-body-l">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-body-xl` | `--pc-font-size-xl` | <span class="pc-body-xl">Sphinx of black quartz, judge my vow.</span> |
+
+## Headings
+
+Use heading classes to style section titles and headings in your content. Each `pc-heading-*` class specifies the following properties:
+
+- `font-family: var(--pc-font-sans)`
+- `font-weight: var(--pc-font-weight-bold)`
+- `line-height: var(--pc-line-height-denser)`
+- `text-wrap: balance`
+
+Additionally, each class specifies a `font-size` using a [`--pc-font-size-*`](/docs/design-tokens/typography/#font-size) token from your theme. The font size for each heading class is one step larger than its corresponding body text class.
+
+| Class name        | `font-size` value      | Preview                                                  |
+| ----------------- | ---------------------- | -------------------------------------------------------- |
+| `pc-heading-xs`   | `--pc-font-size-s`     | <span class="pc-heading-xs">Five Boxing Wizards</span>   |
+| `pc-heading-s`    | `--pc-font-size-m`     | <span class="pc-heading-s">Five Boxing Wizards</span>    |
+| `pc-heading-m`    | `--pc-font-size-l`     | <span class="pc-heading-m">Five Boxing Wizards</span>    |
+| `pc-heading-l`    | `--pc-font-size-xl`    | <span class="pc-heading-l">Five Boxing Wizards</span>    |
+| `pc-heading-xl`   | `--pc-font-size-xxl`   | <span class="pc-heading-xl">Five Boxing Wizards</span>   |
+| `pc-heading-xxl`  | `--pc-font-size-xxxl`  | <span class="pc-heading-xxl">Five Boxing Wizards</span>  |
+| `pc-heading-xxxl` | `--pc-font-size-xxxxl` | <span class="pc-heading-xxxl">Five Boxing Wizards</span> |
+
+## Captions
+
+Use caption classes to style descriptions or auxiliary text in your content. Each `pc-caption-*` class specifies the following properties:
+
+- `color: var(--pc-color-text-quiet)`
+- `font-family: var(--pc-font-sans)`
+- `font-weight: var(--pc-font-weight-normal)`
+- `line-height: var(--pc-line-height-denser)`
+
+Additionally, each class specifies a `font-size` using a [`--pc-font-size-*`](/docs/design-tokens/typography/#font-size) token from your theme. The font size for each caption class is one step smaller than its corresponding body text class.
+
+| Class name      | `font-size` value    | Preview                                                                  |
+| --------------- | -------------------- | ------------------------------------------------------------------------ |
+| `pc-caption-xs` | `--pc-font-size-xxs` | <span class="pc-caption-xs">Sphinx of black quartz, judge my vow.</span> |
+| `pc-caption-s`  | `--pc-font-size-xs`  | <span class="pc-caption-s">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-caption-m`  | `--pc-font-size-s`   | <span class="pc-caption-m">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-caption-l`  | `--pc-font-size-m`   | <span class="pc-caption-l">Sphinx of black quartz, judge my vow.</span>  |
+| `pc-caption-xl` | `--pc-font-size-l`   | <span class="pc-caption-xl">Sphinx of black quartz, judge my vow.</span> |

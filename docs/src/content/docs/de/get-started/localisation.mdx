@@ -1,0 +1,345 @@
+---
+title: Lokalisierung
+description: Komponenten können lokalisiert werden, indem die passende Übersetzungsdatei importiert und das gewünschte `lang`‐ und/oder `dir`‐Attribut am `<html>`‐Element gesetzt wird. Hier ist ein Beispiel, das Placer Toolkit‐Komponenten auf Französisch rendert.
+order: 5
+---
+
+Komponenten können lokalisiert werden, indem die passende Übersetzungsdatei importiert und das gewünschte [`lang`‐](https://developer.mozilla.org/de/docs/Web/HTML/Global_attributes/lang) und/oder [`dir`‐Attribut](https://developer.mozilla.org/de/docs/Web/HTML/Global_attributes/dir) am `<html>`‐Element gesetzt wird. Hier ist ein Beispiel, das Placer Toolkit‐Komponenten auf Französisch rendert.
+
+```html
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <!-- … -->
+        <script type="module" src="/pfad/zu/placer/toolkit/dist/translations/fr.js"></script>
+    </head>
+    <body>
+        <!-- … -->
+    </body>
+</html>
+```
+
+Dank eines `MutationObserver`s werden beim Ändern des `lang`‐Attributs automatisch alle lokalisierten Komponenten auf die neue Sprache umgestellt.
+
+## Verfügbare Übersetzungen
+
+Placer Toolkit wird mit einer Reihe von Übersetzungen ausgeliefert. Standardmäßig ist Englisch die Basis‐ und Fallback‐Sprache, daher ist es nicht nötig, die englische Übersetzung zu importieren.
+
+Wir listen die verfügbaren Übersetzungen nach Sprachfamilien geordnet auf.
+
+### Indoeuropäische Familie
+
+#### Germanisch
+
+- Dansk (da)
+- Deutsch (de)
+    - Deutsch (Österreich) (de-at)
+    - Deutsch (Schweiz) (de-ch)
+- English (en)
+    - English (United Kingdom) (en-gb)
+- Føroyskt (fo)
+- Íslenska (is)
+- Lëtzebuergesch (lb)
+- Nederlands (nl)
+    - Nederlands (België) (nl-be)
+- Norsk bokmål (nb)
+- Norsk nynorsk (nn)
+- Svenska (sv)
+
+#### Romanisch
+
+- Català (ca)
+- Español (es)
+    - Español (España) (es-es)
+- Français (fr)
+    - Français (Canada) (fr-ca)
+- Italiano (it)
+- Română (ro)
+- Português (pt)
+    - Português do Brasil (pt-br)
+    - Português Europeu (pt-pt)
+
+#### Slawisch
+
+- Български (bg)
+- Bosanski (bs)
+- Čeština (cs)
+- Hrvatski (hr)
+- Polski (pl)
+- Русский (ru)
+- Slovenčina (sk)
+- Slovenščina (sl)
+- Српски (sr)
+- Українська (uk)
+
+#### Indo‐aryisch/Indisch
+
+- বাংলা (bn)
+- ગુજરાતી (gu)
+- हिन्दी (hi)
+- मराठी (mr)
+- پنجابی (pa)
+    - ਪੰਜਾਬੀ (ਗੁਰਮੁਖੀ) (pa-guru)
+- اردو (ur)
+
+#### Keltisch
+
+- Cymraeg (cy)
+- Gaeilge (ga)
+
+#### Hellenisch
+
+- Ελληνικά (el)
+
+#### Albanisch
+
+- Shqip (sq)
+
+#### Baltisch
+
+- Lietuvių (lt)
+- Latviešu (lv)
+
+#### Iranisch
+
+- فارسی (fa)
+- پښتو (ps)
+
+### Ostasiatische Familie
+
+#### Sino‐tibetisch
+
+- 简体中文 (zh-cn)
+- 繁體中文（香港） (zh-hk)
+- 繁體中文（台灣） (zh-tw)
+
+#### Japanisch
+
+- 日本語 (ja)
+
+#### Koreanisch
+
+- 한국어 (ko)
+
+### Afro-asiatische Familie
+
+#### Semitisch/<wbr />Berberisch
+
+- العَرَبِيَّة (ar)
+- עברית (he)
+- Malti (mt)
+
+### Austronesische Familie
+
+#### Sunda‐Sulawesi
+
+- Filipino (fil)
+- Bahasa Indonesia (id)
+- Melayu (ms)
+- Tagalog (tl)
+
+### Uralische Familie
+
+#### Finnisch/<wbr />Ugrisch
+
+- Eesti (et)
+- Suomi (fi)
+- Magyar (hu)
+
+### Turkische Familie
+
+#### Oghuz
+
+- Türkçe (tr)
+
+### Tai‐Kadai‐Familie
+
+#### Tai
+
+- ລາວ (lo)
+- ไทย (th)
+
+### Dravidische Familie
+
+#### Süd‐Zentral
+
+- తెలుగు (te)
+
+### Austroasiatische Familie
+
+#### Vietisch
+
+- Tiếng Việt (vi)
+
+### Niger‐Kongo‐Familie
+
+#### Bantu
+
+- Kiswahili (sw)
+
+### Sprachisolat
+
+#### Baskisch
+
+- Euskara (eu)
+
+Die Position der Übersetzungen hängt davon ab, wie Placer Toolkit verwendet wird. Bei Nutzung über das CDN importiere sie vom CDN. Bei Verwendung eines Bundlers importiere sie von `placer-toolkit/dist/translations/[sprache].js`.
+
+Es ist nicht nötig, Übersetzungen vorab zu laden. Du kannst sie dynamisch importieren, auch nachdem das `lang`‐Attribut geändert wurde. Sobald eine Übersetzung registriert ist, aktualisieren sich alle lokalisierten Komponenten automatisch.
+
+```javascript
+// Gleichbedeutend mit <html lang="de">
+document.documentElement.lang = "de";
+
+// Übersetzung importieren
+import("/path/to/placer/toolkit/dist/translations/de.js");
+```
+
+### Übersetzungsauflösung
+
+Die über `<html lang="…">` gesetzte Locale ist die Standard‐Locale für das Dokument. Wird ein Ländercode angegeben, z. B. `fr-CA` für Französisch (Kanada), wird die Übersetzung folgendermaßen aufgelöst:
+
+1. Suche nach `fr-CA`
+2. Suche nach `fr`
+3. Fallback auf `en`
+
+Placer Toolkit verwendet Englisch als Fallback, um eine bessere Erfahrung zu bieten, anstatt nichts zu rendern oder einen Fehler zu werfen.
+
+### Neue Übersetzungen oder Verbesserungen einreichen
+
+Um neue Übersetzungen oder Verbesserungen zu bestehenden Übersetzungen beizutragen, reiche bitte einen Pull Request auf GitHub ein. Die Übersetzungen befinden sich in [`src/translations`](https://github.com/placer-toolkit/placer-toolkit/blob/main/src/translations) und können direkt auf GitHub bearbeitet werden, falls du das Repository nicht lokal klonen möchtest.
+
+Regionale Übersetzungen sind willkommen! Wenn beispielsweise eine deutsche Übersetzung (`de`) existiert, ist es völlig in Ordnung, eine Schweizerdeutsch‐Übersetzung (`de-CH`) einzureichen.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="puzzle-piece"
+        slot="icon"
+    ></pc-icon>
+    Placer Toolkit stellt einen Mechanismus zur Lokalisierung von Komponenteninternas bereit. Dies ist nicht dazu gedacht, deine gesamte Anwendung zu lokalisieren. Für die Lokalisierung von App‐Inhalten solltest du ein geeigneteres Tool wie [i18next](https://i18next.com) verwenden.
+</pc-callout>
+
+## Mehrere Locales auf einer Seite
+
+Du kannst für einzelne Komponenten eine andere Locale verwenden, indem du deren `lang`‐ und/oder `dir`‐Attribute setzt. Hier ein Beispiel:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- … -->
+        <script type="module" src="/pfad/zu/placer/toolkit/dist/translations/es.js"></script>
+        <script type="module" src="/pfad/zu/placer/toolkit/dist/translations/ru.js"></script>
+    </head>
+    <body>
+        <pc-button><!-- Spanisch --></pc-button>
+        <pc-button lang="ru"><!-- Russisch --></pc-button>
+    </body>
+</html>
+```
+
+Aus Performancegründen müssen die `lang`‐ und `dir`‐Attribute direkt auf der Komponente gesetzt werden, nicht auf einem übergeordneten Element. Dies gilt jedoch nicht, wenn die Attribute auf dem `<html>`‐Element stehen.
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- … -->
+        <script type="module" src="/pfad/zu/placer/toolkit/dist/translations/es.js"></script>
+        <script type="module" src="/pfad/zu/placer/toolkit/dist/translations/ru.js"></script>
+    </head>
+    <body>
+        <div lang="ru">
+            <pc-button><!-- Immer noch Spanisch --></pc-button>
+        </div>
+    </body>
+</html>
+```
+
+Diese Einschränkung besteht, weil es keinen effizienten Weg gibt, die aktuelle Locale eines Elements im DOM‐Baum zu ermitteln. Wir halten dies für eine Lücke in der Plattform, und dieses [GitHub‐Issue](https://github.com/whatwg/html/issues/7039) schlägt einige Eigenschaften vor, um dies zu ermöglichen.
+
+## Eigene Übersetzungen erstellen
+
+Du kannst eigene Übersetzungen bereitstellen, wenn du spezielle Bedürfnisse hast oder nicht auf eine Upstream‐Übersetzung warten möchtest. Die einfachste Methode besteht darin, `src/translations/en.ts` in dein Projekt zu kopieren und die Begriffe darin zu übersetzen. Nach Abschluss der Übersetzung kannst du sie importieren und wie eine eingebaute Übersetzung verwenden.
+
+Hier ein Beispiel für eine spanische Übersetzung. Das Beispiel geht von TypeScript aus, funktioniert aber auch mit normalem JavaScript.
+
+{/* cSpell:disable */}
+
+```typescript
+import { registerTranslation } from "placer-toolkit/dist/translations/index.js";
+import type { Translation } from "placer-toolkit/dist/utilities/localize.js";
+
+const translation: Translation = {
+    $code: "es",
+    $name: "Español",
+    $dir: "ltr",
+
+    carousel: "Carrusel",
+    clearEntry: "Borrar entrada",
+    close: "Cerrar",
+    copied: "¡Copiado!",
+    copy: "Copiar",
+    currentValue: "Valor actual",
+    error: "Error",
+    goToSlide: (slide, count) => `Ir a la diapositiva ${slide} de ${count}`,
+    hidePassword: "Ocultar contraseña",
+    hue: "Tono",
+    loading: "Cargando…",
+    nextSlide: "Siguiente diapositiva",
+    numOptionsSelected: (number) => {
+        if (number === 0) {
+            return "No hay opciones seleccionadas";
+        } else if (number === 1) {
+            return "Una opción seleccionada";
+        } else {
+            return `${number} opciones seleccionadas`;
+        }
+    },
+    opacity: "Opacidad",
+    pickAColorFromTheScreen: "Seleccione un color de la pantalla",
+    previousSlide: "Diapositiva anterior",
+    progress: "Progreso",
+    remove: "Eliminar",
+    resize: "Cambiar tamaño",
+    scrollableRegion: "Región desplazable",
+    scrollToEnd: "Desplácese hasta el final",
+    scrollToStart: "Desplácese al inicio",
+    showPassword: "Mostrar contraseña",
+    slideNum: (slide) => `Diapositiva ${slide}`,
+    toggleColorFormat: "Alternar formato de color",
+};
+
+registerTranslation(translation);
+
+export default translation;
+```
+
+{/* cSpell:enable */}
+
+Nach der Kompilierung der Übersetzung in JavaScript kannst du sie importieren und aktivieren:
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <!-- … -->
+        <script type="module" src="/pfad/zur/übersetzung/es.js"></script>
+    </head>
+    <body>
+        <!-- … -->
+    </body>
+</html>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="link"
+        slot="icon"
+    ></pc-icon>
+    Wenn deine Übersetzung nicht funktioniert, stelle sicher, dass du dasselbe Lokalisierungsmodul beim Import von `registerTranslation` verwendest. Bei einem anderen Modul wird die Übersetzung nicht erkannt.
+</pc-callout>

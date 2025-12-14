@@ -1,0 +1,566 @@
+---
+title: Dropdown
+description: Dropdowns display a list of options that can be triggered by keyboard navigation, submenus and various customisation options.
+---
+
+Dropdowns display a list of options that can be triggered by keyboard navigation, submenus and various customisation options.
+
+A dropdown consists of a trigger and a panel. By default, activating the trigger will expose the panel and interacting outside of the panel will close it.
+
+This component is designed to work well with [dropdown items](/docs/components/dropdown-item) to provide a list of options the user can select from. However, dropdowns can also be used in low‐level applications. The API gives you complete control over showing, hiding and positioning the panel.
+
+```demo:open
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Dropdown
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="scissors"
+            slot="icon"
+        ></pc-icon>
+        Cut
+    </pc-dropdown-item>
+    <pc-dropdown-item>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="copy"
+            slot="icon"
+        ></pc-icon>
+        Copy
+    </pc-dropdown-item>
+    <pc-dropdown-item>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="paste"
+            slot="icon"
+        ></pc-icon>
+        Paste
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item>
+        Show images
+        <pc-dropdown-item
+            slot="submenu"
+            value="show-all-images"
+        >
+            Show all images
+        </pc-dropdown-item>
+        <pc-dropdown-item
+            slot="submenu"
+            value="show-thumbnails"
+        >
+            Show thumbnails
+        </pc-dropdown-item>
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item type="checkbox" checked>
+        Emoji shortcuts
+    </pc-dropdown-item>
+    <pc-dropdown-item type="checkbox" checked>
+        Word wrap
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item appearance="danger">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="trash"
+            slot="icon"
+        ></pc-icon>
+        Delete
+    </pc-dropdown-item>
+</pc-dropdown>
+```
+
+## Demos
+
+### Getting the selected item
+
+When an item is selected, the `pc-select` event will be emitted by the dropdown. You can inspect `event.detail.item` to get a reference to the selected item. If you’ve provided a value for each [dropdown item](/docs/components/dropdown-item), it will be available in `event.detail.item.value`.
+
+```demo
+<div class="dropdown-selection">
+    <pc-dropdown>
+        <pc-button slot="trigger">
+            View
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="chevron-down"
+                slot="suffix"
+            ></pc-icon>
+        </pc-button>
+
+        <pc-dropdown-item value="full-screen">Enter full screen</pc-dropdown-item>
+        <pc-dropdown-item value="actual-size">Actual size</pc-dropdown-item>
+        <pc-dropdown-item value="zoom-in">Zoom in</pc-dropdown-item>
+        <pc-dropdown-item value="zoom-out">Zoom out</pc-dropdown-item>
+    </pc-dropdown>
+</div>
+
+<script>
+    const container = document.querySelector(".dropdown-selection");
+    const dropdown = container.querySelector("pc-dropdown");
+
+    dropdown.addEventListener("pc-select", (event) => {
+        console.log(event.detail.item.value);
+    });
+</script>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="ban"
+        slot="icon"
+    ></pc-icon>
+    To keep the dropdown open after selection, call `event.preventDefault()` in the `pc-select` event’s callback.
+</pc-callout>
+
+### Showing icons
+
+Use the `icon` slot to add icons to [dropdown items](/docs/components/dropdown-item). This works best with the [Icon](/docs/components/icon) component.
+
+```demo
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Edit
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="cut">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="scissors"
+            slot="icon"
+        ></pc-icon>
+        Cut
+    </pc-dropdown-item>
+    <pc-dropdown-item value="copy">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="copy"
+            slot="icon"
+        ></pc-icon>
+        Copy
+    </pc-dropdown-item>
+    <pc-dropdown-item value="paste">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="paste"
+            slot="icon"
+        ></pc-icon>
+        Paste
+    </pc-dropdown-item>
+    <pc-dropdown-item appearance="danger" value="delete">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="trash"
+            slot="icon"
+        ></pc-icon>
+        Delete
+    </pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Showing labels and dividers
+
+Use the `<h1>`–`<h6>` elements to add labels and the [`<pc-divider>`](/docs/components/divider) element for dividers.
+
+```demo
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Device
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <h3>Type</h3>
+    <pc-dropdown-item value="phone">Phone</pc-dropdown-item>
+    <pc-dropdown-item value="tablet">Tablet</pc-dropdown-item>
+    <pc-dropdown-item value="desktop">Desktop</pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item value="more-options">More options…</pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Showing details
+
+Use the `details` slot to display details, such as keyboard shortcuts, inside [dropdown items](/docs/components/dropdown-item).
+
+```demo
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Message
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="reply">
+        Reply
+        <span slot="details">⌘ R</span>
+    </pc-dropdown-item>
+    <pc-dropdown-item value="reply-all">
+        Reply all
+        <span slot="details">⇧ ⌘ R</span>
+    </pc-dropdown-item>
+    <pc-dropdown-item value="forward">
+        Forward
+        <span slot="details">⌘ J</span>
+    </pc-dropdown-item>
+    <pc-dropdown-item value="move">
+        Move
+        <span slot="details">⌃ ⌘ V</span>
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item value="archive">
+        Archive
+        <span slot="details">⌃ ⌘ A</span>
+    </pc-dropdown-item>
+    <pc-dropdown-item appearance="danger" value="delete">
+        Delete
+        <span slot="details">⌘ ⌫</span>
+    </pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Checkable items
+
+You can turn a [dropdown item](/docs/components/dropdown-item) into a checkable option by setting `type="checkbox"`. Add the `checked` attribute to make it checked initially. When clicked, the item’s checked state will toggle and the dropdown will close. You can cancel the `pc-select` event if you want to keep it open instead.
+
+```demo
+<pc-dropdown class="dropdown-checkboxes">
+    <pc-button slot="trigger">
+        View
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item
+        type="checkbox"
+        value="show-canvas"
+        checked
+    >
+        Show canvas
+    </pc-dropdown-item>
+    <pc-dropdown-item
+        type="checkbox"
+        value="show-grid"
+        checked
+    >
+        Show grid
+    </pc-dropdown-item>
+    <pc-dropdown-item
+        type="checkbox"
+        value="show-source"
+    >
+        Show source
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item value="preferences">Preferences…</pc-dropdown-item>
+</pc-dropdown>
+
+<script>
+    const dropdown = document.querySelector(".dropdown-checkboxes");
+
+    dropdown.addEventListener("pc-select", (event) => {
+        if (event.detail.item.type === "checkbox") {
+            console.log(
+                event.detail.item.value,
+                event.detail.item.checked ? "checked" : "unchecked"
+            );
+        } else {
+            console.log(event.detail.item.value);
+        }
+    });
+</script>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="list-check"
+        slot="icon"
+    ></pc-icon>
+    When a checkable option exists anywhere in the dropdown, all items will receive additional padding so they align properly.
+</pc-callout>
+
+### Destructive items
+
+Add `appearance="danger"` to any [dropdown item](/docs/components/dropdown-item) to highlight it’s a dangerous action.
+
+```demo
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Project
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="share">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="share"
+            slot="icon"
+        ></pc-icon>
+        Share
+    </pc-dropdown-item>
+    <pc-dropdown-item value="preferences">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="gear"
+            slot="icon"
+        ></pc-icon>
+        Preferences
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <h3>Danger zone</h3>
+    <pc-dropdown-item value="archive">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="archive"
+            slot="icon"
+        ></pc-icon>
+        Archive
+    </pc-dropdown-item>
+    <pc-dropdown-item appearance="danger" value="delete">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="trash"
+            slot="icon"
+        ></pc-icon>
+        Delete
+    </pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Placement
+
+The preferred placement of the dropdown can be set with the `placement` attribute. Note: The actual position may vary to ensure the panel remains in the viewport.
+
+```demo
+<pc-dropdown placement="right-start">
+    <pc-button slot="trigger">
+        File formats
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-right"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="pdf">PDF document (.pdf)</pc-dropdown-item>
+    <pc-dropdown-item value="docx">Word document (.docx)</pc-dropdown-item>
+    <pc-dropdown-item value="xlsx">Excel spreadsheet (.xlsx)</pc-dropdown-item>
+    <pc-dropdown-item value="pptx">PowerPoint presentation (.pptx)</pc-dropdown-item>
+    <pc-dropdown-item value="txt">Plain Text (.txt)</pc-dropdown-item>
+    <pc-dropdown-item value="json">JSON file (.json)</pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Distance
+
+The distance from the panel to the trigger can be customised using the `distance` attribute. This value is specified in pixels.
+
+```demo
+<pc-dropdown distance="30">
+    <pc-button slot="trigger">
+        Edit
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item>Cut</pc-dropdown-item>
+    <pc-dropdown-item>Copy</pc-dropdown-item>
+    <pc-dropdown-item>Paste</pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item>Find</pc-dropdown-item>
+    <pc-dropdown-item>Replace</pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Skidding
+
+The skidding of the panel along the trigger can be customised using the `skidding` attribute. This value is specified in pixels.
+
+```demo
+<pc-dropdown skidding="30">
+    <pc-button slot="trigger">
+        Edit
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item>Cut</pc-dropdown-item>
+    <pc-dropdown-item>Copy</pc-dropdown-item>
+    <pc-dropdown-item>Paste</pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item>Find</pc-dropdown-item>
+    <pc-dropdown-item>Replace</pc-dropdown-item>
+</pc-dropdown>
+```
+
+### Submenus
+
+To create submenus, nest [dropdown items](/docs/components/dropdown-item) inside of a dropdown item and assign `slot="submenu"` to each one. You can also add [dividers](/docs/components/divider) as needed.
+
+```demo
+<pc-dropdown class="dropdown-submenus">
+    <pc-button slot="trigger">
+        Export
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item>
+        Documents
+        <pc-dropdown-item slot="submenu" value="pdf">PDF document (.pdf)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="docx">Word document (.docx)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="doc">Word 97–2003 document (.doc)</pc-dropdown-item>
+    </pc-dropdown-item>
+    <pc-dropdown-item>
+        Spreadsheets
+        <pc-dropdown-item slot="submenu" value="xlsx">Excel spreadsheet (.xlsx)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="xls">Excel 97–2003 spreadsheet (.xls)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="ods">OpenDocument spreadsheet (.ods)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="numbers">Numbers spreadsheet (.numbers)</pc-dropdown-item>
+        <pc-divider slot="submenu"></pc-divider>
+        <pc-dropdown-item slot="submenu" value="csv">CSV spreadsheet (.csv)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="tsv">Tab‐separated values (.tsv)</pc-dropdown-item>
+        <pc-dropdown-item slot="submenu" value="json">JSON file (.json)</pc-dropdown-item>
+    </pc-dropdown-item>
+    <pc-divider></pc-divider>
+    <pc-dropdown-item>
+        Options
+        <pc-dropdown-item
+            slot="submenu"
+            type="checkbox"
+            value="compress-files"
+        >
+            Compress files
+        </pc-dropdown-item>
+        <pc-dropdown-item
+            slot="submenu"
+            type="checkbox"
+            value="include-metadata"
+            checked
+        >
+            Include metadata
+        </pc-dropdown-item>
+        <pc-dropdown-item
+            slot="submenu"
+            type="checkbox"
+            value="password-protect"
+        >
+            Password protect
+        </pc-dropdown-item>
+    </pc-dropdown-item>
+</pc-dropdown>
+
+<script>
+    const dropdown = document.querySelector(".dropdown-submenus");
+
+    dropdown.addEventListener("pc-select", (event) => {
+        console.log(event.detail.item.value);
+    });
+</script>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="sitemap"
+        slot="icon"
+    ></pc-icon>
+    Dropdown items that have a submenu will not dispatch the `pc-select` event. However, items inside the submenu will, unless they also have a submenu.
+</pc-callout>
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="project-diagram"
+        slot="icon"
+    ></pc-icon>
+    As a UX best practice, avoid using more than one level of submenu when possible.
+</pc-callout>
+
+### Disabling items
+
+Add the `disabled` attribute to any [dropdown item](/docs/components/dropdown-item) to disable it.
+
+```demo
+<pc-dropdown>
+    <pc-button slot="trigger">
+        Payment method
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="chevron-down"
+            slot="suffix"
+        ></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item value="cash">Cash</pc-dropdown-item>
+    <pc-dropdown-item value="personal-check" disabled>Personal check</pc-dropdown-item>
+    <pc-dropdown-item value="credit-card">Credit/debit card</pc-dropdown-item>
+    <pc-dropdown-item value="gift-card">Gift card</pc-dropdown-item>
+</pc-dropdown>
+```

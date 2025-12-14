@@ -1,0 +1,221 @@
+---
+title: Colour
+description: Placer Toolkit’s colour system is made up of CSS custom properties to help with consistent colour usage throughout your project.
+order: 2
+---
+
+Placer Toolkit’s colour system is made up of CSS custom properties to help with consistent colour usage throughout your project.
+
+Colours are organised in three main categories:
+
+- [Colour scales](#colour-scales) that give you a full spectrum of hues to work with.
+- [Foundational colours](#foundational-colours) that lay the groundwork for your theme.
+- [Semantic colours](#semantic-colours) that draw attention and convey meaning.
+
+## Colour scales
+
+Colour scales are determined by your colour palette and are made up of the lowest level colour tokens in your theme. Each token is identified by a name, like red and blue, and numerical tint based on the colour’s lightness. On this scale, 95 is close to pure white and 05 is close to pure black.
+
+You can use these tints to ensure accessible colour contrast per [WCAG 2.2 success criteria](https://w3.org/TR/WCAG22/#contrast-minimum):
+
+- A difference of 40 ensures a minimum 3∶1 contrast ratio, suitable for large text and icons (AA)
+- A difference of 50 ensures a minimum 4,5∶1 contrast ratio, suitable for normal text (AA) and large text (AAA)
+- A difference of 60 ensures a minimum 7∶1 contrast ratio, suitable for all text (AAA)
+
+The default palette defines 10 hues each with a scale of 11 tints using the format `--pc-color-{hue}-{tint}`.
+
+{[
+    "grey", "red", "orange", "yellow", "green",
+    "cyan", "blue", "indigo", "purple", "pink",
+].map((hue) => (
+    <div className="color-palette">
+        <div className="color-palette-name">
+            <span>{hue.charAt(0).toUpperCase() + hue.slice(1)}</span>
+            <br />
+            <code>{`--pc-color-${hue}-{tint}`}</code>
+        </div>
+        {[
+            "05", "10", "20", "30", "40", "50",
+            "60", "70", "80", "90", "95",
+        ].map((tint) => (
+            <div className="color-palette-swatch-container">
+                <div
+                    className="color-palette-swatch"
+                    style={{ backgroundColor: `var(--pc-color-${hue}-${tint})` }}
+                ></div>
+                <span>{tint}</span>
+            </div>
+        ))}
+    </div>
+))}
+
+### Semantic scales
+
+Any hue can be mapped to `neutral`, `primary`, `success`, `warning` and `danger` scales. Like the tokens in the colour scale, each token is identified by its semantic group and a numerical tint using the format `--pc-color-{group}-{tint}`.
+
+{[
+    "neutral", "primary", "success", "warning", "danger"
+].map((group) => (
+    <div className="color-palette">
+        <div className="color-palette-name">
+            <span>{group.charAt(0).toUpperCase() + group.slice(1)}</span>
+            <br />
+            <code>{`--pc-color-${group}-{tint}`}</code>
+        </div>
+        {[
+            "05", "10", "20", "30", "40", "50",
+            "60", "70", "80", "90", "95",
+        ].map((tint) => (
+            <div className="color-palette-swatch-container">
+                <div
+                    className="color-palette-swatch"
+                    style={{ backgroundColor: `var(--pc-color-${group}-${tint})` }}
+                ></div>
+                <span>{tint}</span>
+            </div>
+        ))}
+    </div>
+))}
+
+## Foundational colours
+
+Foundational colours lay the groundwork for the content and structure of your project. These colours are named according to their role in your theme.
+
+### Surfaces
+
+Surfaces are background layers that other content rests on. Surface colours convey visual hierarchy through a sense of elevation. For example, `--pc-color-surface-raised` appears closest to the user and is used for elements like dialogs and popup menus, while `--pc-color-surface-lowered` appears farther away and is used for passive containers such as inset sections or grouped form areas.
+
+| Custom property              | Preview                                                                                                                                  |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-color-surface-raised`  | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-raised); box-shadow: var(--pc-shadow-s)"></div>        |
+| `--pc-color-surface-default` | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-default)"></div>                                       |
+| `--pc-color-surface-lowered` | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-lowered); box-shadow: inset var(--pc-shadow-s)"></div> |
+| `--pc-color-surface-border`  | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-surface-border)"></div>  |
+
+### Text
+
+Text colours are used for standard text. We recommend a minimum 4,5∶1 contrast ratio between text and surface colours.
+
+| Custom property          | Preview                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| `--pc-color-text-normal` | <div class="color-palette-swatch" style="color: var(--pc-color-text-normal)">AaBb</div> |
+| `--pc-color-text-quiet`  | <div class="color-palette-swatch" style="color: var(--pc-color-text-quiet)">AaBb</div>  |
+| `--pc-color-text-link`   | <div class="color-palette-swatch" style="color: var(--pc-color-text-link)">AaBb</div>   |
+
+### Overlays
+
+Overlays provide a backdrop to isolate content, often allowing background context to show through.
+
+| Custom property             | Preview                                                                                           |
+| --------------------------- | ------------------------------------------------------------------------------------------------- |
+| `--pc-color-overlay-modal`  | <div class="color-palette-swatch" style="background-color: var(--pc-color-overlay-modal)"></div>  |
+| `--pc-color-overlay-inline` | <div class="color-palette-swatch" style="background-color: var(--pc-color-overlay-inline)"></div> |
+
+### Shadow
+
+Placer Toolkit uses a single colour for all shadows. This is used alongside other [shadow tokens](/docs/design-tokens/shadows) to construct your theme’s shadows.
+
+| Custom property     | Preview                                                                                   |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| `--pc-color-shadow` | <div class="color-palette-swatch" style="background-color: var(--pc-color-shadow)"></div> |
+
+### Interactions
+
+#### Focus
+
+Placer Toolkit uses a single focus colour for predictable keyboard navigation. This is used along other [focus tokens](/docs/design-tokens/focus) to construct `--pc-focus-ring`. We recommend a minimum 3∶1 contrast ratio against surface and background colours wherever possible.
+
+| Custom property    | Preview                                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-color-focus` | <div class="color-palette-swatch" style="outline: var(--pc-focus-ring-width) var(--pc-focus-ring-style) var(--pc-color-focus)"></div> |
+
+#### Hover and active states
+
+Placer Toolkit leverages `color-mix()` to achieve consistent hover and active states across components without the need for untold numbers of handpicked colours. Through `color-mix()`, these custom properties contextually generate hover and active colours based on the colour of the component.
+
+| Custom property         | Preview                                                                                                                     |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-color-mix-hover`  | <div class="color-mix-demo color-palette-swatch" style="--mix-color: var(--pc-color-mix-hover)"><small>mixed</small></div>  |
+| `--pc-color-mix-active` | <div class="color-mix-demo color-palette-swatch" style="--mix-color: var(--pc-color-mix-active)"><small>mixed</small></div> |
+
+## Semantic colours
+
+Semantic colours reinforce a specific message, intended use or expected results through familiar and meaningful hues. Each colour is identified by its semantic group, role and attention using the `--pc-color-{group}-{role}-{attention}` format. There are five groups of semantic colours:
+
+- **Primary** to emphasise your accent colour.
+- **Success** for validity or confirmation.
+- **Neutral** for ordinary or inactive content.
+- **Warning** for caution or uncertainty.
+- **Danger** for errors or risk.
+
+Each group defines colours for specific roles so that colours can be easily assembled with predictable results and readable contrast. There are three roles:
+
+- **Fill** for background colours or areas larger than a few pixels.
+- **Border** for borders, dividers and other stroke‐width elements.
+- **On** for content displayed on a fill, paired with the same attention.
+
+Finally, each colour is named according to how much attention it draws. Here, we use noise as an analogy: A loud noise draws more attention than a quiet one. There are three levels of attention:
+
+- **Quiet** draws the least attention.
+- **Normal** draws some attention.
+- **Loud** draws the most attention.
+
+{(() => {
+    const appearances = ["primary", "success", "neutral", "warning", "danger"];
+    const groups = ["fill", "border", "on"];
+    const attentions = ["quiet", "normal", "loud"];
+
+    return (
+        <pc-scroller>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Custom property</th>
+                        {appearances.map((appearance) => (
+                            <th style={{ textAlign: "center" }}>
+                                <code>{appearance}</code>
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {groups.map((group) => (
+                        attentions.map((attention) => (
+                            <tr>
+                                <td>
+                                    <code>{`--pc-color-*-${group}-${attention}`}</code>
+                                </td>
+                                {appearances.map((appearance) => (
+                                    <td>
+                                        {group === "border" ? (
+                                            <div
+                                                className="color-palette-swatch"
+                                                style={{
+                                                    justifyContent: "center",
+                                                    border: `var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-${appearance}-${group}-${attention})`,
+                                                    minWidth: "4.6875rem",
+                                                }}
+                                            ></div>
+                                        ) : (
+                                            <div
+                                                className="color-palette-swatch"
+                                                style={{
+                                                    justifyContent: "center",
+                                                    backgroundColor: `var(--pc-color-${appearance}-fill-${attention})`,
+                                                    color: `var(--pc-color-${appearance}-on-${attention})`,
+                                                    minWidth: "4.6875rem",
+                                                }}
+                                            >
+                                                {group === "on" ? "AaBb" : ""}
+                                            </div>
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </table>
+        </pc-scroller>
+    );
+})()}

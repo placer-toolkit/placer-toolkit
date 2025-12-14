@@ -14,7 +14,7 @@ export interface DefaultTranslation extends Translation {
 }
 
 export interface ExistsOptions {
-    lang: string;
+    language: string;
     includeFallback: boolean;
 }
 
@@ -24,7 +24,6 @@ const translations: Map<string, Translation> = new Map();
 let fallback: Translation;
 
 let documentDirection = "ltr";
-
 let documentLanguage = "en";
 
 const isClient =
@@ -34,6 +33,7 @@ const isClient =
 
 if (isClient) {
     const documentElementObserver = new MutationObserver(update);
+
     documentDirection = document.documentElement.dir || "ltr";
     documentLanguage = document.documentElement.lang || navigator.language;
 
@@ -70,11 +70,8 @@ export function update() {
     }
 
     [...connectedElements.keys()].map((element: HTMLElement) => {
-        if (
-            element instanceof LitElement &&
-            typeof element.requestUpdate === "function"
-        ) {
-            element.requestUpdate();
+        if (typeof (element as LitElement).requestUpdate === "function") {
+            (element as LitElement).requestUpdate();
         }
     });
 }
@@ -149,7 +146,7 @@ export class LocalizeController<
         options: Partial<ExistsOptions>,
     ): boolean {
         const { primary, secondary } = this.getTranslationData(
-            options.lang ?? this.lang(),
+            options.language ?? this.lang(),
         );
 
         options = {
