@@ -1,0 +1,67 @@
+---
+title: Shadows
+description: Shadows are used to give elements the appearance of being raised off the page. Use them with the box-shadow property. These are especially useful for menus, popovers and dialogs.
+order: 4
+---
+
+Shadows indicate elevation and, often, interactivity. Placer Toolkit offers highly modular shadow properties to easily create custom shadow effects or transform elements based on specific shadow qualities. Together with `--pc-color-shadow`, these tokens create realistic shadows for Placer Toolkit components.
+
+These are constructed using the corresponding x‐offset, y‐offset, blur and spread properties, detailed in the sections below. In Placer Toolkit, shadows use a size‐based scale, where larger shadows have greater offset and blur values to indicate greater distance from the surface below.
+
+| Custom property  |                                 Example                                 |
+| ---------------- | :---------------------------------------------------------------------: |
+| `--pc-shadow-xs` | <div class="shadow-demo" style="box-shadow: var(--pc-shadow-xs)"></div> |
+| `--pc-shadow-s`  | <div class="shadow-demo" style="box-shadow: var(--pc-shadow-s)"></div>  |
+| `--pc-shadow-m`  | <div class="shadow-demo" style="box-shadow: var(--pc-shadow-m)"></div>  |
+| `--pc-shadow-l`  | <div class="shadow-demo" style="box-shadow: var(--pc-shadow-l)"></div>  |
+| `--pc-shadow-xl` | <div class="shadow-demo" style="box-shadow: var(--pc-shadow-xl)"></div> |
+
+Any shadow may be implemented as an inner box shadow using the `inset` keyword, e.g., `box-shadow: inset var(--pc-shadow-m)`.
+
+## Horizontal offset (X‐offset)
+
+Each x‐offset property uses a `calc()` function with `--pc-shadow-offset-x-scale` to uniformly scale horizontal offset values. By default, this multiplier is 0. The table below lists the result of the calculation.
+
+| Custom property           | Default value |
+| ------------------------- | ------------- |
+| `--pc-shadow-offset-x-xs` | `0rem`        |
+| `--pc-shadow-offset-x-s`  | `0rem`        |
+| `--pc-shadow-offset-x-m`  | `0rem`        |
+| `--pc-shadow-offset-x-l`  | `0rem`        |
+| `--pc-shadow-offset-x-xl` | `0rem`        |
+
+## Vertical offset (Y‐offset)
+
+Each y‐offset property uses a `calc()` function with `--pc-shadow-offset-y-scale` to uniformly scale vertical offset values. By default, this multiplier is 1. The table below lists the result of the calculation.
+
+| Custom property           | Default value      |
+| ------------------------- | ------------------ |
+| `--pc-shadow-offset-y-xs` | `0.0625rem` (1 px) |
+| `--pc-shadow-offset-y-s`  | `0.125rem` (2 px)  |
+| `--pc-shadow-offset-y-m`  | `0.25rem` (4 px)   |
+| `--pc-shadow-offset-y-l`  | `0.5rem` (8 px)    |
+| `--pc-shadow-offset-y-xl` | `1rem` (16 px)     |
+
+## Blur
+
+Each blur property uses `calc()` function with `--pc-shadow-blur-scale` to uniformly scale blur values. By default, this multiplier is 1. The table below lists the result of the calculation.
+
+| Custom property       | Default value      |
+| --------------------- | ------------------ |
+| `--pc-shadow-blur-xs` | `0.0625rem` (1 px) |
+| `--pc-shadow-blur-s`  | `0.125rem` (2 px)  |
+| `--pc-shadow-blur-m`  | `0.25rem` (4 px)   |
+| `--pc-shadow-blur-l`  | `0.5rem` (8 px)    |
+| `--pc-shadow-blur-xl` | `0.75rem` (12 px)  |
+
+## Spread
+
+Each spread property uses `calc()` function with `--pc-shadow-spread-scale` to uniformly scale spread values. By default, this multiplier is −0,5. The table below lists the result of the calculation.
+
+| Custom property         | Default value           |
+| ----------------------- | ----------------------- |
+| `--pc-shadow-spread-xs` | `-0.03125rem` (−0,5 px) |
+| `--pc-shadow-spread-s`  | `-0.0625rem` (−1 px)    |
+| `--pc-shadow-spread-m`  | `-0.125rem` (−2 px)     |
+| `--pc-shadow-spread-l`  | `-0.25rem` (−4 px)      |
+| `--pc-shadow-spread-xl` | `-0.375rem` (−6 px)     |

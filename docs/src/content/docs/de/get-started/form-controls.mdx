@@ -1,0 +1,489 @@
+---
+title: Formularsteuerelemente
+description: Jede Placer Toolkit‐Komponente verwendet ein Shadow DOM, um Markup, Styles und Verhalten zu kapseln. Eine Einschränkung dieses Ansatzes ist, dass native `<form>`‐Elemente Formularsteuerelemente innerhalb einer Shadow‐Root nicht erkennen.
+order: 4
+---
+
+Jede Placer Toolkit‐Komponente verwendet ein [Shadow DOM](https://developer.mozilla.org/de/docs/Web/Web_Components/Using_shadow_DOM), um Markup, Styles und Verhalten zu kapseln. Eine Einschränkung dieses Ansatzes ist, dass native `<form>`‐Elemente Formularsteuerelemente innerhalb einer Shadow‐Root nicht erkennen.
+
+Placer Toolkit löst dieses Problem durch die Verwendung des [`formdata`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormElement/formdata_event)‐Events, das in [allen modernen Browsern verfügbar](https://caniuse.com/mdn-api_htmlformelement_formdata_event) ist. Das bedeutet, dass beim Absenden eines Formulars Placer‐Formularsteuerelemente automatisch ihre Werte dem `FormData`‐Objekt hinzufügen, das für das Absenden des Formulars verwendet wird. In den meisten Fällen funktioniert alles „einfach so“. Wenn du jedoch eine Bibliothek zur Formularserialisierung verwendest, muss diese möglicherweise angepasst werden, um Placer-Formularsteuerelemente zu erkennen.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="clock"
+        slot="icon"
+    ></pc-icon>
+    Placer Toolkit verwendet Event‐Listener, um die `formdata`‐ und `submit`‐Events des Formulars abzufangen. Dies ermöglicht das Einfügen von Daten und die Auslösung der Validierung nach Bedarf. Wenn du ebenfalls einen Event‐Listener an das Formular anhängst, _musst du diesen erst anhängen, nachdem die Placer‐Formularsteuerelemente mit dem DOM verbunden sind_, sonst läuft deine Logik, bevor Placer Toolkit die Möglichkeit hat, Formulardaten einzufügen und Formularsteuerelemente zu validieren.
+</pc-callout>
+
+## Datenserialisierung
+
+Serialisierung ist nur ein fachsprachlicher Begriff für das Sammeln von Formulardaten. Wenn du auf Standardformular‐Submissions (z. B. `<form action="…">`) angewiesen bist, kannst du diesen Abschnitt wahrscheinlich überspringen. Die meisten Apps verwenden jedoch die [Fetch API](https://developer.mozilla.org/de/docs/Web/API/Fetch_API) oder eine Bibliothek wie [Axios](https://github.com/axios/axios), um Formulare über JavaScript zu übermitteln.
+
+Die [`FormData`](https://developer.mozilla.org/de/docs/Web/API/FormData)‐Schnittstelle bietet eine standardisierte Möglichkeit, Formulare im Browser zu serialisieren. Du kannst ein `FormData`‐Objekt von jedem `<form>`‐Element so erstellen:
+
+```javascript
+const form = document.querySelector("form");
+const data = new FormData(form);
+
+// Alle Formularsteuerelementdaten sind in einem FormData‐Objekt verfügbar
+```
+
+Manche finden `FormData` jedoch schwierig zu verwenden oder müssen eine JSON‐Nutzlast an ihren Server senden. Placer Toolkit bietet daher ein Serialisierungs‐Utility, das Formulardaten sammelt und stattdessen ein einfaches JavaScript‐Objekt zurückgibt.
+
+```javascript
+import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
+
+const form = document.querySelector("form");
+const data = serialize(form);
+
+// Alle Formularsteuerelementdaten sind in einem JavaScript‐Objekt verfügbar
+```
+
+Dies ergibt ein Objekt mit Name‐/Wert‐Paaren, die jedem Formularsteuerelement zugeordnet sind. Teilen mehrere Steuerelemente denselben Namen, werden die Werte als Array übergeben (z. B. `{ name: ["value1", "value2"] }`).
+
+## Constraint‐Validierung
+
+Clientseitige Validierung kann über die [Constraint Validation API](https://developer.mozilla.org/de/docs/Web/Guide/HTML/HTML5/Constraint_validation) des Browsers für Placer‐Formularsteuerelemente aktiviert werden. Du kannst sie über Attribute wie `required`, `pattern`, `minlength`, `maxlength` usw. aktivieren. Placer Toolkit implementiert viele der gleichen Attribute wie native Formularsteuerelemente, prüfe jedoch die Dokumentation für eine Liste der unterstützten Eigenschaften jeder Komponente.
+
+Wenn du keine clientseitige Validierung verwenden möchtest, kannst du dieses Verhalten durch Hinzufügen von `novalidate` zum umgebenden `<form>`‐Element unterdrücken.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="lightbulb"
+        slot="icon"
+    ></pc-icon>
+    Wenn diese Syntax ungewohnt aussieht, keine Sorge! Das meiste, was du auf dieser Seite lernst, ist Plattformwissen, das auch für reguläre Formularsteuerelemente gilt.
+</pc-callout>
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="server"
+        slot="icon"
+    ></pc-icon>
+    Clientseitige Validierung kann die UX von Formularen verbessern, ersetzt jedoch keine serverseitige Validierung. **Du solltest Benutzereingaben immer auf dem Server validieren und bereinigen!**
+</pc-callout>
+
+### Pflichtfelder
+
+Um ein Feld als Pflichtfeld zu markieren, verwende das Attribut `required`. Pflichtfelder erhalten automatisch ein \* hinter ihrem Label. Dies ist über die Custom Property `--pc-input-required-content` konfigurierbar.
+
+Dieses Formular wird nicht gesendet, wenn ein Pflichtfeld unvollständig ist.
+
+```demo
+<form class="input-validation-required pc-stack">
+    <pc-input label="Name" name="name" required></pc-input>
+
+    <pc-select label="Lieblingstier" clearable required>
+        <pc-option value="birds">Vögel</pc-option>
+        <pc-option value="cats">Katzen</pc-option>
+        <pc-option value="dogs">Hunde</pc-option>
+        <pc-option value="other">Andere</pc-option>
+    </pc-select>
+
+    <pc-textarea label="Kommentar" name="comment" required></pc-textarea>
+
+    <pc-checkbox required>Kreuz mich vor dem Absenden an</pc-checkbox>
+
+    <pc-button appearance="primary" type="submit">Absenden</pc-button>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-required");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-checkbox"),
+        customElements.whenDefined("pc-input"),
+        customElements.whenDefined("pc-option"),
+        customElements.whenDefined("pc-select"),
+        customElements.whenDefined("pc-textarea"),
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("Alle Felder sind gültig!");
+        });
+    });
+</script>
+```
+
+### Eingabemuster
+
+Um einen Wert auf ein bestimmtes [Muster](https://developer.mozilla.org/de/docs/Web/HTML/Attributes/pattern) zu beschränken, verwende das Attribut `pattern`. Dieses Beispiel erlaubt nur die Buchstaben A–Z, das Formular wird also nicht gesendet, wenn eine Zahl oder ein Symbol eingegeben wird. Dies funktioniert nur mit `<pc-input>`‐Elementen.
+
+```demo
+<form class="input-validation-pattern pc-stack">
+    <pc-input
+        label="Buchstaben"
+        name="letters"
+        pattern="[A-Za-z]+"
+        required
+    ></pc-input>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Absenden</pc-button>
+        <pc-button type="reset">Zurücksetzen</pc-button>
+    </div>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-pattern");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-input"),
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("Alle Felder sind gültig!");
+        });
+    });
+</script>
+```
+
+### Eingabetypen
+
+Einige Eingabetypen lösen automatisch Einschränkungen aus, z. B. `email` und `url`.
+
+```demo
+<form class="input-validation-type pc-stack">
+    <pc-input
+        label="E-Mail"
+        type="email"
+        placeholder="test@beispiel.de"
+        required
+    ></pc-input>
+    <pc-input
+        label="URL"
+        type="url"
+        placeholder="https://beispiel.de"
+        required
+    ></pc-input>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Absenden</pc-button>
+        <pc-button type="reset">Zurücksetzen</pc-button>
+    </div>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-type");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-button"),
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("Alle Felder sind gültig!");
+        });
+    });
+</script>
+```
+
+### Benutzerdefinierte Validierungsfehler
+
+Um einen benutzerdefinierten Validierungsfehler zu erstellen, übergebe einen nicht‐leeren String an die Methode `setCustomValidity()`. Dies überschreibt vorhandene Validierungsbeschränkungen. Das Formular wird nicht gesendet, wenn eine benutzerdefinierte Validität gesetzt ist. Dann zeigt der Browser beim Absenden des Formulars einen Validierungsfehler an. Um das Feld wieder gültig zu machen, rufe `setCustomValidity()` erneut mit einem leeren String auf.
+
+```demo
+<form class="input-validation-custom pc-stack">
+    <pc-input label="Gib „placer toolkit“ ein" required></pc-input>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Absenden</pc-button>
+        <pc-button type="reset">Zurücksetzen</pc-button>
+    </div>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-custom");
+    const input = form.querySelector("pc-input");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-input"),
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("Alle Felder sind gültig!");
+        });
+
+        input.addEventListener("pc-input", () => {
+            if (input.value === "placer toolkit") {
+                input.setCustomValidity("");
+            } else {
+                input.setCustomValidity("Hey, du musst vor dem Absenden „placer toolkit“ eingeben!");
+            }
+        });
+    });
+</script>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="puzzle-piece"
+        slot="icon"
+    ></pc-icon>
+    Benutzerdefinierte Validierung kann auf jedes Formularsteuerelement angewendet werden, das die Methode `setCustomValidity()` unterstützt. Sie ist nicht auf Eingaben und Textareas beschränkt.
+</pc-callout>
+
+## Benutzerdefinierte Validierungs‐Styles
+
+Aufgrund der vielen Einsatzmöglichkeiten von Formularsteuerelementen liefert Placer Toolkit keine standardmäßigen Validierungs‐Styles. Stattdessen werden die folgenden Attribute angewendet, um die Gültigkeit eines Steuerelements während der Interaktion anzuzeigen. Du kannst diese Attribute nutzen, um eigene Styles für beliebige Validierungszustände zu erstellen.
+
+- `data-required`: Das Formularsteuerelement ist erforderlich.
+- `data-optional`: Das Formularsteuerelement ist optional.
+- `data-invalid`: Das Formularsteuerelement ist aktuell ungültig.
+- `data-valid`: Das Formularsteuerelement ist aktuell gültig.
+- `data-user-invalid`: Das Formularsteuerelement ist ungültig und der/die Nutzer:in hat damit interagiert.
+- `data-user-valid`: Das Formularsteuerelement ist gültig und der/die Nutzer:in hat damit interagiert.
+
+Die Attribute entsprechen den Pseudo‐Klassen des Browsers für Validierung: [`:required`](https://developer.mozilla.org/de/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/de/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/de/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-invalid) und [`:user-valid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-valid).
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="road"
+        slot="icon"
+    ></pc-icon>
+    In Zukunft werden Datenattribute durch benutzerdefinierte Pseudo‐Klassen wie `:--valid` und `:--invalid` ersetzt. Placer Toolkit verwendet derzeit Datenattribute als Workaround, bis mehr Browser benutzerdefinierte Zustände über [`ElementInternals.states`](https://developer.mozilla.org/de/docs/Web/API/ElementInternals/states) unterstützen.
+</pc-callout>
+
+### Ungültige Formularsteuerelemente stylen
+
+Du kannst die Gültigkeit über die erwähnten Datenattribute ansprechen, es ist jedoch üblicher, `data-user-invalid` und `data-user-valid` zu verwenden, da diese erst nach Benutzerinteraktion angewendet werden. So erscheinen leere Felder nicht sofort als ungültig, was die UX verbessert.
+
+Dieses Beispiel zeigt benutzerdefinierte Validierungs‐Styles mit `data-user-invalid` und `data-user-valid`. Gib Werte ein, um die Gültigkeit mit Benutzerinteraktion zu sehen.
+
+```demo
+<form class="input-validation-custom-styles pc-stack">
+    <pc-input
+        label="Name"
+        name="name"
+        hint="Wie möchtest du genannt werden?"
+        autocomplete="off"
+        clearable
+        required
+    ></pc-input>
+    <pc-select
+        name="animal"
+        label="Lieblingstier"
+        hint="Was ist dein Lieblingstier?"
+        clearable
+        required
+    >
+        <pc-option value="birds">Vögel</pc-option>
+        <pc-option value="cats">Katzen</pc-option>
+        <pc-option value="dogs">Hunde</pc-option>
+        <pc-option value="other">Andere</pc-option>
+    </pc-select>
+    <pc-checkbox value="accept" required>
+        Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie
+    </pc-checkbox>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Absenden</pc-button>
+        <pc-button type="reset">Zurücksetzen</pc-button>
+    </div>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-custom-styles");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-checkbox"),
+        customElements.whenDefined("pc-input"),
+        customElements.whenDefined("pc-option"),
+        customElements.whenDefined("pc-select")
+    ]).then(() => {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            alert("Alle Felder sind gültig!");
+        });
+    });
+</script>
+
+<style>
+    /* Benutzerungültige Styles */
+    .input-validation-custom-styles pc-input[data-user-invalid]::part(input),
+    .input-validation-custom-styles pc-select[data-user-invalid]::part(combobox),
+    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+        border-color: var(--pc-color-danger-border-loud);
+    }
+
+    .input-validation-custom-styles [data-user-invalid]:not(pc-button)::part(label),
+    .input-validation-custom-styles [data-user-invalid]::part(hint),
+    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(label) {
+        color: var(--pc-color-danger-on-quiet);
+    }
+
+    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+        outline: none;
+    }
+
+    .input-validation-custom-styles pc-input:focus-within[data-user-invalid]::part(input),
+    .input-validation-custom-styles pc-select:focus-within[data-user-invalid]::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within[data-user-invalid]::part(control) {
+        border-color: var(--pc-color-danger-border-loud);
+        outline-color: var(--pc-color-danger-border-loud);
+    }
+
+    /* Benutzergültige Styles */
+    .input-validation-custom-styles pc-input[data-user-valid]::part(input),
+    .input-validation-custom-styles pc-select[data-user-valid]::part(combobox),
+    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+        border-color: var(--pc-color-success-border-loud);
+    }
+
+    .input-validation-custom-styles [data-user-valid]:not(pc-button)::part(label),
+    .input-validation-custom-styles [data-user-valid]::part(hint),
+    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(label) {
+        color: var(--pc-color-success-on-quiet);
+    }
+
+    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+        background-color: var(--pc-color-success-border-loud);
+        outline: none;
+    }
+
+    .input-validation-custom-styles pc-input:focus-within[data-user-valid]::part(input),
+    .input-validation-custom-styles pc-select:focus-within[data-user-valid]::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within[data-user-valid]::part(control) {
+        border-color: var(--pc-color-success-border-loud);
+        outline-color: var(--pc-color-success-border-loud);
+    }
+</style>
+```
+
+## Inline‐Formularvalidierung
+
+Standardmäßig verwenden Placer‐Formularsteuerelemente die browserbasierten Tooltip‐Fehlermeldungen. Es gibt keinen Mechanismus, der Fehlermeldungen direkt im Formular anzeigt und gleichzeitig mit nativen Formularsteuerelementen sowie anderen Custom Elements funktioniert. Du kannst jedoch deine eigene Lösung implementieren.
+
+Um die Fehlermeldungen des Browsers zu deaktivieren, musst du das `pc-invalid`‐Event abbrechen. Dann kannst du eigene Inline‐Validierungsfehler anwenden. Dieses Beispiel zeigt eine primitive Umsetzung.
+
+```demo
+<form class="input-validation-inline">
+    <pc-input
+        label="Name"
+        name="name"
+        hint="Wie möchtest du genannt werden?"
+        autocomplete="off"
+        clearable
+        required
+    ></pc-input>
+
+    <div id="name-error" aria-live="polite" hidden></div>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Absenden</pc-button>
+        <pc-button type="reset">Zurücksetzen</pc-button>
+    </div>
+</form>
+
+<script type="module">
+    const form = document.querySelector(".input-validation-inline");
+    const nameError = document.querySelector("#name-error");
+
+    // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
+    await Promise.all([
+        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-input"),
+    ]).then(() => {
+        form.addEventListener(
+            "pc-invalid",
+            (event) => {
+                event.preventDefault();
+
+                nameError.innerHTML = `
+                    <pc-icon
+                        library="default"
+                        icon-style="solid"
+                        name="circle-exclamation"
+                        style="
+                            translate: 0 0.125rem;
+                            margin-inline-end: 0.125rem;
+                        "
+                    ></pc-icon>
+                    ${event.target.validationMessage}
+                `;
+
+                nameError.hidden = false;
+                event.target.focus();
+            },
+            { capture: true },
+        );
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            nameError.hidden = true;
+            nameError.innerHTML = "";
+            setTimeout(() => alert("Alle Felder sind gültig!"), 50);
+        });
+
+        form.addEventListener("reset", (event) => {
+            nameError.hidden = true;
+            nameError.innerHTML = "";
+        });
+    });
+</script>
+
+<style>
+    .input-validation-inline #name-error {
+        color: var(--pc-color-danger-on-quiet);
+        font-size: var(--pc-font-size-smaller);
+    }
+
+    .input-validation-inline .buttons {
+        margin-block-start: var(--pc-spacing-l);
+    }
+</style>
+```
+
+<pc-callout appearance="warning">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="hammer"
+        slot="icon"
+    ></pc-icon>
+    Dieses Beispiel soll das Konzept der Inline‐Fehlermeldungen demonstrieren. Es ist nicht für komplexere Formulare gedacht. Nutzer:innen, die diese Funktion benötigen, sollten eine geeignete Validierungslösung basierend auf den gezeigten Techniken implementieren. Abhängig von der Umsetzung können benutzerdefinierte Fehlermeldungen die Barrierefreiheit der Formularsteuerelemente beeinflussen.
+</pc-callout>
+
+## Zugehörige Formularsteuerelemente abrufen
+
+Derzeit gibt [`HTMLFormElement.elements`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormElement/elements) Placer‐Formularsteuerelemente nicht zurück, da der Browser deren Status als Custom Element‐Formularsteuerelemente nicht kennt. Placer Toolkit bietet jedoch eine `elements()`‐Funktion, die Ähnliches leistet. Statt eines [`HTMLFormControlsCollection`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormControlsCollection) wird ein Array von HTML‐ und Placer‐Formularsteuerelementen in der Reihenfolge zurückgegeben, in der sie im DOM erscheinen.
+
+```javascript
+import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
+
+const form = document.querySelector("#my-form");
+const formControls = getFormControls(form);
+
+// Beispielausgabe: [input, pc-input, …]
+console.log(formControls);
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="route"
+        slot="icon"
+    ></pc-icon>
+    Wahrscheinlich benötigst du diese Funktion nicht! Wenn du Formulardaten für die Übermittlung sammelst, solltest du eher zu [Datenserialisierung](#datenserialisierung) zurückgehen.
+</pc-callout>

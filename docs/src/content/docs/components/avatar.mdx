@@ -1,0 +1,121 @@
+---
+title: Avatar
+description: Avatars are used to represent a person or object.
+---
+
+Avatars are used to represent a person or object.
+
+By default, a generic icon will be shown. You can personalise avatars by adding custom icons, initials and images. You should always provide a `label` for assistive devices.
+
+```demo
+<pc-avatar label="User avatar"></pc-avatar>
+```
+
+## Demos
+
+### Images
+
+To use an image for the avatar, set the `image` and `label` attributes. This will take priority and be shown over initials and icons. Avatar images can be lazy‐loaded by setting the `loading` attribute to `lazy`.
+
+```demo
+<pc-avatar image="/favicon.svg" label="Placer Toolkit’s avatar"></pc-avatar>
+```
+
+### Initials
+
+When you don’t have an image to use, you can set the `initials` attribute to show something more personalised than an icon.
+
+```demo
+<pc-avatar initials="PC" label="Avatar with initials: PC"></pc-avatar>
+```
+
+### Custom icons
+
+When no image or initials are set, an icon will be shown. The default avatar shows the Font Awesome [`user`](https://fontawesome.com/icons/user?f=classic&s=solid) icon, but you can customise this with the `icon` slot.
+
+```demo
+<pc-avatar label="Avatar with an image icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="image"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+
+<pc-avatar label="Avatar with an ZIP file icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="file-zipper"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+
+<pc-avatar label="Avatar with a suitcase icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="suitcase"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+```
+
+### Shapes
+
+Avatar shapes can be changed with the `shape` attribute.
+
+```demo
+<pc-avatar shape="square" label="Square avatar"></pc-avatar>
+<pc-avatar shape="rounded" label="Rounded avatar"></pc-avatar>
+<pc-avatar shape="circle" label="Circular avatar"></pc-avatar>
+```
+
+### Avatar groups
+
+You can group avatars into an avatar group with a few lines of CSS.
+
+```demo
+<div class="avatar-group">
+    <pc-avatar
+        image="https://placer-toolkit.netlify.app/brand/logo-in-circle.svg"
+        label="Placer Toolkit’s avatar (original, 1 of 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="https://placer-toolkit.netlify.app/brand/logo-in-circle.svg"
+        label="Placer Toolkit’s avatar (greyscale filter added, 2 of 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="https://placer-toolkit.netlify.app/brand/logo-in-circle.svg"
+        label="Placer Toolkit’s avatar (hue rotated by 180º, 3 of 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="https://placer-toolkit.netlify.app/brand/logo-in-circle.svg"
+        label="Placer Toolkit’s avatar (sepia filter added, 4 of 4)"
+    ></pc-avatar>
+</div>
+
+<style>
+    .avatar-group pc-avatar:not(:first-of-type) {
+        margin-inline-start: -1em;
+    }
+
+    .avatar-group pc-avatar:nth-child(2) {
+        filter: grayscale(100%);
+    }
+
+    .avatar-group pc-avatar:nth-child(3) {
+        filter: hue-rotate(180deg);
+    }
+
+    .avatar-group pc-avatar:last-child {
+        filter: sepia(100%);
+    }
+
+    .avatar-group pc-avatar::part(base) {
+        border: var(--pc-border-width-m) var(--pc-border-style)
+            var(--pc-color-surface-default);
+    }
+</style>
+```
