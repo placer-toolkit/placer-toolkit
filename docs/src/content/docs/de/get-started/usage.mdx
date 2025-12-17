@@ -142,7 +142,7 @@ Eine Möglichkeit ist die Verwendung unseres FOUCE‐Utilities, um FOUCE zu verh
 
 Du musst außerdem die Klasse `pc-cloak` zum `<html>`‐Element hinzufügen, damit das FOUCE‐Utility angewendet wird.
 
-Eine weitere Möglichkeit besteht darin, die [`:defined`](https://developer.mozilla.org/en-US/docs/Web/CSS/:defined) CSS‐Pseudoklasse zu verwenden, um Custom Elements, die noch nicht registriert sind, „zu verbergen“. Du kannst dies auf bestimmte Tags anwenden oder alle nicht definierten Custom Elements wie unten gezeigt ausblenden.
+Eine weitere Möglichkeit besteht darin, die [`:defined`](https://developer.mozilla.org/de/docs/Web/CSS/:defined) CSS‐Pseudo‐Klasse zu verwenden, um Custom Elements, die noch nicht registriert sind, „zu verbergen“. Du kannst dies auf bestimmte Tags anwenden oder alle nicht definierten Custom Elements wie unten gezeigt ausblenden.
 
 ```css
 :not(:defined) {
@@ -152,7 +152,7 @@ Eine weitere Möglichkeit besteht darin, die [`:defined`](https://developer.mozi
 
 Sobald ein Custom Element registriert ist, wird es sofort mit allen seinen Styles angezeigt, wodurch FOUCE effektiv eliminiert wird. Beachte, dass `visibility: hidden` anstelle von `display: none` verwendet wird, um Verschiebungen beim Registrieren der Elemente zu reduzieren. Der Nachteil dieser Methode ist, dass Custom Elements möglicherweise einzeln statt alle gleichzeitig erscheinen. Deshalb empfehlen wir die Verwendung des FOUCE‐Utilities.
 
-Es gibt noch eine weitere Möglichkeit. Du kannst [`customElements.whenDefined()`](https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/whenDefined) verwenden, das ein Promise zurückgibt, das aufgelöst wird, wenn das angegebene Element registriert wird. Du wirst es wahrscheinlich mit [`Promise.allSettled()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) kombinieren wollen, falls ein Element aus irgendeinem Grund nicht geladen wird.
+Es gibt noch eine weitere Möglichkeit. Du kannst [`customElements.whenDefined()`](https://developer.mozilla.org/de/docs/Web/API/CustomElementRegistry/whenDefined) verwenden, das ein Promise zurückgibt, das aufgelöst wird, wenn das angegebene Element registriert wird. Du wirst es wahrscheinlich mit [`Promise.allSettled()`](https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) kombinieren wollen, falls ein Element aus irgendeinem Grund nicht geladen wird.
 
 Eine clevere Möglichkeit, diese Methode zu verwenden, besteht darin, den `<body>` mit `opacity: 0` auszublenden und eine Klasse hinzuzufügen, die ihn einblendet, sobald alle Custom Elements definiert sind.
 
