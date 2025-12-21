@@ -35,7 +35,7 @@ html {
 }
 
 /* Language‐specific word break optimisations */
-[lang~="de"] {
+[lang~="de"]:not(:has([lang~="en"])) {
     hyphens: auto;
     overflow-wrap: break-word;
 }
