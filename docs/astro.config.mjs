@@ -62,9 +62,9 @@ export default defineConfig({
         "/docs/design-tokens/z-index": "/docs/design-tokens",
         "/docs/design-tokens/other-tokens":
             "/docs/design-tokens/component-groups",
+        "/docs/legal/privacy/appendix-a": "/docs/legal/privacy",
 
-        "/de/(?!docs|404)(:path*)": "/de/docs/:path",
-
-        "/(?!docs|de)(:path*)": "/docs/:path",
+        "/de/:path((?!docs|404).*)": "/de/docs/:path",
+        "/:path((?!docs|de|public|favicon).*)": "/docs/:path",
     },
 });
