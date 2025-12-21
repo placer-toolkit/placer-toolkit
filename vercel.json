@@ -22,12 +22,28 @@
         },
 
         {
-            "source": "/de/(?!docs|404)(:path*)",
-            "destination": "/de/docs/:path",
-            "permanent": true
+            "source": "/de/docs/:path*",
+            "destination": "/de/docs/:path*",
+            "permanent": false
         },
         {
-            "source": "/(?!docs|de)(:path*)",
+            "source": "/de/404/:path*",
+            "destination": "/de/404/:path*",
+            "permanent": false
+        },
+        {
+            "source": "/de/:path*",
+            "destination": "/de/docs/:path*",
+            "permanent": true
+        },
+
+        {
+            "source": "/docs/:path*",
+            "destination": "/docs/:path*",
+            "permanent": false
+        },
+        {
+            "source": "/:path((?!favicon|cdn|public).*)",
             "destination": "/docs/:path",
             "permanent": true
         }
@@ -37,14 +53,6 @@
             "source": "/de/:path*",
             "destination": "/de/404",
             "missing": [{ "type": "header", "key": "x-matched-path" }]
-        }
-    ],
-    "headers": [
-        {
-            "source": "/(.*).txt",
-            "headers": [
-                { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
-            ]
         }
     ]
 }
