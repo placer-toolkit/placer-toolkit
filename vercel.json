@@ -1,4 +1,37 @@
 {
+    "redirects": [
+        {
+            "source": "/components/visually-hidden",
+            "destination": "/style-utilities/visually-hidden",
+            "permanent": true
+        },
+        {
+            "source": "/docs/design-tokens/border-radius",
+            "destination": "/docs/design-tokens/borders/#border-radius",
+            "permanent": true
+        },
+        {
+            "source": "/docs/design-tokens/z-index",
+            "destination": "/docs/design-tokens",
+            "permanent": true
+        },
+        {
+            "source": "/docs/design-tokens/other-tokens",
+            "destination": "/docs/design-tokens/component-groups",
+            "permanent": true
+        },
+
+        {
+            "source": "/de/(?!docs|404)(:path*)",
+            "destination": "/de/docs/:path",
+            "permanent": true
+        },
+        {
+            "source": "/(?!docs|de)(:path*)",
+            "destination": "/docs/:path",
+            "permanent": true
+        }
+    ],
     "rewrites": [
         {
             "source": "/de/:path*",
