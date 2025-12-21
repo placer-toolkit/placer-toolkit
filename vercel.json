@@ -27,16 +27,9 @@
             "permanent": true
         },
         {
-            "source": "/:path((?!docs|de|404|cdn|dist|assets|favicon|.*\\..*).*)",
+            "source": "/:path((?!docs|de|showcase|404|cdn|dist|assets|favicon|.*\\..*).+)",
             "destination": "/docs/:path",
             "permanent": true
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/de/:path*",
-            "destination": "/de/404",
-            "missing": [{ "type": "header", "key": "x-matched-path" }]
         }
     ]
 }
