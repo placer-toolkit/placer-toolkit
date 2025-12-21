@@ -49,6 +49,17 @@
         { "source": "/de/404/:splat*", "destination": "/de/404/:splat" },
         { "source": "/de/:splat*", "destination": "/de/404" }
     ],
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build"
+        }
+    ],
+    "github": {
+        "silent": false,
+        "enabled": true,
+        "autoJobCancel": true
+    },
     "headers": [
         {
             "source": "/(.*).txt",
@@ -56,5 +67,6 @@
                 { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
             ]
         }
-    ]
+    ],
+    "ignoreCommand": "git diff --quiet origin/main...HEAD"
 }
