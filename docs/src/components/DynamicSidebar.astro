@@ -40,33 +40,41 @@ const translation = useTranslations(language);
 const translatePath = useTranslatedPath(language);
 
 const categoriesConfiguration: SidebarCategoryConfiguration[] = [
-    { id: "get-started", title: translation("sidebar.section.getStarted"), sortType: "manual" },
+    {
+        id: "get-started",
+        title: translation("sidebar.section.getStarted") as string,
+        sortType: "manual",
+    },
     {
         id: "design-tokens",
-        title: translation("sidebar.section.designTokens"),
+        title: translation("sidebar.section.designTokens") as string,
         sortType: "manual",
         href: translatePath("/docs/design-tokens"),
     },
     {
         id: "components",
-        title: translation("sidebar.section.components"),
+        title: translation("sidebar.section.components") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/components"),
         icon: "flask",
     },
     {
         id: "layout",
-        title: translation("sidebar.section.layout"),
+        title: translation("sidebar.section.layout") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/layout"),
     },
     {
         id: "style-utilities",
-        title: translation("sidebar.section.styleUtilities"),
+        title: translation("sidebar.section.styleUtilities") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/style-utilities"),
     },
-    { id: "resources", title: translation("sidebar.section.resources"), sortType: "manual" },
+    {
+        id: "resources",
+        title: translation("sidebar.section.resources") as string,
+        sortType: "manual",
+    },
 ];
 
 const defaultLanguage = "en";
@@ -346,6 +354,9 @@ const { isMobile = false } = Astro.props;
             <a href={translatePath("/docs/legal/privacy")}>
                 {translation("nav.content.legal.privacy")}
             </a>
+            <a href={translatePath("/docs/legal/accessibility")}>
+                {translation("nav.content.legal.accessibility")}
+            </a>
             <a href={translatePath("/docs/legal/code-of-conduct")}>
                 {translation("nav.content.legal.codeOfConduct")}
             </a>
@@ -382,7 +393,9 @@ const { isMobile = false } = Astro.props;
 
     function initializeSidebarInstance(container: Element) {
         const isMobile = container.classList.contains("mobile-sidebar");
-        const drawer: PcDrawer | null = isMobile ? (container as PcDrawer) : null;
+        const drawer: PcDrawer | null = isMobile
+            ? (container as PcDrawer)
+            : null;
 
         const currentPath = window.location.pathname.replace(/\/$/, "");
         const links = container.querySelectorAll("nav a");
@@ -469,9 +482,9 @@ const { isMobile = false } = Astro.props;
                 const id = element.getAttribute("data-id");
 
                 if (id) {
-                    const isActive = container.querySelector(
-                        `a[aria-current="page"]`,
-                    )?.closest(`pc-details[data-id="${id}"]`);
+                    const isActive = container
+                        .querySelector(`a[aria-current="page"]`)
+                        ?.closest(`pc-details[data-id="${id}"]`);
 
                     if (openIds.includes(id) || isActive) {
                         element.show();
@@ -511,12 +524,15 @@ const { isMobile = false } = Astro.props;
         }, 100);
     }
 
-
     document.addEventListener("DOMContentLoaded", () => {
-        const allMobileContainers = document.querySelectorAll(".mobile-sidebar");
+        const allMobileContainers =
+            document.querySelectorAll(".mobile-sidebar");
         const allDesktopContainers = document.querySelectorAll(".sidebar");
 
-        const allContainers = [...Array.from(allMobileContainers), ...Array.from(allDesktopContainers)];
+        const allContainers = [
+            ...Array.from(allMobileContainers),
+            ...Array.from(allDesktopContainers),
+        ];
 
         if (allContainers.length === 0) {
             return;
@@ -527,7 +543,10 @@ const { isMobile = false } = Astro.props;
         allContainers.forEach((container) => {
             initializeSidebarInstance(container);
 
-            if (container.classList.contains("mobile-sidebar") && !firstMobileDrawer) {
+            if (
+                container.classList.contains("mobile-sidebar") &&
+                !firstMobileDrawer
+            ) {
                 firstMobileDrawer = container as PcDrawer;
             }
         });
@@ -602,7 +621,7 @@ const { isMobile = false } = Astro.props;
     }
 
     pc-details > ul {
-        margin-block-start: calc(-1 * var(--pc-spacing-l));
+        margin-block-start: calc(-1 * var(--pc-spacing-m));
     }
 
     pc-details ul li {

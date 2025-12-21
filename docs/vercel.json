@@ -1,0 +1,60 @@
+{
+    "redirects": [
+        {
+            "source": "/docs/design-tokens/border-radius",
+            "destination": "/docs/design-tokens/borders/#border-radius",
+            "permanent": true
+        },
+        {
+            "source": "/docs/design-tokens/z-index",
+            "destination": "/docs/design-tokens",
+            "permanent": true
+        },
+        {
+            "source": "/docs/design-tokens/other-tokens",
+            "destination": "/docs/design-tokens/component-groups",
+            "permanent": true
+        },
+        {
+            "source": "/docs/components/visually-hidden",
+            "destination": "/docs/style-utilities/visually-hidden",
+            "permanent": true
+        },
+        {
+            "source": "/docs/legal/privacy/#thirdparty-content-delivery-networks",
+            "destination": "/docs/legal/privacy/#external-services-used-by-the-website",
+            "permanent": true
+        },
+        {
+            "source": "/docs/legal/privacy/appendix-a",
+            "destination": "/docs/legal/privacy",
+            "permanent": true
+        },
+
+        {
+            "source": "/de/:splat*",
+            "destination": "/de/docs/:splat",
+            "permanent": true
+        },
+        {
+            "source": "/:splat*",
+            "destination": "/docs/:splat",
+            "permanent": true
+        }
+    ],
+    "rewrites": [
+        { "source": "/de/docs/:splat*", "destination": "/de/docs/:splat" },
+        { "source": "/docs/:splat*", "destination": "/docs/:splat" },
+
+        { "source": "/de/404/:splat*", "destination": "/de/404/:splat" },
+        { "source": "/de/:splat*", "destination": "/de/404" }
+    ],
+    "headers": [
+        {
+            "source": "/(.*).txt",
+            "headers": [
+                { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+            ]
+        }
+    ]
+}

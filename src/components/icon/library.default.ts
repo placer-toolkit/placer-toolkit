@@ -18,7 +18,7 @@ function getIconURL(name: string, iconStyle: string, autoWidth: boolean) {
         • Ensuring compliance with GDPR and other privacy laws
         • Having a valid legal basis for this data processing
 
-       See the Placer Toolkit privacy policy under https://placer-toolkit.netlify.app/legal/privacy for more information. */
+       See the Placer Toolkit privacy policy under https://placer-toolkit.vercel.app/legal/privacy for more information. */
     return isPro
         ? `https://ka-p.fontawesome.com/releases/v${faVersion}/${basePath}/${iconStyle}/${name}.svg?token=${encodeURIComponent(kitCode)}`
         : `https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@${faVersion}/${basePath}/${iconStyle}/${name}.svg`;
