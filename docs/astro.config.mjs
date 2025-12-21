@@ -8,7 +8,7 @@ import remarkCodeBlockToComponent from "./src/plugins/code-blocks.js";
 
 // Configuration reference: https://docs.astro.build/en/reference/configuration-reference
 export default defineConfig({
-    site: "https://placer-toolkit.netlify.app",
+    site: "https://placer-toolkit.vercel.app",
     integrations: [
         mdx({
             rehypePlugins: [
