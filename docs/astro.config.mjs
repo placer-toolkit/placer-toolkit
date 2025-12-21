@@ -54,4 +54,17 @@ export default defineConfig({
             remarkCodeBlockToComponent,
         ],
     },
+    redirects: {
+        "/docs/components/visually-hidden":
+            "/docs/style-utilities/visually-hidden",
+        "/docs/design-tokens/border-radius":
+            "/docs/design-tokens/borders/#border-radius",
+        "/docs/design-tokens/z-index": "/docs/design-tokens",
+        "/docs/design-tokens/other-tokens":
+            "/docs/design-tokens/component-groups",
+
+        "/de/(?!docs|404)(:path*)": "/de/docs/:path",
+
+        "/(?!docs|de)(:path*)": "/docs/:path",
+    },
 });

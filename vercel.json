@@ -1,0 +1,17 @@
+{
+    "rewrites": [
+        {
+            "source": "/de/:path*",
+            "destination": "/de/404",
+            "missing": [{ "type": "header", "key": "x-matched-path" }]
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*).txt",
+            "headers": [
+                { "key": "Content-Type", "value": "text/plain; charset=utf-8" }
+            ]
+        }
+    ]
+}
