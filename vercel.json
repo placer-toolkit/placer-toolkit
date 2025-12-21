@@ -20,20 +20,16 @@
             "destination": "/docs/design-tokens/component-groups",
             "permanent": true
         },
+
         {
-            "source": "/de/:path*",
-            "destination": "/de/docs/:path*",
-            "permanent": true,
-            "missing": [{ "type": "header", "key": "x-matched-path" }]
+            "source": "/de/:path((?!docs|404|cdn|dist|assets|favicon).*)",
+            "destination": "/de/docs/:path",
+            "permanent": true
         },
         {
-            "source": "/:path*",
-            "destination": "/docs/:path*",
-            "permanent": true,
-            "missing": [
-                { "type": "header", "key": "x-matched-path" },
-                { "type": "query", "key": "ignore-redirect" }
-            ]
+            "source": "/:path((?!docs|de|404|cdn|dist|assets|favicon|.*\\..*).*)",
+            "destination": "/docs/:path",
+            "permanent": true
         }
     ],
     "rewrites": [
