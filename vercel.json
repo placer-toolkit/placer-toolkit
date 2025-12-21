@@ -20,32 +20,20 @@
             "destination": "/docs/design-tokens/component-groups",
             "permanent": true
         },
-
-        {
-            "source": "/de/docs/:path*",
-            "destination": "/de/docs/:path*",
-            "permanent": false
-        },
-        {
-            "source": "/de/404/:path*",
-            "destination": "/de/404/:path*",
-            "permanent": false
-        },
         {
             "source": "/de/:path*",
             "destination": "/de/docs/:path*",
-            "permanent": true
+            "permanent": true,
+            "missing": [{ "type": "header", "key": "x-matched-path" }]
         },
-
         {
-            "source": "/docs/:path*",
+            "source": "/:path*",
             "destination": "/docs/:path*",
-            "permanent": false
-        },
-        {
-            "source": "/:path((?!favicon|cdn|public).*)",
-            "destination": "/docs/:path",
-            "permanent": true
+            "permanent": true,
+            "missing": [
+                { "type": "header", "key": "x-matched-path" },
+                { "type": "query", "key": "ignore-redirect" }
+            ]
         }
     ],
     "rewrites": [
