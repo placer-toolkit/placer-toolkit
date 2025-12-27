@@ -3,6 +3,7 @@ import Page from "../../layouts/Page.astro";
 
 import CodeComparison from "../../components/CodeComparison.astro";
 import FeatureTiles from "../../components/FeatureTiles.astro";
+import FeatureTile from "../../components/FeatureTile.astro";
 import LandingCTA from "../../components/LandingCTA.astro";
 import Showcase from "../../components/Showcase.astro";
 import SpecialThanksGrid from "../../components/SpecialThanksGrid.astro";
@@ -14,7 +15,7 @@ import "../../styles/landing-override.css";
 <!-- Space Grotesk — Bunny Fonts -->
 <link
     rel="stylesheet"
-    href="https://fonts.bunny.net/css?family=space-grotesk:700"
+    href="https://fonts.bunny.net/css?family=space-grotesk:700&display=swap"
 />
 
 <Page title="Placer Toolkit" noSidebar showFooter hero>
@@ -25,20 +26,71 @@ import "../../styles/landing-override.css";
 
         <p>
             <strong>Placer Toolkit</strong> ist eine Open‐Source‐Bibliothek für Webkomponenten,
-            mit der du Websites mit jedem Framework – oder ganz ohne – erstellen
-            kannst.
+            mit der du Websites mit jedem Framework – oder ganz ohne – erstellen kannst.
         </p>
 
-        <FeatureTiles />
+        <FeatureTiles>
+            <FeatureTile
+                label="Vollständig nativ"
+                icon="puzzle-piece"
+                href="/de/docs/get-started/usage"
+            >
+                Placer Toolkit basiert auf Webstandards und funktioniert in
+                jedem Framework – oder ganz ohne.
+                <em>Keine Bindung, keine Kompromisse.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Barrierefrei"
+                icon="universal-access"
+                href="/de/docs/legal/accessibility"
+            >
+                Barrierefreiheit ist bei uns Standard – in allen Komponenten eingebaut.
+                <em>Für jeden funktioniert’s, überall.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Datenschutz ohne Stress"
+                icon="shield-halved"
+                href="/de/docs/legal/gdpr"
+            >
+                Keine Tracker, keine Cookies, keine Sorgen. Lokal gehostet und
+                100 % DSGVO‐konform.
+                <em>Privatsphäre by Design.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Flexibel"
+                icon="paintbrush"
+                href="/de/docs/get-started/customisation"
+            >
+                Komponenten lassen sich einfach neu gestalten, anpassen und auf
+                dein Design abstimmen. <em>Deine Website, deine Regeln.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Global einsatzbereit"
+                icon="globe"
+                href="/de/docs/get-started/localisation"
+            >
+                Mit 71 Locales direkt einsatzbereit und beliebig erweiterbar.
+                <em>Deine Anwendung spricht jede Sprache.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Minimaler Overhead"
+                icon="feather"
+                href="/de/docs/get-started/installation"
+            >
+                Keine unnötigen Abhängigkeiten, kein Ballast.
+                Nur das, was du wirklich brauchst.
+                <em>Schlank, schnell, wartbar.</em>
+            </FeatureTile>
+        </FeatureTiles>
 
         <h2 class="pc-heading-l">Warum solltest du Placer Toolkit wählen?</h2>
 
         <p>
             Dieser Vergleich zeigt die entsprechende Funktionalität in einem
             CSS‐basierten Toolkit wie Bootstrap und in einem
-            webkomponenten‐basierten Toolkit wie Placer Toolkit, was eine
-            massive Reduzierung der Codekomplexität sowie eine verbesserte
-            Lesbarkeit demonstriert.
+            webkomponentenbasierten Toolkit wie Placer Toolkit, was eine massive
+            Reduzierung der Codekomplexität sowie eine verbesserte Lesbarkeit
+            demonstriert.
         </p>
 
         <CodeComparison />
@@ -81,9 +133,8 @@ import "../../styles/landing-override.css";
             </p>
 
             <p>
-                Weitere Informationen findest du in unserer <a
-                    href="/de/legal/privacy">Datenschutzerklärung</a
-                >.
+                Weitere Informationen findest du in unserer
+                <a href="/de/legal/privacy">Datenschutzerklärung</a>.
             </p>
 
             <pc-button
