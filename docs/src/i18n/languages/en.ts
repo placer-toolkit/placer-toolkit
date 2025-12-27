@@ -9,27 +9,17 @@ export default {
     "ui.content.contentNotAvailableInYourLanguage":
         "This content is not available in your language yet.",
     "ui.content.englishOnly": "(English‐only)",
+    "ui.content.jumpToThisHeading": "Jump to this heading",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Ready to build with Placer Toolkit?",
     "landingCTA.marketingLine":
-        "Native web components for<br />modern interfaces",
+        'Native web components for<br aria-hidden="true" />modern interfaces',
     "landingCTA.marketingLine.descriptive":
         "Placer Toolkit is an open‐source and framework‐agnostic web component library to build modern interfaces.",
     "landingCTA.tagline.flexible": "Flexible.",
     "landingCTA.tagline.accessible": "Accessible.",
     "landingCTA.tagline.webComponents": "Web Components.",
-
-    // Feature tiles
-    "featureTiles.entirelyNative": "Entirely native",
-    "featureTiles.entirelyNativeMessage":
-        "Built with web standards, Placer Toolkit works in any framework—or none at all. <em>No locking in, no compromises.</em>",
-    "featureTiles.fullyAccessible": "Fully accessible",
-    "featureTiles.fullyAccessibleMessage":
-        'Designed with <span aria-label="accessibility">a11y</span>, <span aria-label="internationalisation">i18n</span> (71 locales out-of-the-box) and strong DX in mind. <em>Everyone can use it, everywhere.</em>',
-    "featureTiles.flexible": "Flexible",
-    "featureTiles.flexibleMessage":
-        "Easily restyle, customise and adapt components to match your design. <em>Your website, your rules.</em>",
 
     // Sidebar sections
     "sidebar.section.getStarted": "Get started",
@@ -91,27 +81,63 @@ export default {
     "showcase.tab.before": "Before",
     "showcase.tab.after": "After",
 
+    // API tables
+    "apiTable.heading.properties": "Properties",
+    "apiTable.heading.slots": "Slots",
+    "apiTable.heading.methods": "Methods",
+    "apiTable.heading.events": "Events",
+    "apiTable.heading.customProperties": "Custom properties",
+    "apiTable.heading.parts": "Parts",
+    "apiTable.heading.animations": "Animations",
+    "apiTable.heading.importing": "Importing",
+    "apiTable.heading.dependencies": "Dependencies",
+
+    "apiTable.table.name": "Name",
+    "apiTable.table.description": "Description",
+    "apiTable.table.reflects": "Reflects",
+    "apiTable.table.default": "Default",
+    "apiTable.table.arguments": "Arguments",
+    "apiTable.table.eventDetail": "Event detail",
+
+    "apiTable.label.type": "Type: ",
+
+    "apiTable.tabs.cdnScript": "CDN (script tag)",
+    "apiTable.tabs.cdnImport": "CDN (import)",
+    "apiTable.tabs.npmImport": "npm (import)",
+
+    // Code comparison
+    "codeComparison.logo": "Placer Toolkit logo",
+    "codeComparison.dropdown.addUser": "Add user",
+    "codeComparison.dropdown.deleteAccount": "Delete account",
+    "codeComparison.report": "Report",
+    "codeComparison.signIn": "Sign in",
+    "codeComparison.email": "E‐mail",
+    "codeComparison.email.example": "example@email.com",
+    "codeComparison.password": "Password",
+    "codeComparison.password.forgot": "Forgot your password?",
+
     // Footer headings
     "footer.heading.docs": "Docs",
     "footer.heading.about": "About",
     "footer.heading.legal": "Legal",
 
-    // Footer links (Docs)
+    // Navigation links (Docs)
     "nav.content.docs.installation": "Installation",
     "nav.content.docs.usage": "Usage",
     "nav.content.docs.designTokens": "Design tokens",
     "nav.content.docs.components": "Components",
     "nav.content.docs.changelog": "Changelog",
 
-    // Footer links (About)
+    // Navigation links (About)
     "nav.content.about.community": "Community",
     "nav.content.about.contributing": "Contributing",
     "nav.content.about.brandAssets": "Brand assets",
     "nav.content.about.support": "Support",
 
-    // Footer links (Legal)
+    // Navigation links (Legal)
     "nav.content.legal.contact": "Contact",
     "nav.content.legal.privacy": "Privacy",
+    "nav.content.legal.gdpr": "GDPR",
     "nav.content.legal.accessibility": "Accessibility",
     "nav.content.legal.codeOfConduct": "Code of Conduct",
     "nav.content.legal.licence": "Licence",

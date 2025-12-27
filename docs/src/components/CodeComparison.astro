@@ -1,206 +1,300 @@
 ---
+import {
+    getLanguageFromURL,
+    useTranslations,
+} from "../i18n/utilities.js";
+
 import CodeBlock from "./CodeBlock.astro";
----
 
-<pc-tab-group>
-    <pc-tab slot="navigation" panel="dialog">Dialog</pc-tab>
-    <pc-tab slot="navigation" panel="checkbox">Checkbox</pc-tab>
-    <pc-tab slot="navigation" panel="button">Button</pc-tab>
-    <pc-tab slot="navigation" panel="spinner">Spinner</pc-tab>
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
 
-    <pc-tab-panel name="dialog">
-        <div class="code-comparison">
-            <pc-comparer>
-                <div slot="before">
-                    <CodeBlock language="html">
-{`<!-- Bootstrap -->
-<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modal-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modal-label">Dialog</h1>
-
-                <button
-                    class="btn-close"
-                    type="button"
-                    aria-label="Close"
-                    data-bs-dismiss="modal"
-                ></button>
-            </div>
-
-            <div class="modal-body">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </div>
-
-            <div class="modal-footer">
-                <button
-                    class="btn btn-secondary"
-                    type="button"
-                    data-bs-dismiss="modal"
-                >
-                    Close
-                </button>
-            </div>
+const bootstrapCode = `<!-- Bootstrap -->
+<div class="bg-light min-vh-100">
+    <nav
+        class="navbar bg-white border-bottom px-3 d-flex justify-content-between align-items-center"
+    >
+        <div>
+            <img
+                src="https://placer-toolkit.vercel.app/brand/logo.svg"
+                width="36"
+                height="36"
+                alt="${translation("codeComparison.logo")}"
+            />
         </div>
-    </div>
-</div>
 
-<button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#modal">
-    Open dialog
-</button>`}
-                    </CodeBlock>
-                </div>
-                <div slot="after">
-                    <CodeBlock language="html">
-{`<!-- Placer Toolkit -->
-<pc-dialog label="Dialog" id="dialog">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        <div class="dropdown">
+            <button
+                class="btn btn-sm btn-link text-decoration-none dropdown-toggle rounded-pill d-flex align-items-center gap-2 border"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+            >
+                ${translation("codeComparison.signIn")}
+            </button>
 
-    <pc-button variant="plain" slot="footer" data-dialog="close">
-        Close
-    </pc-button>
-</pc-dialog>
-
-<pc-button data-dialog="open dialog">
-    Open dialog
-</pc-button>`}
-                    </CodeBlock>
-                </div>
-            </pc-comparer>
-
-            <div class="preview">
-                <pc-dialog label="Dialog" id="dialog">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-                    <pc-button variant="plain" slot="footer" data-dialog="close">
-                        Close
-                    </pc-button>
-                </pc-dialog>
-
-                <pc-button data-dialog="open dialog">
-                    Open dialog
-                </pc-button>
-            </div>
+            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                <li>
+                    <a
+                        class="dropdown-item d-flex align-items-center gap-2"
+                        href="#"
+                    >
+                        <i class="bi bi-person-plus"></i>
+                        ${translation("codeComparison.dropdown.addUser")}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="dropdown-item d-flex align-items-center gap-2"
+                        href="#"
+                    >
+                        <i class="bi bi-trash"></i>
+                        ${translation("codeComparison.dropdown.deleteAccount")}
+                    </a>
+                </li>
+            </ul>
         </div>
-    </pc-tab-panel>
-    <pc-tab-panel name="checkbox">
-        <div class="code-comparison">
-            <pc-comparer>
-                <div slot="before">
-                    <CodeBlock language="html">
-{`<!-- Bootstrap -->
-<div class="form-check">
-    <input class="form-check-input" id="option-1" type="checkbox" value="" />
-    <label class="form-check-label" for="option-1">Option 1</label>
-</div>
-<div class="form-check">
-    <input
-        class="form-check-input"
-        id="option-2"
-        type="checkbox"
-        value=""
-        checked
-    />
-    <label class="form-check-label" for="option-2">Option 2</label>
-</div>
-<div class="form-check">
-    <input class="form-check-input" id="option-3" type="checkbox" value="" />
-    <label class="form-check-label" for="option-3">Option 3</label>
-</div>`}
-                    </CodeBlock>
+
+        <div>
+            <button
+                class="btn btn-sm btn-outline-danger rounded-pill"
+                aria-label="${translation("codeComparison.report")}"
+            >
+                <i class="bi bi-flag-fill"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main
+        class="container-fluid d-flex justify-content-center align-items-center p-4"
+    >
+        <div class="card border-0 shadow-sm p-4 w-100">
+            <h1 class="h3 text-center mb-4">${translation("codeComparison.signIn")}</h1>
+
+            <form>
+                <div class="mb-3">
+                    <label class="form-label small fw-medium">${translation("codeComparison.email")}</label>
+
+                    <div class="input-group">
+                        <span
+                            class="input-group-text bg-transparent border-end-0"
+                        >
+                            <i class="bi bi-envelope-fill"></i>
+                        </span>
+
+                        <input
+                            type="email"
+                            class="form-control border-start-0"
+                            placeholder="${translation("codeComparison.email.example")}"
+                        />
+                    </div>
                 </div>
-                <div slot="after">
-                    <CodeBlock language="html">
-{`<!-- Placer Toolkit -->
-<div class="checkboxes">
-    <pc-checkbox>Option 1</pc-checkbox>
-    <pc-checkbox checked>Option 2</pc-checkbox>
-    <pc-checkbox>Option 3</pc-checkbox>
+
+                <div class="mb-4">
+                    <label class="form-label small fw-medium">${translation("codeComparison.password")}</label>
+
+                    <div class="input-group">
+                        <span
+                            class="input-group-text bg-transparent border-end-0"
+                        >
+                            <i class="bi bi-key-fill"></i>
+                        </span>
+
+                        <input
+                            type="password"
+                            class="form-control border-start-0"
+                        />
+                    </div>
+                    <div class="mt-2 text-end">
+                        <a class="small text-decoration-none" href="#">
+                            ${translation("codeComparison.password.forgot")}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-grid">
+                    <button
+                        type="submit"
+                        class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                    >
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        ${translation("codeComparison.signIn")}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
 </div>
 
 <style>
-    .checkboxes pc-checkbox {
-        display: block;
+    .navbar {
+        block-size: 3.5rem;
     }
-</style>`}
-                    </CodeBlock>
-                </div>
-            </pc-comparer>
 
-            <div class="preview">
-                <div class="checkboxes">
-                    <pc-checkbox>Option 1</pc-checkbox>
-                    <pc-checkbox checked>Option 2</pc-checkbox>
-                    <pc-checkbox>Option 3</pc-checkbox>
-                </div>
+    .navbar div:first-child img {
+        translate: 0 0.125rem;
+    }
 
-                <style>
-                    .checkboxes pc-checkbox {
-                        display: block;
-                    }
-                </style>
-            </div>
+    main .card {
+        max-inline-style: 30rem;
+        border-radius: 1.5rem;
+    }
+</style>`;
+
+const placerToolkitCode = `<!-- Placer Toolkit -->
+<nav class="navigation-bar pc-split">
+    <div>
+        <img
+            src="https://placer-toolkit.vercel.app/brand/logo.svg"
+            width="36"
+            height="36"
+            alt="${translation("codeComparison.logo")}"
+        />
+    </div>
+    <div>
+        <pc-dropdown size="small">
+            <pc-button
+                class="sign-in-dropdown"
+                size="small"
+                variant="plain"
+                slot="trigger"
+                pill
+            >
+                ${translation("codeComparison.signIn")}
+
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="chevron-down"
+                    slot="suffix"
+                ></pc-icon>
+            </pc-button>
+
+            <pc-dropdown-item>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="user-plus"
+                    slot="icon"
+                ></pc-icon>
+                ${translation("codeComparison.dropdown.addUser")}
+            </pc-dropdown-item>
+            <pc-dropdown-item appearance="danger">
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="trash"
+                    slot="icon"
+                ></pc-icon>
+                ${translation("codeComparison.dropdown.deleteAccount")}
+            </pc-dropdown-item>
+        </pc-dropdown>
+    </div>
+    <div>
+        <pc-button size="small" appearance="danger" variant="plain" pill>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="flag"
+                label="${translation("codeComparison.report")}"
+            ></pc-icon>
+        </pc-button>
+    </div>
+</nav>
+
+<main class="main-content">
+    <form class="pc-stack">
+        <h1>${translation("codeComparison.signIn")}</h1>
+
+        <pc-input label="${translation("codeComparison.email")}" type="email" placeholder="${translation("codeComparison.email.example")}">
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="envelope"
+                slot="prefix"
+            ></pc-icon>
+        </pc-input>
+
+        <pc-input label="${translation("codeComparison.password")}" type="password" password-toggle>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="key"
+                slot="prefix"
+            ></pc-icon>
+
+            <a href="#" slot="hint">${translation("codeComparison.password.forgot")}</a>
+        </pc-input>
+
+        <pc-button appearance="primary">
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="arrow-right-to-bracket"
+                slot="prefix"
+            ></pc-icon>
+            ${translation("codeComparison.signIn")}
+        </pc-button>
+    </form>
+</main>
+
+<style>
+    .navigation-bar {
+        display: flex;
+        align-items: center;
+        padding-inline: var(--pc-spacing-m);
+        block-size: 3.5rem;
+        background-color: var(--pc-color-surface-raised);
+        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+    }
+
+    .navigation-bar div:first-child img {
+        translate: 0 0.125rem;
+    }
+
+    .main-content {
+        inline-size: 100%;
+        background-color: var(--pc-color-surface-default);
+    }
+
+    .main-content form {
+        padding: var(--pc-spacing-l);
+        max-inline-size: 95%;
+        inline-size: 30rem;
+        background-color: var(--pc-color-surface-raised);
+        border-radius: var(--pc-border-radius-xl);
+        box-shadow: var(--pc-shadow-m);
+    }
+
+    .main-content form h1 {
+        font-size: var(--pc-font-size-xl);
+        text-align: center;
+    }
+</style>`;
+
+const previewHTML = placerToolkitCode.replace(
+    /<style>([\s\S]*?)<\/style>/,
+    (match, css) => `<style>${css.replace(/\.(?=[a-zA-Z])/g, ".preview .")}</style>`
+);
+---
+
+<div class="code-comparison">
+    <pc-comparer>
+        <div slot="before">
+            <CodeBlock language="html" showLineNumbers>
+                {bootstrapCode}
+            </CodeBlock>
         </div>
-    </pc-tab-panel>
-    <pc-tab-panel name="button">
-        <div class="code-comparison">
-            <pc-comparer>
-                <div slot="before">
-                    <CodeBlock language="html">
-{`<!-- Bootstrap -->
-<button class="btn btn-primary" type="button">Primary</button>
-<button class="btn btn-secondary" type="button">Secondary</button>
-<button class="btn btn-success" type="button">Success</button>
-<button class="btn btn-warning" type="button">Warning</button>
-<button class="btn btn-danger" type="button">Danger</button>`}
-                    </CodeBlock>
-                </div>
-                <div slot="after">
-                    <CodeBlock language="html">
-{`<!-- Placer Toolkit -->
-<pc-button appearance="neutral">Neutral</pc-button>
-<pc-button appearance="primary">Primary</pc-button>
-<pc-button appearance="success">Success</pc-button>
-<pc-button appearance="warning">Warning</pc-button>
-<pc-button appearance="danger">Danger</pc-button>`}
-                    </CodeBlock>
-                </div>
-            </pc-comparer>
-
-            <div class="preview">
-                <pc-button appearance="neutral">Neutral</pc-button>
-                <pc-button appearance="primary">Primary</pc-button>
-                <pc-button appearance="success">Success</pc-button>
-                <pc-button appearance="warning">Warning</pc-button>
-                <pc-button appearance="danger">Danger</pc-button>
-            </div>
+        <div slot="after">
+            <CodeBlock language="html" showLineNumbers>
+                {placerToolkitCode}
+            </CodeBlock>
         </div>
-    </pc-tab-panel>
-    <pc-tab-panel name="spinner">
-        <div class="code-comparison">
-            <pc-comparer>
-                <div slot="before">
-                    <CodeBlock language="html">
-{`<!-- Bootstrap -->
-<div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading…</span>
-</div>`}
-                    </CodeBlock>
-                </div>
-                <div slot="after">
-                    <CodeBlock language="html">
-{`<!-- Placer Toolkit -->
-<pc-spinner></pc-spinner>`}
-                    </CodeBlock>
-                </div>
-            </pc-comparer>
+    </pc-comparer>
 
-            <div class="preview">
-                <pc-spinner></pc-spinner>
-            </div>
-        </div>
-    </pc-tab-panel>
-</pc-tab-group>
+    <div class="preview" set:html={previewHTML}></div>
+</div>
 
 <style>
     .code-comparison {
@@ -212,45 +306,61 @@ import CodeBlock from "./CodeBlock.astro";
     }
 
     pc-comparer {
-        inline-size: 100%;
-        block-size: 100%;
+        --divider-width: 0.0625rem;
+
+        border-radius: var(--pc-border-radius-xl);
         overflow: hidden;
-        border-radius: var(--pc-border-radius-xl);
     }
 
-    pc-comparer div {
+    pc-comparer [slot~="before"],
+    pc-comparer [slot~="after"] {
+        block-size: calc(28rem * var(--pc-spacing-scale));
+        overflow: hidden;
+    }
+
+    pc-comparer::part(before),
+    pc-comparer::part(after) {
+        pointer-events: auto;
+    }
+
+    pc-comparer::part(divider),
+    pc-comparer::part(handle) {
+        background-color: var(--pc-color-surface-border);
+        translate: unset;
+    }
+
+    pc-comparer :global(.code-block-container) {
         display: flex;
-        position: relative;
-        align-items: stretch;
-        inline-size: 100%;
+        flex-direction: column;
         block-size: 100%;
     }
 
-    pc-comparer div :global(.code-block-container) {
-        display: flex;
-        flex: 1;
-        margin-block-end: 0;
-        inline-size: 100%;
-        block-size: 100%;
-    }
-
-    pc-comparer div :global(.code-block-container .code-block) {
-        block-size: 100%;
-        flex: 1;
+    pc-comparer :global(.code-block) {
         border-radius: var(--pc-border-radius-xl);
+        overflow: hidden;
     }
 
-    pc-comparer div :global(.code-block-container pc-copy-button) {
+    pc-comparer :global(.code-block pre) {
+        overflow: auto;
+        block-size: 100%;
+    }
+
+    pc-comparer :global(.code-block pre:focus-visible) {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+    }
+
+    pc-comparer :global(pc-copy-button) {
         display: none;
     }
 
     .preview {
-        padding: var(--pc-spacing-l);
         min-inline-size: 35%;
-        background-color: var(--pc-color-surface-raised);
+        block-size: calc(28rem * var(--pc-spacing-scale));
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-xl);
+        overflow: hidden;
     }
 
     @media screen and (max-width: 992px) {

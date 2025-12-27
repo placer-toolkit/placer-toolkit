@@ -3,6 +3,7 @@ import Page from "../layouts/Page.astro";
 
 import CodeComparison from "../components/CodeComparison.astro";
 import FeatureTiles from "../components/FeatureTiles.astro";
+import FeatureTile from "../components/FeatureTile.astro";
 import LandingCTA from "../components/LandingCTA.astro";
 import Showcase from "../components/Showcase.astro";
 import SpecialThanksGrid from "../components/SpecialThanksGrid.astro";
@@ -28,7 +29,56 @@ import "../styles/landing-override.css";
             that lets you build websites with any framework—or with none at all.
         </p>
 
-        <FeatureTiles />
+        <FeatureTiles>
+            <FeatureTile
+                label="Entirely native"
+                icon="puzzle-piece"
+                href="/docs/get-started/usage"
+            >
+                Built with web standards, Placer Toolkit works in any framework—or none at all.
+                <em>No locking in, no compromises.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Fully accessible"
+                icon="universal-access"
+                href="/docs/legal/accessibility"
+            >
+                Accessibility is our standard—built into every component.
+                <em>It works for everyone, everywhere.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Hassle‐free privacy"
+                icon="shield-halved"
+                href="/docs/legal/gdpr"
+            >
+                No trackers, no cookies, no worries. Locally hosted and 100 % GDPR‐compliant.
+                <em>Privacy by design.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Flexible"
+                icon="paintbrush"
+                href="/docs/get-started/customisation"
+            >
+                Easily restyle, customise and adapt components to match your design.
+                <em>Your website, your rules.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Globally ready"
+                icon="globe"
+                href="/docs/get-started/localisation"
+            >
+                With 71 locales out‐of‐the‐box and the ability to add more any time.
+                <em>Your website speaks every language.</em>
+            </FeatureTile>
+            <FeatureTile
+                label="Minimal overhead"
+                icon="feather"
+                href="/docs/get-started/installation"
+            >
+                No unnecessary dependencies, no bloat. Only what you actually need.
+                <em>Lean, fast, maintainable.</em>
+            </FeatureTile>
+        </FeatureTiles>
 
         <h2 class="pc-heading-l">Why use Placer Toolkit?</h2>
 

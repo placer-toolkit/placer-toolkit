@@ -1,11 +1,11 @@
 ---
 title: Button
-description: Buttons represent actions that are available to the user.
+description: Buttons repräsentieren Aktionen, die dem/der Nutzer:in zur Verfügung stehen.
 ---
 
-import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
+import AutoKeyboardSwitch from "../../../../components/AutoKeyboardSwitch.astro";
 
-Buttons represent actions that are available to the user.
+Buttons repräsentieren Aktionen, die dem/der Nutzer:in zur Verfügung stehen.
 
 ```demo:open
 <pc-button>Button</pc-button>
@@ -13,89 +13,89 @@ Buttons represent actions that are available to the user.
 
 ## Demos
 
-### Appearances
+### Erscheinungsbild
 
-Use the `appearance` attribute to set the button’s appearance.
+Verwende das `appearance`‐Attribut, um das Erscheinungsbild des Buttons festzulegen.
 
 ```demo
 <pc-button appearance="neutral">Neutral</pc-button>
-<pc-button appearance="primary">Primary</pc-button>
-<pc-button appearance="success">Success</pc-button>
-<pc-button appearance="warning">Warning</pc-button>
-<pc-button appearance="danger">Danger</pc-button>
+<pc-button appearance="primary">Primär</pc-button>
+<pc-button appearance="success">Erfolg</pc-button>
+<pc-button appearance="warning">Warnung</pc-button>
+<pc-button appearance="danger">Gefahr</pc-button>
 ```
 
-### Variants
+### Varianten
 
-Use the `variant` attribute to set the button’s variant.
+Verwende das `variant`‐Attribut, um die Variante des Buttons festzulegen.
 
 ```demo
 <div style="margin-block-end: var(--pc-spacing-m)">
-    <pc-button appearance="primary" variant="accent">Accent</pc-button>
-    <pc-button appearance="primary" variant="filled outlined">F + O</pc-button>
-    <pc-button appearance="primary" variant="filled">Filled</pc-button>
-    <pc-button appearance="primary" variant="outlined">Outlined</pc-button>
-    <pc-button appearance="primary" variant="plain">Plain</pc-button>
+    <pc-button appearance="primary" variant="accent">Akzent</pc-button>
+    <pc-button appearance="primary" variant="filled outlined">G + U</pc-button>
+    <pc-button appearance="primary" variant="filled">Gefüllt</pc-button>
+    <pc-button appearance="primary" variant="outlined">Umrandet</pc-button>
+    <pc-button appearance="primary" variant="plain">Schlicht</pc-button>
 </div>
 <div style="margin-block-end: var(--pc-spacing-m)">
-    <pc-button appearance="success" variant="accent">Accent</pc-button>
-    <pc-button appearance="success" variant="filled outlined">F + O</pc-button>
-    <pc-button appearance="success" variant="filled">Filled</pc-button>
-    <pc-button appearance="success" variant="outlined">Outlined</pc-button>
-    <pc-button appearance="success" variant="plain">Plain</pc-button>
+    <pc-button appearance="success" variant="accent">Akzent</pc-button>
+    <pc-button appearance="success" variant="filled outlined">G + U</pc-button>
+    <pc-button appearance="success" variant="filled">Gefüllt</pc-button>
+    <pc-button appearance="success" variant="outlined">Umrandet</pc-button>
+    <pc-button appearance="success" variant="plain">Schlicht</pc-button>
 </div>
 <div style="margin-block-end: var(--pc-spacing-m)">
-    <pc-button appearance="neutral" variant="accent">Accent</pc-button>
-    <pc-button appearance="neutral" variant="filled outlined">F + O</pc-button>
-    <pc-button appearance="neutral" variant="filled">Filled</pc-button>
-    <pc-button appearance="neutral" variant="outlined">Outlined</pc-button>
-    <pc-button appearance="neutral" variant="plain">Plain</pc-button>
+    <pc-button appearance="neutral" variant="accent">Akzent</pc-button>
+    <pc-button appearance="neutral" variant="filled outlined">G + U</pc-button>
+    <pc-button appearance="neutral" variant="filled">Gefüllt</pc-button>
+    <pc-button appearance="neutral" variant="outlined">Umrandet</pc-button>
+    <pc-button appearance="neutral" variant="plain">Schlicht</pc-button>
 </div>
 <div style="margin-block-end: var(--pc-spacing-m)">
-    <pc-button appearance="warning" variant="accent">Accent</pc-button>
-    <pc-button appearance="warning" variant="filled outlined">F + O</pc-button>
-    <pc-button appearance="warning" variant="filled">Filled</pc-button>
-    <pc-button appearance="warning" variant="outlined">Outlined</pc-button>
-    <pc-button appearance="warning" variant="plain">Plain</pc-button>
+    <pc-button appearance="warning" variant="accent">Akzent</pc-button>
+    <pc-button appearance="warning" variant="filled outlined">G + U</pc-button>
+    <pc-button appearance="warning" variant="filled">Gefüllt</pc-button>
+    <pc-button appearance="warning" variant="outlined">Umrandet</pc-button>
+    <pc-button appearance="warning" variant="plain">Schlicht</pc-button>
 </div>
 <div>
-    <pc-button appearance="danger" variant="accent">Accent</pc-button>
-    <pc-button appearance="danger" variant="filled outlined">F + O</pc-button>
-    <pc-button appearance="danger" variant="filled">Filled</pc-button>
-    <pc-button appearance="danger" variant="outlined">Outlined</pc-button>
-    <pc-button appearance="danger" variant="plain">Plain</pc-button>
+    <pc-button appearance="danger" variant="accent">Akzent</pc-button>
+    <pc-button appearance="danger" variant="filled outlined">G + U</pc-button>
+    <pc-button appearance="danger" variant="filled">Gefüllt</pc-button>
+    <pc-button appearance="danger" variant="outlined">Umrandet</pc-button>
+    <pc-button appearance="danger" variant="plain">Schlicht</pc-button>
 </div>
 ```
 
-### Sizes
+### Größen
 
-Use the `size` attribute to change the button’s size.
+Verwende das `size`‐Attribut, um die Größe des Buttons zu ändern.
 
 ```demo
-<pc-button size="small">Small</pc-button>
-<pc-button size="medium">Medium</pc-button>
-<pc-button size="large">Large</pc-button>
+<pc-button size="small">Klein</pc-button>
+<pc-button size="medium">Mittel</pc-button>
+<pc-button size="large">Groß</pc-button>
 ```
 
-### Pill
+### Pillenform
 
-Use the `pill` attribute to give buttons a pill‐shaped look.
+Verwende das `pill`‐Attribut, um Buttons ein abgerundetes, pillenförmiges Aussehen zu verleihen.
 
 ```demo
-<pc-button size="small" pill>Small</pc-button>
-<pc-button size="medium" pill>Medium</pc-button>
-<pc-button size="large" pill>Large</pc-button>
+<pc-button size="small" pill>Klein</pc-button>
+<pc-button size="medium" pill>Mittel</pc-button>
+<pc-button size="large" pill>Groß</pc-button>
 ```
 
 ### Links
 
-It’s often helpful to have a button that works like a link. This is possible by setting the `href` attribute, which will make the component render as an `<a>` under the hood. This gives you all the default link behaviour the browser provides (e.g., <AutoKeyboardSwitch keyName="ctrl" /> or <AutoKeyboardSwitch keyName="shift" /> + <pc-icon library="default" icon-style="solid" name="arrow-pointer" onmouseover="this.name = 'hand-pointer'" onmouseout="this.name = 'arrow-pointer'" style="cursor: pointer" aria-label="Click"></pc-icon>) and exposes the `target` and `download` attributes.
+Oft ist es hilfreich, einen Button zu haben, der wie ein Link funktioniert. Das ist möglich, indem du das `href`‐Attribut setzt, wodurch die Komponente unter der Haube als `<a>` gerendert wird. Dadurch erhältst du das gesamte Standard‐Link‐Verhalten des Browsers (z. B. <AutoKeyboardSwitch keyName="ctrl" /> oder <AutoKeyboardSwitch keyName="shift" /> + <pc-icon library="default" icon-style="solid" name="arrow-pointer" onmouseover="this.name = 'hand-pointer'" onmouseout="this.name = 'arrow-pointer'" style="cursor: pointer" aria-label="Klick"></pc-icon>) und kannst zudem die Attribute `target` und `download` nutzen.
 
 ```demo
 <pc-button href="https://example.com">Link</pc-button>
-<pc-button href="https://example.com" target="_blank">New window</pc-button>
+<pc-button href="https://example.com" target="_blank">Neues Fenster</pc-button>
 <pc-button href="https://placer-toolkit.vercel.app/brand/logo.svg" download>Download</pc-button>
-<pc-button href="https://example.com" disabled>Disabled</pc-button>
+<pc-button href="https://example.com" disabled>Deaktiviert</pc-button>
 ```
 
 <pc-callout appearance="primary">
@@ -105,12 +105,12 @@ It’s often helpful to have a button that works like a link. This is possible b
         name="shield-halved"
         slot="icon"
     ></pc-icon>
-    When a `target` is set, the link will receive `rel="noreferrer noopener"` for [security reasons](https://mathiasbynens.github.io/rel-noopener).
+    Wenn ein `target` gesetzt ist, erhält der Link aus [Sicherheitsgründen](https://mathiasbynens.github.io/rel-noopener) automatisch `rel="noreferrer noopener"`.
 </pc-callout>
 
-### Icon buttons
+### Icon‐Buttons
 
-When only an [icon](/docs/components/icon) is slotted into the default slot, the button becomes an icon button. In this case, it’s important to give the icon a label for users with assistive devices. Icon buttons can use any appearance or variant.
+Wenn nur ein [Icon](/de/docs/components/icon) in den Standard‐Slot eingefügt wird, wird der Button zu einem Icon‐Button. In diesem Fall ist es wichtig, dem Icon ein Label für Nutzer:innen mit assistiven Technologien zu geben. Icon‐Buttons können jedes Erscheinungsbild und jede Variante nutzen.
 
 ```demo
 <div style="margin-block-end: var(--pc-spacing-m)">
@@ -119,7 +119,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Accent"
+            label="Akzent"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="primary" variant="filled outlined">
@@ -127,7 +127,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled + Outlined"
+            label="Gefüllt + Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="primary" variant="filled">
@@ -135,7 +135,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled"
+            label="Gefüllt"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="primary" variant="outlined">
@@ -143,7 +143,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Outlined"
+            label="Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="primary" variant="plain">
@@ -151,7 +151,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Plain"
+            label="Schlicht"
         ></pc-icon>
     </pc-button>
 </div>
@@ -161,7 +161,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Accent"
+            label="Akzent"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="success" variant="filled outlined">
@@ -169,7 +169,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled + Outlined"
+            label="Gefüllt + Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="success" variant="filled">
@@ -177,7 +177,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled"
+            label="Gefüllt"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="success" variant="outlined">
@@ -185,7 +185,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Outlined"
+            label="Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="success" variant="plain">
@@ -193,7 +193,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Plain"
+            label="Schlicht"
         ></pc-icon>
     </pc-button>
 </div>
@@ -203,7 +203,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Accent"
+            label="Akzent"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="neutral" variant="filled outlined">
@@ -211,7 +211,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled + Outlined"
+            label="Gefüllt + Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="neutral" variant="filled">
@@ -219,7 +219,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled"
+            label="Gefüllt"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="neutral" variant="outlined">
@@ -227,7 +227,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Outlined"
+            label="Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="neutral" variant="plain">
@@ -235,7 +235,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Plain"
+            label="Schlicht"
         ></pc-icon>
     </pc-button>
 </div>
@@ -245,7 +245,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Accent"
+            label="Akzent"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="warning" variant="filled outlined">
@@ -253,7 +253,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled + Outlined"
+            label="Gefüllt + Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="warning" variant="filled">
@@ -261,7 +261,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled"
+            label="Gefüllt"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="warning" variant="outlined">
@@ -269,7 +269,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Outlined"
+            label="Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="warning" variant="plain">
@@ -277,7 +277,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Plain"
+            label="Schlicht"
         ></pc-icon>
     </pc-button>
 </div>
@@ -287,7 +287,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Accent"
+            label="Akzent"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="danger" variant="filled outlined">
@@ -295,7 +295,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled + Outlined"
+            label="Gefüllt + Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="danger" variant="filled">
@@ -303,7 +303,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Filled"
+            label="Gefüllt"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="danger" variant="outlined">
@@ -311,7 +311,7 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Outlined"
+            label="Umrandet"
         ></pc-icon>
     </pc-button>
     <pc-button appearance="danger" variant="plain">
@@ -319,25 +319,25 @@ When only an [icon](/docs/components/icon) is slotted into the default slot, the
             library="default"
             icon-style="solid"
             name="house"
-            label="Plain"
+            label="Schlicht"
         ></pc-icon>
     </pc-button>
 </div>
 ```
 
-### Custom width
+### Benutzerdefinierte Breite
 
-As expected, buttons can be given a custom width by passing inline styles to the component (or using a class). This is useful for making buttons span the full width of their container on smaller screens.
+Wie erwartet können Buttons eine benutzerdefinierte Breite erhalten, indem Inline‐Styles an die Komponente übergeben werden (oder eine CSS‐Klasse verwendet wird). Das ist nützlich, um Buttons auf kleineren Bildschirmen über die volle Breite ihres Containers zu strecken.
 
 ```demo
-<pc-button size="small" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Small</pc-button>
-<pc-button size="medium" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Medium</pc-button>
-<pc-button size="large" style="inline-size: 100%">Large</pc-button>
+<pc-button size="small" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Klein</pc-button>
+<pc-button size="medium" style="inline-size: 100%; margin-block-end: var(--pc-spacing-m)">Mittel</pc-button>
+<pc-button size="large" style="inline-size: 100%">Groß</pc-button>
 ```
 
-### Prefixes and suffixes
+### Präfixe und Suffixe
 
-Use the `prefix` and `suffix` slots to add icons.
+Verwende die Slots `prefix` und `suffix`, um Icons hinzuzufügen.
 
 ```demo
 <div style="margin-block-end: var(--pc-spacing-m)">
@@ -348,7 +348,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="gear"
             slot="prefix"
         ></pc-icon>
-        Settings
+        Einstellungen
     </pc-button>
 
     <pc-button size="small">
@@ -358,7 +358,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="arrow-rotate-right"
             slot="suffix"
         ></pc-icon>
-        Refresh
+        Aktualisieren
     </pc-button>
 
     <pc-button size="small">
@@ -368,7 +368,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="link"
             slot="prefix"
         ></pc-icon>
-        Open
+        Öffnen
         <pc-icon
             library="default"
             icon-style="solid"
@@ -386,7 +386,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="gear"
             slot="prefix"
         ></pc-icon>
-        Settings
+        Einstellungen
     </pc-button>
 
     <pc-button size="medium">
@@ -396,7 +396,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="arrow-rotate-right"
             slot="suffix"
         ></pc-icon>
-        Refresh
+        Aktualisieren
     </pc-button>
 
     <pc-button size="medium">
@@ -406,7 +406,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="link"
             slot="prefix"
         ></pc-icon>
-        Open
+        Öffnen
         <pc-icon
             library="default"
             icon-style="solid"
@@ -424,7 +424,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="gear"
             slot="prefix"
         ></pc-icon>
-        Settings
+        Einstellungen
     </pc-button>
 
     <pc-button size="large">
@@ -434,7 +434,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="arrow-rotate-right"
             slot="suffix"
         ></pc-icon>
-        Refresh
+        Aktualisieren
     </pc-button>
 
     <pc-button size="large">
@@ -444,7 +444,7 @@ Use the `prefix` and `suffix` slots to add icons.
             name="link"
             slot="prefix"
         ></pc-icon>
-        Open
+        Öffnen
         <pc-icon
             library="default"
             icon-style="solid"
@@ -455,24 +455,24 @@ Use the `prefix` and `suffix` slots to add icons.
 </div>
 ```
 
-### Disabled
+### Deaktiviert
 
-Use the `disabled` attribute to disable a button.
+Verwende das `disabled`‐Attribut, um einen Button zu deaktivieren.
 
 ```demo
 <pc-button appearance="neutral" disabled>Neutral</pc-button>
-<pc-button appearance="primary" disabled>Primary</pc-button>
-<pc-button appearance="success" disabled>Success</pc-button>
-<pc-button appearance="warning" disabled>Warning</pc-button>
-<pc-button appearance="danger" disabled>Danger</pc-button>
+<pc-button appearance="primary" disabled>Primär</pc-button>
+<pc-button appearance="success" disabled>Erfolg</pc-button>
+<pc-button appearance="warning" disabled>Warnung</pc-button>
+<pc-button appearance="danger" disabled>Gefahr</pc-button>
 ```
 
-### Custom styles
+### Eigene Styles
 
-This example demonstrates how to style buttons using a custom class. This is the recommended approach if you need to add additional appearances. To customise an existing appearance, modify the selector to target the button’s `appearance` attribute instead of a class (e.g., `pc-button[appearance="primary"]`).
+Dieses Beispiel zeigt, wie du Buttons mit einer benutzerdefinierten Klasse stylen kannst. Dies ist der empfohlene Ansatz, wenn du zusätzliche Erscheinungsbilder hinzufügen möchtest. Um ein bestehendes Erscheinungsbild anzupassen, ändere den Selektor so, dass er das `appearance`‐Attribut des Buttons anspricht anstatt einer Klasse (z. B. `pc-button[appearance="primary"]`).
 
 ```demo
-<pc-button class="awesome-button">Awesome Button</pc-button>
+<pc-button class="awesome-button">Awesome‐Button</pc-button>
 
 <style>
     pc-button.awesome-button::part(base) {
