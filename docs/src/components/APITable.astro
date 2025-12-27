@@ -1,4 +1,10 @@
 ---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
+
 import CodeBlock from "./CodeBlock.astro";
 
 export interface Props {
@@ -343,6 +349,11 @@ const cssParts = componentData?.cssParts || [];
 const animations = componentData?.animations || [];
 const dependencies = componentData?.dependencies || [];
 
+// Set docs localisation up
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+
 // Generate import paths
 const componentPath = convertComponentNameToPath(componentName);
 const cdnURL = `${cdnBaseURL}/cdn/components/${componentPath}/${componentPath}.js`;
@@ -354,25 +365,25 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
         <div class="api-documentation">
             {properties.length > 0 && (
                 <section class="api-section">
-                    <h2 id="properties">
-                        Properties<a
+                    <h2 id={translation("apiTable.heading.properties").toLowerCase()}>
+                        {translation("apiTable.heading.properties")}<a
                             class="heading-anchor"
-                            href="#properties"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.properties").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="properties">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.properties").toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
-                                    <th style="text-align: center">Reflects</th>
-                                    <th class="default">Default</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
+                                    <th style="text-align: center">{translation("apiTable.table.reflects")}</th>
+                                    <th class="default">{translation("apiTable.table.default")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {properties.map((property) => (
                                     <tr>
                                         <td class="name">
@@ -398,7 +409,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                                                 <br />
                                                 <small class="type-info">
                                                     <b>
-                                                        Type:
+                                                        {translation("apiTable.label.type")}
                                                         <code>
                                                             {formatType(
                                                                 property.type,
@@ -424,14 +435,26 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                                         </td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr lang={language}>
                                     <td class="name">
                                         <code>updateComplete</code>
                                     </td>
                                     <td>
-                                        A read‐only promise that resolves when
-                                        the component has
-                                        <a href="/docs/get-started/usage/#component-rendering-and-updating">finished updating</a>.
+                                        {language === "en" && (
+                                            <>
+                                                A read‐only promise that resolves when
+                                                the component has
+                                                <a href="/docs/get-started/usage/#component-rendering-and-updating">finished updating</a>.
+                                            </>
+                                        )}
+                                        {language === "de" && (
+                                            <>
+                                                Ein schreibgeschütztes Promise, das erfüllt ist,
+                                                sobald die Komponente
+                                                <a href="/de/docs/get-started/usage/#komponentenrendering-und-aktualisierung">
+                                                    fertig aktualisiert</a> wurde.
+                                            </>
+                                        )}
                                     </td>
                                     <td style="text-align: center">
                                         <pc-icon
@@ -448,31 +471,39 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/usage/#attributes-and-properties">attributes and properties</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/usage/#attributes-and-properties">customising animations</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/usage/#attribute-und-eigenschaften">Attribute und Eigenschaften</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {slots.length > 0 && (
                 <section class="api-section">
-                    <h2 id="slots">
-                        Slots<a
+                    <h2 id={translation("apiTable.heading.slots").toLowerCase()}>
+                        {translation("apiTable.heading.slots")}<a
                             class="heading-anchor"
-                            href="#slots"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.slots").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="slots">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.slots").toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {slots.map((slot) => (
                                     <tr>
                                         <td class="name">
@@ -495,32 +526,40 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/usage/#slots">using slots</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/usage/#slots">using slots</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/usage/#slots">die Benutzung von Slots</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {methods.length > 0 && (
                 <section class="api-section">
-                    <h2 id="methods">
-                        Methods<a
+                    <h2 id={translation("apiTable.heading.methods").toLowerCase()}>
+                        {translation("apiTable.heading.methods")}<a
                             class="heading-anchor"
-                            href="#methods"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.methods").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="methods">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.methods").toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
-                                    <th class="arguments">Arguments</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
+                                    <th class="arguments">{translation("apiTable.table.arguments")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {methods.map((method) => (
                                     <tr>
                                         <td class="name">
@@ -562,32 +601,40 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/usage/#methods">methods</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/usage/#methods">methods</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/usage/#methoden">Methoden</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {events.length > 0 && (
                 <section class="api-section">
-                    <h2 id="events">
-                        Events<a
+                    <h2 id={translation("apiTable.heading.events").toLowerCase()}>
+                        {translation("apiTable.heading.events")}<a
                             class="heading-anchor"
-                            href="#events"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.events").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="events">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.events").toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
-                                    <th class="event-detail">Event detail</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
+                                    <th class="event-detail">{translation("apiTable.table.eventDetail")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {events.map((event) => (
                                     <tr>
                                         <td class="name">
@@ -615,32 +662,40 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/usage/#events">events</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/usage/#events">events</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/usage/#events">Events</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {cssProperties.length > 0 && (
                 <section class="api-section">
-                    <h2 id="custom-properties">
-                        Custom properties<a
+                    <h2 id={translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}>
+                        {translation("apiTable.heading.customProperties")}<a
                             class="heading-anchor"
-                            href="#custom-properties"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="custom-properties">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
-                                    <th class="default">Default</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
+                                    <th class="default">{translation("apiTable.table.default")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {cssProperties.map((property) => (
                                     <tr>
                                         <td class="name">
@@ -666,31 +721,41 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/customisation/#custom-properties">customising custom properties</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/customisation/#custom-properties">customising custom properties</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über
+                                <a href="/de/docs/get-started/customisation/#benutzerdefinierte-eigenschaften">
+                                    das Anpassen von benutzerdefinierten Eigenschaften</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {cssParts.length > 0 && (
                 <section class="api-section">
-                    <h2 id="parts">
-                        Parts<a
+                    <h2 id={translation("apiTable.heading.parts").toLowerCase()}>
+                        {translation("apiTable.heading.parts")}<a
                             class="heading-anchor"
-                            href="#parts"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.parts").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby="parts">
+                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.parts").toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {cssParts.map((part) => (
                                     <tr>
                                         <td class="name">
@@ -709,31 +774,39 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/customisation/#css-parts">customising CSS parts</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/customisation/#css-parts">customising CSS parts</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/customisation/#css-parts">das Anpassen von CSS‐Parts</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             {animations.length > 0 && (
                 <section class="api-section">
-                    <h2 id="animations">
-                        Animations<a
+                    <h2 id={translation("apiTable.heading.animations").toLowerCase()}>
+                        {translation("apiTable.heading.animations")}<a
                             class="heading-anchor"
-                            href="#animations"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.animations").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
                     <pc-scroller class="table-wrapper">
-                        <table class="api-table" aria-labelledby="animations">
+                        <table class="api-table" aria-labelledby={translation("apiTable.heading.animations").toLowerCase()}>
                             <thead>
                                 <tr>
-                                    <th class="name">Name</th>
-                                    <th class="description">Description</th>
+                                    <th class="name">{translation("apiTable.table.name")}</th>
+                                    <th class="description">{translation("apiTable.table.description")}</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody lang="en" dir="ltr">
                                 {animations.map((animation) => (
                                     <tr>
                                         <td class="name">
@@ -752,42 +825,72 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                         </table>
                     </pc-scroller>
                     <p>
-                        Learn more about{" "}
-                        <a href="/docs/get-started/customisation/#animations">customising animations</a>.
+                        {language === "en" && (
+                            <>
+                                Learn more about <a href="/docs/get-started/customisation/#animations">customising animations</a>.
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Erfahre mehr über <a href="/de/docs/get-started/customisation/#animationen">das Anpassen von Animationen</a>.
+                            </>
+                        )}
                     </p>
                 </section>
             )}
 
             <section class="api-section">
-                <h2 id="importing">
-                    Importing<a
+                <h2 id={translation("apiTable.heading.importing").toLowerCase()}>
+                    {translation("apiTable.heading.importing")}<a
                         class="heading-anchor"
-                        href="#importing"
-                        aria-label="Jump to this heading"
+                        href={"#" + translation("apiTable.heading.importing").toLowerCase()}
+                        aria-label={translation("ui.content.jumpToThisHeading")}
                         data-pagefind-ignore
                     >#</a>
                 </h2>
                 <p>
-                    If you’re using the autoloader or the standard loader, you
-                    can skip this section. But if you’re cherry picking, you can
-                    use any of the following snippets to import this component.
+                    {language === "en" && (
+                        <>
+                            If you’re using the autoloader or the standard loader,
+                            you can skip this section. But if you’re cherry picking,
+                            you can use any of the following snippets to import this component.
+                        </>
+                    )}
+                    {language === "de" && (
+                        <>
+                            Wenn du den Autoloader oder den Standard‐Loader nutzt,
+                            kannst du diesen Abschnitt überspringen. Falls du
+                            „Cherry Picking“ betreibst, kannst du die folgenden
+                            Snippets verwenden, um diese Komponente zu importieren.
+                        </>
+                    )}
                 </p>
 
                 <pc-tab-group>
                     <pc-tab slot="navigation" panel="cdn-script-tag">
-                        CDN (script tag)
+                        {translation("apiTable.tabs.cdnScript")}
                     </pc-tab>
                     <pc-tab slot="navigation" panel="cdn-import">
-                        CDN (import)
+                        {translation("apiTable.tabs.cdnImport")}
                     </pc-tab>
                     <pc-tab slot="navigation" panel="npm-import">
-                        npm (import)
+                        {translation("apiTable.tabs.npmImport")}
                     </pc-tab>
 
                     <pc-tab-panel name="cdn-script-tag">
                         <p>
-                            To manually import this component from the CDN, copy this
-                            code snippet and paste it in your HTML.
+                            {language === "en" && (
+                                <>
+                                    To manually import this component from the CDN,
+                                    copy this code snippet and paste it in your HTML.
+                                </>
+                            )}
+                            {language === "de" && (
+                                <>
+                                    Um diese Komponente manuell vom CDN zu importieren,
+                                    kopiere dieses Code‐Snippet und füge es in dein HTML ein.
+                                </>
+                            )}
                         </p>
                         <CodeBlock language="html">
                         {`<script type="module" src="${cdnURL}"></script>`}
@@ -795,8 +898,18 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                     </pc-tab-panel>
                     <pc-tab-panel name="cdn-import">
                         <p>
-                            To manually import this component from the CDN, copy this
-                            code snippet and paste it in your JavaScript file.
+                            {language === "en" && (
+                                <>
+                                    To manually import this component from the CDN, copy
+                                    this code snippet and paste it in your JavaScript file.
+                                </>
+                            )}
+                            {language === "de" && (
+                                <>
+                                    Um diese Komponente manuell vom CDN zu importieren, kopiere
+                                    dieses Code‐Snippet und füge es in deine JavaScript‐Datei ein.
+                                </>
+                            )}
                         </p>
                         <CodeBlock language="javascript">
                         {`import "${cdnURL}";`}
@@ -804,8 +917,18 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                     </pc-tab-panel>
                     <pc-tab-panel name="npm-import">
                         <p>
-                            To manually import this component from npm, copy this
-                            code snippet and paste it in your JavaScript file.
+                            {language === "en" && (
+                                <>
+                                    To manually import this component from npm, copy this
+                                    code snippet and paste it in your JavaScript file.
+                                </>
+                            )}
+                            {language === "de" && (
+                                <>
+                                    Um diese Komponente manuell via npm zu importieren, kopiere
+                                    dieses Code‐Snippet und füge es in deine JavaScript‐Datei ein.
+                                </>
+                            )}
                         </p>
                         <CodeBlock language="javascript">
                         {`import "${importPath}";`}
@@ -816,22 +939,31 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {dependencies.length > 0 && (
                 <section class="api-section">
-                    <h2 id="dependencies">
-                        Dependencies<a
+                    <h2 id={translation("apiTable.heading.dependencies").toLowerCase()}>
+                        {translation("apiTable.heading.dependencies")}<a
                             class="heading-anchor"
-                            href="#dependencies"
-                            aria-label="Jump to this heading"
+                            href={"#" + translation("apiTable.heading.dependencies").toLowerCase()}
+                            aria-label={translation("ui.content.jumpToThisHeading")}
                             data-pagefind-ignore
                         >#</a>
                     </h2>
                     <p>
-                        This component automatically imports these components:
+                        {language === "en" && (
+                            <>
+                                This component automatically imports these components:
+                            </>
+                        )}
+                        {language === "de" && (
+                            <>
+                                Diese Komponente importiert automatisch folgende Komponenten:
+                            </>
+                        )}
                     </p>
                     <ul>
                         {dependencies.map((dependency) => (
                             <li>
                                 <a
-                                    href={`/components/${dependency.substring(3).toLowerCase()}`}
+                                    href={translatePath(`/docs/components/${dependency.substring(3).toLowerCase()}`)}
                                 >
                                     {formatComponentDisplayName(dependency)}
                                 </a>

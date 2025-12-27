@@ -2,7 +2,7 @@
 
 ### Flexible. Accessible. Web Components.
 
-[![Netlify deploy status](https://api.netlify.com/api/v1/badges/b854c7b0-7765-4fe0-a1a7-06e300c4e164/deploy-status)](https://app.netlify.com/projects/placer-toolkit/deploys)
+![Vercel deploy status](https://deploy-badge.vercel.app/vercel/placer-toolkit)
 
 > [!NOTE]
 > 📦 This is a **monorepo** containing the Placer Toolkit core and its documentation site.
@@ -45,7 +45,7 @@ npm run preview # To spin up the production server provided by Astro
 
 ## 📄 Licence
 
-This project is licensed under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](./LICENSE.md).
 
 ## 💖 Special thanks
 
@@ -58,5 +58,7 @@ Placer Toolkit was built with the help of these fantastic libraries:
 - [Pagefind](https://pagefind.app)
 
 Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licensed under the [MIT License](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md). More recently, elements of [Web Awesome](https://webawesome.com) have also influenced Placer Toolkit’s development.
+
+For the entire list of open‐source libraries and frameworks, see [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) for more information.
 
 © 2025 Placer and its contributors

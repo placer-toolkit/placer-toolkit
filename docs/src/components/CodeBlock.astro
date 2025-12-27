@@ -3,12 +3,13 @@ import "../styles/syntax/placer-eclipse.css";
 
 const uniqueID = `code-${Math.random().toString(36).slice(2, 9)}`;
 const language = Astro.props.language ?? undefined;
+const { showLineNumbers } = Astro.props;
 
 const isTerminal =
     language === "bash" || language === "shell" || language === "sh";
 ---
 
-<div class="code-block-container">
+<div class:list={{ "code-block-container": true, "show-line-numbers": showLineNumbers }}>
     {
         isTerminal && (
             <div class="terminal-bar">
@@ -27,6 +28,7 @@ const isTerminal =
 
 <script>
     import hljs from "highlight.js";
+    import "highlightjs-line-numbers.js";
 
     import html from "highlight.js/lib/languages/xml";
     import css from "highlight.js/lib/languages/css";
@@ -44,12 +46,17 @@ const isTerminal =
     hljs.registerLanguage("shell", bash);
     hljs.registerLanguage("sh", bash);
 
-    const blocks = document.querySelectorAll<HTMLElement>(
-        ".code-block pre code.hljs",
-    );
+    const blocks = document.querySelectorAll(".code-block pre code.hljs");
 
     blocks.forEach((block) => {
         hljs.highlightElement(block);
+
+        const html = block.innerHTML;
+        const lines = html.split(/\r?\n/);
+
+        block.innerHTML = lines
+            .map(line => `<span class="pc-code-line">${line || ""}</span>`)
+            .join("\n");
     });
 </script>
 
@@ -117,10 +124,28 @@ const isTerminal =
     }
 
     .code-block .hljs {
+        counter-reset: line;
+        display: block;
         background-color: transparent;
         padding: var(--pc-spacing-l) !important;
         line-height: var(--pc-line-height-normal);
         font-size: var(--pc-font-size-xs);
+    }
+
+    .code-block-container.show-line-numbers .code-block :global(.pc-code-line::before) {
+        content: counter(line);
+        display: inline-block;
+        margin-inline-end: var(--pc-spacing-s);
+        padding-inline-end: var(--pc-spacing-s);
+        min-inline-size: 2.25em;
+        counter-increment: line;
+        color: var(--pc-color-text-quiet);
+        border-inline-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        font-variant-numeric: tabular-nums;
+        text-align: end;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
     .code-block pc-copy-button {

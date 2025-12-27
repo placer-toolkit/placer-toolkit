@@ -9,27 +9,17 @@ export default {
     "ui.content.contentNotAvailableInYourLanguage":
         "Dieser Inhalt ist noch nicht in deiner Sprache verfügbar.",
     "ui.content.englishOnly": "(nur Englisch)",
+    "ui.content.jumpToThisHeading": "Zu dieser Überschrift springen",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Bereit, mit Placer Toolkit zu bauen?",
     "landingCTA.marketingLine":
-        "Native Webkomponenten für<br />moderne Benutzeroberflächen",
+        'Native Webkomponenten für<br aria-hidden="true" />moderne Benutzeroberflächen',
     "landingCTA.marketingLine.descriptive":
-        "Placer Toolkit ist eine Open‐Source‐ und framework‐agnostische Webkomponenten‐Bibliothek zum Erstellen moderner Benutzeroberflächen.",
+        "Placer Toolkit ist eine Open‐Source‐ und frameworkagnostische Webkomponenten‐Bibliothek zum Erstellen moderner Benutzeroberflächen.",
     "landingCTA.tagline.flexible": "Flexibel.",
     "landingCTA.tagline.accessible": "Barrierefrei.",
     "landingCTA.tagline.webComponents": "Webkomponenten.",
-
-    // Feature tiles
-    "featureTiles.entirelyNative": "Vollständig nativ",
-    "featureTiles.entirelyNativeMessage":
-        "Placer Toolkit basiert auf Webstandards und funktioniert in jedem Framework – oder ganz ohne. <em>Keine Bindung, keine Kompromisse.</em>",
-    "featureTiles.fullyAccessible": "Vollständig barrierefrei",
-    "featureTiles.fullyAccessibleMessage":
-        "Entwickelt mit Barrierefreiheit, Internationalisierung (71 Sprachen direkt verfügbar) und starkem Entwicklererlebnis. <em>Jeder kann es nutzen, überall.</em>",
-    "featureTiles.flexible": "Flexibel",
-    "featureTiles.flexibleMessage":
-        "Komponenten lassen sich einfach neu gestalten, anpassen und auf dein Design abstimmen. <em>Deine Website, deine Regeln.</em>",
 
     // Sidebar sections
     "sidebar.section.getStarted": "Erste Schritte",
@@ -91,27 +81,63 @@ export default {
     "showcase.tab.before": "Vorher",
     "showcase.tab.after": "Nachher",
 
+    // API tables
+    "apiTable.heading.properties": "Eigenschaften",
+    "apiTable.heading.slots": "Slots",
+    "apiTable.heading.methods": "Methoden",
+    "apiTable.heading.events": "Events",
+    "apiTable.heading.customProperties": "Benutzerdefinierte Eigenschaften",
+    "apiTable.heading.parts": "Parts",
+    "apiTable.heading.animations": "Animationen",
+    "apiTable.heading.importing": "Importieren",
+    "apiTable.heading.dependencies": "Abhängigkeiten",
+
+    "apiTable.table.name": "Name",
+    "apiTable.table.description": "Beschreibung",
+    "apiTable.table.reflects": "Reflektiert",
+    "apiTable.table.default": "Standard",
+    "apiTable.table.arguments": "Argumente",
+    "apiTable.table.eventDetail": "Event‐Detail",
+
+    "apiTable.label.type": "Typ: ",
+
+    "apiTable.tabs.cdnScript": "CDN (Skript‐Tag)",
+    "apiTable.tabs.cdnImport": "CDN (Import)",
+    "apiTable.tabs.npmImport": "npm (Import)",
+
+    // Code comparison
+    "codeComparison.logo": "Placer Toolkit‐Logo",
+    "codeComparison.dropdown.addUser": "Nutzer:in hinzufügen",
+    "codeComparison.dropdown.deleteAccount": "Account löschen",
+    "codeComparison.report": "Melden",
+    "codeComparison.signIn": "Anmelden",
+    "codeComparison.email": "E‐Mail",
+    "codeComparison.email.example": "test@beispiel.de",
+    "codeComparison.password": "Passwort",
+    "codeComparison.password.forgot": "Passwort vergessen?",
+
     // Footer headings
     "footer.heading.docs": "Docs",
     "footer.heading.about": "Über uns",
     "footer.heading.legal": "Rechtliches",
 
-    // Footer links (Docs)
+    // Navigation links (Docs)
     "nav.content.docs.installation": "Installation",
     "nav.content.docs.usage": "Verwendung",
     "nav.content.docs.designTokens": "Design‐Tokens",
     "nav.content.docs.components": "Komponenten",
     "nav.content.docs.changelog": "Changelog",
 
-    // Footer links (About)
+    // Navigation links (About)
     "nav.content.about.community": "Community",
     "nav.content.about.contributing": "Mitwirken",
     "nav.content.about.brandAssets": "Marken‐Assets",
     "nav.content.about.support": "Support",
 
-    // Footer links (Legal)
+    // Navigation links (Legal)
     "nav.content.legal.contact": "Kontakt",
     "nav.content.legal.privacy": "Datenschutz",
+    "nav.content.legal.gdpr": "DSGVO",
     "nav.content.legal.accessibility": "Barrierefreiheit",
     "nav.content.legal.codeOfConduct": "Verhaltenskodex",
     "nav.content.legal.licence": "Lizenz",
