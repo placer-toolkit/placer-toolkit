@@ -314,7 +314,7 @@ const previewHTML = placerToolkitCode.replace(
 
     pc-comparer [slot~="before"],
     pc-comparer [slot~="after"] {
-        block-size: 28rem;
+        block-size: calc(28rem * var(--pc-spacing-scale));
         overflow: hidden;
     }
 
@@ -356,7 +356,7 @@ const previewHTML = placerToolkitCode.replace(
 
     .preview {
         min-inline-size: 35%;
-        block-size: 28rem;
+        block-size: calc(28rem * var(--pc-spacing-scale));
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-xl);
