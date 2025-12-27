@@ -49,14 +49,11 @@ const isTerminal =
     const blocks = document.querySelectorAll(".code-block pre code.hljs");
 
     blocks.forEach((block) => {
-        // 1. Normales Highlighting durchführen
         hljs.highlightElement(block);
 
-        // 2. Den HTML-Inhalt nehmen und in Zeilen zerlegen
         const html = block.innerHTML;
         const lines = html.split(/\r?\n/);
 
-        // 3. Jede Zeile in ein Span wickeln
         block.innerHTML = lines
             .map(line => `<span class="pc-code-line">${line || ""}</span>`)
             .join("\n");
