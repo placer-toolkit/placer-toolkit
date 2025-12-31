@@ -61,4 +61,4 @@ Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.
 
 For the entire list of open‐source libraries and frameworks, see [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) for more information.
 
-© 2025 Placer and its contributors
+© 2025–present Placer and its contributors
