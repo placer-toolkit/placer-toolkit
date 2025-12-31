@@ -143,6 +143,9 @@ export default {
     "nav.content.legal.licence": "Licence",
     "nav.content.legal.impressum": "Impressum",
 
+    // Copyright year
+    "copyright.year": "© 2025–present",
+
     // Footer copyright
     "footer.copyright.left": "Made with",
     "footer.copyright.centre": "love",
