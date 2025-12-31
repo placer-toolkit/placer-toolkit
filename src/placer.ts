@@ -42,6 +42,7 @@ export { PcTabPanel } from "./components/tab-panel/tab-panel.js";
 export { PcTag } from "./components/tag/tag.js";
 export { PcTextarea } from "./components/textarea/textarea.js";
 export { PcTooltip } from "./components/tooltip/tooltip.js";
+export { PcVideoPlayer } from "./components/video-player/video-player.js";
 
 // Utilities
 export * from "./utilities/animation-registry.js";
