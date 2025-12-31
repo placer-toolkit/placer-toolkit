@@ -42,4 +42,4 @@ We kindly ask that you:
 - Allow us reasonable time to resolve the issue before disclosing it publicly
 - Avoid exploiting the vulnerability beyond what is necessary to prove its existence
 
-© 2025 Placer and its contributors
+© 2025–present Placer and its contributors
