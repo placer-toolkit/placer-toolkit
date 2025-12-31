@@ -1,5 +1,5 @@
 # For robots only. Human eyes beyond this point will be punished with nonstop cat videos.
-# © 2025 Placer and its contributors
+# © 2025–present Placer and its contributors
 
 User-agent: *
 Allow: /
