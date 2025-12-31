@@ -147,5 +147,5 @@ export default {
     "footer.copyright.left": "Made with",
     "footer.copyright.centre": "love",
     "footer.copyright.right":
-        'by Placer and its contributors • <span style="white-space: nowrap">© 2025</span>',
+        'by Placer and its contributors • <span style="white-space: nowrap">© 2025–present</span>',
 } as const;
