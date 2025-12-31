@@ -1,0 +1,34 @@
+---
+title: Video Player
+---
+
+```demo
+<pc-video-player src="/videos/what-is-creative-commons.webm" playsinline data-title="What is Creative Commons?">
+    <track
+        src="/subtitles/what-is-creative-commons/captions-en-US.vtt"
+        kind="captions"
+        srclang="en-US"
+        label="English (US) (CC)"
+        default
+    />
+    <!-- Test AD track -->
+    <track
+        src="/subtitles/what-is-creative-commons/captions-en-US.vtt"
+        kind="descriptions"
+        srclang="en-US"
+        label="English (US) (AD)"
+    />
+</pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>What is Creative Commons?</strong> by
+    <a href="https://commons.wikimedia.org/wiki/User:Victorgrigas">
+        Victor Grigas</a>, used under
+    <a href="https://creativecommons.org/licenses/by-sa/3.0">
+        CC BY-SA 3.0</a>.
+    This video is sourced from
+    <a href="https://commons.wikimedia.org/wiki/File:What_is_Creative_Commons%3F.webm">
+        Wikimedia Commons</a> and remains unmodified.
+    Accessibility features provided by Placer Toolkit as part of this demo.
+</p>
+```
