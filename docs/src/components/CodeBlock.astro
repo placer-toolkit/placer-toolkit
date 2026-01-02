@@ -9,7 +9,12 @@ const isTerminal =
     language === "bash" || language === "shell" || language === "sh";
 ---
 
-<div class:list={{ "code-block-container": true, "show-line-numbers": showLineNumbers }}>
+<div
+    class:list={{
+        "code-block-container": true,
+        "show-line-numbers": showLineNumbers,
+    }}
+>
     {
         isTerminal && (
             <div class="terminal-bar">
@@ -28,7 +33,6 @@ const isTerminal =
 
 <script>
     import hljs from "highlight.js";
-    import "highlightjs-line-numbers.js";
 
     import html from "highlight.js/lib/languages/xml";
     import css from "highlight.js/lib/languages/css";
@@ -49,13 +53,13 @@ const isTerminal =
     const blocks = document.querySelectorAll(".code-block pre code.hljs");
 
     blocks.forEach((block) => {
-        hljs.highlightElement(block);
+        hljs.highlightElement(block as HTMLElement);
 
         const html = block.innerHTML;
         const lines = html.split(/\r?\n/);
 
         block.innerHTML = lines
-            .map(line => `<span class="pc-code-line">${line || ""}</span>`)
+            .map((line) => `<span class="pc-code-line">${line || ""}</span>`)
             .join("\n");
     });
 </script>
@@ -132,7 +136,9 @@ const isTerminal =
         font-size: var(--pc-font-size-xs);
     }
 
-    .code-block-container.show-line-numbers .code-block :global(.pc-code-line::before) {
+    .code-block-container.show-line-numbers
+        .code-block
+        :global(.pc-code-line::before) {
         content: counter(line);
         display: inline-block;
         margin-inline-end: var(--pc-spacing-s);
