@@ -164,8 +164,8 @@ A clever way to use this method is to hide the `<body>` with `opacity: 0` and ad
         customElements.whenDefined("pc-rating"),
     ]);
 
-    /* The button, card and rating components are registered now!
-       Add the “ready” class so the UI fades in. */
+    // The Button, Card and Rating components are registered now!
+    // Add the “ready” class so the UI fades in.
     document.body.classList.add("ready");
 </script>
 
@@ -209,7 +209,7 @@ checkbox.updateComplete.then(() => {
 });
 ```
 
-This time, we see an empty string, which means the boolean attribute is now present!
+This time, we receive `true`, which means the boolean attribute is now present!
 
 <pc-callout appearance="warning">
     <pc-icon

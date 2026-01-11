@@ -1,4 +1,6 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
 const fullPath = Astro.url.pathname;
 const firstSegment = fullPath.split("/")[1];
 
@@ -11,71 +13,325 @@ if (knownLocales.includes(firstSegment)) {
     slugWithoutLocale = fullPath.slice(firstSegment.length + 1);
 }
 
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
 const cleanLanguageSlug = slugWithoutLocale.replace(/\/$/, "");
 const cleanLanguageSlugLocalized = slugWithoutLocale.replace(/^\/|\/$/g, "");
 ---
 
-<pc-dropdown class="language-selector" placement="bottom-end" role="list">
-    <pc-button size="small" variant="outlined" slot="trigger">
+<pc-popup
+    class="language-selector"
+    placement="bottom-end"
+    distance="0"
+    skidding="0"
+    flip-fallback-strategy="best-fit"
+    shift-padding="10"
+    auto-size="vertical"
+    auto-size-padding="10"
+    shift
+    flip
+>
+    <pc-button
+        class="trigger-button"
+        size="small"
+        variant="outlined"
+        slot="anchor"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-controls="language-menu"
+    >
         <pc-icon
             class="icon-expand"
             library="default"
             icon-style="solid"
             name="language"
-            label="Language selector"
-
-        ></pc-icon>
+            label={translation("language.selector") as string}></pc-icon>
     </pc-button>
 
-    <pc-dropdown-item value={cleanLanguageSlug} role="link">
-        English
-    </pc-dropdown-item>
-    <pc-dropdown-item value=`/de/${cleanLanguageSlugLocalized}` role="link">
-        Deutsch
-        <pc-badge appearance="warning" variant="filled" slot="details">
-            WIP
-        </pc-badge>
-    </pc-dropdown-item>
-</pc-dropdown>
+    <div class="menu" id="language-menu" role="region">
+        <a href={cleanLanguageSlug} hreflang="en">English</a>
+        <a href=`/de/${cleanLanguageSlugLocalized}` hreflang="de">Deutsch</a>
+    </div>
+</pc-popup>
 
 <script>
-    import type { PcDropdown } from "placer-toolkit/dist/components/dropdown/dropdown.js";
-    import type { PcDropdownItem } from "placer-toolkit/dist/components/dropdown-item/dropdown-item.js";
+    import { animateTo, stopAnimations } from "./internal/animate.js";
+    import {
+        getAnimation,
+        setDefaultAnimation,
+    } from "placer-toolkit/dist/utilities/animation-registry.js";
+    import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
+    import type { PcPopup } from "placer-toolkit/dist/components/popup/popup.js";
+
+    setDefaultAnimation("dropdown.show", {
+        keyframes: [
+            {
+                offset: 0,
+                opacity: 0,
+                transform:
+                    "scaleY(0.35) scaleX(0.95) translateY(-10px) rotate(1deg)",
+            },
+            {
+                offset: 0.25,
+                opacity: 1,
+                transform:
+                    "scaleY(1.03) scaleX(1.005) translateY(2px) rotate(-0.5deg)",
+            },
+            {
+                offset: 0.5,
+                transform:
+                    "scaleY(0.995) scaleX(0.999) translateY(-0.5px) rotate(0.1deg)",
+            },
+            {
+                offset: 0.75,
+                transform:
+                    "scaleY(1.002) scaleX(1.0005) translateY(0.2px) rotate(-0.05deg)",
+            },
+            {
+                offset: 1,
+                opacity: 1,
+                transform: "scaleY(1) scaleX(1) translateY(0) rotate(0deg)",
+            },
+        ],
+        options: {
+            duration: 1000,
+            easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+            fill: "forwards",
+        },
+    });
+
+    setDefaultAnimation("dropdown.hide", {
+        keyframes: [
+            {
+                offset: 0,
+                opacity: 1,
+                transform: "scaleY(1) scaleX(1) translateY(0) rotate(0deg)",
+            },
+            {
+                offset: 0.15,
+                transform:
+                    "scaleY(1.005) scaleX(1.001) translateY(0.5px) rotate(-0.002deg)",
+            },
+            {
+                offset: 0.4,
+                transform:
+                    "scaleY(0.99) scaleX(0.998) translateY(-1px) rotate(0.008deg)",
+            },
+            {
+                offset: 0.75,
+                transform:
+                    "scaleY(0.6) scaleX(0.9) translateY(10px) rotate(0.007deg)",
+            },
+            {
+                offset: 1,
+                opacity: 0,
+                transform:
+                    "scaleY(0.3) scaleX(0.8) translateY(25px) rotate(0.01deg)",
+            },
+        ],
+        options: {
+            duration: 400,
+            easing: "cubic-bezier(0.6, 0.05, 0.8, 0.2)",
+            fill: "forwards",
+        },
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
-        const languageSelector = document.querySelector<PcDropdown>(".language-selector");
+        const popup = document.querySelector<PcPopup>(".language-selector");
 
-        if (!languageSelector) {
+        if (!popup) {
             return;
         }
 
-        languageSelector.addEventListener("pc-select", (event) => {
-            window.location.pathname = event.detail.item.value;
-        });
+        const trigger = popup.querySelector<PcButton>(".trigger-button");
+        const menu = popup.querySelector(".menu");
 
-        const itemsToForceLink = languageSelector.querySelectorAll<PcDropdownItem>("pc-dropdown-item");
+        if (!trigger || !menu) {
+            return;
+        }
 
-        itemsToForceLink.forEach((item) => {
-            const observer = new MutationObserver((mutationsList, observer) => {
-                for (const mutation of mutationsList) {
-                    if (
-                        mutation.type === "attributes" &&
-                        mutation.attributeName === "role" &&
-                        item.getAttribute("role") !== "link"
-                    ) {
-                        item.setAttribute("role", "link");
-                    }
-                }
+        const links = Array.from(menu.querySelectorAll("a"));
+
+        async function showMenu() {
+            if (!popup) {
+                return;
+            }
+
+            document.addEventListener("click", handleOutsideClick);
+
+            const menu = popup.querySelector<HTMLElement>(".menu");
+
+            if (!menu || !trigger) {
+                return;
+            }
+
+            popup.active = true;
+
+            trigger.setAttribute("aria-expanded", "true");
+
+            const { keyframes, options } = getAnimation(menu, "dropdown.show", {
+                dir: "ltr",
             });
 
-            observer.observe(item, { attributes: true });
+            await animateTo(menu, keyframes, options);
+            await stopAnimations(menu);
+
+            links[0]?.focus();
+
+            document.addEventListener("keydown", handleKeyDown);
+        }
+
+        async function hideMenu() {
+            if (!popup || !trigger) {
+                return;
+            }
+
+            const menu = popup.querySelector<HTMLElement>(".menu");
+
+            if (!menu) {
+                return;
+            }
+
+            const { keyframes, options } = getAnimation(menu, "dropdown.hide", {
+                dir: "ltr",
+            });
+
+            await animateTo(menu, keyframes, options);
+            await stopAnimations(menu);
+
+            popup.active = false;
+
+            trigger.setAttribute("aria-expanded", "false");
+
+            trigger.focus();
+
+            document.removeEventListener("click", handleOutsideClick);
+            document.removeEventListener("keydown", handleKeyDown);
+        }
+
+        function toggleMenu() {
+            if (!popup) {
+                return;
+            }
+
+            if (popup.active) {
+                hideMenu();
+            } else {
+                showMenu();
+            }
+        }
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                hideMenu();
+            }
+        }
+
+        function handleOutsideClick(event: MouseEvent) {
+            if (!popup) {
+                return;
+            }
+
+            if (!popup.contains(event.target as Node)) {
+                hideMenu();
+            }
+        }
+
+        trigger.addEventListener("click", toggleMenu);
+
+        links.forEach((link) => {
+            link.addEventListener("click", () => {
+                hideMenu();
+            });
         });
     });
 </script>
 
 <style>
-    pc-dropdown-item > pc-badge {
-        padding-inline: 0.35em;
-        font-size: var(--pc-font-size-xxs);
+    .language-selector .menu {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0.25em;
+        inline-size: max-content;
+        max-inline-size: var(--auto-size-available-width) !important;
+        max-block-size: var(--auto-size-available-height) !important;
+        background-color: var(--pc-color-surface-raised);
+        color: var(--pc-color-text-normal);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: calc(var(--pc-border-radius-m) + 0.25em);
+        text-align: start;
+        user-select: none;
+        overflow: auto;
+        box-shadow: var(--pc-shadow-m);
+    }
+
+    .language-selector .menu a {
+        display: flex;
+        position: relative;
+        align-items: center;
+        padding-block: 0.5em;
+        padding-inline: 1em;
+        color: var(--pc-color-text-normal);
+        border-radius: var(--pc-border-radius-m);
+        line-height: var(--pc-line-height-denser);
+        text-decoration: none;
+        isolation: isolate;
+        cursor: pointer;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        .language-selector .menu a:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-normal),
+                var(--pc-color-mix-hover)
+            );
+            color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-on-normal),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
+    .language-selector .menu a:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-active)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-on-normal),
+            var(--pc-color-mix-active)
+        );
+    }
+
+    .language-selector .menu a:focus-visible {
+        background-color: var(--pc-color-neutral-fill-normal);
+        outline: var(--pc-focus-ring);
+        outline-offset: 0;
+        z-index: 1;
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    @keyframes focus-ring-animation {
+        0% {
+            outline-width: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
+        }
     }
 </style>

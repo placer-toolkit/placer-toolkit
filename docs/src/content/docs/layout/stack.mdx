@@ -42,29 +42,37 @@ Stacks are well‐suited for forms and text, which ensures consistent spacing be
         <pc-icon
             library="default"
             icon-style="solid"
-            name="lock"
+            name="key"
             slot="prefix"
         ></pc-icon>
     </pc-input>
     <pc-checkbox>Remember me</pc-checkbox>
-    <pc-button appearance="primary" type="submit">Log in</pc-button>
-</fo>
+    <pc-button appearance="primary" type="submit">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="arrow-right-to-bracket"
+            slot="prefix"
+        ></pc-icon>
+        Sign in
+    </pc-button>
+</form>
 ```
 
 ```demo
 <div class="pc-stack pc-gap-xxl">
-    <h3>Aragorn’s Squash</h3>
+    <h3>Example heading</h3>
     <p>
-        Altogether unleash weasel mainly well‐protected hiding Farthing excuse.
-        Falling pits oil em Hasufel levels weight rides vagabonds? Gamgee
-        hard‐won thunder merrier forests treasury. Past birthday lasts lowly
-        there’d woe Woodland pa sun’s slaying most handling.
+        This paragraph represents body text within a stacked layout and is long
+        enough to demonstrate natural wrapping behavior across multiple lines.
+        It helps illustrate how text content flows vertically when combined with
+        headings and other structural elements.
     </p>
     <p>
-        Even the smallest person can change the course of the future. They
-        tempted completely other caves cloven wisest draught scrumptious cook
-        Undómiel friends. Dory crunchy huge sleepless. Unmade took nerves liquor
-        defeated Arathorn.
+        Additional text reinforces the layout by showing how multiple paragraphs
+        align, space and relate to the heading above. This mirrors common content
+        patterns such as articles, documentation sections or descriptive blocks
+        found throughout user interfaces.
     </p>
 </div>
 ```

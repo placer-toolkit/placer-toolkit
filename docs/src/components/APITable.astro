@@ -6,6 +6,7 @@ import {
 } from "../i18n/utilities.js";
 
 import CodeBlock from "./CodeBlock.astro";
+import Heading from "./Heading.astro";
 
 export interface Props {
     componentName: string;
@@ -154,7 +155,7 @@ const getReflectsIcon = ({
     const hasReflection = attribute || reflects;
     const iconName = hasReflection ? "check" : "xmark";
     const className = hasReflection ? "reflects" : "does-not-reflect";
-    const iconLabel = hasReflection ? "Reflects" : "Does not reflect";
+    const iconLabel = hasReflection ? translation("apiTable.reflects.yes") : translation("apiTable.reflects.no");
 
     return `
         <pc-icon
@@ -362,18 +363,12 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
 {
     componentData && (
-        <div class="api-documentation">
+        <div class="api-documentation" lang={language}>
             {properties.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.properties").toLowerCase()}>
-                        {translation("apiTable.heading.properties")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.properties").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.properties").toLowerCase()}>
+                    <Heading level="2">{translation("apiTable.heading.properties")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.properties") as string).toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -462,7 +457,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                                             library="default"
                                             icon-style="solid"
                                             name="xmark"
-                                            label="Does not reflect"
+                                            label={translation("apiTable.reflects.no") as string}
                                         />
                                     </td>
                                     <td class="default">‐</td>
@@ -487,15 +482,9 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {slots.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.slots").toLowerCase()}>
-                        {translation("apiTable.heading.slots")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.slots").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.slots").toLowerCase()}>
+                    <Heading level="2">{translation("apiTable.heading.slots")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.slots") as string).toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -510,7 +499,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                                             {slot.name && slot.name !== "‐" ? (
                                                 <code>{slot.name}</code>
                                             ) : (
-                                                "(default)"
+                                                `${translation("apiTable.label.slots.default")}`
                                             )}
                                         </td>
                                         <td class="description">
@@ -542,15 +531,9 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {methods.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.methods").toLowerCase()}>
-                        {translation("apiTable.heading.methods")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.methods").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.methods").toLowerCase()}>
+                    <Heading level="2">{translation("apiTable.heading.methods")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.methods") as string).toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -617,15 +600,9 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {events.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.events").toLowerCase()}>
-                        {translation("apiTable.heading.events")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.events").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.events").toLowerCase()}>
+                    <Heading level="2">{translation("apiTable.heading.events")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.events") as string).toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -678,15 +655,9 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {cssProperties.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}>
-                        {translation("apiTable.heading.customProperties")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.customProperties").toLowerCase().replace(/\s+/g, "-")}>
+                    <Heading level="2">{translation("apiTable.heading.customProperties")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.customProperties") as string).toLowerCase().replace(/\s+/g, "-")}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -739,15 +710,9 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {cssParts.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.parts").toLowerCase()}>
-                        {translation("apiTable.heading.parts")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.parts").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
-                    <pc-scroller class="table-wrapper" aria-labelledby={translation("apiTable.heading.parts").toLowerCase()}>
+                    <Heading level="2">{translation("apiTable.heading.parts")}</Heading>
+
+                    <pc-scroller class="table-wrapper" aria-labelledby={(translation("apiTable.heading.parts") as string).toLowerCase()}>
                         <table class="api-table">
                             <thead>
                                 <tr>
@@ -790,16 +755,10 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {animations.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.animations").toLowerCase()}>
-                        {translation("apiTable.heading.animations")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.animations").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
+                    <Heading level="2">{translation("apiTable.heading.animations")}</Heading>
+
                     <pc-scroller class="table-wrapper">
-                        <table class="api-table" aria-labelledby={translation("apiTable.heading.animations").toLowerCase()}>
+                        <table class="api-table" aria-labelledby={(translation("apiTable.heading.animations") as string).toLowerCase()}>
                             <thead>
                                 <tr>
                                     <th class="name">{translation("apiTable.table.name")}</th>
@@ -840,14 +799,8 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
             )}
 
             <section class="api-section">
-                <h2 id={translation("apiTable.heading.importing").toLowerCase()}>
-                    {translation("apiTable.heading.importing")}<a
-                        class="heading-anchor"
-                        href={"#" + translation("apiTable.heading.importing").toLowerCase()}
-                        aria-label={translation("ui.content.jumpToThisHeading")}
-                        data-pagefind-ignore
-                    >#</a>
-                </h2>
+                <Heading level="2">{translation("apiTable.heading.importing")}</Heading>
+
                 <p>
                     {language === "en" && (
                         <>
@@ -939,14 +892,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
             {dependencies.length > 0 && (
                 <section class="api-section">
-                    <h2 id={translation("apiTable.heading.dependencies").toLowerCase()}>
-                        {translation("apiTable.heading.dependencies")}<a
-                            class="heading-anchor"
-                            href={"#" + translation("apiTable.heading.dependencies").toLowerCase()}
-                            aria-label={translation("ui.content.jumpToThisHeading")}
-                            data-pagefind-ignore
-                        >#</a>
-                    </h2>
+                    <Heading level="2">{translation("apiTable.heading.events")}</Heading>
                     <p>
                         {language === "en" && (
                             <>

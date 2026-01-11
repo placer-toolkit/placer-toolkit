@@ -15,6 +15,7 @@ import "placer-toolkit/dist/styles/themes/utility.css";
 import "placer-toolkit/dist/styles/themes/serene.css";
 import "../styles/main.css";
 import "../styles/fonts.css";
+import "../styles/anchor-headings.css";
 import "../styles/utilities.css";
 
 const language = getLanguageFromURL(Astro.url);
@@ -73,6 +74,8 @@ const {
         <link rel="canonical" href={canonicalURL} />
         <link rel="alternate" hreflang="en" href={enURL} />
         <link rel="alternate" hreflang="de" href={deURL} />
+        <!-- Legacy fallback for search engine crawlers in search results -->
+        <link rel="icon" type="image/x-icon" href="/brand/favicon.ico" sizes="any" />
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
@@ -80,6 +83,15 @@ const {
             // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
             import "placer-toolkit/cdn/placer.js";
             import "placer-toolkit/cdn/translations/de.js";
+        </script>
+        <script is:inline>
+            (() => {
+                const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                const theme = prefersDark ? "pc-dark" : "pc-light";
+
+                document.documentElement.classList.add(theme);
+                document.documentElement.classList.remove(theme === "pc-dark" ? "pc-light" : "pc-dark");
+            })();
         </script>
         <!-- Cabin Analytics -->
         <script src="https://scripts.withcabin.com/hello.js" async is:inline
@@ -271,18 +283,6 @@ const {
         </pc-dialog>
 
         <script>
-            // Theme
-            const prefersDark =
-                window.matchMedia &&
-                window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-            document.documentElement.classList.add(
-                prefersDark ? "pc-dark" : "pc-light",
-            );
-            document.documentElement.classList.remove(
-                prefersDark ? "pc-light" : "pc-dark",
-            );
-
             // Mobile sidebar
             const mobileSidebar = document.querySelector(
                 ".mobile-sidebar",
@@ -341,7 +341,7 @@ const {
                 const overviewLink = document.createElement("a");
 
                 overviewLink.href = "#_top";
-                overviewLink.textContent = tocDesktop.dataset.overview ?? tocMobile.dataset.overview ?? "";
+                overviewLink.textContent = (tocDesktop?.dataset?.overview) ?? (tocMobile?.dataset?.overview) ?? "";
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {
@@ -416,7 +416,7 @@ const {
 
                 function determineActiveFromPosition() {
                     const targetLine = window.innerHeight * 0.18;
-                    let chosenId: string | null = null;
+                    let chosenID: string | null = null;
                     let chosenTop = -Infinity;
 
                     idToLink.forEach((_link, id) => {
@@ -434,12 +434,12 @@ const {
 
                         if (top <= targetLine && top > chosenTop) {
                             chosenTop = top;
-                            chosenId = id;
+                            chosenID = id;
                         }
                     });
 
-                    if (!chosenId) {
-                        let nearestId: string | null = null;
+                    if (!chosenID) {
+                        let nearestID: string | null = null;
                         let nearestDistance = Infinity;
 
                         idToLink.forEach((_link, id) => {
@@ -460,17 +460,17 @@ const {
 
                             if (distance < nearestDistance) {
                                 nearestDistance = distance;
-                                nearestId = id;
+                                nearestID = id;
                             }
                         });
-                        chosenId = nearestId;
+                        chosenID = nearestID;
                     }
 
-                    if (chosenId) {
+                    if (chosenID) {
                         links.forEach((link) =>
                             link.classList.toggle(
                                 "active",
-                                link.getAttribute("href") === `#${chosenId}`,
+                                link.getAttribute("href") === `#${chosenID}`,
                             ),
                         );
                     }

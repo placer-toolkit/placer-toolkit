@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import Page from "../../layouts/Page.astro";
 
 import APITable from "../../components/APITable.astro";
@@ -14,17 +15,17 @@ import "../../styles/design-tokens/transitions.css";
 import "../../styles/layout/preview-wrapper.css";
 
 export async function getStaticPaths() {
-    const allPosts = await getCollection("docs");
+    const allPosts = (await getCollection("docs")) as CollectionEntry<"docs">[];
 
     const nonDefaultLocales = ["de"];
 
-    const enPosts = allPosts.filter((post) => {
+    const enPosts = allPosts.filter((post: CollectionEntry<"docs">) => {
         const firstSegment = post.id.split("/")[0];
 
         return !nonDefaultLocales.includes(firstSegment);
     });
 
-    return enPosts.map((post) => {
+    return enPosts.map((post: CollectionEntry<"docs">) => {
         const data = post.data;
         const customSlug = data.slug?.trim();
 
@@ -58,10 +59,10 @@ function titleToComponentName(title: string) {
     );
 }
 
-const { post } = Astro.props;
+const { post } = Astro.props as { post: CollectionEntry<"docs"> };
 const { Content, headings } = await render(post);
 
-const slug = Astro.params.slug as string;
+const slug = (Astro.params as Record<string, string>).slug as string;
 
 const isComponentPage = slug.startsWith("components/");
 const componentName = isComponentPage

@@ -9,14 +9,15 @@ export default {
     "ui.content.contentNotAvailableInYourLanguage":
         "Dieser Inhalt ist noch nicht in deiner Sprache verfügbar.",
     "ui.content.englishOnly": "(nur Englisch)",
-    "ui.content.jumpToThisHeading": "Zu dieser Überschrift springen",
+
+    "ui.content.heading.anchorLabel": "Abschnitt betitelt „{{title}}“",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Bereit, mit Placer Toolkit zu bauen?",
     "landingCTA.marketingLine":
         'Native Webkomponenten für<br aria-hidden="true" />moderne Benutzeroberflächen',
     "landingCTA.marketingLine.descriptive":
-        "Placer Toolkit ist eine Open‐Source‐ und frameworkagnostische Webkomponenten‐Bibliothek zum Erstellen moderner Benutzeroberflächen.",
+        "Placer Toolkit ist eine Open‐Source‐ und frameworkagnostische Webkomponentenbibliothek zum Erstellen moderner Benutzeroberflächen.",
     "landingCTA.tagline.flexible": "Flexibel.",
     "landingCTA.tagline.accessible": "Barrierefrei.",
     "landingCTA.tagline.webComponents": "Webkomponenten.",
@@ -50,6 +51,7 @@ export default {
     "sidebar.aria": "Seitenleiste",
     "sidebar.nav.aria": "Seitenleistenmenü",
 
+    "language.selector": "Sprachauswahl",
     "theme.selector": "Designauswahl",
 
     "theme.select": "Design",
@@ -66,7 +68,7 @@ export default {
 
     // Dialogs
     "contact.paragraph.1":
-        "Wir würden uns freuen, von dir zu hören. Bitte kontaktiere uns bei Fragen oder Anliegen, die du hast.",
+        "Wir würden uns freuen, von dir zu hören. Kontaktiere uns bitte bei Fragen oder Anliegen, die du hast.",
     "contact.paragraph.2":
         'Du kannst uns per E‐Mail unter <a href="mailto:placer.coc.reports+contact@gmail.com">placer.coc.reports+contact@gmail.com</a> erreichen.',
     "contact.paragraph.3": "Wir freuen uns darauf, von dir zu hören!",
@@ -99,7 +101,11 @@ export default {
     "apiTable.table.arguments": "Argumente",
     "apiTable.table.eventDetail": "Event‐Detail",
 
+    "apiTable.reflects.yes": "Reflektiert",
+    "apiTable.reflects.no": "Reflektiert nicht",
+
     "apiTable.label.type": "Typ: ",
+    "apiTable.label.slots.default": "(Standard)",
 
     "apiTable.tabs.cdnScript": "CDN (Skript‐Tag)",
     "apiTable.tabs.cdnImport": "CDN (Import)",
@@ -120,6 +126,9 @@ export default {
     "footer.heading.docs": "Docs",
     "footer.heading.about": "Über uns",
     "footer.heading.legal": "Rechtliches",
+
+    // Navigation links (ARIA)
+    "nav.content.socialIcons.aria": "Soziale Links",
 
     // Navigation links (Docs)
     "nav.content.docs.installation": "Installation",
@@ -142,9 +151,6 @@ export default {
     "nav.content.legal.codeOfConduct": "Verhaltenskodex",
     "nav.content.legal.licence": "Lizenz",
     "nav.content.legal.impressum": "Impressum",
-
-    // Copyright year
-    "copyright.year": "© 2025–heute",
 
     // Footer copyright
     "footer.copyright.left": "Mit",

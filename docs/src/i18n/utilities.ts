@@ -29,9 +29,18 @@ export function useTranslations(language: keyof typeof ui) {
 
     const uiTyped = ui as unknown as UI;
 
-    return function translation(key: string): string | unknown {
-        const text: string =
+    return function translation(
+        key: string,
+        variables?: Record<string, string>,
+    ): string {
+        let text: string =
             uiTyped[language][key] || uiTyped[defaultLanguage][key];
+
+        if (variables) {
+            Object.entries(variables).forEach(([name, value]) => {
+                text = text.replace(`{{${name}}}`, value);
+            });
+        }
 
         return text;
     };

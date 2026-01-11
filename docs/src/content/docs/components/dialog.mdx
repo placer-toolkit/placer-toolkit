@@ -9,7 +9,7 @@ Dialogs, sometimes called “modals”, appear above the page and draw the user�
 
 ```demo:open
 <pc-dialog label="Dialog" class="dialog-overview">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    This dialog contains supplementary content that is not required immediately, such as settings, contextual actions or secondary information related to the current view.
 
     <pc-button variant="plain" slot="footer" data-dialog="close">
         Close
@@ -34,7 +34,7 @@ You can open and close dialogs with JavaScript by toggling the `open` attribute,
 
 ```demo
 <pc-dialog label="Dialog" id="dialog-open-declarative">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    This dialog is opened declaratively using a <code>data</code> attribute on a button outside of the component.
 
     <pc-button variant="plain" slot="footer" data-dialog="close">
         Close
@@ -50,7 +50,7 @@ Similarly, you can add `data-dialog="close"` to a button _inside_ of the dialog 
 
 ```demo
 <pc-dialog label="Dialog" id="dialog-dismiss-declarative">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    This dialog is dismissed using a declarative close trigger placed inside the dialog’s footer.
 
     <pc-button variant="plain" slot="footer" data-dialog="close">
         Close
@@ -138,7 +138,7 @@ The header shows a functional close button by default. You can use the `header-a
         ></pc-icon>
     </pc-button>
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    This dialog includes an additional action in the header, which can be used for tasks such as opening related content in a new window.
 
     <pc-button variant="plain" slot="footer" data-dialog="close">
         Close

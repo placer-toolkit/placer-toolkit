@@ -1,51 +1,112 @@
 ---
+import { Image } from "astro:assets";
+
+import Logo from "../../assets/logo.svg";
+import Uni404se from "../../assets/uni404se.svg";
+
 import Page from "../../layouts/Page.astro";
+
+import "../../styles/landing-override.css";
 ---
 
 <link
     rel="stylesheet"
-    href="https://fonts.bunny.net/css?family=alfa-slab-one:400|amatic-sc:700|bebas-neue:400|bungee-shade:400|caveat:700|chewy:400|creepster:400|dotgothic16:400|indie-flower:400|luckiest-guy:400|michroma:400|permanent-marker:400|press-start-2p:400|special-elite:400|ultra:400"
+    href="https://fonts.bunny.net/css?family=alfa-slab-one:400|amatic-sc:700|bebas-neue:400|bungee-shade:400|caveat:700|chewy:400|creepster:400|dotgothic16:400|indie-flower:400|luckiest-guy:400|michroma:400|permanent-marker:400|press-start-2p:400|space-grotesk:700|special-elite:400|ultra:400&display=swap"
 />
 
-<Page title="404 – Seite nicht gefunden" hero overflow={false} pagefindIgnore>
+<Page title="404 – Seite nicht gefunden" noSidebar showFooter hero>
     <div class="notfound-container">
-        <h1 class="notfound-font-switch">404</h1>
+        <Image class="uni404se" src={Uni404se} loading="eager" alt="" />
+        <Image
+            class="logo"
+            src={Logo}
+            width="128"
+            height="128"
+            loading="eager"
+            alt=""
+        />
 
-        <p>
-            Ups! Diese Seite ist auf ein unerwartetes Abenteuer gegangen. Selbst unsere besten
-            Suchhunde kehrten mit leeren Pfoten zurück.<br />
-            Vielleicht ist sie umgezogen, vielleicht hat sie nie existiert oder vielleicht versteckt sie sich einfach besonders gut.<br />
-            Willst du auf der Startseite nachsehen oder die URL noch einmal überprüfen?
-        </p>
+        <div class="content pc-dark">
+            <h1 class="notfound-font-switch">404</h1>
 
-        <footer>
-            <pc-button appearance="primary" size="large" href="/" pill>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="house"
-                    slot="prefix"></pc-icon>
-                Startseite
-            </pc-button>
+            <p>Diese Seite schlich an unseren Suchhunden vorbei.</p>
+
+            <footer class="pc-stack pc-gap-s">
+                <pc-button
+                    variant="filled outlined"
+                    data-dialog="open search-dialog"
+                >
+                    <pc-icon
+                        library="default"
+                        icon-style="solid"
+                        name="magnifying-glass"
+                        slot="prefix"></pc-icon>
+                    Schick unsere Hunde los
+                </pc-button>
+
+                <div class="pc-gap-s">
+                    <pc-button
+                        appearance="primary"
+                        variant="filled outlined"
+                        href="/"
+                    >
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="house"
+                            slot="prefix"></pc-icon>
+                        Bring mich nach Hause
+                    </pc-button>
+                    <pc-button
+                        id="random-link"
+                        variant="filled outlined"
+                        href="/"
+                    >
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="dice-six"
+                            slot="prefix"></pc-icon>
+                        Auf gut Glück!
+                    </pc-button>
+                </div>
+            </footer>
+        </div>
+
+        <pc-dialog label="Unser Datenschutzversprechen" id="privacy-promise">
+            <p>
+                Unsere Website ist zu 100 % frei von Cookies! Wir legen großen
+                Wert auf deine Privatsphäre und speichern daher keinerlei
+                Cookies oder persönliche Informationen über dich.
+            </p>
+
+            <p>
+                Dein Browserverlauf bleibt sauber und deine Daten sind
+                geschützt, ganz im Einklang mit modernen Datenschutzstandards
+                wie der
+                <abbr title="Datenschutz-Grundverordnung">DSGVO</abbr>. Genieße
+                deinen Besuch ganz ohne digitale Cookies! 🍪🚫
+            </p>
+
+            <p>
+                Weitere Informationen findest du in unserer
+                <a href="/de/docs/legal/privacy">Datenschutzerklärung</a>.
+            </p>
+
             <pc-button
-                id="random-link"
-                appearance="neutral"
-                variant="filled"
-                size="large"
-                href="/"
-                pill
+                appearance="primary"
+                variant="plain"
+                slot="footer"
+                data-dialog="close"
             >
                 <pc-icon
                     library="default"
                     icon-style="solid"
-                    name="dice-six"
+                    name="shield-halved"
                     slot="prefix"></pc-icon>
-                Auf gut Glück!
+                Alles klar!
             </pc-button>
-        </footer>
-
-        <span class="orb3"></span>
-        <span class="orb4"></span>
+        </pc-dialog>
     </div>
 </Page>
 
@@ -54,28 +115,34 @@ import Page from "../../layouts/Page.astro";
         ".notfound-font-switch",
     ) as HTMLElement;
 
+    const fontArray = [
+        "Space Grotesk",
+        "Alfa Slab One",
+        "Amatic SC",
+        "Bebas Neue",
+        "Bungee Shade",
+        "Caveat",
+        "Chewy",
+        "Creepster",
+        "DotGothic16",
+        "Indie Flower",
+        "Luckiest Guy",
+        "Michroma",
+        "Permanent Marker",
+        "Press Start 2P",
+        "Special Elite",
+        "Ultra",
+    ];
+
+    if ("fonts" in document) {
+        fontArray.forEach((font) => {
+            document.fonts.load(`1em "${font}"`);
+        });
+    }
+
+    let lastRandomFontName = "Space Grotesk";
+
     notFoundFontSwitcher?.addEventListener("click", () => {
-        const fontArray = [
-            "var(--pc-font-sans)",
-            "Alfa Slab One",
-            "Amatic SC",
-            "Bebas Neue",
-            "Bungee Shade",
-            "Caveat",
-            "Chewy",
-            "Creepster",
-            "DotGothic16",
-            "Indie Flower",
-            "Luckiest Guy",
-            "Michroma",
-            "Permanent Marker",
-            "Press Start 2P",
-            "Special Elite",
-            "Ultra",
-        ];
-
-        let lastRandomFontName = "var(--pc-font-sans)";
-
         let randomIndex;
         let randomFontName;
 
@@ -84,23 +151,41 @@ import Page from "../../layouts/Page.astro";
             randomFontName = fontArray[randomIndex];
         } while (randomFontName === lastRandomFontName);
 
-        notFoundFontSwitcher.style.fontFamily = `${randomFontName}, var(--pc-font-sans)`;
+        notFoundFontSwitcher.style.fontFamily = `'${randomFontName}', var(--pc-font-sans)`;
 
         lastRandomFontName = randomFontName;
     });
 
-    function trySetRandomLink(attempts = 0) {
-        if (window.__sidebarLinks__ && window.__sidebarLinks__.length > 0) {
-            const links = window.__sidebarLinks__;
-            const randomLink = links[Math.floor(Math.random() * links.length)];
-            document
-                .getElementById("random-link")
-                ?.setAttribute("href", randomLink);
+    function trySetRandomLink() {
+        const randomButton = document.getElementById("random-link");
+
+        if (!randomButton) {
             return;
         }
 
-        if (attempts < 20) {
-            setTimeout(() => trySetRandomLink(attempts + 1), 100);
+        let links = window.__sidebarLinks__;
+
+        if (!links || links.length === 0) {
+            const mobileLinks = Array.from(
+                document.querySelectorAll(".mobile-sidebar pc-details a"),
+            )
+                .map((a) => a.getAttribute("href"))
+                .filter(
+                    (href) =>
+                        href &&
+                        !href.includes("/legal/") &&
+                        !href.startsWith("http"),
+                );
+
+            links = mobileLinks as string[];
+        }
+
+        if (links && links.length > 0) {
+            const randomLink = links[Math.floor(Math.random() * links.length)];
+
+            randomButton.setAttribute("href", randomLink);
+        } else {
+            setTimeout(() => trySetRandomLink(), 200);
         }
     }
 
@@ -108,198 +193,225 @@ import Page from "../../layouts/Page.astro";
 </script>
 
 <style>
+    :global(.navbar) {
+        background: color-mix(
+            in oklab,
+            var(--pc-color-surface-default) var(--navigation-opacity),
+            transparent
+        ) !important;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    :global(.pc-dark) :global(body) {
+        --indigo-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-indigo-05) 40%
+        );
+        --blue-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-blue-05) 40%
+        );
+        --purple-overlay: color-mix(
+            in oklab,
+            var(--pc-color-neutral-05),
+            var(--pc-color-purple-05) 40%
+        );
+
+        background:
+            linear-gradient(135deg, var(--indigo-overlay), transparent 40%),
+            linear-gradient(215deg, var(--indigo-overlay), transparent 40%),
+            linear-gradient(315deg, var(--blue-overlay), transparent 40%),
+            linear-gradient(45deg, var(--purple-overlay), transparent 40%),
+            radial-gradient(var(--indigo-overlay), transparent 40%)
+                no-repeat -60vw -40vh / 105vw 200vh,
+            radial-gradient(var(--indigo-overlay), transparent 65%) no-repeat
+                50% calc(100% + 20rem) / 60rem 30rem;
+    }
+
+    :global(.pc-light) :global(body) {
+        --indigo-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-indigo-50) 8%
+        );
+        --blue-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-blue-50) 8%
+        );
+        --purple-overlay-light: color-mix(
+            in oklab,
+            var(--pc-color-neutral-95),
+            var(--pc-color-purple-50) 5%
+        );
+
+        background:
+            linear-gradient(135deg, var(--blue-overlay-light), transparent 40%),
+            linear-gradient(
+                215deg,
+                var(--indigo-overlay-light),
+                transparent 40%
+            ),
+            linear-gradient(
+                315deg,
+                var(--purple-overlay-light),
+                transparent 40%
+            ),
+            radial-gradient(var(--blue-overlay-light), transparent 40%)
+                no-repeat -60vw -40vh / 105vw 200vh,
+            radial-gradient(var(--indigo-overlay-light), transparent 65%)
+                no-repeat 50% calc(100% + 20rem) / 60rem 30rem;
+    }
+
     .notfound-container {
+        display: grid;
+        grid-template: 100% / 100%;
+        margin-block: var(--pc-spacing-xl);
+        margin-inline: calc(-1 * var(--pc-spacing-xxxxl));
+        overflow: hidden;
+    }
+
+    .notfound-container > * {
+        grid-row: 1 / -1;
+        grid-column: 1 / -1;
+        place-self: center;
+    }
+
+    .notfound-container .uni404se {
+        min-block-size: 46.875rem;
+        object-fit: cover;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    .notfound-container .logo {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+        filter: drop-shadow(
+            0 0 2px
+                color-mix(in oklab, var(--pc-color-primary-60), transparent 70%)
+        );
+        transform: translate(17rem, 0.25rem) rotate(-30deg);
+        transform-origin: center;
+        animation: logo-movement 3s infinite alternate ease-in-out;
+    }
+
+    .notfound-container .content {
         display: flex;
-        position: relative;
-        flex-direction: column;
         align-items: center;
-        min-inline-size: 100% !important;
-        inline-size: 100% !important;
-        max-inline-size: 100% !important;
-        z-index: 0;
-    }
-
-    .notfound-container::before {
-        content: "";
-        position: absolute;
-        inset-inline-start: -7vw;
-        inset-block-end: -7vw;
-        inline-size: 18vw;
-        block-size: 18vw;
-        border-radius: 50%;
-        background-image: radial-gradient(
-            circle at 60% 40%,
-            var(--pc-color-purple-40),
-            var(--pc-color-purple-60)
-        );
-        filter: blur(18px);
-        opacity: 0.55;
-        z-index: -2;
+        flex-direction: column;
+        padding: var(--pc-spacing-l);
+        inline-size: 100%;
+        max-inline-size: 30rem;
+        text-align: center;
         pointer-events: none;
-        animation: orb-float-1 7s ease-in-out infinite alternate;
     }
 
-    :global(.pc-light) .notfound-container::before {
-        background-image: radial-gradient(
-            circle at 60% 40%,
-            var(--pc-color-purple-60),
-            var(--pc-color-purple-40)
-        );
+    .notfound-container .content > * {
+        pointer-events: auto;
     }
 
-    .notfound-container::after {
-        content: "";
-        position: absolute;
-        inset-block-start: -6vw;
-        inset-inline-end: -8vw;
-        inline-size: 14vw;
-        block-size: 14vw;
-        border-radius: 50%;
-        background-image: radial-gradient(
-            circle at 40% 60%,
-            var(--pc-color-primary-30),
-            var(--pc-color-primary-50)
-        );
-        filter: blur(14px);
-        opacity: 0.45;
-        z-index: -2;
-        pointer-events: none;
-        animation: orb-float-2 9s ease-in-out infinite alternate;
-    }
-
-    :global(.pc-light) .notfound-container::after {
-        background-image: radial-gradient(
-            circle at 60% 40%,
-            var(--pc-color-primary-70),
-            var(--pc-color-primary-50)
-        );
-    }
-
-    .notfound-container .orb3 {
-        content: "";
-        position: absolute;
-        inset-block-start: 38vh;
-        inset-inline-start: 8vw;
-        inline-size: 10vw;
-        block-size: 10vw;
-        border-radius: 50%;
-        background: radial-gradient(
-            circle at 60% 60%,
-            var(--pc-color-pink-30),
-            var(--pc-color-pink-50)
-        );
-        filter: blur(12px);
-        opacity: 0.38;
-        z-index: -2;
-        pointer-events: none;
-        animation: orb-float-3 11s ease-in-out infinite alternate;
-    }
-
-    :global(.pc-light) .notfound-container .orb3 {
-        background-image: radial-gradient(
-            circle at 60% 60%,
-            var(--pc-color-pink-70),
-            var(--pc-color-pink-50)
-        );
-    }
-
-    .notfound-container .orb4 {
-        content: "";
-        position: absolute;
-        inset-block-end: 10vh;
-        inset-inline-end: 6vw;
-        inline-size: 8vw;
-        block-size: 8vw;
-        border-radius: 50%;
-        background-image: radial-gradient(
-            circle at 40% 60%,
-            var(--pc-color-yellow-20),
-            var(--pc-color-yellow-40)
-        );
-        filter: blur(10px);
-        opacity: 0.32;
-        z-index: -2;
-        pointer-events: none;
-        animation: orb-float-4 13s ease-in-out infinite alternate;
-    }
-
-    :global(.pc-light) .orb4 {
-        background-image: radial-gradient(
-            circle at 40% 60%,
-            var(--pc-color-yellow-80),
-            var(--pc-color-yellow-60)
-        );
-    }
-
-    h1 {
+    .notfound-container .content h1 {
         display: inline-block;
-        margin-block-start: var(--pc-spacing-xxl);
+        font-family: "Space Grotesk", var(--pc-font-sans);
         font-size: 4rem;
         text-align: center;
         user-select: none;
         -webkit-user-select: none;
         cursor: pointer;
-        transition: scale var(--pc-transition-medium) ease-in-out;
+        transition: all var(--pc-transition-fast) ease-in-out;
     }
 
     @media (hover: hover) {
-        h1:hover {
-            scale: 1.05;
+        .notfound-container .content h1:hover {
+            color: color-mix(
+                in oklab,
+                var(--pc-color-primary-on-quiet),
+                var(--pc-color-mix-hover)
+            );
         }
     }
 
-    h1:active {
+    .notfound-container .content h1:active {
+        color: color-mix(
+            in oklab,
+            var(--pc-color-primary-on-quiet),
+            var(--pc-color-mix-active)
+        );
         scale: 0.95;
     }
 
-    p {
+    .notfound-container .content p {
         text-align: center;
     }
 
-    footer {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--pc-spacing-m);
+    .notfound-container .content footer pc-button:first-child::part(base) {
+        justify-content: flex-start;
     }
 
-    @keyframes orb-float-1 {
-        0% {
-            transform: translateY(0) scale(1);
+    .notfound-container .content footer pc-button::part(base) {
+        border-radius: calc(var(--pc-form-control-height) / 2);
+        transition:
+            all var(--pc-transition-fast) ease-in-out,
+            translate var(--pc-transition-medium) cubic-bezier(0.4, 0, 0.2, 1),
+            border-radius var(--pc-transition-medium)
+                cubic-bezier(0.68, 0, 0.32, 1.6);
+    }
+
+    @media (hover: hover) {
+        .notfound-container
+            .content
+            footer
+            pc-button::part(base):hover:not(:active) {
+            translate: 0 -0.25rem;
+            transition:
+                all var(--pc-transition-fast) ease-in-out,
+                translate var(--pc-transition-medium)
+                    cubic-bezier(0.18, 0.89, 0.32, 1.28),
+                border-radius var(--pc-transition-medium)
+                    cubic-bezier(0.68, 0, 0.32, 1.6);
         }
 
-        100% {
-            transform: translateY(-2vw) scale(1.08);
+        .notfound-container .content footer pc-button::part(base):hover:active {
+            translate: 0 -0.25rem;
+            transition:
+                all var(--pc-transition-fast) ease-in-out,
+                translate var(--pc-transition-medium)
+                    cubic-bezier(0.18, 0.89, 0.32, 1.28),
+                border-radius var(--pc-transition-slow)
+                    cubic-bezier(0.34, 2, 0.64, 1);
         }
     }
 
-    @keyframes orb-float-2 {
-        0% {
-            transform: translate(0, 0) scale(1);
-        }
+    .notfound-container .content footer pc-button::part(base):active {
+        border-radius: var(--pc-border-radius-m);
+        transition:
+            all var(--pc-transition-fast) ease-in-out,
+            border-radius var(--pc-transition-slow)
+                cubic-bezier(0.34, 2, 0.64, 1);
+    }
 
-        100% {
-            transform: translate(-2vw, 2vw) scale(1.12);
+    @keyframes logo-movement {
+        50% {
+            transform: translate(17rem, 0.35rem) rotate(-32deg);
         }
     }
 
-    @keyframes orb-float-3 {
-        0% {
-            transform: translateX(0) scale(1);
-        }
-
-        100% {
-            transform: translateX(3vw) scale(0.95);
+    @keyframes logo-movement-mobile {
+        50% {
+            transform: translate(-6rem, -19rem) rotate(12deg);
         }
     }
 
-    @keyframes orb-float-4 {
-        0% {
-            transform: translateY(0) scale(1);
-        }
-
-        100% {
-            transform: translateY(-3vw) scale(1.1);
+    @media screen and (max-width: 720px) {
+        .notfound-container .logo {
+            transform: translate(-6rem, -19rem) rotate(10deg);
+            animation: logo-movement-mobile 3s infinite alternate ease-in-out;
         }
     }
 </style>
