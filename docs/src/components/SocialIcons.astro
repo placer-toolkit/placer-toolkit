@@ -1,17 +1,26 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
 const { is992Size, slotName, variant = "outlined" } = Astro.props;
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
 ---
 
 <div
     class:list={[
-        { "navigation-icons": true },
+        { "social-icons": true },
         { "is-header-action": slotName === "header-actions" },
         { "pc-992-size": is992Size },
     ]}
-    aria-label="Navigation icons"
+    aria-label={translation("nav.content.socialIcons.aria") as string}
     slot={slotName}
 >
-    <pc-button size="small" variant={variant} data-dialog="open v0-site-warning">
+    <pc-button
+        size="small"
+        variant={variant}
+        data-dialog="open v0-site-warning"
+    >
         <pc-icon
             class="icon-expand"
             library="default"
@@ -36,14 +45,14 @@ const { is992Size, slotName, variant = "outlined" } = Astro.props;
 </div>
 
 <style>
-    .navigation-icons {
+    .social-icons {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: var(--pc-spacing-m);
     }
 
-    .navigation-icons.is-header-action {
+    .social-icons.is-header-action {
         gap: var(--pc-spacing-xs);
     }
 </style>

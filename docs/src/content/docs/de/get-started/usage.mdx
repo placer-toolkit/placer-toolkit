@@ -38,9 +38,9 @@ Weitere Informationen zu allen Eigenschaften einer Komponente findest du in der 
 
 ## Events
 
-Du kannst auf Standard‐Events wie `click`, `mouseover`, `mouseout` usw. hören, wie du es normalerweise tun würden. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Nutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
+Du kannst Standard‐Events wie `click`, `mouseover`, `mouseout` usw. wie gewohnt abfangen, wie du es normalerweise tun würdest. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Nutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
 
-Daher solltest du fast immer auf Custom Events hören. Anstatt z. B. auf `click` zu hören, um zu erkennen, wann ein `<pc-checkbox>` umgeschaltet wird, hörst du auf `pc-change`.
+Daher solltest du fast immer Custom Events abfangen. Anstatt z. B. das `click`‐Event zu nutzen, um zu erkennen, wann ein `<pc-checkbox>` umgeschaltet wird, nutzt du das `pc-change`‐Event.
 
 ```html
 <pc-checkbox>Kreuz mich an</pc-checkbox>
@@ -117,7 +117,7 @@ Custom Elements dürfen keine Self‐Closing Tags haben. Ähnlich wie bei `<scri
 
 Man könnte erwarten, dass ähnlich benannte Elemente die gleiche API wie native HTML‐Elemente haben, aber das ist nicht immer der Fall. Placer Toolkit‐Komponenten **sind nicht** als eins‐zu‐eins‐Ersatz für ihre HTML‐Pendants konzipiert. Obwohl sie in der Regel die gleiche API teilen, kann es subtile Unterschiede geben.
 
-Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, aber das native Element verwendet standardmäßig `submit`, während das Placer Toolkit‐Element standardmäßig `button` verwendet, da dies für die meisten Nutzer:innen eine bessere Voreinstellung ist.
+Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, aber das native Element verwendet standardmäßig `submit`, während das Placer Toolkit‐Element standardmäßig `button` verwendet, da dies für die meisten Nutzer:innen die sinnvollere Standardeinstellung ist.
 
 <pc-callout appearance="warning">
     <pc-icon
@@ -126,13 +126,13 @@ Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, abe
         name="book-open"
         slot="icon"
     ></pc-icon>
-    <strong>Treffe keine Annahmen über die API einer Komponente!</strong><br />
+    <strong>Verlass dich nicht auf Vermutungen bezüglich der API einer Komponente!</strong><br />
     Um unerwartetes Verhalten zu vermeiden, nimm dir bitte die Zeit, die Dokumentation zu prüfen und sicherzustellen, dass du verstehst, was jedes Attribut, jede Eigenschaft, Methode und jedes Event bewirken soll.
 </pc-callout>
 
 ## Warten auf das Laden von Komponenten
 
-Web Components werden mit JavaScript registriert, daher kann es je nach Art und Zeitpunkt des Ladens von Placer Toolkit zu einem Flash of Undefined Custom Elements (FOUCE) kommen, wenn die Seite geladen wird. Es gibt mehrere Möglichkeiten, dies zu verhindern – mit einem Opt‐In Utility, einer Custom‐CSS‐Regel oder einem JS‐basierten Promise.
+Webkomponenten werden mit JavaScript registriert, daher kann es je nach Art und Zeitpunkt des Ladens von Placer Toolkit zu einem Flash of Undefined Custom Elements (FOUCE) kommen, wenn die Seite geladen wird. Es gibt mehrere Möglichkeiten, dies zu verhindern – mit einem Opt‐In Utility, einer Custom‐CSS‐Regel oder einem JS‐basierten Promise.
 
 Eine Möglichkeit ist die Verwendung unseres FOUCE‐Utilities, um FOUCE zu verhindern. Diese Datei wird automatisch beim Laden von `placer.css` geladen.
 
@@ -164,8 +164,8 @@ Eine clevere Möglichkeit, diese Methode zu verwenden, besteht darin, den `<body
         customElements.whenDefined("pc-rating"),
     ]);
 
-    /* Die Button‐, Card‐ und Rating‐Komponenten sind jetzt registriert!
-       Füge die Klasse „ready“ hinzu, damit die UI eingeblendet wird. */
+    // Die Button‐, Card‐ und Rating‐Komponenten sind jetzt registriert!
+    // Füge die Klasse „ready“ hinzu, damit die UI eingeblendet wird.
     document.body.classList.add("ready");
 </script>
 
@@ -209,7 +209,7 @@ checkbox.updateComplete.then(() => {
 });
 ```
 
-Dieses Mal sehen wir einen leeren String, was bedeutet, dass das Boolean‐Attribut jetzt vorhanden ist!
+Dieses Mal erhalten wir `true`, was bedeutet, dass das Boolean‐Attribut jetzt vorhanden ist!
 
 <pc-callout appearance="warning">
     <pc-icon

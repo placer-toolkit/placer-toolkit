@@ -7,9 +7,9 @@ Placer Toolkit takes the security of our components and ecosystem seriously. Thi
 We provide security updates only for actively maintained versions of Placer Toolkit. At any given time, the latest stable release is supported. Pre‐1.0 releases are not supported and won’t receive any more feature or security updates.
 
 | Version        | Is supported? |
-| -------------- | ------------- |
-| 1.x.x (stable) | ✅            |
-| 0.x.x (EOL)    | ❌            |
+| :------------- | :-----------: |
+| 1.x.x (stable) |      ✅       |
+| 0.x.x (EOL)    |      ❌       |
 
 ## 🐞 Reporting a vulnerability
 

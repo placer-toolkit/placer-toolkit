@@ -21,7 +21,7 @@ You don’t need any of this to use Placer Toolkit. This section is for contribu
 
 ```shell
 git clone https://github.com/placer-toolkit/placer-toolkit
-cd placer-toolkit # Navigate into your clone
+cd placer-toolkit # Navigates into your clone
 npm install # Installs dependencies for Placer Toolkit
 cd docs
 npm install # Installs dependencies for Placer Toolkit’s docs
@@ -30,7 +30,7 @@ npm install # Installs dependencies for Placer Toolkit’s docs
 2. Once you’ve cloned the repo, you can run the following command to spin up the development server for the docs. Make sure you’re in the `docs` folder of the project.
 
 ```shell
-npm run dev # To spin up the dev server provided by Astro
+npm run dev # Spins up the dev server provided by Astro
 npx astro dev --host # If you want to expose the server on your network
 ```
 
@@ -40,7 +40,7 @@ This will spin up the dev server on `localhost:4321`. There isn’t any hot modu
 
 ```shell
 npm run build # Builds the project. Also initialises Pagefind on‐the‐go
-npm run preview # To spin up the production server provided by Astro
+npm run preview # Spins up the production server provided by Astro
 ```
 
 ## 📄 Licence

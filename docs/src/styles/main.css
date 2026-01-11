@@ -154,49 +154,6 @@ main {
     &:not(.hero) article .does-not-reflect {
         color: var(--pc-color-danger-50);
     }
-
-    &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor {
-        margin-inline-start: var(--pc-spacing-s);
-        opacity: 1;
-        color: var(--pc-color-text-link);
-        text-decoration: none;
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    @media (hover: hover) {
-        &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor:hover {
-            color: color-mix(
-                in oklab,
-                var(--pc-color-text-link),
-                var(--pc-color-mix-hover)
-            );
-        }
-    }
-
-    &:not(.hero) article :is(h2, h3, h4, h5, h6) .heading-anchor:active {
-        color: color-mix(
-            in oklab,
-            var(--pc-color-text-link),
-            var(--pc-color-mix-active)
-        );
-    }
-
-    &:not(.hero)
-        article
-        :is(h2, h3, h4, h5, h6):not(:hover)
-        .heading-anchor:not(:focus-visible) {
-        opacity: 0;
-    }
-
-    @media (hover: none) {
-        &:not(.hero)
-            article
-            :is(h2, h3, h4, h5, h6):not(:hover)
-            .heading-anchor {
-            opacity: 1;
-        }
-    }
 }
 
 .content-layout {
@@ -351,7 +308,7 @@ main {
         }
 
         ul {
-            margin-block-start: -1rem;
+            margin-block-start: calc(var(--pc-spacing-m) * -1);
         }
     }
 

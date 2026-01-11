@@ -7,7 +7,7 @@ Details show a brief summary and expand to show additional content.
 
 ```demo:open
 <pc-details summary="Toggle me">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    This section contains additional details that are hidden by default. Use details to progressively disclose content that isn’t required immediately, such as explanations, hints or secondary settings.
 </pc-details>
 ```
 
@@ -20,16 +20,19 @@ Use the `variant` attribute to change the details’ variant.
 ```demo
 <div class="pc-stack">
     <pc-details variant="outlined" summary="Outlined (default)">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Additional information is hidden until the summary is activated. This variant uses an outlined container to separate it from surrounding content.
     </pc-details>
+
     <pc-details variant="filled outlined" summary="Filled + Outlined">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        This variant combines a filled background with an outline. Use it when details need stronger visual emphasis.
     </pc-details>
+
     <pc-details variant="filled" summary="Filled">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Filled details visually group related information and help distinguish expandable content from the rest of the page.
     </pc-details>
+
     <pc-details variant="plain" summary="Plain">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        The plain variant removes most visual styling and is best used in dense layouts or inline documentation.
     </pc-details>
 </div>
 ```
@@ -40,7 +43,7 @@ Use the `disabled` attribute to prevent the details from expanding.
 
 ```demo
 <pc-details summary="Disabled" disabled>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    This content cannot be expanded because the Details component is currently disabled. Disabled details remain visible but non‐interactive.
 </pc-details>
 ```
 
@@ -63,8 +66,7 @@ Use the `expand-icon` and `collapse-icon` slots to change the expand and collaps
         slot="collapse-icon"
     ></pc-icon>
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    You can replace the default summary icon using slots. This example uses plus and minus icons and disables the rotation animation.
 </pc-details>
 
 <style>
@@ -86,7 +88,7 @@ To use HTML in the summary, use the `summary` slot. Links and other interactive 
             this link</a>!
     </span>
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    Interactive elements inside the summary slot retain their default behaviour. Use this sparingly and ensure the summary remains clear and concise.
 </pc-details>
 ```
 
@@ -94,11 +96,15 @@ To use HTML in the summary, use the `summary` slot. Links and other interactive 
 
 The details component automatically adapts to RTL languages with the `lang` and `dir` attributes.
 
+{/* cspell:disable */}
+
 ```demo
-<pc-details summary="نص تجريبي" lang="ar" dir="rtl">
-    هناك حقيقة مثبتة منذ زمن طويل وهي أن المحتوى المقروء لصفحة ما سيلهي القارئ عن التركيز على الشكل الخارجي للنص أو شكل توضع الفقرات في الصفحة التي يقرأها. ولذلك يتم استخدام طريقة لوريم إيبسوم.
+<pc-details summary="مزيد من المعلومات" lang="ar" dir="rtl">
+    يتم استخدام عنصر التفاصيل لعرض محتوى إضافي يمكن إظهاره أو إخفاؤه حسب الحاجة، مع دعم كامل للغات من اليمين إلى اليسار.
 </pc-details>
 ```
+
+{/* cspell:enable */}
 
 ### Group details
 
@@ -107,15 +113,15 @@ Details are designed to function independently, but you can simulate a group or 
 ```demo
 <div class="details-group pc-stack">
     <pc-details summary="First" open>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Only one details element in this group can be open at a time. Opening another will automatically close the others.
     </pc-details>
 
     <pc-details summary="Second">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        This behaviour is implemented by listening to the <code>pc-show</code> event and updating the open state programmatically.
     </pc-details>
 
     <pc-details summary="Third">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Grouping details like this is useful for FAQs, settings panels or step‐by‐step explanations.
     </pc-details>
 </div>
 

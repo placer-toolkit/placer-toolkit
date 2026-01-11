@@ -15,7 +15,7 @@ import "../styles/landing-override.css";
 <!-- Space Grotesk — Bunny Fonts -->
 <link
     rel="stylesheet"
-    href="https://fonts.bunny.net/css?family=space-grotesk:700"
+    href="https://fonts.bunny.net/css?family=space-grotesk:700&display=swap"
 />
 
 <Page title="Placer Toolkit" noSidebar showFooter hero>
@@ -35,7 +35,8 @@ import "../styles/landing-override.css";
                 icon="puzzle-piece"
                 href="/docs/get-started/usage"
             >
-                Built with web standards, Placer Toolkit works in any framework—or none at all.
+                Built with web standards, Placer Toolkit works in any
+                framework—or none at all.
                 <em>No locking in, no compromises.</em>
             </FeatureTile>
             <FeatureTile
@@ -51,7 +52,8 @@ import "../styles/landing-override.css";
                 icon="shield-halved"
                 href="/docs/legal/gdpr"
             >
-                No trackers, no cookies, no worries. Locally hosted and 100 % GDPR‐compliant.
+                No trackers, no cookies, no worries. Locally hosted and 100 %
+                GDPR‐compliant.
                 <em>Privacy by design.</em>
             </FeatureTile>
             <FeatureTile
@@ -59,7 +61,8 @@ import "../styles/landing-override.css";
                 icon="paintbrush"
                 href="/docs/get-started/customisation"
             >
-                Easily restyle, customise and adapt components to match your design.
+                Easily restyle, customise and adapt components to match your
+                design.
                 <em>Your website, your rules.</em>
             </FeatureTile>
             <FeatureTile
@@ -67,7 +70,8 @@ import "../styles/landing-override.css";
                 icon="globe"
                 href="/docs/get-started/localisation"
             >
-                With 71 locales out‐of‐the‐box and the ability to add more any time.
+                With 71 locales out‐of‐the‐box and the ability to add more any
+                time.
                 <em>Your website speaks every language.</em>
             </FeatureTile>
             <FeatureTile
@@ -75,7 +79,8 @@ import "../styles/landing-override.css";
                 icon="feather"
                 href="/docs/get-started/installation"
             >
-                No unnecessary dependencies, no bloat. Only what you actually need.
+                No unnecessary dependencies, no bloat. Only what you actually
+                need.
                 <em>Lean, fast, maintainable.</em>
             </FeatureTile>
         </FeatureTiles>
@@ -83,7 +88,11 @@ import "../styles/landing-override.css";
         <h2 class="pc-heading-l">Why use Placer Toolkit?</h2>
 
         <p>
-            Compared to other component toolkits, Placer Toolkit is built upon native web components, which results in concise, highly semantic code. This comparison shows the equivalent functionality in a CSS‐based toolkit like Bootstrap and the web component‐based toolkit Placer Toolkit, demonstrating a massive reduction in code complexity and improved readability.
+            <strong>Read intent, not implementation.</strong>
+            Traditional toolkits hide your logic inside a “class jungle”. Placer Toolkit
+            uses semantic web components to make your markup readable again. Same
+            line count, but zero noise—just clean, expressive code that tells you
+            exactly what it does.
         </p>
 
         <CodeComparison />
@@ -123,7 +132,8 @@ import "../styles/landing-override.css";
             </p>
 
             <p>
-                View our <a href="/legal/privacy">Privacy Policy</a> for more information.
+                View our <a href="/docs/legal/privacy">Privacy Policy</a> for more
+                information.
             </p>
 
             <pc-button
@@ -229,12 +239,20 @@ import "../styles/landing-override.css";
 
         background:
             linear-gradient(135deg, var(--blue-overlay-light), transparent 40%),
-            linear-gradient(215deg, var(--indigo-overlay-light), transparent 40%),
-            linear-gradient(315deg, var(--purple-overlay-light), transparent 40%),
+            linear-gradient(
+                215deg,
+                var(--indigo-overlay-light),
+                transparent 40%
+            ),
+            linear-gradient(
+                315deg,
+                var(--purple-overlay-light),
+                transparent 40%
+            ),
             radial-gradient(var(--blue-overlay-light), transparent 40%)
                 no-repeat -60vw -40vh / 105vw 200vh,
-            radial-gradient(var(--indigo-overlay-light), transparent 65%) no-repeat
-                50% calc(100% + 20rem) / 60rem 30rem;
+            radial-gradient(var(--indigo-overlay-light), transparent 65%)
+                no-repeat 50% calc(100% + 20rem) / 60rem 30rem;
     }
 
     .landing-page {

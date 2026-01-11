@@ -36,12 +36,16 @@ Frames are well‐suited for images and image placeholders.
 ```demo
 <div class="pc-flank" style="--flank-size: 8rem">
     <div class="pc-frame pc-border-radius-m">
-        <img src="https://images.unsplash.com/photo-1523593288094-3ccfb6b2c192?q=20" alt="" />
+        <img
+            src="https://placer-toolkit.vercel.app/placeholder/128x128.svg"
+            alt=""
+            style="border-radius: var(--pc-border-radius-l)"
+        />
     </div>
     <div class="pc-flank:end" style="--content-percentage: 70%">
         <div class="pc-stack pc-gap-s">
-            <h3>The Lord of the Rings: The Fellowship of the Ring</h3>
-            <span>J.R.R. Tolkien</span>
+            <h3>Document title</h3>
+            <span>Last updated 2 days ago</span>
         </div>
         <pc-button size="small" variant="plain">
             <pc-icon

@@ -44,6 +44,15 @@ pc-button:active {
     }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .arrow-up-move,
+    .arrow-right-move,
+    .arrow-down-move,
+    .arrow-left-move {
+        transition-duration: 100ms !important;
+        transition-timing-function: ease-out !important;
+    }
+}
 /* #endregion */
 
 /* #region — Icon visibility based on button state */
