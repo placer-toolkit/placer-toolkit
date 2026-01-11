@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import Page from "../../../layouts/Page.astro";
 
 import APITable from "../../../components/APITable.astro";
@@ -37,7 +38,7 @@ export async function getStaticPaths() {
     }
 
     for (const targetSlug of defaultDocsSlugs) {
-        const defaultPost = allDocs.find((post) => {
+        const defaultPost = allDocs.find((post: CollectionEntry<"docs">) => {
             const idParts = post.id.split("/");
             const postSlug = (
                 idParts[0] === defaultLocale ? idParts.slice(1) : idParts
@@ -55,8 +56,12 @@ export async function getStaticPaths() {
         }
 
         for (const lang of targetLocales) {
-            const localizedPost = allDocs.find((post) =>
-                post.id.startsWith(lang + "/" + targetSlug),
+            const localizedPost = allDocs.find(
+                (post: CollectionEntry<"docs">) => {
+                    const idWithoutExtension = post.id.replace(/\.mdx?$/, "");
+
+                    return idWithoutExtension === `${lang}/${targetSlug}`;
+                },
             );
             const postToRender = localizedPost || defaultPost;
             const isFallback = !localizedPost;

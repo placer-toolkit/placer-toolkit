@@ -7,21 +7,64 @@ import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
 
 Compare visual differences between similar content with a sliding panel.
 
-For best results, use images that share the same dimensions. The slider can be controlled by dragging or pressing the <kbd aria-label="Left">←</kbd> and <kbd aria-label="Right">→</kbd> arrow keys. **Tip:** Press <AutoKeyboardSwitch keyName="shift" /> + Arrow keys to move the slider in intervals of 10, or <kbd>Home</kbd> + <kbd>End</kbd> to jump to the beginning or the end.
+For best results, use images that share the same dimensions. The slider can be controlled by dragging or pressing the <kbd aria-label="Left">←</kbd> and <kbd aria-label="Right">→</kbd> arrow keys.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="keyboard"
+        slot="icon"
+    ></pc-icon>
+    Press <AutoKeyboardSwitch keyName="shift" /> + <kbd aria-label="Left">←</kbd> or <kbd aria-label="Right">→</kbd> arrow key to move the slider in intervals of 10, or <kbd>Home</kbd> + <kbd>End</kbd> to jump to the beginning or the end.
+</pc-callout>
 
 ```demo:open
 <pc-comparer>
     <img
         slot="before"
-        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&sat=-100&bri=-5"
-        alt="Greyscale version of a fantasy desert that’s all blue"
+        src="https://placer-toolkit.vercel.app/images/desert-at-daytime.webp"
+        alt="A desert at daytime"
     />
     <img
         slot="after"
-        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-        alt="Colour version of a fantasy desert that’s all blue"
+        src="https://placer-toolkit.vercel.app/images/desert-at-nighttime.webp"
+        alt="A desert at nighttime"
     />
 </pc-comparer>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>
+        <a
+            href="https://unsplash.com/photos/sand-dune-zuueig1w8WI"
+            rel="noreferrer noopener"
+            target="_blank"
+        >
+            Sand dune</a>
+    </strong> and
+    <strong>
+        <a
+            href="https://unsplash.com/photos/desert-at-night-a2kD4b0KK4s"
+            rel="noreferrer noopener"
+            target="_blank"
+        >
+            Desert at night</a>
+    </strong> by
+    <a
+        href="https://unsplash.com/@yamaicle"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        Mike Yukhtenko</a> are available on
+    <a href="https://unsplash.com">
+        Unsplash</a> under the
+    <a
+        href="https://unsplash.com/license"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        Unsplash License</a>.
+</p>
 ```
 
 ## Demos
@@ -34,13 +77,46 @@ Use the `position` attribute to set the initial position of the slider. This is 
 <pc-comparer position="25">
     <img
         slot="before"
-        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80&sat=-100&bri=-5"
-        alt="Greyscale version of a fantasy desert that’s all blue"
+        src="https://placer-toolkit.vercel.app/images/desert-at-daytime.webp"
+        alt="A desert at daytime"
     />
     <img
         slot="after"
-        src="https://images.unsplash.com/photo-1554110397-9bac083977c6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-        alt="Colour version of a fantasy desert that’s all blue"
+        src="https://placer-toolkit.vercel.app/images/desert-at-nighttime.webp"
+        alt="A desert at nighttime"
     />
 </pc-comparer>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>
+        <a
+            href="https://unsplash.com/photos/sand-dune-zuueig1w8WI"
+            rel="noreferrer noopener"
+            target="_blank"
+        >
+            Sand dune</a>
+    </strong> and
+    <strong>
+        <a
+            href="https://unsplash.com/photos/desert-at-night-a2kD4b0KK4s"
+            rel="noreferrer noopener"
+            target="_blank"
+        >
+            Desert at night</a>
+    </strong> by
+    <a
+        href="https://unsplash.com/@yamaicle"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        Mike Yukhtenko</a> are available on
+    <a href="https://unsplash.com">
+        Unsplash</a> under the
+    <a
+        href="https://unsplash.com/license"
+        rel="noreferrer noopener"
+        target="_blank"
+    >
+        Unsplash License</a>.
+</p>
 ```

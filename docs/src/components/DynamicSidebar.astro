@@ -84,9 +84,18 @@ const allDocs = await getCollection("docs");
 const englishContentMap = new Map<string, CollectionEntry<"docs">>();
 
 allDocs.forEach((entry: CollectionEntry<"docs">) => {
+    const pathSegments = entry.id.split("/");
     const isEnglish = !prefixLanguages.some((prefix) =>
         entry.id.startsWith(`${prefix}/`),
     );
+
+    const isIndex = isEnglish
+        ? pathSegments.length === 1
+        : pathSegments.length === 2;
+
+    if (isIndex) {
+        return;
+    }
 
     if (isEnglish) {
         englishContentMap.set(entry.id, entry);
@@ -94,8 +103,18 @@ allDocs.forEach((entry: CollectionEntry<"docs">) => {
 });
 
 let currentLanguageDocs = allDocs.filter((entry: CollectionEntry<"docs">) => {
+    const pathSegments = entry.id.split("/");
+
     if (prefixLanguages.includes(language)) {
+        if (pathSegments.length === 2) {
+            return false;
+        }
+
         return entry.id.startsWith(`${language}/`);
+    }
+
+    if (pathSegments.length === 1) {
+        return false;
     }
 
     return !prefixLanguages.some((prefix) => entry.id.startsWith(`${prefix}/`));
@@ -371,15 +390,7 @@ const { isMobile = false } = Astro.props;
             </a>
         </div>
 
-        <span class="attribution">
-            {translation("copyright.year")} Placer •
-            <a href="https://astro.build">
-                <img
-                    src="https://astro.badg.es/v2/built-with-astro/tiny.svg"
-                    alt="Built with Astro"
-                />
-            </a>
-        </span>
+        <span class="attribution">© Placer</span>
     </div>
 </nav>
 
@@ -396,9 +407,6 @@ const { isMobile = false } = Astro.props;
 
     function initializeSidebarInstance(container: Element) {
         const isMobile = container.classList.contains("mobile-sidebar");
-        const drawer: PcDrawer | null = isMobile
-            ? (container as PcDrawer)
-            : null;
 
         const currentPath = window.location.pathname.replace(/\/$/, "");
         const links = container.querySelectorAll("nav a");
@@ -423,18 +431,23 @@ const { isMobile = false } = Astro.props;
         });
 
         if (!isMobile && !window.__sidebarLinks__) {
-            const sidebarLinks = Array.from(
+            const internalDocLinks = Array.from(
                 container.querySelectorAll("pc-details a"),
             )
                 .map((a) => a.getAttribute("href"))
-                .filter(
-                    (href) =>
-                        href &&
-                        !href.startsWith("http") &&
-                        !href.startsWith("/docs/legal"),
-                );
+                .filter((href) => {
+                    if (!href) {
+                        return false;
+                    }
 
-            window.__sidebarLinks__ = sidebarLinks as string[];
+                    const isExternal =
+                        href.startsWith("http") || href.startsWith("//");
+                    const isLegal = href.includes("/legal/");
+
+                    return !isExternal && !isLegal;
+                });
+
+            window.__sidebarLinks__ = internalDocLinks as string[];
         }
 
         function updateSidebarState() {
@@ -560,7 +573,7 @@ const { isMobile = false } = Astro.props;
 
                 function handleResize() {
                     if (window.innerWidth > 1440) {
-                        drawerInstance.open = false;
+                        (drawerInstance as PcDrawer).open = false;
                     }
                 }
 

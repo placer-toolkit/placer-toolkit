@@ -2,7 +2,7 @@
 import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
 import DynamicSidebar from "../components/DynamicSidebar.astro";
-import NavigationIcons from "../components/NavigationIcons.astro";
+import SocialIcons from "../components/SocialIcons.astro";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
@@ -13,11 +13,7 @@ const translation = useTranslations(language);
         {translation("sidebar.aria")}
     </span>
 
-    <NavigationIcons
-        slotName="header-actions"
-        variant="plain"
-        is992Size={true}
-    />
+    <SocialIcons slotName="header-actions" variant="plain" is992Size={true} />
 
     <DynamicSidebar isMobile={true} />
 </pc-drawer>
@@ -25,8 +21,6 @@ const translation = useTranslations(language);
 <style>
     .mobile-sidebar::part(drawer) {
         background-color: var(--pc-color-surface-default);
-        border-inline-end: var(--pc-border-width-s) var(--pc-border-style)
-            var(--pc-color-surface-border);
     }
 
     .mobile-sidebar::part(title) {

@@ -11,18 +11,8 @@
             "permanent": true
         },
         {
-            "source": "/docs/design-tokens/z-index",
-            "destination": "/docs/design-tokens",
-            "permanent": true
-        },
-        {
             "source": "/docs/design-tokens/other-tokens",
             "destination": "/docs/design-tokens/component-groups",
-            "permanent": true
-        },
-        {
-            "source": "/docs/legal/privacy/#thirdparty-content-delivery-networks",
-            "destination": "/docs/legal/privacy/#external-services-used-by-the-website",
             "permanent": true
         },
         {

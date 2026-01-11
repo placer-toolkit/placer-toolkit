@@ -29,7 +29,7 @@ The [issue tracker](https://github.com/placer-toolkit/placer-toolkit/issues) is 
 
 - Please **do not** use the issue tracker for personal support requests. Use the [discussion forum](https://github.com/placer-toolkit/placer-toolkit/discussions/categories/help) instead.
 - Please **do not** derail, hijack or troll issues. Keep the discussion on topic and be respectful of others.
-- Please **do not** post comments with “+1” or “👍”, as that will spam the comments section with irrelevant comments. Use [reactions](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments) instead.
+- Please **do not** post comments with **+1** or **👍**, as that will spam the comments section with irrelevant comments. Use [reactions](https://github.blog/2016-03-10-add-reactions-to-pull-requests-issues-and-comments) instead.
 - But **do** use the issue tracker for bug reports, feature requests and pull requests.
 
 Issues that do not follow these guidelines are subject to closure. There simply aren’t enough resources for the author and contributors to troubleshoot personal support requests.
@@ -59,10 +59,10 @@ Feature requests can be added using the [discussion forum](https://github.com/pl
 
 To keep the project on track, please consider the following guidelines before submitting a PR.
 
-- Please **do not** submit a PR without opening an issue first, unless the changes are trivial (e.g., fixing typos or outdated docs). This may prevent you from doing work that won’t be accepted for various reasons (e.g., someone is already working on it, it’s not a good fit for the project’s roadmap, it needs additional planning, etc.).
+- Please **do not** submit a PR if you don’t create a new branch for that feature. It will mess up the commit history for the next PR.
 - But **do** make sure your PR clearly defines what you’re changing. Even if you feel your changes are obvious, please explain them so other contributors can more easily review your works. PRs without detailed descriptions are subject to closure pending more details.
 - Also open your PR against the `main` branch.
-- **Never** edit anything in **cdn** and **dist** folders. These files are generated automatically, so you **must** edit the source files instead.
+- **Never** edit anything in **`cdn`** and **`dist`** folders. These files are generated automatically, so you **must** edit the source files instead.
 
 The maintainer reserves the right to reject any PR that’s outside the scope of the project or doesn’t meet code quality standards.
 
@@ -129,9 +129,12 @@ The docs are powered by [Astro](https://astro.build). Check out the `docs/src/co
 
 If you need help with documentation, feel free to reach out in the [discussion forum](https://github.com/placer-toolkit/placer-toolkit/discussions/categories/help).
 
+We also have a style guide called [Placer Style Guide](https://github.com/placer-toolkit/placer-style-guide) and it must be followed up to the expectations listed in [PLACER_STYLE_GUIDE_VIOLATIONS.md](https://github.com/placer-toolkit/placer-toolkit/blob/main/PLACER_STYLE_GUIDE_VIOLATION.md).
+
+
 ### GitHub-flavored Markdown
 
-The Placer Toolkit documentation uses MDX with the [`@astrojs/mdx`](https://docs.astro.build/en/guides/integrations-guide/mdx) integration. With this integration, it automatically converts straight to smart quotes with [Smartypants](https://github.com/silvenon/remark-smartypants) and other stuff. It supports standard Markdown from the [GFM spec](https://github.github.com/gfm) as well as JSX expressions.
+The Placer Toolkit documentation uses MDX with the [`@astrojs/mdx`](https://docs.astro.build/en/guides/integrations-guide/mdx) integration. With this integration, it automatically converts straight to smart quotes with [SmartyPants](https://github.com/silvenon/remark-smartypants) and other stuff. It supports standard Markdown from the [GFM spec](https://github.github.com/gfm) as well as JSX expressions.
 
 #### Code blocks
 
@@ -186,7 +189,7 @@ Then, insert the component in your MDX file like this.
 
 It would map to the correct symbol depending on the operating system you’re on.
 
-There are are many keys that can be remapped. Here’s a list of all the available key names you can use on this component.
+There are many keys that can be remapped. Here’s a list of all the available key names you can use on this component.
 
 - `meta`
 - `ctrl`
@@ -205,6 +208,14 @@ To link to a GitHub issue, PR or discussion, you can use this custom Markdown sy
 ```markdown
 [github#167]
 ```
+
+### Localisation
+
+We currently support two languages in the Placer Toolkit docs: English (en) and Deutsch (de). If you plan to help us translate some pages, check out the Placer Style Guide for the respective languages you want to translate:
+
+- [Deutsch (de)](https://github.com/placer-toolkit/placer-style-guide/tree/2.x/translations/de/README.de.md)
+
+In the future, we will create a glossary for programming terms so you can translate the pages consistently.
 
 ## Best practices
 

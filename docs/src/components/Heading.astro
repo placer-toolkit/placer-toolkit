@@ -1,0 +1,40 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+import githubSlugger from "github-slugger";
+
+import "../styles/anchor-headings.css";
+
+interface Props {
+    level: 1 | 2 | 3 | 4 | 5 | 6 | "1" | "2" | "3" | "4" | "5" | "6";
+    id?: string;
+    [key: string]: any;
+}
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
+const slugger = new githubSlugger();
+const renderedContent = await Astro.slots.render("default");
+const plainTitle = renderedContent.replace(/<[^>]*>?/gm, "").trim();
+
+const {
+    level,
+    id = slugger.slug(plainTitle),
+    ...attributes
+} = Astro.props as Props;
+
+const label = translation("ui.content.heading.anchorLabel", {
+    title: plainTitle || id,
+});
+
+const HeadingLevel = `h${level}` as const;
+---
+
+<div class={`heading-wrapper level-h${level}`}>
+    <HeadingLevel id={id} {...attributes}>
+        <slot />
+    </HeadingLevel>
+    <a href={`#${id}`} class="heading-anchor" aria-label={label}>
+        <pc-icon library="default" icon-style="solid" name="link"></pc-icon>
+    </a>
+</div>

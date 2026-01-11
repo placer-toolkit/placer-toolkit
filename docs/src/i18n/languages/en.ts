@@ -9,7 +9,8 @@ export default {
     "ui.content.contentNotAvailableInYourLanguage":
         "This content is not available in your language yet.",
     "ui.content.englishOnly": "(English‐only)",
-    "ui.content.jumpToThisHeading": "Jump to this heading",
+
+    "ui.content.heading.anchorLabel": "Section titled “{{title}}”",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Ready to build with Placer Toolkit?",
@@ -50,6 +51,7 @@ export default {
     "sidebar.aria": "Sidebar",
     "sidebar.nav.aria": "Sidebar navigation",
 
+    "language.selector": "Language selector",
     "theme.selector": "Theme selector",
 
     "theme.select": "Theme",
@@ -99,7 +101,11 @@ export default {
     "apiTable.table.arguments": "Arguments",
     "apiTable.table.eventDetail": "Event detail",
 
+    "apiTable.reflects.yes": "Reflects",
+    "apiTable.reflects.no": "Does not reflect",
+
     "apiTable.label.type": "Type: ",
+    "apiTable.label.slots.default": "(default)",
 
     "apiTable.tabs.cdnScript": "CDN (script tag)",
     "apiTable.tabs.cdnImport": "CDN (import)",
@@ -120,6 +126,9 @@ export default {
     "footer.heading.docs": "Docs",
     "footer.heading.about": "About",
     "footer.heading.legal": "Legal",
+
+    // Navigation links (ARIA)
+    "nav.content.socialIcons.aria": "Social links",
 
     // Navigation links (Docs)
     "nav.content.docs.installation": "Installation",
@@ -142,9 +151,6 @@ export default {
     "nav.content.legal.codeOfConduct": "Code of Conduct",
     "nav.content.legal.licence": "Licence",
     "nav.content.legal.impressum": "Impressum",
-
-    // Copyright year
-    "copyright.year": "© 2025–present",
 
     // Footer copyright
     "footer.copyright.left": "Made with",
