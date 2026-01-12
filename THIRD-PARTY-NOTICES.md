@@ -312,7 +312,7 @@ In this file, you can find a summary of all licences in this repository that are
 - **Licence:** MIT
 - **Repository:** https://github.com/75lb/find-replace
 
-### fs-extra@11.3.2
+### fs-extra@11.3.3
 
 - **Licence:** MIT
 - **Repository:** https://github.com/jprichardson/node-fs-extra
@@ -457,7 +457,7 @@ In this file, you can find a summary of all licences in this repository that are
 - **Licence:** BSD-3-Clause
 - **Repository:** https://github.com/lit/lit
 
-### lit@3.3.1
+### lit@3.3.2
 
 - **Licence:** BSD-3-Clause
 - **Repository:** https://github.com/lit/lit

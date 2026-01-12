@@ -443,123 +443,128 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
             (typeof this.value === "number" || this.value.length > 0);
 
         return html`
-            <label
-                part="label"
-                class="label"
-                for="input"
-                aria-hidden=${hasLabel ? "false" : "true"}
+            <div
+                class="form-control form-control-has-label"
+                part="form-control"
             >
-                <slot name="label">${this.label}</slot>
-            </label>
+                <label
+                    part="label"
+                    class="label"
+                    for="input"
+                    aria-hidden=${hasLabel ? "false" : "true"}
+                >
+                    <slot name="label">${this.label}</slot>
+                </label>
 
-            <div part="input" class="text-field">
-                <slot class="prefix" part="prefix" name="prefix"></slot>
+                <div part="input" class="text-field">
+                    <slot class="prefix" part="prefix" name="prefix"></slot>
 
-                <input
-                    part="base"
-                    class="control"
-                    id="input"
-                    type=${this.type === "password" && this.passwordVisible
-                        ? "text"
-                        : this.type}
-                    title=${this.title}
-                    name=${ifDefined(this.name)}
-                    ?disabled=${this.disabled}
-                    ?readonly=${this.readonly}
-                    ?required=${this.required}
-                    placeholder=${ifDefined(this.placeholder)}
-                    min=${ifDefined(this.min)}
-                    minlength=${ifDefined(this.minlength)}
-                    max=${ifDefined(this.max)}
-                    maxlength=${ifDefined(this.maxlength)}
-                    step=${ifDefined(this.step as number)}
-                    .value=${live(this.value)}
-                    autocapitalize=${ifDefined(this.autocapitalize)}
-                    autocomplete=${ifDefined(this.autocomplete)}
-                    autocorrect=${ifDefined(this.autocorrect)}
-                    ?autofocus=${this.autofocus}
-                    spellcheck=${this.spellcheck}
-                    pattern=${ifDefined(this.pattern)}
-                    enterkeyhint=${ifDefined(this.enterkeyhint)}
-                    inputmode=${ifDefined(this.inputmode)}
-                    aria-describedby="hint"
-                    @focus=${this.handleFocus}
-                    @blur=${this.handleBlur}
-                    @change=${this.handleChange}
-                    @input=${this.handleInput}
-                    @keydown=${this.handleKeyDown}
-                    @invalid=${this.handleInvalid}
-                />
+                    <input
+                        part="base"
+                        class="control"
+                        id="input"
+                        type=${this.type === "password" && this.passwordVisible
+                            ? "text"
+                            : this.type}
+                        title=${this.title}
+                        name=${ifDefined(this.name)}
+                        ?disabled=${this.disabled}
+                        ?readonly=${this.readonly}
+                        ?required=${this.required}
+                        placeholder=${ifDefined(this.placeholder)}
+                        min=${ifDefined(this.min)}
+                        minlength=${ifDefined(this.minlength)}
+                        max=${ifDefined(this.max)}
+                        maxlength=${ifDefined(this.maxlength)}
+                        step=${ifDefined(this.step as number)}
+                        .value=${live(this.value)}
+                        autocapitalize=${ifDefined(this.autocapitalize)}
+                        autocomplete=${ifDefined(this.autocomplete)}
+                        autocorrect=${ifDefined(this.autocorrect)}
+                        ?autofocus=${this.autofocus}
+                        spellcheck=${this.spellcheck}
+                        pattern=${ifDefined(this.pattern)}
+                        enterkeyhint=${ifDefined(this.enterkeyhint)}
+                        inputmode=${ifDefined(this.inputmode)}
+                        aria-describedby="hint"
+                        @focus=${this.handleFocus}
+                        @blur=${this.handleBlur}
+                        @change=${this.handleChange}
+                        @input=${this.handleInput}
+                        @keydown=${this.handleKeyDown}
+                        @invalid=${this.handleInvalid}
+                    />
 
-                ${isClearIconVisible
-                    ? html`
-                          <button
-                              class="clear"
-                              part="clear-button"
-                              type="button"
-                              aria-label=${this.localize.term("clearEntry")}
-                              @click=${this.handleClearClick}
-                              tabindex="-1"
-                          >
-                              <slot name="clear-icon">
-                                  <pc-icon
-                                      library="system"
-                                      icon-style="regular"
-                                      name="circle-xmark"
-                                  ></pc-icon>
-                              </slot>
-                          </button>
-                      `
-                    : ""}
-                ${this.passwordToggle && !this.disabled
-                    ? html`
-                          <button
-                              class="password-toggle"
-                              part="password-toggle-button"
-                              type="button"
-                              aria-label=${this.localize.term(
-                                  this.passwordVisible
-                                      ? "hidePassword"
-                                      : "showPassword",
-                              )}
-                              @click=${this.handlePasswordToggle}
-                              tabindex="-1"
-                          >
-                              ${!this.passwordVisible
-                                  ? html`
-                                        <slot name="show-password-icon">
-                                            <pc-icon
-                                                library="system"
-                                                icon-style="regular"
-                                                name="eye-slash"
-                                            ></pc-icon>
-                                        </slot>
-                                    `
-                                  : html`
-                                        <slot name="hide-password-icon">
-                                            <pc-icon
-                                                library="system"
-                                                icon-style="regular"
-                                                name="eye"
-                                            ></pc-icon>
-                                        </slot>
-                                    `}
-                          </button>
-                      `
-                    : ""}
+                    ${isClearIconVisible
+                        ? html`
+                              <button
+                                  class="clear"
+                                  part="clear-button"
+                                  type="button"
+                                  aria-label=${this.localize.term("clearEntry")}
+                                  @click=${this.handleClearClick}
+                                  tabindex="-1"
+                              >
+                                  <slot name="clear-icon">
+                                      <pc-icon
+                                          library="system"
+                                          icon-style="regular"
+                                          name="circle-xmark"
+                                      ></pc-icon>
+                                  </slot>
+                              </button>
+                          `
+                        : ""}
+                    ${this.passwordToggle && !this.disabled
+                        ? html`
+                              <button
+                                  class="password-toggle"
+                                  part="password-toggle-button"
+                                  type="button"
+                                  aria-label=${this.localize.term(
+                                      this.passwordVisible
+                                          ? "hidePassword"
+                                          : "showPassword",
+                                  )}
+                                  @click=${this.handlePasswordToggle}
+                                  tabindex="-1"
+                              >
+                                  ${!this.passwordVisible
+                                      ? html`
+                                            <slot name="show-password-icon">
+                                                <pc-icon
+                                                    library="system"
+                                                    icon-style="regular"
+                                                    name="eye-slash"
+                                                ></pc-icon>
+                                            </slot>
+                                        `
+                                      : html`
+                                            <slot name="hide-password-icon">
+                                                <pc-icon
+                                                    library="system"
+                                                    icon-style="regular"
+                                                    name="eye"
+                                                ></pc-icon>
+                                            </slot>
+                                        `}
+                              </button>
+                          `
+                        : ""}
 
-                <slot class="suffix" part="suffix" name="suffix"></slot>
+                    <slot class="suffix" part="suffix" name="suffix"></slot>
+                </div>
+
+                <slot
+                    class=${classMap({ "has-hint": hasHint })}
+                    part="hint"
+                    id="hint"
+                    name="hint"
+                    aria-hidden=${hasHint ? "false" : "true"}
+                >
+                    ${this.hint}
+                </slot>
             </div>
-
-            <slot
-                class=${classMap({ "has-hint": hasHint })}
-                part="hint"
-                id="hint"
-                name="hint"
-                aria-hidden=${hasHint ? "false" : "true"}
-            >
-                ${this.hint}
-            </slot>
         `;
     }
 }

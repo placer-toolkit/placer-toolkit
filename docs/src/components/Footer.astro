@@ -173,6 +173,14 @@ const translatePath = useTranslatedPath(language);
                     <li>
                         <a
                             class="pc-link-plain"
+                            href={translatePath("/docs/legal/gdpr")}
+                        >
+                            {translation("nav.content.legal.privacy")}
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            class="pc-link-plain"
                             href={translatePath("/docs/legal/accessibility")}
                         >
                             {translation("nav.content.legal.accessibility")}
@@ -192,14 +200,6 @@ const translatePath = useTranslatedPath(language);
                             href={translatePath("/docs/legal/licence")}
                         >
                             {translation("nav.content.legal.licence")}
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            class="pc-link-plain"
-                            href={translatePath("/docs/legal/impressum")}
-                        >
-                            {translation("nav.content.legal.impressum")}
                         </a>
                     </li>
                 </ul>
