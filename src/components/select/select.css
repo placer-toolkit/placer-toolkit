@@ -272,7 +272,7 @@
     font: inherit;
     background-color: var(--pc-color-surface-raised);
     border: none;
-    border-radius: calc(var(--pc-border-radius-m) + 0.25rem);
+    border-radius: calc(var(--pc-border-radius-m) + var(--pc-spacing-xs));
     padding: var(--pc-spacing-xs);
     max-inline-size: var(--auto-size-available-width);
     max-block-size: var(--auto-size-available-height);

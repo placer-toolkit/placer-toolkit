@@ -31,10 +31,10 @@ const HeadingLevel = `h${level}` as const;
 ---
 
 <div class={`heading-wrapper level-h${level}`}>
-    <HeadingLevel id={id} {...attributes}>
-        <slot />
-    </HeadingLevel>
-    <a href={`#${id}`} class="heading-anchor" aria-label={label}>
-        <pc-icon library="default" icon-style="solid" name="link"></pc-icon>
-    </a>
+    <HeadingLevel id={id} {...attributes}><slot /></HeadingLevel><a
+        href={`#${id}`}
+        class="heading-anchor"
+        aria-label={label}
+        ><pc-icon library="default" icon-style="solid" name="link"></pc-icon></a
+    >
 </div>

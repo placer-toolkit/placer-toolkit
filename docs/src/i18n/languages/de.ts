@@ -150,7 +150,6 @@ export default {
     "nav.content.legal.accessibility": "Barrierefreiheit",
     "nav.content.legal.codeOfConduct": "Verhaltenskodex",
     "nav.content.legal.licence": "Lizenz",
-    "nav.content.legal.impressum": "Impressum",
 
     // Footer copyright
     "footer.copyright.left": "Mit",
