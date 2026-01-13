@@ -1,0 +1,158 @@
+name: Bug report 🐛
+description: Create a bug report to help us fix a demonstrable problem in Placer Toolkit.
+title: "🐛 Bug: "
+labels: ["bug"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Thanks for taking the time to report a bug in Placer Toolkit.
+              A bug is a demonstrable problem caused by some code in this project.
+              Wrong category? Go back and choose a different template.
+
+    - type: textarea
+      id: description
+      attributes:
+          label: 📝 Describe the bug
+          description: |
+              Provide a clear and concise description of what the bug is.
+          placeholder: |
+              When using `<pc-button>`, the component behaves incorrectly when…
+      validations:
+          required: true
+
+    - type: textarea
+      id: steps
+      attributes:
+          label: 🔢 Steps to reproduce
+          description: |
+              Provide step‐by‐step instructions so we can reliably reproduce the issue.
+          placeholder: |
+              1. Create an HTML form with a <pc-checkbox> that has the `checked` attribute.
+              2. Attach a submit handler that logs FormData.
+              3. Submit the form.
+      validations:
+          required: true
+
+    - type: textarea
+      id: expected
+      attributes:
+          label: ✅ Expected result
+          description: |
+              What did you expect to happen?
+          placeholder: |
+              The console logs `some-option`.
+      validations:
+          required: true
+
+    - type: textarea
+      id: actual
+      attributes:
+          label: ❌ Actual result
+          description: |
+              What actually happened instead?
+          placeholder: |
+              The console logs `on`.
+      validations:
+          required: true
+
+    - type: input
+      id: sandbox
+      attributes:
+          label: 🧪 Test sandbox
+          description: |
+              Link to a minimal reproduction (CodePen, JSFiddle, etc.), if applicable.
+              Bug reports with sandboxes have higher priority.
+          placeholder: https://codepen.io/…
+      validations:
+          required: false
+
+    - type: textarea
+      id: screenshots
+      attributes:
+          label: 🖼️ Screenshots
+          description: |
+              If applicable, add screenshots to help explain the issue.
+      validations:
+          required: false
+
+    - type: dropdown
+      id: placer-toolkit-version
+      attributes:
+          label: 🔢 Placer Toolkit version
+          options:
+              - 1.0.0-alpha.3
+              - 1.0.0-alpha.2
+              - 1.0.0-alpha.1
+              - 0.5.1 (EOL)
+              - 0.4.0 (EOL)
+              - 0.3.0 (EOL)
+              - 0.2.0 (EOL)
+              - 0.1.0 (EOL)
+              - Other
+      validations:
+          required: true
+
+    - type: dropdown
+      id: browser
+      attributes:
+          label: 🌐 Browser
+          options:
+              - Chrome
+              - Safari
+              - Edge
+              - Firefox
+              - Other
+      validations:
+          required: true
+
+    - type: input
+      id: browser-version
+      attributes:
+          label: 🌐🔢 Browser version
+          placeholder: "e.g., 140.0.4"
+      validations:
+          required: true
+
+    - type: dropdown
+      id: os
+      attributes:
+          label: 💻 Operating system
+          options:
+              - Windows
+              - macOS
+              - Linux
+              - iOS
+              - Android
+              - Other
+      validations:
+          required: true
+
+    - type: input
+      id: os-version
+      attributes:
+          label: 💻🔢 Operating system version
+          placeholder: "e.g., 26.2"
+      validations:
+          required: true
+
+    - type: textarea
+      id: additional
+      attributes:
+          label: ℹ️ Additional information
+          description: |
+              Anything else that might help us debug the issue.
+      validations:
+          required: false
+
+    - type: checkboxes
+      id: confirmations
+      attributes:
+          label: ✅ Confirmations
+          options:
+              - label: I have searched for existing issues that describe this problem.
+                required: true
+              - label: I can reliably reproduce this issue.
+                required: true
+              - label: I am willing to submit a pull request for this.
+                required: false
