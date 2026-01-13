@@ -17,10 +17,11 @@ body {
 .layout-container {
     display: grid;
     grid-template-areas:
+        "banner banner"
         "navbar navbar"
         "sidebar main";
     grid-template-columns: 300px 1fr;
-    grid-template-rows: 3.5rem 1fr;
+    grid-template-rows: auto 3.5rem 1fr;
     height: 100dvh;
     overflow: hidden;
 }
@@ -65,11 +66,11 @@ main.no-overflow {
     overflow: hidden;
 }
 
-main:not(main.hero) header {
+main:not(main.hero) article header {
     max-width: 80ch;
 }
 
-main header h1 {
+main article header h1 {
     font-size: 2.5rem;
     margin: 0;
     margin-bottom: var(--pc-spacing-xl);
@@ -192,10 +193,11 @@ main:not(main.hero) article .does-not-reflect {
 
     .layout-container {
         grid-template-areas:
+            "banner"
             "navbar"
             "main";
         grid-template-columns: 1fr;
-        grid-template-rows: 3.5rem 1fr;
+        grid-template-rows: auto 3.5rem 1fr;
     }
 
     main {

@@ -2,6 +2,8 @@
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
+
+import LegacyBanner from "../components/LegacyBanner.astro";
 import Search from "../components/Search.astro";
 
 import "placer-toolkit/dist/default.css";
@@ -53,6 +55,8 @@ const {
             >
                 Skip to main content
             </pc-button>
+
+            <LegacyBanner />
 
             <NavigationBar />
 
