@@ -28,8 +28,8 @@ body:
           description: |
               Provide step‐by‐step instructions so we can reliably reproduce the issue.
           placeholder: |
-              1. Create an HTML form with a <pc-checkbox> that has the `checked` attribute.
-              2. Attach a submit handler that logs FormData.
+              1. Create an HTML form with a `<pc-checkbox>` that has the `checked` attribute.
+              2. Attach a submit handler that logs `FormData`.
               3. Submit the form.
       validations:
           required: true
@@ -102,6 +102,7 @@ body:
               - Safari
               - Edge
               - Firefox
+              - All browsers
               - Other
       validations:
           required: true
@@ -124,6 +125,7 @@ body:
               - Linux
               - iOS
               - Android
+              - All operating systems
               - Other
       validations:
           required: true
