@@ -1,42 +1,38 @@
 "🚨 action":
     - changed-files:
-          - any-glob-to-any-file:
-                - .github/workflows/**
+          - any-glob-to-any-file: ".github/workflows/**"
 
 "🌐 l10n":
     - changed-files:
           - any-glob-to-any-file:
-                - docs/src/content/docs/de/**
-          - any-glob-to-any-file:
-                - ["src/translations/**", "!src/translations/en.ts"]
-          - any-glob-to-any-file:
-                - ["docs/src/i18n/languages/**", "!docs/src/i18n/languages/en.ts"]
+                - "docs/src/content/docs/de/**"
+                - "src/translations/**"
+                - "!src/translations/en.ts"
+                - "docs/src/i18n/languages/**"
+                - "!docs/src/i18n/languages/en.ts"
 
 "📖 documentation":
     - changed-files:
-          - any-glob-to-any-file:
-                - docs/**
+          - any-glob-to-any-file: "docs/**"
 
 "🛠️ build":
     - changed-files:
-          - any-glob-to-any-file:
-                - scripts/**
+          - any-glob-to-any-file: "scripts/**"
 
 "🧩 core":
     - changed-files:
-          - any-glob-to-any-file:
-                - src/**
+          - any-glob-to-any-file: "src/**"
 
 "⚙️ component":
     - changed-files:
           - any-glob-to-any-file:
-                - src/components/**
-                - docs/src/components/**
+                - "src/components/**"
+                - "docs/src/components/**"
 
 "📦 dependencies":
     - changed-files:
           - any-glob-to-any-file:
-                - package.json
-                - package-lock.json
-                - docs/package.json
-                - docs/package-lock.json
+                - "package.json"
+                - "package-lock.json"
+                - "docs/package.json"
+                - "docs/package-lock.json"
