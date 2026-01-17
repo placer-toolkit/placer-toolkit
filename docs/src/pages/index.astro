@@ -18,15 +18,17 @@ import "../styles/landing-override.css";
     href="https://fonts.bunny.net/css?family=space-grotesk:700&display=swap"
 />
 
-<Page title="Placer Toolkit" noSidebar showFooter hero>
+<Page title="Placer Toolkit" noSidebar noBanner showFooter hero>
     <div class="landing-page">
         <LandingCTA />
 
         <h2 class="pc-heading-l">What is Placer Toolkit?</h2>
 
         <p>
-            <strong>Placer Toolkit</strong> is an open‐source web component library
-            that lets you build websites with any framework—or with none at all.
+            <strong>Placer Toolkit</strong>{" "}
+            <span class="ipa">/ˈplækər ˈtuːlkɪt/</span> is an open‐source web component
+            library that lets you build websites with any framework—or with none at
+            all.
         </p>
 
         <FeatureTiles>
@@ -157,7 +159,7 @@ import "../styles/landing-override.css";
     const navigationBar = document.querySelector(".navbar") as HTMLElement;
 
     const scrollLimitPixels = 360;
-    const maxOpacity = 0.75;
+    const maxOpacity = 0.9;
 
     function updateNavigationBarOpacity() {
         const scrollY = document.body.scrollTop || window.scrollY;

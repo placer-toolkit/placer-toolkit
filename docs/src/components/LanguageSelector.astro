@@ -2,26 +2,26 @@
 import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
 const fullPath = Astro.url.pathname;
-const firstSegment = fullPath.split("/")[1];
 
 // This array does not include English, as English is the default locale
 const knownLocales = ["de"];
 
-let slugWithoutLocale = fullPath;
+const segments = fullPath.split("/").filter(Boolean);
 
-if (knownLocales.includes(firstSegment)) {
-    slugWithoutLocale = fullPath.slice(firstSegment.length + 1);
-}
+const hasLocale = knownLocales.includes(segments[0]);
+
+const slugSegments = hasLocale ? segments.slice(1) : segments;
+const cleanSlug = `/${slugSegments.join("/")}`;
+
+const enPath = cleanSlug === "" ? "/" : cleanSlug;
+const dePath = `/de${cleanSlug === "/" ? "" : cleanSlug}`;
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
-
-const cleanLanguageSlug = slugWithoutLocale.replace(/\/$/, "");
-const cleanLanguageSlugLocalized = slugWithoutLocale.replace(/^\/|\/$/g, "");
 ---
 
 <pc-popup
-    class="language-selector"
+    class="language-selector pc-cloak"
     placement="bottom-end"
     distance="0"
     skidding="0"
@@ -50,8 +50,8 @@ const cleanLanguageSlugLocalized = slugWithoutLocale.replace(/^\/|\/$/g, "");
     </pc-button>
 
     <div class="menu" id="language-menu" role="region">
-        <a href={cleanLanguageSlug} hreflang="en">English</a>
-        <a href=`/de/${cleanLanguageSlugLocalized}` hreflang="de">Deutsch</a>
+        <a href={enPath} hreflang="en">English</a>
+        <a href={dePath} hreflang="de">Deutsch</a>
     </div>
 </pc-popup>
 

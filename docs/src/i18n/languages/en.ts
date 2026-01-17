@@ -15,7 +15,7 @@ export default {
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Ready to build with Placer Toolkit?",
     "landingCTA.marketingLine":
-        'Native web components for<br aria-hidden="true" />modern interfaces',
+        'Native web components<br aria-hidden="true" />for modern interfaces',
     "landingCTA.marketingLine.descriptive":
         "Placer Toolkit is an open‐source and framework‐agnostic web component library to build modern interfaces.",
     "landingCTA.tagline.flexible": "Flexible.",

@@ -25,7 +25,6 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     scroll-padding-block-start: 4.5rem;
-    font-feature-settings: "ss01" on;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -75,8 +74,8 @@ html.no-sidebar .layout-container {
 
 .skip-to-toc {
     position: fixed;
-    inset-block-start: var(--pc-spacing-xxxxxl);
-    inset-inline-start: var(--pc-spacing-xxxxxl);
+    inset-block-start: calc(3.5rem + var(--pc-spacing-l));
+    inset-inline-start: calc(300px + var(--pc-spacing-l));
     z-index: 10000000;
 }
 
