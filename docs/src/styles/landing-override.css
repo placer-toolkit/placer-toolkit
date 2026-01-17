@@ -6,3 +6,8 @@ h5,
 h6 {
     font-family: "Space Grotesk", var(--pc-font-sans);
 }
+
+.ipa {
+    font-size: var(--pc-font-size-smaller);
+    color: var(--pc-color-text-quiet);
+}

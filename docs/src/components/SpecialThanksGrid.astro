@@ -3,8 +3,12 @@ import { Image } from "astro:assets";
 
 import litLogo from "../assets/lit.svg";
 import shoelaceLogo from "../assets/shoelace.svg";
+import astroLightLogo from "../assets/astro-light.svg";
+import astroDarkLogo from "../assets/astro-dark.svg";
 import floatingUILogo from "../assets/floating-ui.svg";
 import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
+import pagefindLightLogo from "../assets/pagefind-light.svg";
+import pagefindDarkLogo from "../assets/pagefind-dark.svg";
 ---
 
 <div class="catalog-grid">
@@ -14,7 +18,13 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
                 slot="media"
                 style="block-size: calc(8rem + var(--pc-spacing-xl) + var(--pc-spacing-l))"
             >
-                <Image src={litLogo} alt="" width={160} height={200} />
+                <Image
+                    src={litLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
             </div>
             <div class="catalog-title">Lit</div>
         </pc-card>
@@ -25,7 +35,13 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
                 slot="media"
                 style="block-size: calc(8rem + var(--pc-spacing-xl) + var(--pc-spacing-l))"
             >
-                <Image src={shoelaceLogo} alt="" width={127} height={141} />
+                <Image
+                    src={shoelaceLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
             </div>
             <div class="catalog-title">Shoelace</div>
         </pc-card>
@@ -33,35 +49,26 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
     <a href="https://astro.build" rel="noreferrer noopener" target="_blank">
         <pc-card>
             <div
+                class="theme-dependent-content-switcher"
                 slot="media"
                 style="block-size: calc(8rem + var(--pc-spacing-xl) + var(--pc-spacing-l))"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-                    <g fill="var(--pc-color-text-normal)">
-                        <path
-                            d="M47.7 107.1c-5.5-5-7.2-15.7-4.9-23.4 4 4.9 9.6 6.4 15.4 7.3 8.9 1.3 17.6.8 25.9-3.2l2.8-1.7a18 18 0 0 1-7.2 20l-5.5 3.8c-5.6 3.8-7.2 8.2-5 14.7l.2.7a14 14 0 0 1-6.6-5.6 15.8 15.8 0 0 1-2.6-8.6c0-1.5 0-3-.2-4.5-.5-3.7-2.2-5.3-5.5-5.4-3.3-.1-5.9 2-6.6 5.2l-.2.7Z"
-                        ></path>
-                        <path
-                            d="M16 82.4s16.5-8 33-8l12.4-38.3c.5-2 1.8-3.2 3.3-3.2 1.6 0 3 1.3 3.4 3.2l12.4 38.3c19.6 0 33 8 33 8l-28-76c-.8-2.3-2.2-3.7-4-3.7H48c-1.8 0-3.1 1.4-4 3.7l-28 76Z"
-                        ></path>
-                    </g>
-                    <path
-                        d="M47.7 107.1c-5.5-5-7.2-15.7-4.9-23.4 4 4.9 9.6 6.4 15.4 7.3 8.9 1.3 17.6.8 25.9-3.2l2.8-1.7a18 18 0 0 1-7.2 20l-5.5 3.8c-5.6 3.8-7.2 8.2-5 14.7l.2.7a14 14 0 0 1-6.6-5.6 15.8 15.8 0 0 1-2.6-8.6c0-1.5 0-3-.2-4.5-.5-3.7-2.2-5.3-5.5-5.4-3.3-.1-5.9 2-6.6 5.2l-.2.7Z"
-                        fill="url(#gradient-2)"></path>
-                    <defs>
-                        <linearGradient
-                            id="gradient-2"
-                            x1="64.7"
-                            x2="77.4"
-                            y1="119.2"
-                            y2="77.4"
-                            gradientUnits="userSpaceOnUse"
-                        >
-                            <stop stop-color="#d83333"></stop>
-                            <stop offset="1" stop-color="#f041ff"></stop>
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <Image
+                    class="light-content"
+                    src={astroLightLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
+                <Image
+                    class="dark-content"
+                    src={astroDarkLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
             </div>
             <div class="catalog-title">Astro</div>
         </pc-card>
@@ -72,7 +79,13 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
                 slot="media"
                 style="block-size: calc(8rem + var(--pc-spacing-xl) + var(--pc-spacing-l))"
             >
-                <Image src={floatingUILogo} alt="" width={373} height={558} />
+                <Image
+                    src={floatingUILogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
             </div>
             <div class="catalog-title">Floating UI</div>
         </pc-card>
@@ -89,9 +102,10 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
             >
                 <Image
                     src={customElementsManifestLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
                     alt=""
-                    width={244}
-                    height={244}
                 />
             </div>
             <div class="catalog-title">Custom Elements Manifest</div>
@@ -100,31 +114,26 @@ import customElementsManifestLogo from "../assets/custom-elements-manifest.svg";
     <a href="https://pagefind.app" rel="noreferrer noopener" target="_blank">
         <pc-card>
             <div
+                class="theme-dependent-content-switcher"
                 slot="media"
                 style="block-size: calc(8rem + var(--pc-spacing-xl) + var(--pc-spacing-l))"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 123 96.9999"
-                >
-                    <path
-                        d="M60 96.9999C93.1371 96.9999 120 81.8416 120 63.1428V50.8311H115.91C107.182 38.2198 85.4398 29.2856 60 29.2856C34.5602 29.2856 12.8183 38.2198 4.09026 50.8311H0V63.1428C0 81.8416 26.8629 96.9999 60 96.9999Z"
-                        fill="var(--pc-color-text-normal)"></path>
-                    <path
-                        d="M116 52C116 59.317 110.727 66.7404 100.454 72.5615C90.3014 78.3149 76.0069 82 60 82C43.9931 82 29.6986 78.3149 19.5456 72.5615C9.2731 66.7404 4 59.317 4 52C4 44.6831 9.2731 37.2596 19.5456 31.4385C29.6986 25.6851 43.9931 22 60 22C76.0069 22 90.3014 25.6851 100.454 31.4385C110.727 37.2596 116 44.6831 116 52Z"
-                        fill="var(--pc-color-surface-default)"
-                        stroke="var(--pc-color-text-normal)"
-                        stroke-width="8"></path>
-                    <path
-                        d="M57.8864 72.0605L87.2817 41.837C88.6253 40.4556 87.43 38.1599 85.5278 38.4684L26.0819 48.1083C23.9864 48.4481 23.794 51.3882 25.8273 51.9982L46.7151 58.2645C47.2181 58.4154 47.6415 58.7581 47.894 59.2185L54.6991 71.6277C55.3457 72.8069 56.9487 73.0246 57.8864 72.0605Z"
-                        fill="var(--pc-color-text-normal)"></path>
-                    <ellipse
-                        cx="58"
-                        cy="53.5"
-                        rx="7"
-                        ry="4.5"
-                        fill="var(--pc-color-surface-default)"></ellipse>
-                </svg>
+                <Image
+                    class="light-content"
+                    src={pagefindLightLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
+                <Image
+                    class="dark-content"
+                    src={pagefindDarkLogo}
+                    width="112"
+                    height="112"
+                    loading="lazy"
+                    alt=""
+                />
             </div>
             <div class="catalog-title">Pagefind</div>
         </pc-card>

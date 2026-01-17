@@ -1,5 +1,9 @@
 ---
-import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
 
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
@@ -36,6 +40,7 @@ const {
     hero = false,
     pagefindIgnore = false,
     noSidebar = false,
+    noBanner = false,
     showFooter = false,
     isFallback = false,
 } = Astro.props;
@@ -49,7 +54,10 @@ const {
 >
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-visual" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-visual"
+        />
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
         <meta
@@ -59,7 +67,10 @@ const {
         <meta name="author" content="Placer (maintainer: @randomguy-2650)" />
         <meta name="robots" content="index, follow" />
         <!-- Google Search Console verification -->
-        <meta name="google-site-verification" content="FuYprzKlW9u11ARGzJPgLFZx6hUnTmCdYmqPkrOFq4E" />
+        <meta
+            name="google-site-verification"
+            content="FuYprzKlW9u11ARGzJPgLFZx6hUnTmCdYmqPkrOFq4E"
+        />
         <meta property="og:title" content="Placer Toolkit" />
         <meta
             property="og:description"
@@ -74,8 +85,14 @@ const {
         <link rel="canonical" href={canonicalURL} />
         <link rel="alternate" hreflang="en" href={enURL} />
         <link rel="alternate" hreflang="de" href={deURL} />
+        <link rel="preconnect" href="https://fonts.bunny.net" />
         <!-- Legacy fallback for search engine crawlers in search results -->
-        <link rel="icon" type="image/x-icon" href="/brand/favicon.ico" sizes="any" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/brand/favicon.ico"
+            sizes="any"
+        />
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
@@ -86,11 +103,15 @@ const {
         </script>
         <script is:inline>
             (() => {
-                const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                const prefersDark = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches;
                 const theme = prefersDark ? "pc-dark" : "pc-light";
 
                 document.documentElement.classList.add(theme);
-                document.documentElement.classList.remove(theme === "pc-dark" ? "pc-light" : "pc-dark");
+                document.documentElement.classList.remove(
+                    theme === "pc-dark" ? "pc-light" : "pc-dark",
+                );
             })();
         </script>
         <!-- Cabin Analytics -->
@@ -99,7 +120,7 @@ const {
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
     <body>
-        <div class="layout-container pc-cloak">
+        <div class="layout-container">
             <pc-button
                 href="#main-content"
                 appearance="neutral"
@@ -140,7 +161,9 @@ const {
                                     class="skip-to-toc pc-desktop-only pc-visually-hidden"
                                     data-pagefind-ignore
                                 >
-                                    {translation("button.skipToTableOfContents")}
+                                    {translation(
+                                        "button.skipToTableOfContents",
+                                    )}
                                 </pc-button>
 
                                 <pc-details
@@ -148,7 +171,12 @@ const {
                                     summary={translation("ui.toc.onThisPage")}
                                     data-pagefind-ignore="all"
                                 >
-                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
+                                    <ul
+                                        class="toc-ul"
+                                        data-overview={translation(
+                                            "ui.toc.overview",
+                                        )}
+                                    />
                                 </pc-details>
 
                                 <header id="_top">
@@ -162,13 +190,18 @@ const {
                                         ""
                                     )}
 
-                                    <FallbackContentWarning isFallback={isFallback} />
+                                    <FallbackContentWarning
+                                        isFallback={isFallback}
+                                    />
                                 </header>
 
                                 <slot />
                             </article>
 
-                            <aside class="toc toc-desktop" id="table-of-contents">
+                            <aside
+                                class="toc toc-desktop"
+                                id="table-of-contents"
+                            >
                                 <pc-button
                                     href="#_top"
                                     appearance="neutral"
@@ -178,43 +211,65 @@ const {
                                 >
                                     {translation("button.returnToMainContent")}
                                 </pc-button>
-                                <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
+                                <h3 class="toc-heading">
+                                    {translation("ui.toc.onThisPage")}
+                                </h3>
                                 <pc-scroller
                                     class="toc-scroll-fade"
                                     orientation="vertical"
                                 >
-                                    <ul class="toc-ul" data-overview={translation("ui.toc.overview")} />
+                                    <ul
+                                        class="toc-ul"
+                                        data-overview={translation(
+                                            "ui.toc.overview",
+                                        )}
+                                    />
                                 </pc-scroller>
                             </aside>
                         </div>
                     ) : (
-                        <pc-callout class="hero-callout" appearance="primary" size="small" data-pagefind-ignore="all">
-                            <span slot="icon" style="user-select: none; -webkit-user-select: none">
-                                🚀
-                            </span>
-                            <div class="pc-split">
-                                <b style="flex: 1">
-                                    {translation("getStartedBanner.readyToStart")}
-                                </b>
-                                <pc-button
+                        <>
+                            {!noBanner && (
+                                <pc-callout
+                                    class="hero-callout"
                                     appearance="primary"
                                     size="small"
-                                    href={translatePath("/docs/get-started/installation")}
+                                    data-pagefind-ignore="all"
                                 >
-                                    {translation("button.getStarted")}
+                                    <span
+                                        slot="icon"
+                                        style="user-select: none; -webkit-user-select: none"
+                                    >
+                                        🚀
+                                    </span>
+                                    <div class="pc-split">
+                                        <b style="flex: 1">
+                                            {translation(
+                                                "getStartedBanner.readyToStart",
+                                            )}
+                                        </b>
+                                        <pc-button
+                                            appearance="primary"
+                                            size="small"
+                                            href={translatePath(
+                                                "/docs/get-started/installation",
+                                            )}
+                                        >
+                                            {translation("button.getStarted")}
+                                            <pc-icon
+                                                class="arrow-right-move"
+                                                library="default"
+                                                icon-style="solid"
+                                                name="chevron-right"
+                                                slot="suffix"
+                                            />
+                                        </pc-button>
+                                    </div>
+                                </pc-callout>
+                            )}
 
-                                    <pc-icon
-                                        class="arrow-right-move"
-                                        library="default"
-                                        icon-style="solid"
-                                        name="chevron-right"
-                                        slot="suffix"
-                                    ></pc-icon>
-                                </pc-button>
-                            </div>
-                        </pc-callout>
-
-                        <slot />
+                            <slot />
+                        </>
                     )
                 }
             </main>
@@ -222,12 +277,15 @@ const {
             {showFooter ? <Footer /> : undefined}
         </div>
 
-        <pc-dialog label={translation("nav.content.legal.contact")} id="contact-info">
+        <pc-dialog
+            label={translation("nav.content.legal.contact")}
+            id="contact-info"
+        >
             <p>
                 {translation("contact.paragraph.1")}
             </p>
 
-            <p set:html={translation("contact.paragraph.2")}></p>
+            <p set:html={translation("contact.paragraph.2")} />
 
             <p>{translation("contact.paragraph.3")}</p>
 
@@ -237,8 +295,11 @@ const {
                 slot="footer"
                 data-dialog="close"
             >
-                <pc-icon library="default" icon-style="solid" name="phone" slot="prefix"
-                ></pc-icon>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="phone"
+                    slot="prefix"></pc-icon>
 
                 {translation("button.gotIt")}
             </pc-button>
@@ -255,7 +316,7 @@ const {
                 {translation("dangerousLands.label")}
             </span>
 
-            <p set:html={translation("dangerousLands.paragraph.1")}></p>
+            <p set:html={translation("dangerousLands.paragraph.1")} />
 
             <p>
                 {translation("dangerousLands.paragraph.2")}
@@ -267,7 +328,11 @@ const {
                 variant="plain"
                 slot="footer"
             >
-                <pc-icon library="default" icon-style="solid" name="fire" slot="prefix"></pc-icon>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="fire"
+                    slot="prefix"></pc-icon>
                 {translation("button.yikes")}
             </pc-button>
             <!-- Appearances in buttons are purely visual, no accessibility affected! -->
@@ -277,7 +342,11 @@ const {
                 slot="footer"
                 data-dialog="close"
             >
-                <pc-icon library="default" icon-style="solid" name="star" slot="prefix"></pc-icon>
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="star"
+                    slot="prefix"></pc-icon>
                 {translation("button.powerUp")}
             </pc-button>
         </pc-dialog>
@@ -296,7 +365,9 @@ const {
 
             // TOC generation
             document.addEventListener("DOMContentLoaded", () => {
-                const tocMobile = document.querySelector(".toc-mobile .toc-ul") as HTMLUListElement;
+                const tocMobile = document.querySelector(
+                    ".toc-mobile .toc-ul",
+                ) as HTMLUListElement;
                 const tocDesktop = document.querySelector(
                     ".toc-desktop .toc-ul",
                 ) as HTMLUListElement;
@@ -341,7 +412,10 @@ const {
                 const overviewLink = document.createElement("a");
 
                 overviewLink.href = "#_top";
-                overviewLink.textContent = (tocDesktop?.dataset?.overview) ?? (tocMobile?.dataset?.overview) ?? "";
+                overviewLink.textContent =
+                    tocDesktop?.dataset?.overview ??
+                    tocMobile?.dataset?.overview ??
+                    "";
                 overviewItem.appendChild(overviewLink);
 
                 [tocMobile, tocDesktop].forEach((toc) => {

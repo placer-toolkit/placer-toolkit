@@ -11,7 +11,7 @@ import SocialIcons from "../components/SocialIcons.astro";
 import ThemeSelector from "../components/ThemeSelector.astro";
 import Version from "../components/Version.astro";
 
-import Logo from "../assets/logo.svg";
+import logo from "../assets/logo.svg";
 
 const { noSidebar = false } = Astro.props;
 
@@ -26,7 +26,7 @@ const translatePath = useTranslatedPath(language);
     href="https://fonts.bunny.net/css?family=quicksand:600&display=swap"
 />
 
-<header role="banner" class="navbar">
+<header role="banner" class="navbar pc-cloak">
     <nav
         class="navigation-bar"
         aria-label={translation("navbar.aria") as string}
@@ -55,7 +55,7 @@ const translatePath = useTranslatedPath(language);
             </pc-button>
             <a href={translatePath("/")}>
                 <Image
-                    src={Logo}
+                    src={logo}
                     width={36}
                     height={36}
                     style="translate: 0 -0.125rem"
@@ -90,6 +90,7 @@ const translatePath = useTranslatedPath(language);
             <pc-divider class="pc-desktop-only" orientation="vertical"
             ></pc-divider>
             <pc-button
+                class="search-desktop"
                 appearance="neutral"
                 variant="outlined"
                 size="small"
@@ -108,6 +109,22 @@ const translatePath = useTranslatedPath(language);
                     >
                     <kbd class="search-key">K</kbd>
                 </span>
+            </pc-button>
+            <!-- Mobile search button -->
+            <pc-button
+                class="search-mobile"
+                appearance="neutral"
+                variant="outlined"
+                size="small"
+                data-dialog="open search-dialog"
+                aria-keyshortcuts="Control+K"
+            >
+                <pc-icon
+                    class="icon-expand"
+                    library="default"
+                    icon-style="solid"
+                    name="magnifying-glass"
+                    label={translation("ui.search.button") as string}></pc-icon>
             </pc-button>
         </div>
     </nav>
@@ -191,20 +208,34 @@ const translatePath = useTranslatedPath(language);
         vertical-align: bottom;
     }
 
-    .navigation-bar .right-section pc-button span[slot="suffix"] {
+    .navigation-bar .right-section .search-desktop span[slot="suffix"] {
         display: inline-block;
         margin-block-end: 0.25rem;
     }
 
-    .navigation-bar .right-section pc-button kbd {
+    .navigation-bar .right-section .search-desktop kbd {
         padding-inline: 0.5em;
         font-size: var(--pc-font-size-xxs);
         line-height: var(--pc-form-control-value-line-height);
     }
 
+    .navigation-bar .right-section .search-mobile {
+        display: none;
+    }
+
     @media screen and (max-width: 992px) {
-        .navigation-bar .right-section pc-button span[slot="suffix"] {
+        .navigation-bar .right-section .search-desktop span[slot="suffix"] {
             display: none;
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .navigation-bar .right-section .search-desktop {
+            display: none;
+        }
+
+        .navigation-bar .right-section .search-mobile {
+            display: block;
         }
     }
 </style>

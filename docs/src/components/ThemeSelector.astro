@@ -5,7 +5,7 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<pc-dropdown class="theme-selector" value="default">
+<pc-dropdown class="theme-selector pc-cloak" value="default">
     <pc-button size="small" variant="outlined" slot="trigger">
         <pc-icon
             class="icon-expand"

@@ -8,7 +8,7 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<pc-drawer class="mobile-sidebar" placement="start">
+<pc-drawer class="mobile-sidebar pc-cloak" placement="start">
     <span class="pc-visually-hidden" slot="label">
         {translation("sidebar.aria")}
     </span>
