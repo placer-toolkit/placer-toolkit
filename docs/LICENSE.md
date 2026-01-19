@@ -1,5 +1,3 @@
-<!-- SPDX-License-Identifier: CC-BY-4.0 -->
-
 # Creative Commons Attribution 4.0 International Public License
 
 By exercising the Licensed Rights (defined below), You accept and agree

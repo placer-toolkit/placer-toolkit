@@ -80,7 +80,7 @@ To set up a local development environment, [fork the repo](https://github.com/pl
 
 ```shell
 git clone https://github.com/placer-toolkit/placer-toolkit
-cd placer-toolkit # Navigate into your clone
+cd placer-toolkit # Navigates into your clone
 npm install # Installs dependencies for Placer Toolkit
 cd docs
 npm install # Installs dependencies for Placer Toolkit’s docs
@@ -89,7 +89,7 @@ npm install # Installs dependencies for Placer Toolkit’s docs
 Once you’ve cloned the repo, you can run the following command to spin up the development server for the docs. Make sure you’re in the `docs` folder of the project.
 
 ```shell
-npm run dev # To spin up the dev server provided by Astro
+npm run dev # Spins up the dev server provided by Astro
 npx astro dev --host # If you want to expose the server on your network
 ```
 
@@ -105,12 +105,12 @@ Once the files are created, you must add the component export to the codebase. O
 
 ```diff
  export { default as PcCheckbox } from "./docs/components/checkbox/checkbox.js";
+ export { default as PcColorPicker } from "./docs/components/color-picker/color-picker.js";
  export { default as PcComparer } from "./docs/components/comparer/comparer.js";
- export { default as PcCopyButton } from "./docs/components/copy-button/copy-button.js";
 +export { default as PcComponentName } from "./docs/components/component-name/component-name.js";
+ export { default as PcCopyButton } from "./docs/components/copy-button/copy-button.js";
  export { default as PcDetails } from "./docs/components/details/details.js";
  export { default as PcDialog } from "./docs/components/dialog/dialog.js";
- export { default as PcDivider } from "./docs/components/divider/divider.js";
 ```
 
 Finally, you can proceed with documenting the component. Create a new MDX file for your component in `docs/src/content/docs/components` and adding a link to the component in both `docs/src/docs/layouts/Sidebar.astro` and `docs/src/docs/layouts/MobileSidebar.astro`, again, ensuring the entries are alphabetically sorted.
