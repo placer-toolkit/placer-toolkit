@@ -131,15 +131,33 @@ All brand assets of Placer Toolkit are only available in SVG format. We recommen
 
 <ul class="xmark-items">
     <li>
-        **Use** or include the Placer Toolkit logo in your app or website logo.
+        **Use** or include the Placer Toolkit logo in your app or website logo or as part of your brand’s main identity.
     </li>
     <li>
-        **Modify** the colours or distort the Placer Toolkit logo in any way.
+        **Modify** the fundamental geometry or “distort” the aspect ratio of the logo in any way.
     </li>
     <li>
         **Sell** products featuring the Placer Toolkit logo without prior consent.
     </li>
 </ul>
+
+#### Technical implementation
+
+While the logo is protected under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0), we authorise the following technical modifications (Section 2(a)(4)) to ensure the logo remains functional and accessible in modern development environments.
+
+- **UI state styling:** You may apply CSS filters (e.g., `grayscale()`, `brightness()`) to the logo to indicate UI states, such as inactive or hover states.
+- **WCAG accessibility:** You may change the text colour of the wordmark in the logo slightly to maximise legibility and fit into your site design, although it is discouraged.
+- **Responsive scaling:** You may resize the logo, as long as its aspect ratio is maintained and the height of it is at least 28 px.
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="brands"
+        name="creative-commons-nd"
+        slot="icon"
+    ></pc-icon>
+    We are allowed to set the barrier of technical modifications, so under Section 2(a)(4) and these changes do not constitute “adapted material”.
+</pc-callout>
 
 #### Minimum size
 
