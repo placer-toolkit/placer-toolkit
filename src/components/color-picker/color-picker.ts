@@ -607,7 +607,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 l: hsl.l,
                 a: hsl.a,
                 string: this.setLetterCase(
-                    `hsl(${Math.round(hsl.h)} ${Math.round(hsl.s)}% ${Math.round(hsl.l)}% / ${hsl.a * 100}%)`,
+                    `hsl(${Math.round(hsl.h)} ${Math.round(hsl.s)}% ${Math.round(hsl.l)}% / ${Math.round(hsl.a * 100)}%)`,
                 ),
             },
             hsv: {
@@ -624,7 +624,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 v: hsv.v,
                 a: hsv.a,
                 string: this.setLetterCase(
-                    `hsv(${Math.round(hsv.h)} ${Math.round(hsv.s)}% ${Math.round(hsv.v)}% / ${hsv.a * 100}%)`,
+                    `hsv(${Math.round(hsv.h)} ${Math.round(hsv.s)}% ${Math.round(hsv.v)}% / ${Math.round(hsv.a * 100)}%)`,
                 ),
             },
             rgb: {
@@ -641,7 +641,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 b: rgb.b,
                 a: rgb.a,
                 string: this.setLetterCase(
-                    `rgb(${Math.round(rgb.r)} ${Math.round(rgb.g)} ${Math.round(rgb.b)} / ${rgb.a * 100}%)`,
+                    `rgb(${Math.round(rgb.r)} ${Math.round(rgb.g)} ${Math.round(rgb.b)} / ${Math.round(rgb.a * 100)}%)`,
                 ),
             },
             hex: this.setLetterCase(hex),
@@ -676,7 +676,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
     private async syncValues() {
         const currentColor = this.parseColor(
-            `hsva(${this.hue}, ${this.saturation}%, ${this.brightness}%, ${Math.round(this.alpha / 100)})`,
+            `hsva(${this.hue}, ${this.saturation}%, ${this.brightness}%, ${this.alpha / 100})`,
         );
 
         if (currentColor === null) {
@@ -685,22 +685,22 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
         if (this.format === "hsl") {
             this.inputValue =
-                currentColor.hsva.a < 1
+                this.alpha < 100
                     ? currentColor.hsla.string
                     : currentColor.hsl.string;
         } else if (this.format === "rgb") {
             this.inputValue =
-                currentColor.hsva.a < 1
+                this.alpha < 100
                     ? currentColor.rgba.string
                     : currentColor.rgb.string;
         } else if (this.format === "hsv") {
             this.inputValue =
-                currentColor.hsva.a < 1
+                this.alpha < 100
                     ? currentColor.hsva.string
                     : currentColor.hsv.string;
         } else {
             this.inputValue =
-                currentColor.hsva.a < 1 ? currentColor.hexa : currentColor.hex;
+                this.alpha < 100 ? currentColor.hexa : currentColor.hex;
         }
 
         this.isSafeValue = true;

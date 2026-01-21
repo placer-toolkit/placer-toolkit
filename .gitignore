@@ -27,3 +27,6 @@ cdn
 
 # Environment variables
 .env
+
+# Local package files
+*.tgz

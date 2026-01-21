@@ -66,7 +66,7 @@ Licensed Material available under these terms and conditions.
   </li>
   <li>
     Share means to provide material to the public by any means or
-process that requires permission under the Licensed Rights, such
+    process that requires permission under the Licensed Rights, such
     as reproduction, public display, public performance, distribution,
     dissemination, communication, or importation, and to make material
     available to the public including in ways that members of the
