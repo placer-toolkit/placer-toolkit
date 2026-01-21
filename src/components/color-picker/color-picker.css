@@ -35,6 +35,7 @@
 
 .color-picker.inline .label,
 .color-picker.inline .label * {
+    display: inline;
     position: absolute !important;
     margin: -1px !important;
     padding: 0 !important;
@@ -204,8 +205,8 @@
 }
 
 /* Bug: This does not remove the focus ring for some reason. */
-.user-input pc-input:has(> pc-copy-button:focus-visible) {
-    --pc-focus-ring: none;
+.user-input pc-input:has(> pc-copy-button:focus-visible)::part(form-control) {
+    outline: none;
 }
 
 .user-input pc-input pc-copy-button {
@@ -292,7 +293,8 @@
     inset-inline-start: 0;
     inline-size: 100%;
     block-size: 100%;
-    border: solid 1px rgba(0, 0, 0, 0.125);
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        color-mix(in oklab, var(--pc-color-neutral-05) 20%, transparent);
     box-shadow: inset 0 0 0 var(--pc-border-width-s)
         color-mix(in oklab, var(--pc-color-neutral-05) 20%, transparent);
     border-radius: inherit;
@@ -300,27 +302,12 @@
 }
 
 .pixel-background {
-    background-image:
-        linear-gradient(
-            45deg,
-            var(--pc-color-neutral-fill-normal) 25%,
-            transparent 25%
-        ),
-        linear-gradient(
-            45deg,
-            transparent 75%,
-            var(--pc-color-neutral-fill-normal) 75%
-        ),
-        linear-gradient(
-            45deg,
-            transparent 75%,
-            var(--pc-color-neutral-fill-normal) 75%
-        ),
-        linear-gradient(
-            45deg,
-            var(--pc-color-neutral-fill-normal) 25%,
-            transparent 25%
-        );
+    background-image: conic-gradient(
+        var(--pc-color-neutral-fill-normal) 25%,
+        transparent 0 50%,
+        var(--pc-color-neutral-fill-normal) 0 75%,
+        transparent 0
+    );
     background-size: 0.5rem 0.5rem;
     background-position:
         0 0,
@@ -394,6 +381,38 @@
 .popup-trigger[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.color-popup[data-current-placement^="top"] .color-picker {
+    transform-origin: bottom;
+}
+
+.color-popup[data-current-placement^="bottom"] .color-picker {
+    transform-origin: top;
+}
+
+.color-popup[data-current-placement^="left"] .color-picker {
+    transform-origin: right;
+}
+
+.color-popup[data-current-placement^="right"] .color-picker {
+    transform-origin: left;
+}
+
+.color-popup[data-current-placement="left-start"] .color-picker {
+    transform-origin: right top;
+}
+
+.color-popup[data-current-placement="left-end"] .color-picker {
+    transform-origin: right bottom;
+}
+
+.color-popup[data-current-placement="right-start"] .color-picker {
+    transform-origin: left top;
+}
+
+.color-popup[data-current-placement="right-end"] .color-picker {
+    transform-origin: left bottom;
 }
 
 @keyframes focus-ring-animation {

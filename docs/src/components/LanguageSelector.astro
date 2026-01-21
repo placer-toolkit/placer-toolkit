@@ -250,6 +250,38 @@ const translation = useTranslations(language);
 </script>
 
 <style>
+    .language-selector[data-current-placement^="top"] .menu {
+        transform-origin: bottom;
+    }
+
+    .language-selector[data-current-placement^="bottom"] .menu {
+        transform-origin: top;
+    }
+
+    .language-selector[data-current-placement^="left"] .menu {
+        transform-origin: right;
+    }
+
+    .language-selector[data-current-placement^="right"] .menu {
+        transform-origin: left;
+    }
+
+    .language-selector[data-current-placement="left-start"] .menu {
+        transform-origin: right top;
+    }
+
+    .language-selector[data-current-placement="left-end"] .menu {
+        transform-origin: right bottom;
+    }
+
+    .language-selector[data-current-placement="right-start"] .menu {
+        transform-origin: left top;
+    }
+
+    .language-selector[data-current-placement="right-end"] .menu {
+        transform-origin: left bottom;
+    }
+
     .language-selector .menu {
         display: flex;
         flex-direction: column;

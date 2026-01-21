@@ -1,5 +1,5 @@
 ---
-import { getLanguageFromURL, useTranslations, useTranslatedPath } from "../i18n/utilities.js";
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
 import "@pagefind/default-ui/css/ui.css";
 
@@ -12,8 +12,10 @@ const translation = useTranslations(language);
         import.meta.env.MODE === "development" && (
             <p
                 class="dev-warning"
-                set:html={translation("ui.search.searchNotAvailableInDevBuilds")}
-            ></p>
+                set:html={translation(
+                    "ui.search.searchNotAvailableInDevBuilds",
+                )}
+            />
         )
     }
     {import.meta.env.MODE === "production" && <div id="search" />}
@@ -22,30 +24,44 @@ const translation = useTranslations(language);
 <script>
     import type { PcDialog } from "placer-toolkit/dist/components/dialog/dialog.js";
 
+    const searchDialog = document.querySelector<PcDialog>(".search-dialog");
+
+    const focusSearch = () => {
+        const searchInput = document.querySelector<HTMLInputElement>(
+            "#search .pagefind-ui__search-input",
+        );
+
+        if (searchInput) {
+            searchInput.focus();
+        }
+    };
+
     document.addEventListener("keydown", (event) => {
-        if (
+        const isSearchShortcut =
             (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
-            (event.key === "/" &&
-                !event.composedPath().some((element) => {
-                    const tag = (
-                        element as HTMLElement
-                    )?.tagName?.toLowerCase();
-                    return (
-                        tag === "textarea" ||
-                        (tag === "input" &&
-                            !["checkbox", "radio"].includes(
-                                (element as HTMLInputElement).type,
-                            ))
-                    );
-                }))
-        ) {
-            event.preventDefault();
+            event.key === "/";
 
-            const searchDialog: PcDialog | null =
-                document.querySelector(".search-dialog");
+        if (isSearchShortcut) {
+            const isTyping = event.composedPath().some((element) => {
+                const tag = (element as HTMLElement)?.tagName?.toLowerCase();
 
-            if (searchDialog) {
-                searchDialog.open = true;
+                return (
+                    tag === "textarea" ||
+                    (tag === "input" &&
+                        !["checkbox", "radio"].includes(
+                            (element as HTMLInputElement).type,
+                        ))
+                );
+            });
+
+            if (!isTyping) {
+                event.preventDefault();
+
+                if (searchDialog) {
+                    searchDialog.open = true;
+
+                    focusSearch();
+                }
             }
         }
     });
@@ -69,37 +85,49 @@ const translation = useTranslations(language);
                 showSubResults: true,
             });
 
-            setTimeout(() => {
-                const searchInput: HTMLInputElement | null =
-                    document.querySelector(
-                        "#search .pagefind-ui__search-input",
-                    );
+            const observer = new MutationObserver(() => {
+                const searchInput = document.querySelector<HTMLInputElement>(
+                    "#search .pagefind-ui__search-input",
+                );
+                const hasLabel = document.querySelector(
+                    'label[for="pagefind-ui__search-input"]',
+                );
 
-                if (searchInput) {
+                if (searchInput && !hasLabel) {
                     const inputId = "pagefind-ui__search-input";
+
                     searchInput.id = inputId;
 
-                    searchInput.focus();
-
                     const label = document.createElement("label");
+
                     label.setAttribute("for", inputId);
                     label.classList.add("pc-visually-hidden");
                     label.textContent =
                         "Search the Placer Toolkit documentation…";
 
-                    const searchForm =
-                        searchInput.closest(".pagefind-ui__form");
-                    if (searchForm) {
-                        searchForm.insertBefore(label, searchInput);
-                    } else {
-                        searchInput.parentNode?.insertBefore(
-                            label,
-                            searchInput,
-                        );
+                    searchInput
+                        .closest(".pagefind-ui__form")
+                        ?.insertBefore(label, searchInput);
+
+                    if (searchDialog?.open) {
+                        focusSearch();
                     }
                 }
-            }, 100);
+            });
+
+            const searchContainer = document.querySelector("#search");
+
+            if (searchContainer) {
+                observer.observe(searchContainer, {
+                    childList: true,
+                    subtree: true,
+                });
+            }
         });
+    });
+
+    searchDialog?.addEventListener("pc-show", () => {
+        focusSearch();
     });
 </script>
 
