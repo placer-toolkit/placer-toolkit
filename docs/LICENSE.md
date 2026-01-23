@@ -247,7 +247,7 @@ following conditions.
         reasonably practicable.
       </li>
       <li>
-        If You Share Adapted Material You produce, the Adapter's
+        If You Share Adapted Material You produce, the Adapter’s
         License You apply must not prevent recipients of the Adapted
         Material from complying with this Public License.
       </li>
