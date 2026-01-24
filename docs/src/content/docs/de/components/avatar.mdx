@@ -1,0 +1,121 @@
+---
+title: Avatar
+description: Avatars werden verwendet, um eine Person oder ein Objekt darzustellen.
+---
+
+Avatars werden verwendet, um eine Person oder ein Objekt darzustellen.
+
+Standardmäßig wird ein allgemeines Icon angezeigt. Du kannst Avatars personalisieren, indem du eigene Icons, Initialen oder Bilder hinzufügst. Du solltest für assistive Technologien (z. B. Screenreader) immer ein `label` angeben.
+
+```demo
+<pc-avatar label="Benutzer‐Avatar"></pc-avatar>
+```
+
+## Demos
+
+### Bilder
+
+Um ein Bild für den Avatar zu verwenden, setze die Attribute `image` und `label`. Das Bild hat Priorität und wird vor Initialen oder Icons angezeigt. Avatar‐Bilder können verzögert geladen werden, indem du das Attribut `loading` auf `lazy` setzt.
+
+```demo
+<pc-avatar image="/favicon.svg" label="Placer Toolkit‐Avatar"></pc-avatar>
+```
+
+### Initialen
+
+Wenn du kein Bild zur Hand hast, kannst du das `initials`‐Attribut nutzen, um etwas Persönlicheres als ein einfaches Icon anzuzeigen.
+
+```demo
+<pc-avatar initials="PC" label="Avatar mit Initialen: PC"></pc-avatar>
+```
+
+### Eigene Icons
+
+Wenn weder Bild noch Initialen gesetzt sind, wird ein Icon angezeigt. Der Standard‐Avatar nutzt das Font Awesome [`user`](https://fontawesome.com/icons/user?f=classic&s=solid) Icon, aber du kannst dies über den `icon`‐Slot anpassen.
+
+```demo
+<pc-avatar label="Avatar mit Bild‐Icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="image"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+
+<pc-avatar label="Avatar mit ZIP‐Datei‐Icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="file-zipper"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+
+<pc-avatar label="Avatar mit Koffer‐Icon">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="suitcase"
+        slot="icon"
+    ></pc-icon>
+</pc-avatar>
+```
+
+### Formen
+
+Die Form des Avatars kann über das `shape`‐Attribut geändert werden.
+
+```demo
+<pc-avatar shape="square" label="Quadratischer Avatar"></pc-avatar>
+<pc-avatar shape="rounded" label="Abgerundeter Avatar"></pc-avatar>
+<pc-avatar shape="circle" label="Kreisförmiger Avatar"></pc-avatar>
+```
+
+### Avatar-Gruppen
+
+Mit ein paar Zeilen CSS kannst du Avatars in einer Gruppe zusammenfassen.
+
+```demo
+<div class="avatar-group">
+    <pc-avatar
+        image="[https://placer-toolkit.vercel.app/brand/logo-in-circle.svg](https://placer-toolkit.vercel.app/brand/logo-in-circle.svg)"
+        label="Placer Toolkit‐Avatar (Original, 1 von 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="[https://placer-toolkit.vercel.app/brand/logo-in-circle.svg](https://placer-toolkit.vercel.app/brand/logo-in-circle.svg)"
+        label="Placer Toolkit‐Avatar (Graustufen-Filter, 2 von 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="[https://placer-toolkit.vercel.app/brand/logo-in-circle.svg](https://placer-toolkit.vercel.app/brand/logo-in-circle.svg)"
+        label="Placer Toolkit‐Avatar (Farbton um 180° gedreht, 3 von 4)"
+    ></pc-avatar>
+    <pc-avatar
+        image="[https://placer-toolkit.vercel.app/brand/logo-in-circle.svg](https://placer-toolkit.vercel.app/brand/logo-in-circle.svg)"
+        label="Placer Toolkit‐Avatar (Sepia-Filter, 4 von 4)"
+    ></pc-avatar>
+</div>
+
+<style>
+    .avatar-group pc-avatar:not(:first-of-type) {
+        margin-inline-start: -1em;
+    }
+
+    .avatar-group pc-avatar:nth-child(2) {
+        filter: grayscale(100%);
+    }
+
+    .avatar-group pc-avatar:nth-child(3) {
+        filter: hue-rotate(180deg);
+    }
+
+    .avatar-group pc-avatar:last-child {
+        filter: sepia(100%);
+    }
+
+    .avatar-group pc-avatar::part(base) {
+        border: var(--pc-border-width-m) var(--pc-border-style)
+            var(--pc-color-surface-default);
+    }
+</style>
+```

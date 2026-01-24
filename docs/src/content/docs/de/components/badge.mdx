@@ -1,0 +1,98 @@
+---
+title: Badge
+description: Badges werden verwendet, um Aufmerksamkeit zu erregen und Status oder Zählwerte anzuzeigen.
+---
+
+Badges werden verwendet, um Aufmerksamkeit zu erregen und Status oder Zählwerte anzuzeigen.
+
+```demo:open
+<pc-badge>Badge</pc-badge>
+```
+
+## Demos
+
+### Erscheinungsbild
+
+Verwende das `appearance`‐Attribut, um das Erscheinungsbild des Badges festzulegen.
+
+```demo
+<pc-badge appearance="primary">Primär</pc-badge>
+<pc-badge appearance="success">Erfolg</pc-badge>
+<pc-badge appearance="neutral">Neutral</pc-badge>
+<pc-badge appearance="warning">Warnung</pc-badge>
+<pc-badge appearance="danger">Gefahr</pc-badge>
+```
+
+### Varianten
+
+Verwende das `variant`‐Attribut, um die Variante des Badges festzulegen.
+
+```demo
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="primary" variant="accent">Akzent</pc-badge>
+    <pc-badge appearance="primary" variant="filled outlined">G + U</pc-badge>
+    <pc-badge appearance="primary" variant="filled">Gefüllt</pc-badge>
+    <pc-badge appearance="primary" variant="outlined">Umrandet</pc-badge>
+    <pc-badge appearance="primary" variant="plain">Schlicht</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="success" variant="accent">Akzent</pc-badge>
+    <pc-badge appearance="success" variant="filled outlined">G + U</pc-badge>
+    <pc-badge appearance="success" variant="filled">Gefüllt</pc-badge>
+    <pc-badge appearance="success" variant="outlined">Umrandet</pc-badge>
+    <pc-badge appearance="success" variant="plain">Schlicht</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="neutral" variant="accent">Akzent</pc-badge>
+    <pc-badge appearance="neutral" variant="filled outlined">G + U</pc-badge>
+    <pc-badge appearance="neutral" variant="filled">Gefüllt</pc-badge>
+    <pc-badge appearance="neutral" variant="outlined">Umrandet</pc-badge>
+    <pc-badge appearance="neutral" variant="plain">Schlicht</pc-badge>
+</div>
+<div style="margin-block-end: var(--pc-spacing-m)">
+    <pc-badge appearance="warning" variant="accent">Akzent</pc-badge>
+    <pc-badge appearance="warning" variant="filled outlined">G + U</pc-badge>
+    <pc-badge appearance="warning" variant="filled">Gefüllt</pc-badge>
+    <pc-badge appearance="warning" variant="outlined">Umrandet</pc-badge>
+    <pc-badge appearance="warning" variant="plain">Schlicht</pc-badge>
+</div>
+<div>
+    <pc-badge appearance="danger" variant="accent">Akzent</pc-badge>
+    <pc-badge appearance="danger" variant="filled outlined">G + U</pc-badge>
+    <pc-badge appearance="danger" variant="filled">Gefüllt</pc-badge>
+    <pc-badge appearance="danger" variant="outlined">Umrandet</pc-badge>
+    <pc-badge appearance="danger" variant="plain">Schlicht</pc-badge>
+</div>
+```
+
+### Abgerundete Badges
+
+Verwende das `rounded`‐Attribut, um dem Badge eine abgerundete Rechteckform zu geben.
+
+```demo
+<pc-badge appearance="primary" rounded>Primär</pc-badge>
+<pc-badge appearance="success" rounded>Erfolg</pc-badge>
+<pc-badge appearance="neutral" rounded>Neutral</pc-badge>
+<pc-badge appearance="warning" rounded>Warnung</pc-badge>
+<pc-badge appearance="danger" rounded>Gefahr</pc-badge>
+```
+
+### Pulsierende Badges
+
+Verwende das `pulse`‐Attribut, um Aufmerksamkeit durch eine dezente Animation auf das Badge zu lenken.
+
+```demo
+<div class="badge-pulse">
+    <pc-badge appearance="primary" pulse>1</pc-badge>
+    <pc-badge appearance="success" pulse>1</pc-badge>
+    <pc-badge appearance="neutral" pulse>1</pc-badge>
+    <pc-badge appearance="warning" pulse>1</pc-badge>
+    <pc-badge appearance="danger" pulse>1</pc-badge>
+</div>
+
+<style>
+    .badge-pulse pc-badge:not(:last-of-type) {
+        margin-inline-end: var(--pc-spacing-l);
+    }
+</style>
+```

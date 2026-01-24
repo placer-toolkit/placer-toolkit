@@ -33,7 +33,7 @@ html {
     overflow-y: hidden;
 }
 
-/* Language‐specific word break optimisations */
+/* Language‐specific styling optimisations */
 [lang~="de"]:not(:has([lang~="en"])) {
     hyphens: auto;
     overflow-wrap: break-word;
