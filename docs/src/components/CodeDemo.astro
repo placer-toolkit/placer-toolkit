@@ -81,6 +81,8 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 </div>
 
 <script>
+    import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
+
     import hljs from "highlight.js";
     import html from "highlight.js/lib/languages/xml";
 
@@ -98,7 +100,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                 const previewTargetElement = demoElement.querySelector(
                     `#preview-content-${uniqueId}`,
                 ) as HTMLElement | null;
-                const toggleButton = demoElement.querySelector(
+                const toggleButton = demoElement.querySelector<PcButton>(
                     `#toggle-button-${uniqueId}`,
                 );
                 const codeBlock = demoElement.querySelector(
@@ -114,7 +116,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                     `#resize-handle-${uniqueId}`,
                 ) as HTMLElement | null;
                 const codepenButton =
-                    demoElement.querySelector(".codepen-button");
+                    demoElement.querySelector<PcButton>(".codepen-button");
 
                 if (
                     !codeElement ||
@@ -272,8 +274,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                 if (codepenButton) {
                     const currentVersion = codepenButton.dataset.version;
 
-                    const cdnURL =
-                        `https://cdn.jsdelivr.net/npm/placer-toolkit@${currentVersion}`;
+                    const cdnURL = `https://cdn.jsdelivr.net/npm/placer-toolkit@${currentVersion}`;
 
                     const html =
                         `<link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|quicksand:300,400,500,600,700&display=swap" />\n` +

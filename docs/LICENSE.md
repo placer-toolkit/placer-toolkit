@@ -13,7 +13,7 @@ Licensed Material available under these terms and conditions.
 
 <ol type="a">
   <li>
-    Adapted Material means material subject to Copyright and Similar
+    <strong>Adapted Material</strong> means material subject to Copyright and Similar
     Rights that is derived from or based upon the Licensed Material
     and in which the Licensed Material is translated, altered,
     arranged, transformed, or otherwise modified in a manner requiring
@@ -24,12 +24,12 @@ Licensed Material available under these terms and conditions.
     synched in timed relation with a moving image.
   </li>
   <li>
-    Adapter’s License means the license You apply to Your Copyright
+    <strong>Adapter’s License</strong> means the license You apply to Your Copyright
     and Similar Rights in Your contributions to Adapted Material in
     accordance with the terms and conditions of this Public License.
   </li>
   <li>
-    Copyright and Similar Rights means copyright and/or similar rights
+    <strong>Copyright and Similar Rights</strong> means copyright and/or similar rights
     closely related to copyright including, without limitation,
     performance, broadcast, sound recording, and Sui Generis Database
     Rights, without regard to how the rights are labeled or
@@ -38,34 +38,34 @@ Licensed Material available under these terms and conditions.
     Rights.
   </li>
   <li>
-    Effective Technological Measures means those measures that, in the
+    <strong>Effective Technological Measures</strong> means those measures that, in the
     absence of proper authority, may not be circumvented under laws
     fulfilling obligations under Article 11 of the WIPO Copyright
     Treaty adopted on December 20, 1996, and/or similar international
     agreements.
   </li>
   <li>
-    Exceptions and Limitations means fair use, fair dealing, and/or
+    <strong>Exceptions and Limitations</strong> means fair use, fair dealing, and/or
     any other exception or limitation to Copyright and Similar Rights
     that applies to Your use of the Licensed Material.
   </li>
   <li>
-    Licensed Material means the artistic or literary work, database,
+    <strong>Licensed Material</strong> means the artistic or literary work, database,
     or other material to which the Licensor applied this Public
     License.
   </li>
   <li>
-    Licensed Rights means the rights granted to You subject to the
+    <strong>Licensed Rights</strong> means the rights granted to You subject to the
     terms and conditions of this Public License, which are limited to
     all Copyright and Similar Rights that apply to Your use of the
     Licensed Material and that the Licensor has authority to license.
   </li>
   <li>
-    Licensor means the individual(s) or entity(ies) granting rights
+    <strong>Licensor</strong> means the individual(s) or entity(ies) granting rights
     under this Public License.
   </li>
   <li>
-    Share means to provide material to the public by any means or
+    <strong>Share</strong> means to provide material to the public by any means or
     process that requires permission under the Licensed Rights, such
     as reproduction, public display, public performance, distribution,
     dissemination, communication, or importation, and to make material
@@ -74,15 +74,15 @@ Licensed Material available under these terms and conditions.
     individually chosen by them.
   </li>
   <li>
-    Sui Generis Database Rights means rights other than copyright
+    <strong>Sui Generis Database Rights</strong> means rights other than copyright
     resulting from Directive 96/9/EC of the European Parliament and of
     the Council of 11 March 1996 on the legal protection of databases,
     as amended and/or succeeded, as well as other essentially
     equivalent rights anywhere in the world.
   </li>
   <li>
-    You means the individual or entity exercising the Licensed Rights
-    under this Public License. Your has a corresponding meaning.
+    <strong>You</strong> means the individual or entity exercising the Licensed Rights
+    under this Public License. <strong>Your</strong> has a corresponding meaning.
   </li>
 </ol>
 
@@ -90,7 +90,7 @@ Licensed Material available under these terms and conditions.
 
 <ol type="a">
   <li>
-    License grant.
+    <strong>License grant.</strong>
     <ol>
       <li>
         Subject to the terms and conditions of this Public License,
@@ -106,17 +106,17 @@ Licensed Material available under these terms and conditions.
         </ol>
       </li>
       <li>
-        Exceptions and Limitations. For the avoidance of doubt, where
+        <strong>Exceptions and Limitations.</strong> For the avoidance of doubt, where
         Exceptions and Limitations apply to Your use, this Public
         License does not apply, and You do not need to comply with
         its terms and conditions.
       </li>
       <li>
-        Term. The term of this Public License is specified in Section
+        <strong>Term.</strong> The term of this Public License is specified in Section
         6(a).
       </li>
       <li>
-        Media and formats; technical modifications allowed. The
+        <strong>Media and formats; technical modifications allowed.</strong> The
         Licensor authorizes You to exercise the Licensed Rights in
         all media and formats whether now known or hereafter created,
         and to make technical modifications necessary to do so. The
@@ -129,17 +129,17 @@ Licensed Material available under these terms and conditions.
         (4) never produces Adapted Material.
       </li>
       <li>
-        Downstream recipients.
+        <strong>Downstream recipients.</strong>
           <ol type="A">
             <li>
-              Offer from the Licensor – Licensed Material. Every
+              <strong>Offer from the Licensor – Licensed Material.</strong> Every
               recipient of the Licensed Material automatically
               receives an offer from the Licensor to exercise the
               Licensed Rights under the terms and conditions of this
               Public License.
             </li>
             <li>
-              No downstream restrictions. You may not offer or impose
+              <strong>No downstream restrictions.</strong> You may not offer or impose
               any additional or different terms or conditions on, or
               apply any Effective Technological Measures to, the
               Licensed Material if doing so restricts exercise of the
@@ -149,7 +149,7 @@ Licensed Material available under these terms and conditions.
           </ol>
       </li>
       <li>
-        No endorsement. Nothing in this Public License constitutes or
+        <strong>No endorsement.</strong> Nothing in this Public License constitutes or
         may be construed as permission to assert or imply that You
         are, or that Your use of the Licensed Material is, connected
         with, or sponsored, endorsed, or granted official status by,
@@ -159,7 +159,7 @@ Licensed Material available under these terms and conditions.
     </ol>
   </li>
   <li>
-    Other rights.
+    <strong>Other rights.</strong>
     <ol>
       <li>
         Moral rights, such as the right of integrity, are not
@@ -193,7 +193,7 @@ following conditions.
 
 <ol type="a">
   <li>
-    Attribution.
+    <strong>Attribution.</strong>
     <ol>
       <li>
         If You Share the Licensed Material (including in modified
@@ -285,28 +285,32 @@ Rights include other Copyright and Similar Rights.
 ## Section 5 – Disclaimer of Warranties and Limitation of Liability.
 
 <ol type="a">
-  <li>
-    UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
-    EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
-    AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
-    ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
-    IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
-    WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
-    PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
-    ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
-    KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
-    ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+  <li style="font-weight: var(--pc-font-weight-bold)">
+    <b>
+      Unless otherwise separately undertaken by the Licensor, to the
+      extent possible, the Licensor offers the Licensed Material as-is
+      and as-available, and makes no representations or warranties of
+      any kind concerning the Licensed Material, whether express,
+      implied, statutory, or other. This includes, without limitation,
+      warranties of title, merchantability, fitness for a particular
+      purpose, non-infringement, absence of latent or other defects,
+      accuracy, or the presence or absence of errors, whether or not
+      known or discoverable. Where disclaimers of warranties are not
+      allowed in full or in part, this disclaimer may not apply to You.
+    </b>
   </li>
   <li>
-    TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
-    TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
-    NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
-    INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
-    COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
-    USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
-    ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
-    DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
-    IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+    <b>
+      To the extent possible, in no event will the Licensor be liable
+      to You on any legal theory (including, without limitation,
+      negligence) or otherwise for any direct, special, indirect,
+      incidental, consequential, punitive, exemplary, or other losses,
+      costs, expenses, or damages arising out of this Public License or
+      use of the Licensed Material, even if the Licensor has been
+      advised of the possibility of such losses, costs, expenses, or
+      damages. Where a limitation of liability is not allowed in full or
+      in part, this limitation may not apply to You.
+    </b>
   </li>
   <li>
     The disclaimer of warranties and limitation of liability provided
