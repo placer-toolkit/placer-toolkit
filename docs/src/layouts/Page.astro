@@ -71,21 +71,37 @@ const {
             name="google-site-verification"
             content="FuYprzKlW9u11ARGzJPgLFZx6hUnTmCdYmqPkrOFq4E"
         />
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="Placer Toolkit" />
+        <meta property="og:site_name" content="Placer Toolkit" />
+        <meta
+            property="og:url"
+            content={new URL(Astro.url.pathname, Astro.site).href}
+        />
         <meta
             property="og:description"
             content={`${translation("landingCTA.tagline.flexible")} ${translation("landingCTA.tagline.accessible")} ${translation("landingCTA.tagline.webComponents")}`}
         />
         <meta
-            property="og:url"
-            content={new URL(Astro.url.pathname, Astro.site).href}
+            property="og:image"
+            content={new URL("/images/og-image.png", Astro.site)}
         />
-        <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Placer Toolkit" />
+        <meta
+            property="og:image:alt"
+            content="A preview of Placer Toolkit components including terminal snippets, toggles and UI elements in a bento‐style grid."
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Placer Toolkit" />
+        <meta name="twitter:description" content={description} />
+        <meta
+            name="twitter:image"
+            content={new URL("/images/og-image.png", Astro.site)}
+        />
         <link rel="canonical" href={canonicalURL} />
         <link rel="alternate" hreflang="en" href={enURL} />
         <link rel="alternate" hreflang="de" href={deURL} />
         <link rel="preconnect" href="https://fonts.bunny.net" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Legacy fallback for search engine crawlers in search results -->
         <link
             rel="icon"
@@ -94,7 +110,6 @@ const {
             sizes="any"
         />
         <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <!-- Placer Toolkit -->
         <script>
             // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
