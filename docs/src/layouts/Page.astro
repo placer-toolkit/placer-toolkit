@@ -226,20 +226,29 @@ const {
                                 >
                                     {translation("button.returnToMainContent")}
                                 </pc-button>
-                                <h3 class="toc-heading">
-                                    {translation("ui.toc.onThisPage")}
-                                </h3>
-                                <pc-scroller
-                                    class="toc-scroll-fade"
-                                    orientation="vertical"
-                                >
-                                    <ul
-                                        class="toc-ul"
-                                        data-overview={translation(
-                                            "ui.toc.overview",
-                                        )}
-                                    />
-                                </pc-scroller>
+
+                                <div class="toc-container">
+                                    <pc-scroller
+                                        class="toc-scroll-fade"
+                                        orientation="vertical"
+                                    >
+                                        <h3 class="toc-heading">
+                                            {translation("ui.toc.onThisPage")}
+                                        </h3>
+                                        <div class="toc-inner">
+                                            <div
+                                                class="toc-marker"
+                                                aria-hidden="true"
+                                            />
+                                            <ul
+                                                class="toc-ul"
+                                                data-overview={translation(
+                                                    "ui.toc.overview",
+                                                )}
+                                            />
+                                        </div>
+                                    </pc-scroller>
+                                </div>
                             </aside>
                         </div>
                     ) : (
@@ -395,9 +404,11 @@ const {
                     slug: element.id,
                     text: (() => {
                         let text = element.textContent?.trim() || "";
+
                         if (text.endsWith("#")) {
                             text = text.slice(0, -1).trim();
                         }
+
                         return text;
                     })(),
                 }));
@@ -412,11 +423,16 @@ const {
                     text: string;
                 }) {
                     const li = document.createElement("li");
+
                     li.className = `toc-item depth-${depth}`;
+
                     const a = document.createElement("a");
+
                     a.href = `#${slug}`;
                     a.textContent = text;
+
                     li.appendChild(a);
+
                     return li;
                 }
 
@@ -457,7 +473,9 @@ const {
                     return;
                 }
 
-                const links = Array.from(toc.querySelectorAll(".toc-ul a"));
+                const links = Array.from(
+                    toc.querySelectorAll<HTMLAnchorElement>(".toc-ul a"),
+                );
                 const idToLink = new Map(
                     links.map((link) => [
                         link.getAttribute("href")?.slice(1),
@@ -465,22 +483,65 @@ const {
                     ]),
                 );
 
+                const tocScroller = document.querySelector<HTMLElement>(
+                    ".toc-desktop pc-scroller",
+                );
+                const tocContent =
+                    tocScroller?.shadowRoot?.querySelector<HTMLElement>(
+                        "#content",
+                    );
+
+                if (!tocScroller || !tocContent) {
+                    return;
+                }
+
+                const tocInner =
+                    tocScroller.querySelector<HTMLElement>(".toc-inner");
+                const marker =
+                    tocScroller.querySelector<HTMLElement>(".toc-marker");
+
+                function moveMarkerToLink(link: HTMLAnchorElement) {
+                    if (!marker || !tocInner) {
+                        return;
+                    }
+
+                    const li = link.closest("li");
+
+                    if (!li) {
+                        return;
+                    }
+
+                    const liRect = li.getBoundingClientRect();
+                    const innerRect = tocInner.getBoundingClientRect();
+
+                    let y = liRect.top - innerRect.top;
+
+                    y += liRect.height / 2 - marker.offsetHeight / 2;
+
+                    marker.style.transform = `translateY(${y}px)`;
+                }
+
+                function setActiveId(id: string) {
+                    const link = links.find(
+                        (a) => a.getAttribute("href") === `#${id}`,
+                    );
+
+                    if (!link) {
+                        return;
+                    }
+
+                    links.forEach((a) =>
+                        a.classList.toggle("active", a === link),
+                    );
+
+                    moveMarkerToLink(link);
+                }
+
                 const observer = new IntersectionObserver(
                     (entries) => {
                         entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                const id = entry.target.id;
-
-                                if (!id) {
-                                    return;
-                                }
-
-                                links.forEach((link) =>
-                                    link.classList.toggle(
-                                        "active",
-                                        link.getAttribute("href") === `#${id}`,
-                                    ),
-                                );
+                            if (entry.isIntersecting && entry.target.id) {
+                                setActiveId(entry.target.id);
                             }
                         });
                     },
@@ -505,6 +566,7 @@ const {
 
                 function determineActiveFromPosition() {
                     const targetLine = window.innerHeight * 0.18;
+
                     let chosenID: string | null = null;
                     let chosenTop = -Infinity;
 
@@ -552,18 +614,25 @@ const {
                                 nearestID = id;
                             }
                         });
+
                         chosenID = nearestID;
                     }
 
                     if (chosenID) {
-                        links.forEach((link) =>
-                            link.classList.toggle(
-                                "active",
-                                link.getAttribute("href") === `#${chosenID}`,
-                            ),
-                        );
+                        setActiveId(chosenID);
                     }
                 }
+
+                tocContent.addEventListener("scroll", () => {
+                    const activeLink =
+                        tocScroller.querySelector<HTMLAnchorElement>(
+                            ".toc-ul a.active",
+                        );
+
+                    if (activeLink) {
+                        moveMarkerToLink(activeLink);
+                    }
+                });
 
                 determineActiveFromPosition();
 
