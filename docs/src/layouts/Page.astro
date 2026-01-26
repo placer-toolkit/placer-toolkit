@@ -13,10 +13,12 @@ import ComponentInfo from "../components/ComponentInfo.astro";
 import FallbackContentWarning from "../components/FallbackContentWarning.astro";
 import Footer from "../components/Footer.astro";
 import Search from "../components/Search.astro";
+import TableOfContents from "../components/TableOfContents.astro";
 
 import "placer-toolkit/dist/styles/placer.css";
 import "placer-toolkit/dist/styles/themes/utility.css";
 import "placer-toolkit/dist/styles/themes/serene.css";
+
 import "../styles/main.css";
 import "../styles/fonts.css";
 import "../styles/anchor-headings.css";
@@ -213,43 +215,7 @@ const {
                                 <slot />
                             </article>
 
-                            <aside
-                                class="toc toc-desktop"
-                                id="table-of-contents"
-                            >
-                                <pc-button
-                                    href="#_top"
-                                    appearance="neutral"
-                                    variant="filled outlined"
-                                    size="small"
-                                    class="return-to-main-content pc-desktop-only pc-visually-hidden"
-                                >
-                                    {translation("button.returnToMainContent")}
-                                </pc-button>
-
-                                <div class="toc-container">
-                                    <pc-scroller
-                                        class="toc-scroll-fade"
-                                        orientation="vertical"
-                                    >
-                                        <h3 class="toc-heading">
-                                            {translation("ui.toc.onThisPage")}
-                                        </h3>
-                                        <div class="toc-inner">
-                                            <div
-                                                class="toc-marker"
-                                                aria-hidden="true"
-                                            />
-                                            <ul
-                                                class="toc-ul"
-                                                data-overview={translation(
-                                                    "ui.toc.overview",
-                                                )}
-                                            />
-                                        </div>
-                                    </pc-scroller>
-                                </div>
-                            </aside>
+                            <TableOfContents />
                         </div>
                     ) : (
                         <>
@@ -263,6 +229,7 @@ const {
                                     <span
                                         slot="icon"
                                         style="user-select: none; -webkit-user-select: none"
+                                        aria-hidden="true"
                                     >
                                         🚀
                                     </span>
@@ -386,259 +353,6 @@ const {
                 "click",
                 () => (mobileSidebar.open = true),
             );
-
-            // TOC generation
-            document.addEventListener("DOMContentLoaded", () => {
-                const tocMobile = document.querySelector(
-                    ".toc-mobile .toc-ul",
-                ) as HTMLUListElement;
-                const tocDesktop = document.querySelector(
-                    ".toc-desktop .toc-ul",
-                ) as HTMLUListElement;
-
-                const headings = Array.from(
-                    document.querySelectorAll("h2[id], h3[id]"),
-                );
-                const items = headings.map((element) => ({
-                    depth: element.tagName === "H2" ? 2 : 3,
-                    slug: element.id,
-                    text: (() => {
-                        let text = element.textContent?.trim() || "";
-
-                        if (text.endsWith("#")) {
-                            text = text.slice(0, -1).trim();
-                        }
-
-                        return text;
-                    })(),
-                }));
-
-                function createTOCItem({
-                    depth,
-                    slug,
-                    text,
-                }: {
-                    depth: number;
-                    slug: string;
-                    text: string;
-                }) {
-                    const li = document.createElement("li");
-
-                    li.className = `toc-item depth-${depth}`;
-
-                    const a = document.createElement("a");
-
-                    a.href = `#${slug}`;
-                    a.textContent = text;
-
-                    li.appendChild(a);
-
-                    return li;
-                }
-
-                const overviewItem = document.createElement("li");
-
-                overviewItem.className = "toc-item depth-2";
-
-                const overviewLink = document.createElement("a");
-
-                overviewLink.href = "#_top";
-                overviewLink.textContent =
-                    tocDesktop?.dataset?.overview ??
-                    tocMobile?.dataset?.overview ??
-                    "";
-                overviewItem.appendChild(overviewLink);
-
-                [tocMobile, tocDesktop].forEach((toc) => {
-                    if (!toc) {
-                        return;
-                    }
-
-                    toc.innerHTML = "";
-                    toc.appendChild(overviewItem.cloneNode(true));
-
-                    items.forEach((item) => {
-                        if (item.depth > 1 && item.depth < 4) {
-                            toc.appendChild(createTOCItem(item));
-                        }
-                    });
-                });
-            });
-
-            // TOC scrollspy
-            document.addEventListener("DOMContentLoaded", () => {
-                const toc = document.querySelector(".toc-desktop");
-
-                if (!toc) {
-                    return;
-                }
-
-                const links = Array.from(
-                    toc.querySelectorAll<HTMLAnchorElement>(".toc-ul a"),
-                );
-                const idToLink = new Map(
-                    links.map((link) => [
-                        link.getAttribute("href")?.slice(1),
-                        link,
-                    ]),
-                );
-
-                const tocScroller = document.querySelector<HTMLElement>(
-                    ".toc-desktop pc-scroller",
-                );
-                const tocContent =
-                    tocScroller?.shadowRoot?.querySelector<HTMLElement>(
-                        "#content",
-                    );
-
-                if (!tocScroller || !tocContent) {
-                    return;
-                }
-
-                const tocInner =
-                    tocScroller.querySelector<HTMLElement>(".toc-inner");
-                const marker =
-                    tocScroller.querySelector<HTMLElement>(".toc-marker");
-
-                function moveMarkerToLink(link: HTMLAnchorElement) {
-                    if (!marker || !tocInner) {
-                        return;
-                    }
-
-                    const li = link.closest("li");
-
-                    if (!li) {
-                        return;
-                    }
-
-                    const liRect = li.getBoundingClientRect();
-                    const innerRect = tocInner.getBoundingClientRect();
-
-                    let y = liRect.top - innerRect.top;
-
-                    y += liRect.height / 2 - marker.offsetHeight / 2;
-
-                    marker.style.transform = `translateY(${y}px)`;
-                }
-
-                function setActiveId(id: string) {
-                    const link = links.find(
-                        (a) => a.getAttribute("href") === `#${id}`,
-                    );
-
-                    if (!link) {
-                        return;
-                    }
-
-                    links.forEach((a) =>
-                        a.classList.toggle("active", a === link),
-                    );
-
-                    moveMarkerToLink(link);
-                }
-
-                const observer = new IntersectionObserver(
-                    (entries) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting && entry.target.id) {
-                                setActiveId(entry.target.id);
-                            }
-                        });
-                    },
-                    {
-                        root: null,
-                        rootMargin: "0px 0px -60% 0px",
-                        threshold: 0,
-                    },
-                );
-
-                idToLink.forEach((_link, id) => {
-                    if (!id) {
-                        return;
-                    }
-
-                    const heading = document.getElementById(id);
-
-                    if (heading) {
-                        observer.observe(heading);
-                    }
-                });
-
-                function determineActiveFromPosition() {
-                    const targetLine = window.innerHeight * 0.18;
-
-                    let chosenID: string | null = null;
-                    let chosenTop = -Infinity;
-
-                    idToLink.forEach((_link, id) => {
-                        if (!id) {
-                            return;
-                        }
-
-                        const element = document.getElementById(id);
-
-                        if (!element) {
-                            return;
-                        }
-
-                        const top = element.getBoundingClientRect().top;
-
-                        if (top <= targetLine && top > chosenTop) {
-                            chosenTop = top;
-                            chosenID = id;
-                        }
-                    });
-
-                    if (!chosenID) {
-                        let nearestID: string | null = null;
-                        let nearestDistance = Infinity;
-
-                        idToLink.forEach((_link, id) => {
-                            if (!id) {
-                                return;
-                            }
-
-                            const element = document.getElementById(id);
-
-                            if (!element) {
-                                return;
-                            }
-
-                            const distance = Math.abs(
-                                element.getBoundingClientRect().top -
-                                    targetLine,
-                            );
-
-                            if (distance < nearestDistance) {
-                                nearestDistance = distance;
-                                nearestID = id;
-                            }
-                        });
-
-                        chosenID = nearestID;
-                    }
-
-                    if (chosenID) {
-                        setActiveId(chosenID);
-                    }
-                }
-
-                tocContent.addEventListener("scroll", () => {
-                    const activeLink =
-                        tocScroller.querySelector<HTMLAnchorElement>(
-                            ".toc-ul a.active",
-                        );
-
-                    if (activeLink) {
-                        moveMarkerToLink(activeLink);
-                    }
-                });
-
-                determineActiveFromPosition();
-
-                window.addEventListener("load", determineActiveFromPosition);
-                window.addEventListener("resize", determineActiveFromPosition);
-            });
         </script>
     </body>
 </html>
