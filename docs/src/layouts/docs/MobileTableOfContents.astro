@@ -1,0 +1,222 @@
+---
+import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
+
+import DynamicTableOfContents from "../../components/DynamicTableOfContents.astro";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<div class="toc mobile-toc pc-mobile-only">
+    <pc-details>
+        <div slot="summary">
+            <span class="toggle">
+                {translation("ui.toc.onThisPage")}
+
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="chevron-right"></pc-icon>
+            </span>
+        </div>
+
+        <div class="toc-dropdown">
+            <DynamicTableOfContents isMobile />
+        </div>
+    </pc-details>
+</div>
+
+<script>
+    const mobileDetails = document.querySelector(".mobile-toc pc-details");
+
+    if (mobileDetails) {
+        let hadKeyboardEvent = false;
+
+        document.addEventListener("keydown", (event) => {
+            if (
+                event.key === "Tab" ||
+                event.key === "ArrowUp" ||
+                event.key === "ArrowDown"
+            ) {
+                hadKeyboardEvent = true;
+            }
+        });
+
+        document.addEventListener(
+            "mousedown",
+            () => (hadKeyboardEvent = false),
+        );
+        document.addEventListener(
+            "touchstart",
+            () => (hadKeyboardEvent = false),
+        );
+        document.addEventListener(
+            "pointerdown",
+            () => (hadKeyboardEvent = false),
+        );
+
+        mobileDetails.addEventListener("focusin", (event) => {
+            if (!hadKeyboardEvent) {
+                return;
+            }
+
+            const path = event.composedPath();
+            const header = path.find(
+                (element): element is HTMLElement =>
+                    element instanceof HTMLElement &&
+                    element.getAttribute("part") === "header",
+            );
+
+            if (header) {
+                mobileDetails.classList.add("header-focused");
+            }
+        });
+
+        mobileDetails.addEventListener("focusout", () => {
+            mobileDetails.classList.remove("header-focused");
+        });
+    }
+</script>
+
+<style>
+    .mobile-toc {
+        grid-area: mobile-toc;
+        position: fixed;
+        inset-block-start: 3.5rem;
+        inset-inline-start: 300px;
+        inline-size: 100%;
+        block-size: 3.125rem;
+        background-color: var(--pc-color-surface-default);
+        z-index: 2;
+    }
+
+    .mobile-toc pc-details::part(base) {
+        position: relative;
+        border: none;
+        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
+            transparent;
+        border-radius: 0;
+        transition: border-color 0s ease-in-out;
+    }
+
+    .mobile-toc pc-details:not([open])::part(base) {
+        border-color: var(--pc-color-surface-border);
+        transition-delay: 0.2s;
+    }
+
+    .mobile-toc pc-details::part(header) {
+        position: relative;
+        padding-block: var(--pc-spacing-s);
+        padding-inline: var(--pc-spacing-l);
+        border-radius: 0;
+        outline: none;
+        cursor: default;
+    }
+
+    .mobile-toc pc-details::part(body) {
+        position: absolute;
+        inset-block-start: 100%;
+        inset-inline-start: 0;
+        inline-size: 100%;
+        background-color: var(--pc-color-surface-default);
+        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        box-shadow: var(--pc-shadow-l);
+    }
+
+    .mobile-toc pc-details::part(summary-icon) {
+        display: none;
+    }
+
+    .mobile-toc pc-details :global(.toc-scroll-fade) {
+        max-block-size: 300px;
+    }
+
+    .mobile-toc pc-details::part(content) {
+        padding-block: 0;
+        padding-inline: var(--pc-spacing-l);
+    }
+
+    .mobile-toc pc-details .toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75em;
+        /* Note: I am aware that this deviates from the standard styling of a pc-button, but using similar styling just makes it look… weird. */
+        padding-block: calc(var(--pc-form-control-padding-inline) / 3);
+        padding-inline: var(--pc-form-control-padding-inline);
+        background-color: transparent;
+        color: var(--pc-color-neutral-on-quiet);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-neutral-border-loud);
+        border-radius: var(--pc-border-radius-m);
+        font-size: var(--pc-font-size-s);
+        font-weight: var(--pc-font-weight-bold);
+        cursor: pointer;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        .mobile-toc pc-details .toggle:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-quiet),
+                var(--pc-color-mix-hover)
+            );
+            color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-on-quiet),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
+    .mobile-toc pc-details .toggle:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-quiet),
+            var(--pc-color-mix-active)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-on-quiet),
+            var(--pc-color-mix-active)
+        );
+    }
+
+    .mobile-toc pc-details.header-focused .toggle {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+    }
+
+    .mobile-toc pc-details .toggle pc-icon {
+        transition: rotate var(--pc-transition-fast) ease-in-out;
+    }
+
+    .mobile-toc pc-details[open] .toggle pc-icon {
+        rotate: 90deg;
+    }
+
+    .mobile-toc .toc-dropdown {
+        line-height: var(--pc-line-height-dense);
+    }
+
+    @media screen and (min-width: 1441px) {
+        .mobile-toc {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        .mobile-toc {
+            inset-inline-start: 0;
+        }
+    }
+
+    /* Odd section: Responsive “heights” */
+    @media screen and (max-height: 500px) {
+        .mobile-toc pc-details :global(.toc-scroll-fade) {
+            max-block-size: calc(100dvh - 3.5rem - 3.125rem);
+        }
+    }
+</style>

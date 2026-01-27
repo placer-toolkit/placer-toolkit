@@ -1,0 +1,36 @@
+---
+import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
+
+import DynamicTableOfContents from "../../components/DynamicTableOfContents.astro";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<aside class="toc" id="table-of-contents">
+    <pc-button
+        href="#_top"
+        appearance="neutral"
+        variant="filled outlined"
+        size="small"
+        class="return-to-main-content pc-desktop-only pc-visually-hidden"
+    >
+        {translation("button.returnToMainContent")}
+    </pc-button>
+
+    <DynamicTableOfContents />
+</aside>
+
+<style>
+    .toc {
+        position: sticky;
+        inset-block-start: calc(3.5rem + var(--pc-spacing-xxxl));
+        line-height: var(--pc-line-height-dense);
+    }
+
+    @media screen and (max-width: 1440px) {
+        .toc {
+            display: none;
+        }
+    }
+</style>

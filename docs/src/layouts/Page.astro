@@ -8,12 +8,13 @@ import {
 import NavigationBar from "./NavigationBar.astro";
 import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
+import MobileTableOfContents from "./docs/MobileTableOfContents.astro";
+import TableOfContents from "./docs/TableOfContents.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
 import FallbackContentWarning from "../components/FallbackContentWarning.astro";
 import Footer from "../components/Footer.astro";
 import Search from "../components/Search.astro";
-import TableOfContents from "../components/TableOfContents.astro";
 
 import "placer-toolkit/dist/styles/placer.css";
 import "placer-toolkit/dist/styles/themes/utility.css";
@@ -151,7 +152,9 @@ const {
 
             <MobileSidebar />
 
-            {!noSidebar ? <Sidebar /> : undefined}
+            {!noSidebar && <Sidebar />}
+
+            {!hero && <MobileTableOfContents />}
 
             <Search />
 
@@ -182,19 +185,6 @@ const {
                                         "button.skipToTableOfContents",
                                     )}
                                 </pc-button>
-
-                                <pc-details
-                                    class="toc-mobile"
-                                    summary={translation("ui.toc.onThisPage")}
-                                    data-pagefind-ignore="all"
-                                >
-                                    <ul
-                                        class="toc-ul"
-                                        data-overview={translation(
-                                            "ui.toc.overview",
-                                        )}
-                                    />
-                                </pc-details>
 
                                 <header id="_top">
                                     <h1>{title}</h1>

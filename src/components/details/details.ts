@@ -55,6 +55,7 @@ setDefaultAnimation("details.hide", {
  * @csspart header - The header that wraps both the summary and the expand/collapse icon.
  * @csspart summary - The container that wraps the summary.
  * @csspart summary-icon - The container that wraps the expand/collapse icons.
+ * @csspart body - The container of the details’ content.
  * @csspart content - The details’ content.
  *
  * @animation details.show - The animation to use when showing details. You can use both `height: auto` and `block-size: auto` with this animation.
@@ -283,7 +284,12 @@ export class PcDetails extends PlacerElement {
                     </span>
                 </summary>
 
-                <div class="body" role="region" aria-labelledby="header">
+                <div
+                    class="body"
+                    part="body"
+                    role="region"
+                    aria-labelledby="header"
+                >
                     <slot class="content" part="content" id="content"></slot>
                 </div>
             </details>
