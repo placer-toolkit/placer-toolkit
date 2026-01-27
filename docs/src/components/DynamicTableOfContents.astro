@@ -3,35 +3,24 @@ import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
+
+const { isMobile = false } = Astro.props;
 ---
 
-<aside class="toc toc-desktop" id="table-of-contents">
-    <pc-button
-        href="#_top"
-        appearance="neutral"
-        variant="filled outlined"
-        size="small"
-        class="return-to-main-content pc-desktop-only pc-visually-hidden"
-    >
-        {translation("button.returnToMainContent")}
-    </pc-button>
-
-    <div class="toc-container">
-        <pc-scroller class="toc-scroll-fade" orientation="vertical">
-            <h3 class="toc-heading">
-                {translation("ui.toc.onThisPage")}
-            </h3>
-            <div class="toc-inner">
-                <div class="toc-marker" aria-hidden="true"></div>
-                <ul
-                    class="toc-ul"
-                    data-overview={translation("ui.toc.overview")}
-                >
-                </ul>
-            </div>
-        </pc-scroller>
-    </div>
-</aside>
+<div class="toc-container">
+    <pc-scroller class="toc-scroll-fade" orientation="vertical">
+        {
+            !isMobile && (
+                <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
+            )
+        }
+        <div class="toc-inner">
+            <div class="toc-marker"></div>
+            <ul class="toc-ul" data-overview={translation("ui.toc.overview")}>
+            </ul>
+        </div>
+    </pc-scroller>
+</div>
 
 <script>
     // TOC generation
@@ -162,7 +151,17 @@ const translation = useTranslations(language);
                     return;
                 }
 
-                links.forEach((a) => a.classList.toggle("active", a === link));
+                links.forEach((a) => {
+                    const isActive = a === link;
+
+                    a.classList.toggle("active", isActive);
+
+                    if (isActive) {
+                        a.setAttribute("aria-current", "location");
+                    } else {
+                        a.removeAttribute("aria-current");
+                    }
+                });
 
                 moveMarkerToLink(link);
             }
