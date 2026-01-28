@@ -231,7 +231,6 @@ const translatePath = useTranslatedPath(language);
             const avatars =
                 animation.querySelectorAll<HTMLDivElement>("pc-avatar");
 
-            // 2. Check state using the first avatar (or the centerPiece)
             const currentState =
                 avatars[0]?.style.animationPlayState ||
                 getComputedStyle(avatars[0]).animationPlayState;
