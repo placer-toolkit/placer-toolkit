@@ -80,14 +80,16 @@ const translation = useTranslations(language);
 
 <style>
     .mobile-toc {
-        grid-area: mobile-toc;
-        position: fixed;
+        position: sticky;
         inset-block-start: 3.5rem;
-        inset-inline-start: 300px;
         inline-size: 100%;
-        block-size: 3.125rem;
+        block-size: auto;
         background-color: var(--pc-color-surface-default);
         z-index: 2;
+    }
+
+    .mobile-toc pc-details {
+        position: relative;
     }
 
     .mobile-toc pc-details::part(base) {
@@ -187,6 +189,8 @@ const translation = useTranslations(language);
     .mobile-toc pc-details.header-focused .toggle {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     .mobile-toc pc-details .toggle pc-icon {
@@ -201,15 +205,23 @@ const translation = useTranslations(language);
         line-height: var(--pc-line-height-dense);
     }
 
-    @media screen and (min-width: 1441px) {
-        .mobile-toc {
-            display: none;
+    @keyframes focus-ring-animation {
+        0% {
+            outline-width: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
         }
     }
 
-    @media screen and (max-width: 992px) {
+    @media screen and (min-width: 1441px) {
         .mobile-toc {
-            inset-inline-start: 0;
+            display: none;
         }
     }
 
