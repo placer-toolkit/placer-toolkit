@@ -27,55 +27,26 @@ const translation = useTranslations(language);
 </div>
 
 <script>
-    const mobileDetails = document.querySelector(".mobile-toc pc-details");
+    import type { PcDetails } from "placer-toolkit/dist/components/details/details.js";
 
-    if (mobileDetails) {
-        let hadKeyboardEvent = false;
+    const mobileDetails = document.querySelector<PcDetails>(
+        ".mobile-toc pc-details",
+    );
 
-        document.addEventListener("keydown", (event) => {
-            if (
-                event.key === "Tab" ||
-                event.key === "ArrowUp" ||
-                event.key === "ArrowDown"
-            ) {
-                hadKeyboardEvent = true;
-            }
-        });
+    mobileDetails?.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement).closest("a")) {
+            mobileDetails.open = false;
+        }
+    });
 
-        document.addEventListener(
-            "mousedown",
-            () => (hadKeyboardEvent = false),
-        );
-        document.addEventListener(
-            "touchstart",
-            () => (hadKeyboardEvent = false),
-        );
-        document.addEventListener(
-            "pointerdown",
-            () => (hadKeyboardEvent = false),
-        );
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && mobileDetails?.open) {
+            event.preventDefault();
 
-        mobileDetails.addEventListener("focusin", (event) => {
-            if (!hadKeyboardEvent) {
-                return;
-            }
-
-            const path = event.composedPath();
-            const header = path.find(
-                (element): element is HTMLElement =>
-                    element instanceof HTMLElement &&
-                    element.getAttribute("part") === "header",
-            );
-
-            if (header) {
-                mobileDetails.classList.add("header-focused");
-            }
-        });
-
-        mobileDetails.addEventListener("focusout", () => {
-            mobileDetails.classList.remove("header-focused");
-        });
-    }
+            mobileDetails.open = false;
+            mobileDetails.focus();
+        }
+    });
 </script>
 
 <style>
@@ -113,6 +84,13 @@ const translation = useTranslations(language);
         border-radius: 0;
         outline: none;
         cursor: default;
+    }
+
+    .mobile-toc pc-details::part(header):focus-visible {
+        outline: var(--pc-focus-ring);
+        outline-offset: calc(-1 * var(--pc-focus-ring-width));
+        animation: inset-focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     .mobile-toc pc-details::part(body) {
@@ -186,13 +164,6 @@ const translation = useTranslations(language);
         );
     }
 
-    .mobile-toc pc-details.header-focused .toggle {
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
-        animation: focus-ring-animation var(--pc-transition-medium)
-            cubic-bezier(0.33, 1, 0.68, 1);
-    }
-
     .mobile-toc pc-details .toggle pc-icon {
         transition: rotate var(--pc-transition-fast) ease-in-out;
     }
@@ -205,17 +176,20 @@ const translation = useTranslations(language);
         line-height: var(--pc-line-height-dense);
     }
 
-    @keyframes focus-ring-animation {
+    @keyframes inset-focus-ring-animation {
         0% {
             outline-width: 0;
+            outline-offset: 0;
         }
 
         50% {
             outline-width: calc(var(--pc-focus-ring-width) * 2);
+            outline-offset: calc(-1 * (var(--pc-focus-ring-width) * 2));
         }
 
         100% {
             outline-width: var(--pc-focus-ring-width);
+            outline-offset: calc(-1 * var(--pc-focus-ring-width));
         }
     }
 

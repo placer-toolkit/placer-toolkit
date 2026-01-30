@@ -8,18 +8,25 @@ const { isMobile = false } = Astro.props;
 ---
 
 <div class="toc-container">
-    <pc-scroller class="toc-scroll-fade" orientation="vertical">
-        {
-            !isMobile && (
-                <h3 class="toc-heading">{translation("ui.toc.onThisPage")}</h3>
-            )
-        }
-        <div class="toc-inner">
-            <div class="toc-marker"></div>
-            <ul class="toc-ul" data-overview={translation("ui.toc.overview")}>
-            </ul>
-        </div>
-    </pc-scroller>
+    <nav aria-labelledby="toc-heading">
+        <pc-scroller class="toc-scroll-fade" orientation="vertical">
+            {
+                !isMobile && (
+                    <h3 class="toc-heading" id="toc-heading">
+                        {translation("ui.toc.onThisPage")}
+                    </h3>
+                )
+            }
+            <div class="toc-inner">
+                <div class="toc-marker"></div>
+                <ul
+                    class="toc-ul"
+                    data-overview={translation("ui.toc.overview")}
+                >
+                </ul>
+            </div>
+        </pc-scroller>
+    </nav>
 </div>
 
 <script>
@@ -31,7 +38,9 @@ const { isMobile = false } = Astro.props;
             const tocList = toc.querySelector<HTMLUListElement>(".toc-ul");
 
             const headings = Array.from(
-                document.querySelectorAll("h2[id], h3[id]"),
+                document
+                    .querySelector("article")!
+                    .querySelectorAll("h2[id], h3[id]"),
             );
             const items = headings.map((element) => ({
                 depth: element.tagName === "H2" ? 2 : 3,

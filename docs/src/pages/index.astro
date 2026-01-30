@@ -12,11 +12,9 @@ import "../styles/catalog.css";
 import "../styles/landing-override.css";
 ---
 
-<!-- Space Grotesk — Bunny Fonts -->
-<link
-    rel="stylesheet"
-    href="https://fonts.bunny.net/css?family=space-grotesk:700&display=swap"
-/>
+<script>
+    import "../scripts/navigation-bar-opacity.ts";
+</script>
 
 <Page title="Placer Toolkit" noSidebar noBanner showFooter hero>
     <div class="landing-page">
@@ -155,108 +153,7 @@ import "../styles/landing-override.css";
     </div>
 </Page>
 
-<script>
-    const navigationBar = document.querySelector(".navbar") as HTMLElement;
-
-    const scrollLimitPixels = 360;
-    const maxOpacity = 0.9;
-
-    function updateNavigationBarOpacity() {
-        const scrollY = document.body.scrollTop || window.scrollY;
-
-        let scrollProgressPercent = (scrollY / scrollLimitPixels) * 100;
-
-        scrollProgressPercent = Math.min(100, scrollProgressPercent);
-
-        const scrollRatioDecimal = scrollProgressPercent / 100;
-        const opacityDecimal = scrollRatioDecimal * maxOpacity;
-        const opacityPercent = opacityDecimal * 100;
-
-        navigationBar.style.setProperty(
-            "--navigation-opacity",
-            opacityPercent.toFixed(1) + "%",
-        );
-    }
-
-    window.addEventListener("load", updateNavigationBarOpacity);
-    document.body.addEventListener("scroll", updateNavigationBarOpacity);
-    window.addEventListener("resize", updateNavigationBarOpacity);
-</script>
-
 <style>
-    :global(.navbar) {
-        background: color-mix(
-            in oklab,
-            var(--pc-color-surface-default) var(--navigation-opacity),
-            transparent
-        ) !important;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-    }
-
-    :global(.pc-dark) :global(body) {
-        --indigo-overlay: color-mix(
-            in oklab,
-            var(--pc-color-neutral-05),
-            var(--pc-color-indigo-05) 40%
-        );
-        --blue-overlay: color-mix(
-            in oklab,
-            var(--pc-color-neutral-05),
-            var(--pc-color-blue-05) 40%
-        );
-        --purple-overlay: color-mix(
-            in oklab,
-            var(--pc-color-neutral-05),
-            var(--pc-color-purple-05) 40%
-        );
-
-        background:
-            linear-gradient(135deg, var(--indigo-overlay), transparent 40%),
-            linear-gradient(215deg, var(--indigo-overlay), transparent 40%),
-            linear-gradient(315deg, var(--blue-overlay), transparent 40%),
-            linear-gradient(45deg, var(--purple-overlay), transparent 40%),
-            radial-gradient(var(--indigo-overlay), transparent 40%)
-                no-repeat -60vw -40vh / 105vw 200vh,
-            radial-gradient(var(--indigo-overlay), transparent 65%) no-repeat
-                50% calc(100% + 20rem) / 60rem 30rem;
-    }
-
-    :global(.pc-light) :global(body) {
-        --indigo-overlay-light: color-mix(
-            in oklab,
-            var(--pc-color-neutral-95),
-            var(--pc-color-indigo-50) 8%
-        );
-        --blue-overlay-light: color-mix(
-            in oklab,
-            var(--pc-color-neutral-95),
-            var(--pc-color-blue-50) 8%
-        );
-        --purple-overlay-light: color-mix(
-            in oklab,
-            var(--pc-color-neutral-95),
-            var(--pc-color-purple-50) 5%
-        );
-
-        background:
-            linear-gradient(135deg, var(--blue-overlay-light), transparent 40%),
-            linear-gradient(
-                215deg,
-                var(--indigo-overlay-light),
-                transparent 40%
-            ),
-            linear-gradient(
-                315deg,
-                var(--purple-overlay-light),
-                transparent 40%
-            ),
-            radial-gradient(var(--blue-overlay-light), transparent 40%)
-                no-repeat -60vw -40vh / 105vw 200vh,
-            radial-gradient(var(--indigo-overlay-light), transparent 65%)
-                no-repeat 50% calc(100% + 20rem) / 60rem 30rem;
-    }
-
     .landing-page {
         display: flex;
         justify-content: center;

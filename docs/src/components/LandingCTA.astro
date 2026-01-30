@@ -29,6 +29,7 @@ const translatePath = useTranslatedPath(language);
                 <span
                     slot="icon"
                     style="user-select: none; -webkit-user-select: none"
+                    aria-hidden="true"
                 >
                     🚀
                 </span>
@@ -135,6 +136,7 @@ const translatePath = useTranslatedPath(language);
                         target="_blank"
                     >
                         <pc-icon
+                            class="icon-expand"
                             library="default"
                             icon-style="brands"
                             name="github"
