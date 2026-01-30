@@ -1,0 +1,382 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
+const { isMobile = false } = Astro.props;
+---
+
+<div class="toc-container">
+    <nav aria-labelledby="toc-heading">
+        <pc-scroller class="toc-scroll-fade" orientation="vertical">
+            {
+                !isMobile && (
+                    <h3 class="toc-heading" id="toc-heading">
+                        {translation("ui.toc.onThisPage")}
+                    </h3>
+                )
+            }
+            <div class="toc-inner">
+                <div class="toc-marker"></div>
+                <ul
+                    class="toc-ul"
+                    data-overview={translation("ui.toc.overview")}
+                >
+                </ul>
+            </div>
+        </pc-scroller>
+    </nav>
+</div>
+
+<script>
+    // TOC generation
+    document.addEventListener("DOMContentLoaded", () => {
+        const tocs = document.querySelectorAll(".toc");
+
+        tocs.forEach((toc) => {
+            const tocList = toc.querySelector<HTMLUListElement>(".toc-ul");
+
+            const headings = Array.from(
+                document
+                    .querySelector("article")!
+                    .querySelectorAll("h2[id], h3[id]"),
+            );
+            const items = headings.map((element) => ({
+                depth: element.tagName === "H2" ? 2 : 3,
+                slug: element.id,
+                text: (() => {
+                    return element.textContent?.trim() || "";
+                })(),
+            }));
+
+            function createTOCItem({
+                depth,
+                slug,
+                text,
+            }: {
+                depth: number;
+                slug: string;
+                text: string;
+            }) {
+                const li = document.createElement("li");
+
+                li.className = `toc-item depth-${depth}`;
+
+                const a = document.createElement("a");
+
+                a.href = `#${slug}`;
+                a.textContent = text;
+
+                li.appendChild(a);
+
+                return li;
+            }
+
+            const overviewItem = document.createElement("li");
+
+            overviewItem.className = "toc-item depth-2";
+
+            const overviewLink = document.createElement("a");
+
+            overviewLink.href = "#_top";
+            overviewLink.textContent = tocList?.dataset?.overview ?? "";
+            overviewItem.appendChild(overviewLink);
+
+            if (!tocList) {
+                return;
+            }
+
+            tocList.innerHTML = "";
+            tocList.appendChild(overviewItem.cloneNode(true));
+
+            items.forEach((item) => {
+                if (item.depth > 1 && item.depth < 4) {
+                    tocList.appendChild(createTOCItem(item));
+                }
+            });
+        });
+    });
+
+    // TOC scrollspy
+    document.addEventListener("DOMContentLoaded", () => {
+        const tocs = document.querySelectorAll(".toc");
+
+        tocs.forEach((toc) => {
+            if (!toc) {
+                return;
+            }
+
+            const links = Array.from(
+                toc.querySelectorAll<HTMLAnchorElement>(".toc-ul a"),
+            );
+            const idToLink = new Map(
+                links.map((link) => [
+                    link.getAttribute("href")?.slice(1),
+                    link,
+                ]),
+            );
+
+            const tocScroller = toc.querySelector<HTMLElement>("pc-scroller");
+            const tocContent =
+                tocScroller?.shadowRoot?.querySelector<HTMLElement>("#content");
+
+            if (!tocScroller || !tocContent) {
+                return;
+            }
+
+            const tocInner =
+                tocScroller.querySelector<HTMLElement>(".toc-inner");
+            const marker =
+                tocScroller.querySelector<HTMLElement>(".toc-marker");
+
+            function moveMarkerToLink(link: HTMLAnchorElement) {
+                if (!marker || !tocInner) {
+                    return;
+                }
+
+                const li = link.closest("li");
+
+                if (!li) {
+                    return;
+                }
+
+                const liRect = li.getBoundingClientRect();
+                const innerRect = tocInner.getBoundingClientRect();
+
+                let y = liRect.top - innerRect.top;
+
+                y += liRect.height / 2 - marker.offsetHeight / 2;
+
+                marker.style.transform = `translateY(${y}px)`;
+            }
+
+            function setActiveId(id: string) {
+                const link = links.find(
+                    (a) => a.getAttribute("href") === `#${id}`,
+                );
+
+                if (!link) {
+                    return;
+                }
+
+                links.forEach((a) => {
+                    const isActive = a === link;
+
+                    a.classList.toggle("active", isActive);
+
+                    if (isActive) {
+                        a.setAttribute("aria-current", "location");
+                    } else {
+                        a.removeAttribute("aria-current");
+                    }
+                });
+
+                moveMarkerToLink(link);
+            }
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting && entry.target.id) {
+                            setActiveId(entry.target.id);
+                        }
+                    });
+                },
+                {
+                    root: null,
+                    rootMargin: "0px 0px -60% 0px",
+                    threshold: 0,
+                },
+            );
+
+            idToLink.forEach((_link, id) => {
+                if (!id) {
+                    return;
+                }
+
+                const heading = document.getElementById(id);
+
+                if (heading) {
+                    observer.observe(heading);
+                }
+            });
+
+            function determineActiveFromPosition() {
+                const targetLine = window.innerHeight * 0.18;
+
+                let chosenID: string | null = null;
+                let chosenTop = -Infinity;
+
+                idToLink.forEach((_link, id) => {
+                    if (!id) {
+                        return;
+                    }
+
+                    const element = document.getElementById(id);
+
+                    if (!element) {
+                        return;
+                    }
+
+                    const top = element.getBoundingClientRect().top;
+
+                    if (top <= targetLine && top > chosenTop) {
+                        chosenTop = top;
+                        chosenID = id;
+                    }
+                });
+
+                if (!chosenID) {
+                    let nearestID: string | null = null;
+                    let nearestDistance = Infinity;
+
+                    idToLink.forEach((_link, id) => {
+                        if (!id) {
+                            return;
+                        }
+
+                        const element = document.getElementById(id);
+
+                        if (!element) {
+                            return;
+                        }
+
+                        const distance = Math.abs(
+                            element.getBoundingClientRect().top - targetLine,
+                        );
+
+                        if (distance < nearestDistance) {
+                            nearestDistance = distance;
+                            nearestID = id;
+                        }
+                    });
+
+                    chosenID = nearestID;
+                }
+
+                if (chosenID) {
+                    setActiveId(chosenID);
+                }
+            }
+
+            tocContent.addEventListener("scroll", () => {
+                const activeLink =
+                    tocScroller.querySelector<HTMLAnchorElement>(
+                        ".toc-ul a.active",
+                    );
+
+                if (activeLink) {
+                    moveMarkerToLink(activeLink);
+                }
+            });
+
+            determineActiveFromPosition();
+
+            window.addEventListener("load", determineActiveFromPosition);
+            window.addEventListener("resize", determineActiveFromPosition);
+        });
+    });
+</script>
+
+<style is:global>
+    .toc-container {
+        position: relative;
+    }
+
+    .toc-container .toc-scroll-fade {
+        position: relative;
+        max-block-size: calc(100dvh - 3.5rem - var(--pc-spacing-xxxl));
+    }
+
+    .toc-container .toc-scroll-fade::part(start-shadow),
+    .toc-container .toc-scroll-fade::part(end-shadow) {
+        z-index: 1;
+    }
+
+    .toc-container .toc-scroll-fade .toc-heading:not(.toc-mobile .toc-heading) {
+        margin-block-end: var(--pc-spacing-s);
+        font-size: var(--pc-font-size-m);
+    }
+
+    .toc-container .toc-scroll-fade .toc-inner {
+        position: relative;
+        padding-inline: var(--pc-spacing-l);
+    }
+
+    .toc-container .toc-scroll-fade .toc-inner::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 0;
+        inline-size: var(--pc-border-width-m);
+        block-size: 100%;
+        background-color: var(--pc-color-neutral-border-quiet);
+        border-radius: var(--pc-border-radius-pill);
+    }
+
+    .toc-container .toc-scroll-fade .toc-inner .toc-marker {
+        position: absolute;
+        inset-inline-start: 0;
+        inline-size: var(--pc-border-width-m);
+        block-size: var(--pc-spacing-xl);
+        background: var(--pc-color-primary-border-loud);
+        border-radius: var(--pc-border-radius-pill);
+        will-change: transform;
+        pointer-events: none;
+        transition: transform var(--pc-transition-fast)
+            cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .toc-container .toc-scroll-fade .toc-inner .toc-ul {
+        margin-inline-start: 0;
+        font-size: var(--pc-font-size-s);
+        list-style: none;
+    }
+
+    .toc-container .toc-scroll-fade .toc-inner .toc-ul .toc-item {
+        display: flex;
+        align-items: center;
+        margin-block: 0.75rem;
+        margin-inline: 0;
+
+        &.depth-3 {
+            margin-inline-start: var(--pc-spacing-m);
+        }
+
+        a {
+            display: inline-block;
+            color: var(--pc-color-text-quiet);
+            font-weight: var(--pc-font-weight-normal);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-decoration: none;
+            max-inline-size: 100%;
+            transition: color var(--pc-transition-fast) ease-in-out;
+
+            @media (hover: hover) {
+                &:hover {
+                    color: color-mix(
+                        in oklab,
+                        var(--pc-color-text-quiet),
+                        var(--pc-color-mix-hover)
+                    );
+                }
+            }
+
+            &:active {
+                color: color-mix(
+                    in oklab,
+                    var(--pc-color-text-quiet),
+                    var(--pc-color-mix-active)
+                );
+            }
+
+            &.active {
+                color: var(--pc-color-primary-fill-loud);
+                font-weight: var(--pc-font-weight-semibold);
+            }
+        }
+    }
+</style>

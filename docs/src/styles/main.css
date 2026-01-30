@@ -24,7 +24,7 @@ body {
     block-size: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    scroll-padding-block-start: 4.5rem;
+    scroll-padding-block-start: calc(3.5rem + var(--pc-content-spacing));
     -webkit-overflow-scrolling: touch;
 }
 
@@ -33,7 +33,13 @@ html {
     overflow-y: hidden;
 }
 
-/* Language‐specific styling optimisations */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Language‐specific word break optimisations */
 [lang~="de"]:not(:has([lang~="en"])) {
     hyphens: auto;
     overflow-wrap: break-word;
@@ -113,7 +119,8 @@ main {
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxxl);
+    padding-block: var(--pc-spacing-xxl);
+    padding-inline: var(--pc-spacing-xxxxl);
     max-inline-size: 100%;
     z-index: 1;
 
@@ -159,81 +166,8 @@ main {
     display: grid;
     align-items: flex-start;
     position: relative;
-    grid-template-columns: 1fr 275px;
-    gap: 5.5rem;
-}
-
-/* Table of contents */
-.toc {
-    position: sticky;
-    inset-block-start: calc(3.5rem + var(--pc-spacing-xxxl));
-    line-height: 1.4;
-    border-inline-start: 0.125rem solid var(--pc-color-surface-border);
-    padding-inline-start: var(--pc-spacing-l);
-}
-
-.toc-heading:not(.toc-mobile .toc-heading) {
-    margin-block-end: var(--pc-spacing-s);
-    font-size: var(--pc-font-size-m);
-}
-
-.toc-ul {
-    margin-inline-start: 0;
-    font-size: var(--pc-font-size-s);
-    list-style: none;
-}
-
-.toc-item {
-    margin-block: 0.25rem;
-    margin-inline: 0;
-
-    &.depth-3 {
-        margin-inline-start: var(--pc-spacing-m);
-    }
-
-    a {
-        display: inline-block;
-        color: var(--pc-color-text-quiet);
-        font-weight: var(--pc-font-weight-normal);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        text-decoration: none;
-        max-inline-size: 100%;
-        transition: color var(--pc-transition-fast) ease-in-out;
-
-        @media (hover: hover) {
-            &:hover {
-                color: color-mix(
-                    in oklab,
-                    var(--pc-color-text-quiet),
-                    var(--pc-color-mix-hover)
-                );
-            }
-        }
-
-        &:active {
-            color: color-mix(
-                in oklab,
-                var(--pc-color-text-quiet),
-                var(--pc-color-mix-active)
-            );
-        }
-
-        &.active {
-            color: var(--pc-color-primary-fill-loud);
-            font-weight: var(--pc-font-weight-semibold);
-        }
-    }
-}
-
-.toc-desktop {
-    display: block;
-}
-
-.toc-scroll-fade {
-    position: relative;
-    max-block-size: 75dvh;
+    grid-template-columns: 1fr 300px;
+    gap: 5rem;
 }
 
 .hero-callout {
@@ -262,24 +196,27 @@ main {
     }
 }
 
-/* Desktop styles */
-@media screen and (min-width: 1441px) {
-    .toc-mobile {
-        display: none;
-    }
-}
-
 /* Mobile styles */
 @media screen and (max-width: 1440px) {
-    .toc-desktop {
-        display: none;
+    html,
+    body {
+        scroll-padding-block-start: calc(
+            3.5rem + 3.125rem + var(--pc-content-spacing)
+        );
     }
 
     .layout-container {
         grid-template-areas:
-            "navbar"
-            "main"
-            "footer";
+            "navbar navbar"
+            "sidebar mobile-toc"
+            "sidebar main"
+            "sidebar footer";
+        grid-template-columns: 300px 1fr !important;
+        grid-template-rows: 3.5rem 3.125rem 1fr auto;
+    }
+
+    html.hero .layout-container {
+        grid-template-areas: "navbar" "main" "footer";
         grid-template-columns: 1fr !important;
         grid-template-rows: 3.5rem 1fr auto;
     }
@@ -297,22 +234,17 @@ main {
             grid-template-columns: 1fr;
         }
     }
+}
 
-    .toc-mobile {
-        display: block;
-        margin-block-end: var(--pc-spacing-xl);
-
-        &::part(summary) {
-            font-weight: var(--pc-font-weight-bold);
-        }
-
-        ul {
-            margin-block-start: calc(var(--pc-spacing-m) * -1);
-        }
-    }
-
-    .toc-mobile .toc-ul {
-        line-height: var(--pc-line-height-dense);
+@media screen and (max-width: 992px) {
+    .layout-container {
+        grid-template-areas:
+            "navbar"
+            "mobile-toc"
+            "main"
+            "footer";
+        grid-template-columns: 1fr !important;
+        grid-template-rows: 3.5rem 3.125rem 1fr auto;
     }
 }
 

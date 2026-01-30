@@ -35,7 +35,7 @@ const translatePath = useTranslatedPath(language);
             <pc-button
                 class:list={{
                     "sidebar-toggle": true,
-                    "pc-mobile-only": !noSidebar,
+                    "pc-992-size": !noSidebar,
                 }}
                 size="small"
                 variant="plain"
@@ -62,18 +62,18 @@ const translatePath = useTranslatedPath(language);
                     loading="eager"
                     alt=""
                 />
-                <span class="logo-wordmark pc-desktop-only">
+                <span class="logo-wordmark pc-not-992-size">
                     Placer Toolkit
                 </span>
-                <span class="pc-mobile-only pc-visually-hidden">
+                <span class="pc-992-size pc-visually-hidden">
                     Placer Toolkit
                 </span>
             </a>
-            <small class="pc-desktop-only">
+            <small class="pc-not-992-size">
                 <Version />
             </small>
             <pc-badge
-                class="pc-desktop-only"
+                class="pc-not-992-size"
                 appearance="warning"
                 variant="filled"
             >
