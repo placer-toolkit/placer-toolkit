@@ -1,8 +1,5 @@
 ---
-import {
-    getLanguageFromURL,
-    useTranslations,
-} from "../i18n/utilities.js";
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
 import CodeBlock from "./CodeBlock.astro";
 
@@ -10,131 +7,68 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 
 const bootstrapCode = `<!-- Bootstrap -->
-<div class="bg-light min-vh-100">
-    <nav
-        class="navbar bg-white border-bottom px-3 d-flex justify-content-between align-items-center"
-    >
-        <div>
-            <img
-                src="https://placer-toolkit.vercel.app/brand/logo.svg"
-                width="36"
-                height="36"
-                alt="${translation("codeComparison.logo")}"
-            />
-        </div>
+<main
+    class="container-fluid d-flex justify-content-center align-items-center p-4 bg-light min-vh-100"
+>
+    <div class="card border-0 shadow-sm p-4 w-100">
+        <h1 class="h3 text-center mb-4">${translation("codeComparison.signIn")}</h1>
 
-        <div class="dropdown">
-            <button
-                class="btn btn-sm btn-link text-decoration-none dropdown-toggle rounded-pill d-flex align-items-center gap-2 border"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-            >
-                ${translation("codeComparison.signIn")}
-            </button>
+        <form>
+            <div class="mb-3">
+                <label class="form-label small fw-medium">${translation("codeComparison.email")}</label>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                <li>
-                    <a
-                        class="dropdown-item d-flex align-items-center gap-2"
-                        href="#"
+                <div class="input-group">
+                    <span
+                        class="input-group-text bg-transparent border-end-0"
                     >
-                        <i class="bi bi-person-plus"></i>
-                        ${translation("codeComparison.dropdown.addUser")}
+                        <i class="bi bi-envelope-fill"></i>
+                    </span>
+
+                    <input
+                        type="email"
+                        class="form-control border-start-0"
+                        placeholder="${translation("codeComparison.email.example")}"
+                    />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-medium">${translation("codeComparison.password")}</label>
+
+                <div class="input-group">
+                    <span
+                        class="input-group-text bg-transparent border-end-0"
+                    >
+                        <i class="bi bi-key-fill"></i>
+                    </span>
+
+                    <input
+                        type="password"
+                        class="form-control border-start-0"
+                    />
+                </div>
+                <div class="mt-2 text-end">
+                    <a class="small text-decoration-none" href="#">
+                        ${translation("codeComparison.password.forgot")}
                     </a>
-                </li>
-                <li>
-                    <a
-                        class="dropdown-item d-flex align-items-center gap-2"
-                        href="#"
-                    >
-                        <i class="bi bi-trash"></i>
-                        ${translation("codeComparison.dropdown.deleteAccount")}
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div>
-            <button
-                class="btn btn-sm btn-outline-danger rounded-pill"
-                aria-label="${translation("codeComparison.report")}"
-            >
-                <i class="bi bi-flag-fill"></i>
-            </button>
-        </div>
-    </nav>
-
-    <main
-        class="container-fluid d-flex justify-content-center align-items-center p-4"
-    >
-        <div class="card border-0 shadow-sm p-4 w-100">
-            <h1 class="h3 text-center mb-4">${translation("codeComparison.signIn")}</h1>
-
-            <form>
-                <div class="mb-3">
-                    <label class="form-label small fw-medium">${translation("codeComparison.email")}</label>
-
-                    <div class="input-group">
-                        <span
-                            class="input-group-text bg-transparent border-end-0"
-                        >
-                            <i class="bi bi-envelope-fill"></i>
-                        </span>
-
-                        <input
-                            type="email"
-                            class="form-control border-start-0"
-                            placeholder="${translation("codeComparison.email.example")}"
-                        />
-                    </div>
                 </div>
+            </div>
 
-                <div class="mb-4">
-                    <label class="form-label small fw-medium">${translation("codeComparison.password")}</label>
+            <div class="d-grid">
+                <button
+                    type="submit"
+                    class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                >
+                    <i class="bi bi-box-arrow-in-right"></i>
 
-                    <div class="input-group">
-                        <span
-                            class="input-group-text bg-transparent border-end-0"
-                        >
-                            <i class="bi bi-key-fill"></i>
-                        </span>
-
-                        <input
-                            type="password"
-                            class="form-control border-start-0"
-                        />
-                    </div>
-                    <div class="mt-2 text-end">
-                        <a class="small text-decoration-none" href="#">
-                            ${translation("codeComparison.password.forgot")}
-                        </a>
-                    </div>
-                </div>
-
-                <div class="d-grid">
-                    <button
-                        type="submit"
-                        class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                    >
-                        <i class="bi bi-box-arrow-in-right"></i>
-                        ${translation("codeComparison.signIn")}
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-</div>
+                    ${translation("codeComparison.signIn")}
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
 
 <style>
-    .navbar {
-        block-size: 3.5rem;
-    }
-
-    .navbar div:first-child img {
-        translate: 0 0.125rem;
-    }
-
     main .card {
         max-inline-style: 30rem;
         border-radius: 1.5rem;
@@ -142,66 +76,6 @@ const bootstrapCode = `<!-- Bootstrap -->
 </style>`;
 
 const placerToolkitCode = `<!-- Placer Toolkit -->
-<nav class="navigation-bar pc-split">
-    <div>
-        <img
-            src="https://placer-toolkit.vercel.app/brand/logo.svg"
-            width="36"
-            height="36"
-            alt="${translation("codeComparison.logo")}"
-        />
-    </div>
-    <div>
-        <pc-dropdown size="small">
-            <pc-button
-                class="sign-in-dropdown"
-                size="small"
-                variant="plain"
-                slot="trigger"
-                pill
-            >
-                ${translation("codeComparison.signIn")}
-
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="chevron-down"
-                    slot="suffix"
-                ></pc-icon>
-            </pc-button>
-
-            <pc-dropdown-item>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="user-plus"
-                    slot="icon"
-                ></pc-icon>
-                ${translation("codeComparison.dropdown.addUser")}
-            </pc-dropdown-item>
-            <pc-dropdown-item appearance="danger">
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="trash"
-                    slot="icon"
-                ></pc-icon>
-                ${translation("codeComparison.dropdown.deleteAccount")}
-            </pc-dropdown-item>
-        </pc-dropdown>
-    </div>
-    <div>
-        <pc-button size="small" appearance="danger" variant="plain" pill>
-            <pc-icon
-                library="default"
-                icon-style="solid"
-                name="flag"
-                label="${translation("codeComparison.report")}"
-            ></pc-icon>
-        </pc-button>
-    </div>
-</nav>
-
 <main class="main-content">
     <form class="pc-stack">
         <h1>${translation("codeComparison.signIn")}</h1>
@@ -233,36 +107,23 @@ const placerToolkitCode = `<!-- Placer Toolkit -->
                 name="arrow-right-to-bracket"
                 slot="prefix"
             ></pc-icon>
+
             ${translation("codeComparison.signIn")}
         </pc-button>
     </form>
 </main>
 
 <style>
-    .navigation-bar {
-        display: flex;
-        align-items: center;
-        padding-inline: var(--pc-spacing-m);
-        block-size: 3.5rem;
-        background-color: var(--pc-color-surface-raised);
-        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
-            var(--pc-color-surface-border);
-    }
-
-    .navigation-bar div:first-child img {
-        translate: 0 0.125rem;
-    }
-
     .main-content {
         inline-size: 100%;
-        background-color: var(--pc-color-surface-default);
+        background-color: var(--pc-color-surface-lowered);
     }
 
     .main-content form {
         padding: var(--pc-spacing-l);
         max-inline-size: 95%;
         inline-size: 30rem;
-        background-color: var(--pc-color-surface-raised);
+        background-color: var(--pc-color-surface-default);
         border-radius: var(--pc-border-radius-xl);
         box-shadow: var(--pc-shadow-m);
     }
@@ -275,7 +136,8 @@ const placerToolkitCode = `<!-- Placer Toolkit -->
 
 const previewHTML = placerToolkitCode.replace(
     /<style>([\s\S]*?)<\/style>/,
-    (match, css) => `<style>${css.replace(/\.(?=[a-zA-Z])/g, ".preview .")}</style>`
+    (match, css) =>
+        `<style>${css.replace(/\.(?=[a-zA-Z])/g, ".preview .")}</style>`,
 );
 ---
 
@@ -293,14 +155,32 @@ const previewHTML = placerToolkitCode.replace(
         </div>
     </pc-comparer>
 
-    <div class="preview" set:html={previewHTML}></div>
+    <div class="preview" set:html={previewHTML} />
 </div>
+
+<script>
+    import type { PcComparer } from "placer-toolkit/dist/components/comparer/comparer.js";
+
+    const codeComparison = document.querySelector(".code-comparison");
+    const comparer = codeComparison?.querySelector<PcComparer>("pc-comparer");
+    const preview = codeComparison?.querySelector(".preview");
+
+    if (preview && comparer) {
+        const resizeObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                comparer.style.blockSize = `${entry.contentRect.height}px`;
+            }
+        });
+
+        resizeObserver.observe(preview);
+    }
+</script>
 
 <style>
     .code-comparison {
         display: flex;
         align-items: stretch;
-        justify-content: center;
+        justify-content: stretch;
         gap: var(--pc-spacing-xl);
         margin-block-end: var(--pc-spacing-xxl);
     }
@@ -308,13 +188,14 @@ const previewHTML = placerToolkitCode.replace(
     pc-comparer {
         --divider-width: 0.0625rem;
 
+        flex: 1;
         border-radius: var(--pc-border-radius-xl);
         overflow: hidden;
     }
 
     pc-comparer [slot~="before"],
     pc-comparer [slot~="after"] {
-        block-size: calc(28rem * var(--pc-spacing-scale));
+        block-size: 100%;
         overflow: hidden;
     }
 
@@ -355,8 +236,9 @@ const previewHTML = placerToolkitCode.replace(
     }
 
     .preview {
+        flex: 0 0 35%;
         min-inline-size: 35%;
-        block-size: 28rem;
+        block-size: fit-content;
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-xl);

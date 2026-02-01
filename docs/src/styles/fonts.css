@@ -28,3 +28,10 @@
 pc-button::part(base) {
     font-feature-settings: inherit !important;
 }
+
+pc-dialog,
+pc-dialog [slot~="label"],
+pc-dialog p {
+    color: var(--pc-color-text-normal);
+    font-feature-settings: inherit !important;
+}

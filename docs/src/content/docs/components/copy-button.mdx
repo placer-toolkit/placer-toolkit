@@ -132,56 +132,81 @@ A success indicator is briefly shown after copying. You can customise the length
 You can customise the button to your liking with CSS.
 
 ```demo
-<pc-copy-button value="I’m so stylish!" class="custom-pink-copy-button">
+<pc-copy-button value="I’m awesome!" class="awesome-copy-button">
     <pc-icon
         library="default"
         icon-style="solid"
-        name="asterisk"
+        name="clipboard"
         slot="copy-icon"
     ></pc-icon>
     <pc-icon
         library="default"
         icon-style="solid"
-        name="check"
+        name="thumbs-up"
         slot="success-icon"
     ></pc-icon>
     <pc-icon
         library="default"
         icon-style="solid"
-        name="xmark"
+        name="thumbs-down"
         slot="error-icon"
     ></pc-icon>
 </pc-copy-button>
 
 <style>
-    pc-copy-button.custom-pink-copy-button::part(button) {
-        background-color: #ff1493;
-        color: #fff;
-        border: 2px solid;
-        border-block-start-color: #ff7ac1;
-        border-block-end-color: #ad005c;
-        border-inline-start-color: #ff7ac1;
-        border-inline-end-color: #ad005c;
-        border-radius: 6px;
-        box-shadow: 0 2px 10px #0002;
-        transition: all var(--pc-transition-fast) ease-in-out;
+    pc-copy-button.awesome-copy-button::part(button) {
+        background-color: var(--pc-color-warning-fill-normal);
+        color: var(--pc-color-warning-on-normal);
+        border: var(--pc-border-width-m) var(--pc-border-style)
+            var(--pc-color-warning-border-normal);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.25rem 0 var(--pc-color-warning-border-normal);
+        transition: none;
     }
 
-    pc-copy-button.custom-pink-copy-button::part(button):hover {
-        transform: scale(1.05) rotate(-1deg);
+    @media (hover: hover) {
+        pc-copy-button.awesome-copy-button::part(button):hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-warning-fill-normal),
+                var(--pc-color-mix-hover)
+            );
+            color: color-mix(
+                in oklab,
+                var(--pc-color-warning-on-normal),
+                var(--pc-color-mix-hover)
+            );
+            border-color: color-mix(
+                in oklab,
+                var(--pc-color-warning-border-normal),
+                var(--pc-color-mix-hover)
+            );
+            box-shadow: 0 0.25rem 0 color-mix(
+                in oklab,
+                var(--pc-color-warning-border-normal),
+                var(--pc-color-mix-hover)
+            );
+        }
     }
 
-    pc-copy-button.custom-pink-copy-button::part(button):active {
-        border-block-start-color: #ad005c;
-        border-block-end-color: #ff7ac1;
-        border-inline-start-color: #ad005c;
-        border-inline-end-color: #ff7ac1;
-        transform: translateY(1px) rotate(-1deg);
-    }
-
-    pc-copy-button.custom-pink-copy-button::part(button):focus-visible {
-        outline: 2px dashed deeppink;
-        outline-offset: 2px;
+    pc-copy-button.awesome-copy-button::part(button):active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-warning-border-normal),
+            var(--pc-color-mix-hover)
+        );
+        color: color-mix(
+            in oklab,
+            var(--pc-color-warning-on-normal),
+            var(--pc-color-mix-hover)
+        );
+        border-color: color-mix(
+            in oklab,
+            var(--pc-color-warning-border-normal),
+            var(--pc-color-mix-hover)
+        );
+        box-shadow: none;
+        translate: 0 0.25rem;
     }
 </style>
 ```

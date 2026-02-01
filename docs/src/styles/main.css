@@ -28,6 +28,22 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+    .theme-transition,
+    .theme-transition * {
+        transition:
+            background-color var(--pc-transition-medium) ease-in-out,
+            color var(--pc-transition-medium) ease-in-out,
+            border-color var(--pc-transition-medium) ease-in-out,
+            fill var(--pc-transition-medium) ease-in-out,
+            stroke var(--pc-transition-medium) ease-in-out !important;
+    }
+}
+
+.hero.theme-transition {
+    transition: none !important;
+}
+
 /* This is necessary to prevent double scrollbars from appearing in the Popup docs. */
 html {
     overflow-y: hidden;
@@ -126,20 +142,20 @@ main {
 
     &:not(.hero) article > header,
     &:not(.hero) article {
-        min-inline-size: 80ch;
-        max-inline-size: 80ch;
-    }
-
-    .pc-theme-utility &:not(.hero) article > header,
-    .pc-theme-utility &:not(.hero) article {
         min-inline-size: 75ch;
         max-inline-size: 75ch;
     }
 
-    .pc-theme-serene &:not(.hero) article > header,
-    .pc-theme-serene &:not(.hero) article {
+    .pc-theme-utility &:not(.hero) article > header,
+    .pc-theme-utility &:not(.hero) article {
         min-inline-size: 70ch;
         max-inline-size: 70ch;
+    }
+
+    .pc-theme-serene &:not(.hero) article > header,
+    .pc-theme-serene &:not(.hero) article {
+        min-inline-size: 68ch;
+        max-inline-size: 68ch;
     }
 
     & article > header h1 {
@@ -176,24 +192,6 @@ main {
 
 .content-layout .hero-callout {
     inline-size: 100%;
-}
-
-/* Keyframes */
-@keyframes spin {
-    0% {
-        rotate: 0deg;
-        stroke-dasharray: 0% 314.159%;
-    }
-
-    50% {
-        rotate: 450deg;
-        stroke-dasharray: 157.08% 157.08%;
-    }
-
-    100% {
-        rotate: 1080deg;
-        stroke-dasharray: 0% 314.159%;
-    }
 }
 
 /* Mobile styles */

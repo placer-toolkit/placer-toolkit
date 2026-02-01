@@ -1,18 +1,14 @@
 ---
 import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
-const { is992Size, slotName, variant = "outlined" } = Astro.props;
+const { is992Size, slotName, variant = "plain" } = Astro.props;
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
 <div
-    class:list={[
-        { "social-icons": true },
-        { "is-header-action": slotName === "header-actions" },
-        { "pc-992-size": is992Size },
-    ]}
+    class:list={[{ "social-icons": true }, { "pc-992-size": is992Size }]}
     aria-label={translation("nav.content.socialIcons.aria") as string}
     slot={slotName}
 >
@@ -49,10 +45,6 @@ const translation = useTranslations(language);
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: var(--pc-spacing-m);
-    }
-
-    .social-icons.is-header-action {
         gap: var(--pc-spacing-xs);
     }
 </style>

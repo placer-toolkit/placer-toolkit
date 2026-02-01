@@ -78,20 +78,83 @@ Placer Toolkit has three main branches used for different purposes.
 
 To set up a local development environment, [fork the repo](https://github.com/placer-toolkit/placer-toolkit/fork) on GitHub or clone it locally. Then, you can install its dependencies.
 
-```shell
-git clone https://github.com/placer-toolkit/placer-toolkit
-cd placer-toolkit # Navigates into your clone
-npm install # Installs dependencies for Placer Toolkit
-cd docs
-npm install # Installs dependencies for Placer Toolkit’s docs
-```
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="npm">npm</pc-tab>
+    <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
+    <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
+    <pc-tab slot="navigation" panel="bun">Bun</pc-tab>
+
+    <pc-tab-panel name="npm">
+        ```bash
+        git clone https://github.com/placer-toolkit/placer-toolkit
+        cd placer-toolkit # Navigates into your clone
+        npm install # Installs dependencies for Placer Toolkit
+        cd docs
+        npm install # Installs dependencies for Placer Toolkit’s docs
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="yarn">
+        ```bash
+        git clone https://github.com/placer-toolkit/placer-toolkit
+        cd placer-toolkit # Navigates into your clone
+        yarn install # Installs dependencies for Placer Toolkit
+        cd docs
+        yarn install # Installs dependencies for Placer Toolkit’s docs
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="pnpm">
+        ```bash
+        git clone https://github.com/placer-toolkit/placer-toolkit
+        cd placer-toolkit # Navigates into your clone
+        pnpm install # Installs dependencies for Placer Toolkit
+        cd docs
+        pnpm install # Installs dependencies for Placer Toolkit’s docs
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="bun">
+        ```bash
+        git clone https://github.com/placer-toolkit/placer-toolkit
+        cd placer-toolkit # Navigates into your clone
+        bun install # Installs dependencies for Placer Toolkit
+        cd docs
+        bun install # Installs dependencies for Placer Toolkit’s docs
+        ```
+    </pc-tab-panel>
+</pc-tab-group>
 
 Once you’ve cloned the repo, you can run the following command to spin up the development server for the docs. Make sure you’re in the `docs` folder of the project.
 
-```shell
-npm run dev # Spins up the dev server provided by Astro
-npx astro dev --host # If you want to expose the server on your network
-```
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="npm">npm</pc-tab>
+    <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
+    <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
+    <pc-tab slot="navigation" panel="bun">Bun</pc-tab>
+
+    <pc-tab-panel name="npm">
+        ```bash
+        npm run dev # Spins up the dev server provided by Astro
+        npm run dev -- --host # If you want to expose the server on your network
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="yarn">
+        ```bash
+        yarn dev # Spins up the dev server provided by Astro
+        yarn dev --host # If you want to expose the server on your network
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="pnpm">
+        ```bash
+        pnpm dev # Spins up the dev server provided by Astro
+        pnpm dev --host # If you want to expose the server on your network
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="bun">
+        ```bash
+        bun run dev # Spins up the dev server provided by Astro
+        bun run dev --host # If you want to expose the server on your network
+        ```
+    </pc-tab-panel>
+</pc-tab-group>
 
 This will spin up the dev server on `localhost:4321`. There isn’t any hot module reloading as Web Components aren’t compatible with this technology, but it’ll automatically refresh the page instead.
 

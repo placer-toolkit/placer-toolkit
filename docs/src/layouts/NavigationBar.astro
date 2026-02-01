@@ -92,7 +92,7 @@ const translatePath = useTranslatedPath(language);
             <pc-button
                 class="search-desktop"
                 appearance="neutral"
-                variant="outlined"
+                variant="plain"
                 size="small"
                 data-dialog="open search-dialog"
                 aria-keyshortcuts="Control+K"
@@ -114,7 +114,7 @@ const translatePath = useTranslatedPath(language);
             <pc-button
                 class="search-mobile"
                 appearance="neutral"
-                variant="outlined"
+                variant="plain"
                 size="small"
                 data-dialog="open search-dialog"
                 aria-keyshortcuts="Control+K"
@@ -147,6 +147,21 @@ const translatePath = useTranslatedPath(language);
 </script>
 
 <style>
+    :global(.hero) .navbar :global(pc-button)::part(base) {
+        --pc-color-mix-hover: color-mix(
+                in oklab,
+                var(--pc-color-primary-fill-quiet),
+                transparent 60%
+            )
+            40%;
+        --pc-color-mix-active: color-mix(
+                in oklab,
+                var(--pc-color-primary-fill-quiet),
+                transparent 60%
+            )
+            20%;
+    }
+
     .navbar {
         grid-area: navbar;
         position: sticky;
@@ -171,7 +186,7 @@ const translatePath = useTranslatedPath(language);
     }
 
     .navigation-bar pc-divider {
-        --spacing: var(--pc-spacing-xs);
+        --spacing: var(--pc-spacing-s);
     }
 
     .navigation-bar div {
@@ -179,6 +194,10 @@ const translatePath = useTranslatedPath(language);
         align-items: center;
         justify-content: center;
         gap: var(--pc-spacing-m);
+    }
+
+    .navigation-bar div.right-section {
+        gap: var(--pc-spacing-xs);
     }
 
     .navigation-bar div > * {

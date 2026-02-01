@@ -32,7 +32,6 @@ export default {
 
     // Labels
     "button.getStarted": "Get started",
-    "button.ourPrivacyPromise": "Our privacy promise",
     "button.gotIt": "Got it!",
     "button.yikes": "Yikes!",
     "button.powerUp": "Power up!",
@@ -42,6 +41,8 @@ export default {
     "button.skipToMainContent": "Skip to main content",
     "button.returnToMainContent": "Return to main content",
     "button.skipToTableOfContents": "Skip to table of contents",
+
+    "privacyPromise.aria": "Our privacy promise",
 
     "js.noscript":
         "This site requires JavaScript to function properly, as it uses JavaScript‐reliant web technologies.",
@@ -78,6 +79,13 @@ export default {
         'Whoa! You’ve wandered into the dangerous lands of Placer Toolkit. Version 0 is out of date and doesn’t meet EU privacy standards, including <abbr title="General Data Protection Regulation">GDPR</abbr>.',
     "dangerousLands.paragraph.2":
         "Want the latest powers, security and compliance? Stick with the current version of Placer Toolkit!",
+
+    "privacyPromise.paragraph.1":
+        "Our site is 100 % cookie‐free! We value your privacy, which is why we don’t store any cookies or personal information related to you.",
+    "privacyPromise.paragraph.2":
+        'Your browser history is safe from crumbs, and your data is protected, aligning with modern privacy standards like the <abbr title="General Data Protection Regulation">GDPR</abbr>. Enjoy your visit without a single digital cookie in sight! 🍪🚫',
+    "privacyPromise.paragraph.3":
+        'View our <a href="/docs/legal/privacy">Privacy Policy</a> for more information.',
 
     // Showcase
     "showcase.tab.before": "Before",
@@ -156,4 +164,11 @@ export default {
     "footer.copyright.centre": "love",
     "footer.copyright.right":
         'by Placer and its contributors • <span style="white-space: nowrap">© 2026</span>',
+
+    // 404 localisation text
+    "notfound.title": "404 – Page not found",
+    "notfound.paragraph": "This page slipped past our search dogs.",
+    "notfound.button.search": "Send our search dogs",
+    "notfound.button.home": "Take me home",
+    "notfound.button.lucky": "I’m feeling lucky", // Translate this the “Google way” via google.com.
 } as const;
