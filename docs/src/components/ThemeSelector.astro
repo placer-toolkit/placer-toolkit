@@ -37,6 +37,10 @@ const translation = useTranslations(language);
 <script>
     import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
 
+    const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     let currentTheme: "light" | "dark" | null = null;
 
     function isEditableInPath(path: EventTarget[]) {
@@ -95,10 +99,21 @@ const translation = useTranslations(language);
         const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
         const effectiveTheme =
             theme ?? (prefersLight.matches ? "light" : "dark");
-        const root = document.documentElement;
 
-        root.classList.remove("pc-light", "pc-dark");
-        root.classList.add(`pc-${effectiveTheme}`);
+        const nextClass = `pc-${effectiveTheme}`;
+
+        if (!prefersReducedMotion) {
+            document.documentElement.classList.add("theme-transition");
+        }
+
+        document.documentElement.classList.remove("pc-light", "pc-dark");
+        document.documentElement.classList.add(nextClass);
+
+        if (!prefersReducedMotion) {
+            setTimeout(() => {
+                document.documentElement.classList.remove("theme-transition");
+            }, 300);
+        }
 
         if (theme === null) {
             localStorage.removeItem("saved-theme");
@@ -107,7 +122,6 @@ const translation = useTranslations(language);
         }
 
         currentTheme = theme;
-
         updateIcon(theme);
     }
 

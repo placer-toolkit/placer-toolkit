@@ -5,6 +5,7 @@
     block-size: 2.25rem;
     overflow: hidden;
     cursor: pointer;
+    transition: inherit;
 }
 
 .transition-demo::after {

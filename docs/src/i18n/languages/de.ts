@@ -32,7 +32,6 @@ export default {
 
     // Labels
     "button.getStarted": "Los geht’s",
-    "button.ourPrivacyPromise": "Unser Datenschutzversprechen",
     "button.gotIt": "Alles klar!",
     "button.yikes": "Ups!",
     "button.powerUp": "Aufladen!",
@@ -42,6 +41,8 @@ export default {
     "button.skipToMainContent": "Zum Hauptinhalt springen",
     "button.returnToMainContent": "Zum Hauptinhalt zurückspringen",
     "button.skipToTableOfContents": "Zum Inhaltsverzeichnis springen",
+
+    "privacyPromise.aria": "Unser Datenschutzversprechen",
 
     "js.noscript":
         "Diese Website erfordert JavaScript, um richtig zu funktionieren, da sie JavaScript‐abhängige Webtechnologien benutzt.",
@@ -78,6 +79,13 @@ export default {
         'Ui! Du bist in die gefährlichen Lande von Placer Toolkit geraten. Version 0 ist veraltet und entspricht nicht den EU‐Datenschutzstandards, einschließlich <abbr title="Datenschutz-Grundverordnung">DSGVO</abbr>.',
     "dangerousLands.paragraph.2":
         "Willst du die neuesten Kräfte, Sicherheit und Compliance? Bleib bei der aktuellen Version von Placer Toolkit!",
+
+    "privacyPromise.paragraph.1":
+        "Unsere Website ist zu 100 % frei von Cookies! Wir legen großen Wert auf deine Privatsphäre und speichern daher keinerlei Cookies oder persönliche Informationen über dich.",
+    "privacyPromise.paragraph.2":
+        'Dein Browserverlauf bleibt sauber und deine Daten sind geschützt, ganz im Einklang mit modernen Datenschutzstandards wie der <abbr title="Datenschutz-Grundverordnung">DSGVO</abbr>. Genieße deinen Besuch ganz ohne digitale Cookies! 🍪🚫',
+    "privacyPromise.paragraph.3":
+        'Weitere Informationen findest du in unserer <a href="/de/docs/legal/privacy">Datenschutzerklärung</a>.',
 
     // Showcase
     "showcase.tab.before": "Vorher",
@@ -156,4 +164,11 @@ export default {
     "footer.copyright.centre": "Liebe",
     "footer.copyright.right":
         'von Placer und seinen Mitwirkenden gemacht • <span style="white-space: nowrap">© 2026</span>',
+
+    // 404 localisation text
+    "notfound.title": "404 – Seite nicht gefunden",
+    "notfound.paragraph": "Diese Seite schlich an unseren Suchhunden vorbei.",
+    "notfound.button.search": "Schick unsere Hunde los",
+    "notfound.button.home": "Bring mich nach Hause",
+    "notfound.button.lucky": "Auf gut Glück!", // Translate this the “Google way” via google.com.
 } as const;
