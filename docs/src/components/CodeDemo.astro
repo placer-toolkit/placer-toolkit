@@ -1,23 +1,50 @@
 ---
+import { getShiki } from "../scripts/shiki-process.ts";
 import { version } from "../helpers/version.js";
 
-import "../styles/syntax/placer-eclipse.css";
+let rawCode = await Astro.slots.render("default");
+
+if (typeof rawCode !== "string") {
+    rawCode = "";
+}
+
+rawCode = rawCode
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+
+const highlighter = await getShiki();
+
+const html = highlighter.codeToHtml(rawCode, {
+    lang: "html",
+    theme: "placer-eclipse",
+});
+
+const uniqueID = Math.random().toString(36).slice(2, 11);
+
+const finalHTML = html
+    .replace(
+        /<code(\s+class="[^"]*")?/,
+        `<code id="code-content-${uniqueID}"$1`,
+    )
+    .replace(/ tabindex="0"/g, "");
 
 const { open, noCodepen = false } = Astro.props;
 
 const isOpen = open !== undefined && open !== false;
-const uniqueId = Math.random().toString(36).slice(2, 11);
 ---
 
-<div class="code-demo" data-open={isOpen} data-unique-id={uniqueId}>
-    <div class="preview-block" id={`preview-block-${uniqueId}`}>
+<div class="code-demo" data-open={isOpen} data-unique-id={uniqueID}>
+    <div class="preview-block" id={`preview-block-${uniqueID}`}>
         <div class="preview-content-container" aria-live="polite">
-            <div id={`preview-content-${uniqueId}`}></div>
+            <div id={`preview-content-${uniqueID}`}></div>
         </div>
         <!-- The resize handle should NOT be able to be focused with keyboard navigation to match native behaviour -->
         <div
             class="resize-handle"
-            id={`resize-handle-${uniqueId}`}
+            id={`resize-handle-${uniqueID}`}
             tabindex="-1"
         >
             <pc-icon
@@ -29,13 +56,13 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 
     <div
         class="code-block"
-        id={`code-block-${uniqueId}`}
+        id={`code-block-${uniqueID}`}
         class:list={[{ open: isOpen }]}
         aria-hidden={!isOpen}
         inert={!isOpen || undefined}
     >
-        <pc-copy-button from={`code-content-${uniqueId}`}></pc-copy-button>
-        <pre><code class="hljs language-html" id={`code-content-${uniqueId}`} tabindex="-1"><slot /></code></pre>
+        <pc-copy-button from={`code-content-${uniqueID}`}></pc-copy-button>
+        <Fragment set:html={finalHTML} />
     </div>
 
     <div class="toggle-block">
@@ -43,12 +70,12 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
             appearance="neutral"
             variant="plain"
             size="small"
-            id={`toggle-button-${uniqueId}`}
+            id={`toggle-button-${uniqueID}`}
             aria-expanded={isOpen}
         >
             Code
             <pc-icon
-                id={`chevron-${uniqueId}`}
+                id={`chevron-${uniqueID}`}
                 library="default"
                 icon-style="solid"
                 name="chevron-down"
@@ -64,7 +91,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                     variant="plain"
                     size="small"
                     class="codepen-button"
-                    id={`toggle-button-${uniqueId}`}
+                    id={`toggle-button-${uniqueID}`}
                     data-version={version}
                 >
                     <pc-icon
@@ -82,11 +109,6 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 
 <script>
     import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
-
-    import hljs from "highlight.js";
-    import html from "highlight.js/lib/languages/xml";
-
-    hljs.registerLanguage("html", html);
 
     document.addEventListener("DOMContentLoaded", () => {
         document
@@ -127,18 +149,17 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                     console.error(
                         "[Code Demo]: Required elements are missing.",
                     );
+
                     return;
                 }
 
-                hljs.highlightElement(codeElement);
-
                 function renderPreview() {
                     const rawHTMLText = codeElement?.textContent ?? "";
-
                     const textarea = document.createElement("textarea");
-                    textarea.innerHTML = rawHTMLText;
-                    const unescapedHTML = textarea.value;
 
+                    textarea.innerHTML = rawHTMLText;
+
+                    const unescapedHTML = textarea.value;
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(
                         unescapedHTML,
@@ -242,14 +263,14 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                 let startWidth = 0;
 
                 resizeHandle.addEventListener("mousedown", (event) => {
+                    event.preventDefault();
+
                     isResizing = true;
                     startX = event.clientX;
                     startWidth = previewBlock.offsetWidth;
 
                     document.body.style.cursor = "ew-resize";
                     document.body.style.userSelect = "none";
-
-                    event.preventDefault();
                 });
 
                 document.addEventListener("mousemove", (event) => {
@@ -266,6 +287,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
                 document.addEventListener("mouseup", () => {
                     if (isResizing) {
                         isResizing = false;
+
                         document.body.style.cursor = "";
                         document.body.style.userSelect = "";
                     }
@@ -289,6 +311,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 
                     codepenButton.addEventListener("click", () => {
                         const form = document.createElement("form");
+
                         form.action = "https://codepen.io/pen/define";
                         form.method = "POST";
                         form.target = "_blank";
@@ -353,6 +376,23 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
         overflow: visible;
     }
 
+    .code-demo,
+    .pc-light.code-demo,
+    :global(.pc-light) .code-demo {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-20);
+        --pc-color-text-normal-inverse: oklch(100% 0 0);
+
+        --pc-color-mix-syntax: 10%;
+    }
+
+    .pc-dark.code-demo,
+    :global(.pc-dark) .code-demo {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-70);
+        --pc-color-text-normal-inverse: oklch(0% 0 0);
+
+        --pc-color-mix-syntax: 20%;
+    }
+
     .preview-block {
         position: relative;
         background-color: var(--pc-color-surface-default);
@@ -387,11 +427,11 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 
     .code-block {
         position: relative;
+        max-block-size: 0;
         background-color: var(--pc-color-surface-raised);
         border-block-start: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-quiet);
-        overflow-x: auto;
-        max-block-size: 0;
+        overflow: hidden;
         /* 🧪 interpolate-size is an experimental property (✓ Chrome 129, Edge 129) */
         interpolate-size: allow-keywords;
         transition: max-block-size var(--pc-transition-fast) ease-out;
@@ -399,6 +439,7 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
 
     .code-block.open {
         max-block-size: max-content;
+        overflow-x: auto;
         transition: max-block-size var(--pc-transition-fast) ease-in;
     }
 
@@ -409,11 +450,14 @@ const uniqueId = Math.random().toString(36).slice(2, 11);
         background-color: transparent;
     }
 
-    .code-block .hljs {
+    .code-block :global(.shiki) {
         padding: var(--pc-spacing-l) !important;
+        max-inline-size: 100%;
         background-color: transparent;
-        line-height: var(--pc-line-height-normal);
         font-size: var(--pc-font-size-xs);
+        line-height: var(--pc-line-height-normal);
+        white-space: pre;
+        overflow-x: auto;
     }
 
     .code-block pc-copy-button {

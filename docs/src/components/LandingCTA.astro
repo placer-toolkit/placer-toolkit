@@ -101,22 +101,22 @@ const translatePath = useTranslatedPath(language);
 
                     <pc-tab-panel name="npm">
                         <CodeBlock language="bash">
-                            {`❯ npm install placer-toolkit`}
+                            {`$ npm install placer-toolkit`}
                         </CodeBlock>
                     </pc-tab-panel>
                     <pc-tab-panel name="yarn">
                         <CodeBlock language="bash">
-                            {`❯ yarn add placer-toolkit`}
+                            {`$ yarn add placer-toolkit`}
                         </CodeBlock>
                     </pc-tab-panel>
                     <pc-tab-panel name="pnpm">
                         <CodeBlock language="bash">
-                            {`❯ pnpm add placer-toolkit`}
+                            {`$ pnpm add placer-toolkit`}
                         </CodeBlock>
                     </pc-tab-panel>
                     <pc-tab-panel name="bun">
                         <CodeBlock language="bash">
-                            {`❯ bun add placer-toolkit`}
+                            {`$ bun add placer-toolkit`}
                         </CodeBlock>
                     </pc-tab-panel>
                 </pc-tab-group>
@@ -337,7 +337,7 @@ const translatePath = useTranslatedPath(language);
     .landing-cta
         > .content
         .splash-buttons
-        :global(.code-block-container .hljs) {
+        :global(.code-block-container .shiki) {
         padding: var(--pc-spacing-m) !important;
     }
 

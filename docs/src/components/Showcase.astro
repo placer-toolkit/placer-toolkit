@@ -11,7 +11,7 @@ const translatePath = useTranslatedPath(language);
 ---
 
 <div class="showcase">
-    <pc-comparer style="--divider-width: 0.25rem">
+    <pc-comparer>
         <iframe
             id="before-frame"
             src={translatePath("/showcase")}
@@ -184,7 +184,17 @@ const translatePath = useTranslatedPath(language);
     }
 
     pc-comparer {
+        --divider-width: 0.0625rem;
+
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
         overflow: hidden;
+    }
+
+    pc-comparer::part(divider),
+    pc-comparer::part(handle) {
+        background-color: var(--pc-color-surface-border);
+        translate: unset;
     }
 
     pc-comparer,
@@ -201,24 +211,11 @@ const translatePath = useTranslatedPath(language);
     .showcase-controls {
         padding: var(--pc-spacing-l);
         min-inline-size: 18rem;
-        background-color: color-mix(
-            in oklab,
-            var(--pc-color-surface-raised),
-            transparent 40%
-        );
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-xl);
         transition: box-shadow var(--pc-transition-slow) ease-in-out;
-    }
-
-    @media (hover: hover) {
-        .showcase-controls:hover {
-            box-shadow: var(--pc-shadow-l);
-        }
-    }
-
-    pc-select::part(label) {
-        text-overflow: ellipsis;
-        overflow: hidden;
     }
 
     @media screen and (max-width: 992px) {
@@ -228,6 +225,10 @@ const translatePath = useTranslatedPath(language);
 
         pc-comparer {
             min-block-size: 25rem;
+        }
+
+        .showcase-controls {
+            min-inline-size: auto;
         }
     }
 </style>

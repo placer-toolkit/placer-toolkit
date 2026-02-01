@@ -1,12 +1,36 @@
 ---
-import "../styles/syntax/placer-eclipse.css";
+import { getShiki } from "../scripts/shiki-process.ts";
 
-const uniqueID = `code-${Math.random().toString(36).slice(2, 9)}`;
-const language = Astro.props.language ?? undefined;
-const { showLineNumbers } = Astro.props;
+const { language = "text", showLineNumbers } = Astro.props;
 
-const isTerminal =
-    language === "bash" || language === "shell" || language === "sh";
+let rawCode = await Astro.slots.render("default");
+
+if (typeof rawCode !== "string") {
+    rawCode = "";
+}
+
+rawCode = rawCode
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&amp;/g, "&");
+
+const highlighter = await getShiki();
+
+const html = highlighter.codeToHtml(rawCode, {
+    lang: language === "js" ? "javascript" : language,
+    theme: "placer-eclipse",
+});
+
+const uniqueID = Math.random().toString(36).slice(2, 11);
+
+const finalHTML = html.replace(
+    /<code(\s+class="[^"]*")?/,
+    `<code id="${uniqueID}"$1`,
+);
+
+const isTerminal = ["bash", "shell", "sh"].includes(language);
 ---
 
 <div
@@ -27,46 +51,30 @@ const isTerminal =
 
     <div class="code-block">
         <pc-copy-button from={uniqueID}></pc-copy-button>
-        <pre><code class={`hljs ${language ? `language-${language}` : ""}`} id={uniqueID} tabindex="-1"><slot /></code></pre>
+        <Fragment set:html={finalHTML} />
     </div>
 </div>
-
-<script>
-    import hljs from "highlight.js";
-
-    import html from "highlight.js/lib/languages/xml";
-    import css from "highlight.js/lib/languages/css";
-    import javascript from "highlight.js/lib/languages/javascript";
-    import typescript from "highlight.js/lib/languages/typescript";
-    import bash from "highlight.js/lib/languages/bash";
-
-    hljs.registerLanguage("html", html);
-    hljs.registerLanguage("css", css);
-    hljs.registerLanguage("javascript", javascript);
-    hljs.registerLanguage("js", javascript);
-    hljs.registerLanguage("typescript", typescript);
-    hljs.registerLanguage("ts", typescript);
-    hljs.registerLanguage("bash", bash);
-    hljs.registerLanguage("shell", bash);
-    hljs.registerLanguage("sh", bash);
-
-    const blocks = document.querySelectorAll(".code-block pre code.hljs");
-
-    blocks.forEach((block) => {
-        hljs.highlightElement(block as HTMLElement);
-
-        const html = block.innerHTML;
-        const lines = html.split(/\r?\n/);
-
-        block.innerHTML = lines
-            .map((line) => `<span class="pc-code-line">${line || ""}</span>`)
-            .join("\n");
-    });
-</script>
 
 <style>
     .code-block-container {
         margin-block-end: var(--pc-content-spacing);
+    }
+
+    .code-block-container,
+    .pc-light.code-block-container,
+    :global(.pc-light) .code-block-container {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-20);
+        --pc-color-text-normal-inverse: oklch(100% 0 0);
+
+        --pc-color-mix-syntax: 10%;
+    }
+
+    .pc-dark.code-block-container,
+    :global(.pc-dark) .code-block-container {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-70);
+        --pc-color-text-normal-inverse: oklch(0% 0 0);
+
+        --pc-color-mix-syntax: 20%;
     }
 
     .terminal-bar {
@@ -106,13 +114,13 @@ const isTerminal =
 
     .code-block {
         position: relative;
+        inline-size: 100%;
+        max-block-size: max-content;
         background-color: var(--pc-color-surface-raised);
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         border-radius: var(--pc-border-radius-l);
-        inline-size: 100%;
         overflow: visible;
-        max-block-size: max-content;
     }
 
     .terminal-bar + .code-block {
@@ -127,18 +135,17 @@ const isTerminal =
         background-color: transparent;
     }
 
-    .code-block .hljs {
+    .code-block :global(.shiki) {
         counter-reset: line;
         display: block;
-        background-color: transparent;
         padding: var(--pc-spacing-l) !important;
-        line-height: var(--pc-line-height-normal);
+        background-color: transparent;
         font-size: var(--pc-font-size-xs);
+        line-height: var(--pc-line-height-normal);
+        overflow-x: auto;
     }
 
-    .code-block-container.show-line-numbers
-        .code-block
-        :global(.pc-code-line::before) {
+    .code-block-container.show-line-numbers .code-block :global(.line::before) {
         content: counter(line);
         display: inline-block;
         margin-inline-end: var(--pc-spacing-s);

@@ -80,7 +80,7 @@ const {
             content="FuYprzKlW9u11ARGzJPgLFZx6hUnTmCdYmqPkrOFq4E"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Placer Toolkit" />
+        <meta property="og:title" content={hero ? title : `${title} | Placer Toolkit`} />
         <meta property="og:site_name" content="Placer Toolkit" />
         <meta
             property="og:url"
@@ -99,7 +99,7 @@ const {
             content="A preview of Placer Toolkit components including terminal snippets, toggles and UI elements in a bento‐style grid."
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Placer Toolkit" />
+        <meta name="twitter:title" content={hero ? title : `${title} | Placer Toolkit`} />
         <meta name="twitter:description" content={description} />
         <meta
             name="twitter:image"
