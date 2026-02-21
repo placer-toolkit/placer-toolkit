@@ -93,40 +93,75 @@ Themed buttons are supported through the button’s `appearance` attribute.
 </pc-button-group>
 ```
 
-### Pill shape
+### Vertical
+
+Set the `orientation` attribute to `vertical` to make a vertical button group.
+
+```demo
+<pc-button-group label="Options" orientation="vertical">
+    <pc-button>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="plus"
+            slot="prefix"
+        ></pc-icon>
+        New
+    </pc-button>
+    <pc-button>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="folder-open"
+            slot="prefix"
+        ></pc-icon>
+        Open
+    </pc-button>
+    <pc-button>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="save"
+            slot="prefix"
+        ></pc-icon>
+        Save
+    </pc-button>
+    <pc-button>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="print"
+            slot="prefix"
+        ></pc-icon>
+        Print
+    </pc-button>
+</pc-button-group>
+```
+
+### Pill
 
 Pill‐shaped buttons are supported through the button’s `pill` attribute.
 
 ```demo
-<pc-button-group label="Alignment">
-    <pc-button size="small" pill>Left</pc-button>
-    <pc-button size="small" pill>Centre</pc-button>
-    <pc-button size="small" pill>Right</pc-button>
-</pc-button-group>
+<div class="pc-stack">
+    <pc-button-group label="Alignment">
+        <pc-button size="small" pill>Left</pc-button>
+        <pc-button size="small" pill>Centre</pc-button>
+        <pc-button size="small" pill>Right</pc-button>
+    </pc-button-group>
 
-<br />
-<br />
+    <pc-button-group label="Alignment">
+        <pc-button size="medium" pill>Left</pc-button>
+        <pc-button size="medium" pill>Centre</pc-button>
+        <pc-button size="medium" pill>Right</pc-button>
+    </pc-button-group>
 
-<pc-button-group label="Alignment">
-    <pc-button size="medium" pill>
-        Left
-    </pc-button>
-    <pc-button size="medium" pill>
-        Centre
-    </pc-button>
-    <pc-button size="medium" pill>
-        Right
-    </pc-button>
-</pc-button-group>
-
-<br />
-<br />
-
-<pc-button-group label="Alignment">
-    <pc-button size="large" pill>Left</pc-button>
-    <pc-button size="large" pill>Centre</pc-button>
-    <pc-button size="large" pill>Right</pc-button>
-</pc-button-group>
+    <pc-button-group label="Alignment">
+        <pc-button size="large" pill>Left</pc-button>
+        <pc-button size="large" pill>Centre</pc-button>
+        <pc-button size="large" pill>Right</pc-button>
+    </pc-button-group>
+</div>
 ```
 
 ### Dropdowns in button groups

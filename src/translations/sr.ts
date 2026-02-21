@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Сакриј лозинку",
     hue: "Тон боје",
     loading: "Учитавање…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maksimalna vrednost)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimalna vrednost)`,
     nextSlide: "Следећи слајд",
     numOptionsSelected: (number) => {
         const lastDigit = number % 10;

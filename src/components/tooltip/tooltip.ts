@@ -12,10 +12,13 @@ import {
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcPopup } from "../popup/popup.js";
+import type { PcPopup } from "../popup/popup.js";
 import styles from "./tooltip.css";
 
 setDefaultAnimation("tooltip.show", {
@@ -69,21 +72,15 @@ setDefaultAnimation("tooltip.hide", {
  */
 @customElement("pc-tooltip")
 export class PcTooltip extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-popup": PcPopup };
 
     private readonly localize = new LocalizeController(this);
 
     private hoverTimeout!: number;
     private closeWatcher!: CloseWatcher | null;
 
-    /** @internal This is an internal class property. */
     @query("slot:not([name])") defaultSlot!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query(".body") body!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query("pc-popup") popup!: PcPopup;
 
     /** The tooltip’s content. If you need to display HTML, use the `content` slot instead. */
@@ -105,7 +102,7 @@ export class PcTooltip extends PlacerElement {
         | "left-end" = "top";
 
     /** Disables the tooltip so it won’t show when triggered. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** The distance in pixels from which to offset the tooltip away from its target. */
     @property({ type: Number }) distance = 8;
@@ -198,7 +195,6 @@ export class PcTooltip extends PlacerElement {
         return triggers.includes(triggerType);
     }
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     async handleOpenChange() {
         if (this.open) {
@@ -206,7 +202,15 @@ export class PcTooltip extends PlacerElement {
                 return;
             }
 
-            emit(this, "pc-show");
+            const pcShow = new PcShowEvent();
+
+            this.dispatchEvent(pcShow);
+
+            if (pcShow.defaultPrevented) {
+                this.open = false;
+
+                return;
+            }
 
             if ("CloseWatcher" in window) {
                 this.closeWatcher?.destroy();
@@ -234,9 +238,18 @@ export class PcTooltip extends PlacerElement {
 
             this.popup.reposition();
 
-            emit(this, "pc-after-show");
+            this.dispatchEvent(new PcAfterShowEvent());
         } else {
-            emit(this, "pc-hide");
+            const pcHide = new PcHideEvent();
+
+            this.dispatchEvent(pcHide);
+
+            if (pcHide.defaultPrevented) {
+                this.open = true;
+
+                return;
+            }
+
             this.closeWatcher?.destroy();
             document.removeEventListener("keydown", this.handleDocumentKeyDown);
 
@@ -251,11 +264,10 @@ export class PcTooltip extends PlacerElement {
             this.popup.active = false;
             this.body.hidden = true;
 
-            emit(this, "pc-after-hide");
+            this.dispatchEvent(new PcAfterHideEvent());
         }
     }
 
-    /** @internal This is an internal method. */
     @watch(["content", "distance", "placement", "skidding"])
     async handleOptionsChange() {
         if (this.hasUpdated) {
@@ -264,7 +276,6 @@ export class PcTooltip extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch("disabled")
     handleDisabledChange() {
         if (this.disabled && this.open) {
@@ -279,6 +290,7 @@ export class PcTooltip extends PlacerElement {
         }
 
         this.open = true;
+
         return waitForEvent(this, "pc-after-show");
     }
 
@@ -289,6 +301,7 @@ export class PcTooltip extends PlacerElement {
         }
 
         this.open = false;
+
         return waitForEvent(this, "pc-after-hide");
     }
 

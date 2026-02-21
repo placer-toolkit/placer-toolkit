@@ -1,12 +1,12 @@
 ---
 title: Formularsteuerelemente
-description: Jede Placer Toolkit‐Komponente verwendet ein Shadow DOM, um Markup, Styles und Verhalten zu kapseln. Eine Einschränkung dieses Ansatzes ist, dass native <form>‐Elemente Formularsteuerelemente innerhalb einer Shadow‐Root nicht erkennen.
+description: Placer‐Formularsteuerelemente sind formularassoziierte Custom Elements, was bedeutet, dass sie zusammen mit Formularen wie native <form>‐Steuerelemente abgeschickt werden. Dies wurde durch die ElementInternals‐API ermöglicht.
 order: 4
 ---
 
-Jede Placer Toolkit‐Komponente verwendet ein [Shadow DOM](https://developer.mozilla.org/de/docs/Web/Web_Components/Using_shadow_DOM), um Markup, Styles und Verhalten zu kapseln. Eine Einschränkung dieses Ansatzes ist, dass native `<form>`‐Elemente Formularsteuerelemente innerhalb einer Shadow‐Root nicht erkennen.
+Placer‐Formularsteuerelemente sind formularassoziierte Custom Elements, was bedeutet, dass sie zusammen mit Formularen wie native `<form>`‐Steuerelemente abgeschickt werden. Dies wurde durch die [`ElementInternals`‐API](https://developer.mozilla.org/de/docs/Web/API/ElementInternals) ermöglicht.
 
-Placer Toolkit löst dieses Problem durch die Verwendung des [`formdata`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormElement/formdata_event)‐Events, das in [allen modernen Browsern verfügbar](https://caniuse.com/mdn-api_htmlformelement_formdata_event) ist. Das bedeutet, dass beim Absenden eines Formulars Placer‐Formularsteuerelemente automatisch ihre Werte dem `FormData`‐Objekt hinzufügen, das für das Absenden des Formulars verwendet wird. In den meisten Fällen funktioniert alles „einfach so“. Wenn du jedoch eine Bibliothek zur Formularserialisierung verwendest, muss diese möglicherweise angepasst werden, um Placer-Formularsteuerelemente zu erkennen.
+Wenn du keine clientseitige Validierung verwenden möchtest, kannst du dieses Verhalten durch das Hinzufügen des `novalidate`‐Attributs zum umgebenden `<form>`‐Element unterdrücken.
 
 <pc-callout appearance="primary">
     <pc-icon
@@ -57,7 +57,7 @@ Wenn du keine clientseitige Validierung verwenden möchtest, kannst du dieses Ve
         name="lightbulb"
         slot="icon"
     ></pc-icon>
-    Wenn diese Syntax ungewohnt aussieht, keine Sorge! Das meiste, was du auf dieser Seite lernst, ist Plattformwissen, das auch für reguläre Formularsteuerelemente gilt.
+    Wenn diese Syntax ungewohnt aussieht, keine Sorge! Das Meiste, was du auf dieser Seite lernst, ist Plattformwissen, das auch für reguläre Formularsteuerelemente gilt.
 </pc-callout>
 
 <pc-callout appearance="warning">
@@ -218,7 +218,7 @@ Um einen benutzerdefinierten Validierungsfehler zu erstellen, übergebe einen ni
             alert("Alle Felder sind gültig!");
         });
 
-        input.addEventListener("pc-input", () => {
+        input.addEventListener("input", () => {
             if (input.value === "placer toolkit") {
                 input.setCustomValidity("");
             } else {
@@ -236,37 +236,29 @@ Um einen benutzerdefinierten Validierungsfehler zu erstellen, übergebe einen ni
         name="puzzle-piece"
         slot="icon"
     ></pc-icon>
-    Benutzerdefinierte Validierung kann auf jedes Formularsteuerelement angewendet werden, das die Methode `setCustomValidity()` unterstützt. Sie ist nicht auf Eingaben und Textareas beschränkt.
+    Benutzerdefinierte Validierung kann auf jedes Formularsteuerelement angewendet werden, das die Methode `setCustomValidity()` unterstützt. Sie ist nicht auf Inputs und Textareas beschränkt.
 </pc-callout>
 
 ## Benutzerdefinierte Validierungs‐Styles
 
-Aufgrund der vielen Einsatzmöglichkeiten von Formularsteuerelementen liefert Placer Toolkit keine standardmäßigen Validierungs‐Styles. Stattdessen werden die folgenden Attribute angewendet, um die Gültigkeit eines Steuerelements während der Interaktion anzuzeigen. Du kannst diese Attribute nutzen, um eigene Styles für beliebige Validierungszustände zu erstellen.
+Aufgrund der vielen Einsatzmöglichkeiten von Formularsteuerelementen liefert Placer Toolkit keine standardmäßigen Validierungs‐Styles.
 
-- `data-required`: Das Formularsteuerelement ist erforderlich.
-- `data-optional`: Das Formularsteuerelement ist optional.
-- `data-invalid`: Das Formularsteuerelement ist aktuell ungültig.
-- `data-valid`: Das Formularsteuerelement ist aktuell gültig.
-- `data-user-invalid`: Das Formularsteuerelement ist ungültig und der/die Nutzer:in hat damit interagiert.
-- `data-user-valid`: Das Formularsteuerelement ist gültig und der/die Nutzer:in hat damit interagiert.
+Stattdessen werden die folgenden [Custom States](https://developer.mozilla.org/de/docs/Web/API/ElementInternals/states) angewendet, um die Gültigkeit eines Steuerelements während der Interaktion anzuzeigen. Du kannst sie nutzen, um eigene Styles für beliebige Validierungszustände zu erstellen.
 
-Die Attribute entsprechen den Pseudo‐Klassen des Browsers für Validierung: [`:required`](https://developer.mozilla.org/de/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/de/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/de/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-invalid) und [`:user-valid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-valid).
+- `:state(required)`: Das Formularsteuerelement ist erforderlich.
+- `:state(optional)`: Das Formularsteuerelement ist optional.
+- `:state(invalid)`: Das Formularsteuerelement ist aktuell ungültig.
+- `:state(valid)`: Das Formularsteuerelement ist aktuell gültig.
+- `:state(user-invalid)`: Das Formularsteuerelement ist ungültig und der/die Nutzer:in hat damit interagiert.
+- `:state(user-valid)`: Das Formularsteuerelement ist gültig und der/die Nutzer:in hat damit interagiert.
 
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="road"
-        slot="icon"
-    ></pc-icon>
-    In Zukunft werden Datenattribute durch benutzerdefinierte Pseudo‐Klassen wie `:--valid` und `:--invalid` ersetzt. Placer Toolkit verwendet derzeit Datenattribute als Workaround, bis mehr Browser benutzerdefinierte Zustände über [`ElementInternals.states`](https://developer.mozilla.org/de/docs/Web/API/ElementInternals/states) unterstützen.
-</pc-callout>
+Die Custom States entsprechen den Pseudo‐Klassen des Browsers für Validierung: [`:required`](https://developer.mozilla.org/de/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/de/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/de/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-invalid) und [`:user-valid`](https://developer.mozilla.org/de/docs/Web/CSS/:user-valid).
 
 ### Ungültige Formularsteuerelemente stylen
 
-Du kannst die Gültigkeit über die erwähnten Datenattribute ansprechen, es ist jedoch üblicher, `data-user-invalid` und `data-user-valid` zu verwenden, da diese erst nach Benutzerinteraktion angewendet werden. So erscheinen leere Felder nicht sofort als ungültig, was die UX verbessert.
+Du kannst die Gültigkeit über die erwähnten Custom States ansprechen, es ist jedoch üblicher, `:state(user-invalid)` und `:state(user-valid)` zu verwenden, da diese erst nach Benutzerinteraktion angewendet werden. So erscheinen leere Felder nicht sofort als ungültig, was die UX verbessert.
 
-Dieses Beispiel zeigt benutzerdefinierte Validierungs‐Styles mit `data-user-invalid` und `data-user-valid`. Gib Werte ein, um die Gültigkeit mit Benutzerinteraktion zu sehen.
+Dieses Beispiel zeigt benutzerdefinierte Validierungs‐Styles mit `:state(user-invalid)` und `:state(user-valid)`. Gib Werte ein, um die Gültigkeit mit Benutzerinteraktion zu sehen.
 
 ```demo
 <form class="input-validation-custom-styles pc-stack">
@@ -320,50 +312,50 @@ Dieses Beispiel zeigt benutzerdefinierte Validierungs‐Styles mit `data-user-in
 
 <style>
     /* Benutzerungültige Styles */
-    .input-validation-custom-styles pc-input[data-user-invalid]::part(input),
-    .input-validation-custom-styles pc-select[data-user-invalid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-input:state(user-invalid)::part(input),
+    .input-validation-custom-styles pc-select:state(user-invalid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(control) {
         border-color: var(--pc-color-danger-border-loud);
     }
 
-    .input-validation-custom-styles [data-user-invalid]:not(pc-button)::part(label),
-    .input-validation-custom-styles [data-user-invalid]::part(hint),
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(label) {
+    .input-validation-custom-styles :state(user-invalid):not(pc-button)::part(label),
+    .input-validation-custom-styles :state(user-invalid)::part(hint),
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(label) {
         color: var(--pc-color-danger-on-quiet);
     }
 
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(control) {
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-invalid]::part(input),
-    .input-validation-custom-styles pc-select:focus-within[data-user-invalid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox:focus-within[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-input:focus-within:state(user-invalid)::part(input),
+    .input-validation-custom-styles pc-select:focus-within:state(user-invalid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within:state(user-invalid)::part(control) {
         border-color: var(--pc-color-danger-border-loud);
         outline-color: var(--pc-color-danger-border-loud);
     }
 
     /* Benutzergültige Styles */
-    .input-validation-custom-styles pc-input[data-user-valid]::part(input),
-    .input-validation-custom-styles pc-select[data-user-valid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-input:state(user-valid)::part(input),
+    .input-validation-custom-styles pc-select:state(user-valid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(control) {
         border-color: var(--pc-color-success-border-loud);
     }
 
-    .input-validation-custom-styles [data-user-valid]:not(pc-button)::part(label),
-    .input-validation-custom-styles [data-user-valid]::part(hint),
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(label) {
+    .input-validation-custom-styles :state(user-valid):not(pc-button)::part(label),
+    .input-validation-custom-styles :state(user-valid)::part(hint),
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(label) {
         color: var(--pc-color-success-on-quiet);
     }
 
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(control) {
         background-color: var(--pc-color-success-border-loud);
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-valid]::part(input),
-    .input-validation-custom-styles pc-select:focus-within[data-user-valid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox:focus-within[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-input:focus-within:state(user-valid)::part(input),
+    .input-validation-custom-styles pc-select:focus-within:state(user-valid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within:state(user-valid)::part(control) {
         border-color: var(--pc-color-success-border-loud);
         outline-color: var(--pc-color-success-border-loud);
     }

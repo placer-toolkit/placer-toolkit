@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "পাসওয়ার্ড লুকান",
     hue: "রঙের ছটা",
     loading: "লোড হচ্ছে…",
+    maximumValue: "সর্বাধিক",
+    maximumValueDescriptive: (label) => `${label} (সর্বাধিক মান)`,
+    minimumValue: "ন্যূনতম",
+    minimumValueDescriptive: (label) => `${label} (ন্যূনতম মান)`,
     nextSlide: "পরবর্তী স্লাইড",
     numOptionsSelected: (number) => {
         if (number === 0) {

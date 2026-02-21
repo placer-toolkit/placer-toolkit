@@ -21,6 +21,11 @@ interface CEMParameter {
     type: CEMType | string;
 }
 
+interface CEMAttribute {
+    name: string;
+    fieldName?: string;
+}
+
 interface CEMProperty {
     name: string;
     attribute?: string;
@@ -70,6 +75,7 @@ interface CEMAnimation {
 interface CEMDeclaration {
     name: string;
     tagName?: string;
+    attributes?: CEMAttribute[];
     members?: (CEMProperty | CEMMethod)[];
     events?: CEMEvent[];
     slots?: CEMSlot[];
@@ -105,9 +111,11 @@ const loadManifest = async (): Promise<
             assert: { type: "json" }
         });
         const manifest = manifestModule.default ?? manifestModule;
+
         return manifest as CEMManifest & { package?: { version?: string } };
     } catch (error) {
         console.error(`Couldn’t load the CEM file: ${error}`);
+
         return null;
     }
 };
@@ -223,6 +231,7 @@ const renderMarkdown = (text: string): string => {
 
     const lines = text.split(/\r?\n/);
     const html: string[] = [];
+
     let listBuffer: string[] = [];
     let inOrdered = false;
     let inUnordered = false;
@@ -236,6 +245,7 @@ const renderMarkdown = (text: string): string => {
                 html.push("<ul>" + listBuffer.join("") + "</ul>");
             }
         }
+
         listBuffer = [];
         inOrdered = false;
         inUnordered = false;
@@ -246,52 +256,72 @@ const renderMarkdown = (text: string): string => {
 
         if (!line) {
             flushList();
+
             inBlockquote = false;
+
             html.push("");
+
             continue;
         }
 
         if (/^(\*\s*\*\s*\*|-\s*-\s*-|_\s*_\s*)$/.test(line)) {
             flushList();
+
             html.push("<hr />");
+
             continue;
         }
 
         if (/^>\s*(.*)$/.test(line)) {
             flushList();
+
             const quote = line.replace(/^>\s?/, "");
+
             if (!inBlockquote) {
                 html.push("<blockquote>");
+
                 inBlockquote = true;
             }
+
             html.push(renderInline(quote));
+
             continue;
         } else if (inBlockquote) {
             html.push("</blockquote>");
+
             inBlockquote = false;
         }
 
         if (/^\d+\.\s+/.test(line)) {
             const item = line.replace(/^\d+\.\s+/, "");
+
             if (!inOrdered) {
                 flushList();
+
                 inOrdered = true;
             }
+
             listBuffer.push(`<li>${renderInline(item)}</li>`);
+
             continue;
         }
 
         if (/^[-+*]\s+/.test(line)) {
             const item = line.replace(/^[-+*]\s+/, "");
+
             if (!inUnordered) {
                 flushList();
+
                 inUnordered = true;
             }
+
             listBuffer.push(`<li>${renderInline(item)}</li>`);
+
             continue;
         }
 
         flushList();
+
         html.push(renderInline(line));
     }
 
@@ -331,24 +361,59 @@ const componentData = manifest
     : null;
 
 // Filter and organise data
-const properties =
-    componentData?.members?.filter(
-        (member): member is CEMProperty =>
-            member.kind === "field" && member.privacy !== "private",
-    ) || [];
+const rawMembers = componentData?.members || [];
 
-const methods =
-    componentData?.members?.filter(
-        (member): member is CEMMethod =>
-            member.kind === "method" && member.privacy !== "private",
-    ) || [];
+const properties = rawMembers
+    .filter((member): member is CEMProperty =>
+        member.kind === "field" &&
+        member.privacy !== "private" &&
+        !!member.description
+    )
+    .map((property) => {
+        const attribute = componentData?.attributes?.find((attr) => attr.fieldName === property.name);
 
-const events = componentData?.events || [];
+        if (attribute) {
+            property.attribute = attribute.name || attribute.fieldName;
+        }
+
+        return property;
+    });
+
+const methods = rawMembers
+    .filter((member): member is CEMMethod =>
+        member.kind === "method" &&
+        member.privacy !== "private" &&
+        !!member.description
+    );
+
+const events = (componentData?.events || []).filter(event => !!event.name);
 const slots = componentData?.slots || [];
 const cssProperties = componentData?.cssProperties || [];
 const cssParts = componentData?.cssParts || [];
 const animations = componentData?.animations || [];
-const dependencies = componentData?.dependencies || [];
+
+const getDeepDependencies = (tagName: string, processed = new Set<string>()): string[] => {
+    if (!manifest || processed.has(tagName)) {
+        return [];
+    }
+
+    processed.add(tagName);
+
+    const declaration = findComponentData(manifest, tagName);
+    const immediateDependencies = declaration?.dependencies || [];
+
+    let allDependencies = [...immediateDependencies];
+
+    immediateDependencies.forEach((dependency) => {
+        allDependencies = [...allDependencies, ...getDeepDependencies(dependency, processed)];
+    });
+
+    return [...new Set(allDependencies)];
+};
+
+const dependencies = componentData?.tagName
+    ? getDeepDependencies(componentData.tagName).sort()
+    : [];
 
 // Set docs localisation up
 const language = getLanguageFromURL(Astro.url);

@@ -8,6 +8,11 @@ import {
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcSelectEvent } from "../../events/pc-select.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import {
     autoUpdate,
     computePosition,
@@ -17,10 +22,9 @@ import {
 } from "@floating-ui/dom";
 import { activeElements } from "../../internal/active-elements.js";
 import { uniqueID } from "../../internal/math.js";
-import { emit } from "../../internal/emit.js";
-import { PcPopup } from "../popup/popup.js";
 import type { PcButton } from "../button/button.js";
 import type { PcDropdownItem } from "../dropdown-item/dropdown-item.js";
+import type { PcPopup } from "../popup/popup.js";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./dropdown.css";
 
@@ -120,10 +124,7 @@ setDefaultAnimation("dropdown.hide", {
  */
 @customElement("pc-dropdown")
 export class PcDropdown extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = [sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-popup": PcPopup };
 
     private submenuCleanups: Map<
         PcDropdownItem,
@@ -134,7 +135,6 @@ export class PcDropdown extends PlacerElement {
     private userTypedTimeout!: ReturnType<typeof setTimeout>;
     private openSubmenuStack: PcDropdownItem[] = [];
 
-    /** @internal This is an internal class property. */
     @query("slot:not([name])") defaultSlot!: HTMLSlotElement;
     @query("#menu") private menu!: HTMLDivElement;
     @query("pc-popup") private popup!: PcPopup;
@@ -317,9 +317,9 @@ export class PcDropdown extends PlacerElement {
             return;
         }
 
-        const pcShow = emit(this, "pc-show", {
-            cancelable: true,
-        });
+        const pcShow = new PcShowEvent();
+
+        this.dispatchEvent(pcShow);
 
         if (pcShow.defaultPrevented) {
             this.open = false;
@@ -355,17 +355,17 @@ export class PcDropdown extends PlacerElement {
 
         if (items.length > 0) {
             items.forEach((item, index) => (item.active = index === 0));
-            items[0].focus();
+            items[0].focus({ preventScroll: true });
         }
 
-        emit(this, "pc-after-show");
+        this.dispatchEvent(new PcAfterShowEvent());
     }
 
     /** Hides the dropdown menu. This should be only called from within `updated()`. */
     private async hideMenu() {
-        const pcHide = emit(this, "pc-hide", {
-            cancelable: true,
-        });
+        const pcHide = new PcHideEvent();
+
+        this.dispatchEvent(pcHide);
 
         if (pcHide.defaultPrevented) {
             this.open = true;
@@ -394,7 +394,7 @@ export class PcDropdown extends PlacerElement {
 
         this.menu.hidden = true;
 
-        emit(this, "pc-after-hide");
+        this.dispatchEvent(new PcAfterHideEvent());
     }
 
     /** Handles key down events when the menu is open. */
@@ -408,7 +408,7 @@ export class PcDropdown extends PlacerElement {
             event.stopPropagation();
 
             this.open = false;
-            trigger?.focus();
+            trigger?.focus({ preventScroll: true });
 
             return;
         }
@@ -480,7 +480,7 @@ export class PcDropdown extends PlacerElement {
                         submenuItems.forEach(
                             (item, index) => (item.active = index === 0),
                         );
-                        submenuItems[0].focus();
+                        submenuItems[0].focus({ preventScroll: true });
                     }
                 }, 0);
 
@@ -497,7 +497,7 @@ export class PcDropdown extends PlacerElement {
                 removedItem.submenuOpen = false;
 
                 setTimeout(() => {
-                    removedItem.focus();
+                    removedItem.focus({ preventScroll: true });
                     removedItem.active = true;
 
                     const parentItems =
@@ -521,6 +521,7 @@ export class PcDropdown extends PlacerElement {
         if (event.key === "Home" || event.key === "End") {
             event.preventDefault();
             event.stopPropagation();
+
             itemToSelect =
                 event.key === "Home" ? items[0] : items[items.length - 1];
         }
@@ -535,6 +536,7 @@ export class PcDropdown extends PlacerElement {
             !(event.key === " " && this.userTypedQuery === "")
         ) {
             clearTimeout(this.userTypedTimeout);
+
             this.userTypedTimeout = setTimeout(() => {
                 this.userTypedQuery = "";
             }, 1000);
@@ -547,6 +549,7 @@ export class PcDropdown extends PlacerElement {
 
                 if (label.startsWith(selectionQuery)) {
                     itemToSelect = item;
+
                     return true;
                 }
 
@@ -557,8 +560,11 @@ export class PcDropdown extends PlacerElement {
         if (itemToSelect) {
             event.preventDefault();
             event.stopPropagation();
+
             items.forEach((item) => (item.active = item === itemToSelect));
-            itemToSelect.focus();
+
+            itemToSelect.focus({ preventScroll: true });
+
             return;
         }
 
@@ -573,15 +579,17 @@ export class PcDropdown extends PlacerElement {
 
             if (activeItem.hasSubmenu) {
                 activeItem.submenuOpen = true;
+
                 this.addToSubmenuStack(activeItem);
 
                 setTimeout(() => {
                     const submenuItems = this.getSubmenuItems(activeItem!);
+
                     if (submenuItems.length > 0) {
                         submenuItems.forEach(
                             (item, index) => (item.active = index === 0),
                         );
-                        submenuItems[0].focus();
+                        submenuItems[0].focus({ preventScroll: true });
                     }
                 }, 0);
             } else {
@@ -621,6 +629,7 @@ export class PcDropdown extends PlacerElement {
             if (!item.submenuOpen) {
                 this.closeSiblingSubmenus(item);
                 this.addToSubmenuStack(item);
+
                 item.submenuOpen = true;
             }
 
@@ -634,6 +643,7 @@ export class PcDropdown extends PlacerElement {
     /** Prepares dropdown items when they get added or removed. */
     private async handleMenuSlotChange() {
         const items = this.getItems(true);
+
         await Promise.all(items.map((item) => item.updateComplete));
 
         this.syncItemSizes();
@@ -800,6 +810,7 @@ export class PcDropdown extends PlacerElement {
                 "--safe-triangle-visible",
                 "none",
             );
+
             return;
         }
 
@@ -898,20 +909,20 @@ export class PcDropdown extends PlacerElement {
             item.checked = !item.checked;
         }
 
-        const pcSelect = emit(this, "pc-select", {
-            cancelable: true,
-            detail: { item },
-        });
+        const pcSelect = new PcSelectEvent({ item });
+
+        this.dispatchEvent(pcSelect);
 
         if (!pcSelect.defaultPrevented) {
             this.open = false;
-            trigger?.focus();
+            trigger?.focus({ preventScroll: true });
         }
     }
 
     /** Syncs ARIA attributes on the slotted trigger element and the menu based on the dropdown’s current state. */
     private async syncARIAAttributes() {
         const trigger = this.getTrigger();
+
         let nativeButton: HTMLButtonElement | undefined;
 
         if (!trigger) {
@@ -921,6 +932,7 @@ export class PcDropdown extends PlacerElement {
         if (trigger.localName === "pc-button") {
             await customElements.whenDefined("pc-button");
             await (trigger as PcButton).updateComplete;
+
             nativeButton =
                 trigger.shadowRoot!.querySelector<HTMLButtonElement>(
                     '[part="base"]',

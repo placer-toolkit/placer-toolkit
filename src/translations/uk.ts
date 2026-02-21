@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Приховати пароль",
     hue: "Відтінок",
     loading: "Завантаження…",
+    maximumValue: "Максимум",
+    maximumValueDescriptive: (label) => `${label} (максимальне значення)`,
+    minimumValue: "Мінімум",
+    minimumValueDescriptive: (label) => `${label} (мінімальне значення)`,
     nextSlide: "Наступний слайд",
     numOptionsSelected: (number) => {
         const lastDigit = number % 10;

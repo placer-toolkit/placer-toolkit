@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Skrýt heslo",
     hue: "Tón barvy",
     loading: "Nahrává se…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximální hodnota)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimální hodnota)`,
     nextSlide: "Další snímek",
     numOptionsSelected: (number) => {
         if (number === 0) {

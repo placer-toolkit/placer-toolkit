@@ -18,6 +18,10 @@ const translation: Translation = {
     hidePassword: "Απόκρυψη κωδικού",
     hue: "Τόνος χρώματος",
     loading: "Φόρτωση…",
+    maximumValue: "Μέγιστο",
+    maximumValueDescriptive: (label) => `${label} (μέγιστη τιμή)`,
+    minimumValue: "Ελάχιστο",
+    minimumValueDescriptive: (label) => `${label} (ελάχιστη τιμή)`,
     nextSlide: "Επόμενη διαφάνεια",
     numOptionsSelected: (number) => {
         if (number === 0) {

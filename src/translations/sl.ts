@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Skrij geslo",
     hue: "Ton barve",
     loading: "Nalaganje…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maksimalna vrednost)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimalna vrednost)`,
     nextSlide: "Naslednji diapozitiv",
     numOptionsSelected: (number) => {
         if (number === 0) {

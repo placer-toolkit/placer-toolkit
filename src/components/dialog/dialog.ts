@@ -9,15 +9,17 @@ import {
 import { animateTo } from "../../internal/animate.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { parseSpaceDelimitedTokens } from "../../internal/parse.js";
 import {
     lockBodyScrolling,
     unlockBodyScrolling,
 } from "../../internal/scroll.js";
-import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcButton } from "../button/button.js";
+import "../button/button.js";
 import styles from "./dialog.css";
 
 document.addEventListener("click", (event: MouseEvent) => {
@@ -73,7 +75,7 @@ setDefaultAnimation("dialog.denyClose", {
     keyframes: [{ scale: 1 }, { scale: 1.02 }, { scale: 1 }],
     options: {
         duration: 300,
-        easing: "cubic-bezier(0.0, 0.7, 0.2, 1.0)",
+        easing: "cubic-bezier(0.0, 0.7, 0.2, 1)",
     },
 });
 
@@ -114,16 +116,13 @@ setDefaultAnimation("dialog.denyClose", {
  */
 @customElement("pc-dialog")
 export class PcDialog extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-button": PcButton };
+
+    private originalTrigger!: HTMLElement | null;
 
     private readonly hasSlotController = new HasSlotController(this, "footer");
     private readonly localize = new LocalizeController(this);
-    private originalTrigger!: HTMLElement | null;
 
-    /** @internal This is an internal class property. */
     @query(".dialog") dialog!: HTMLDialogElement;
 
     /** Indicates whether or not the dialog is open. Toggle this attribute to show and hide the dialog. */
@@ -155,10 +154,9 @@ export class PcDialog extends PlacerElement {
     }
 
     private async requestClose(source: Element) {
-        const pcHide = emit(this, "pc-hide", {
-            cancelable: true,
-            detail: { source },
-        });
+        const pcHide = new PcHideEvent({ source });
+
+        this.dispatchEvent(pcHide);
 
         if (pcHide.defaultPrevented) {
             this.open = true;
@@ -185,6 +183,7 @@ export class PcDialog extends PlacerElement {
 
         this.open = false;
         this.dialog.close();
+
         unlockBodyScrolling(this);
 
         const trigger = this.originalTrigger;
@@ -193,7 +192,7 @@ export class PcDialog extends PlacerElement {
             setTimeout(() => trigger.focus());
         }
 
-        return waitForEvent(this, "pc-after-hide");
+        this.dispatchEvent(new PcAfterHideEvent());
     }
 
     private addOpenListeners() {
@@ -247,7 +246,6 @@ export class PcDialog extends PlacerElement {
         }
     };
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     handleOpenChange() {
         if (this.open && !this.dialog.open) {
@@ -259,18 +257,21 @@ export class PcDialog extends PlacerElement {
     }
 
     private async show() {
-        const pcShow = emit(this, "pc-show", {
-            cancelable: true,
-        });
+        const pcShow = new PcShowEvent();
+
+        this.dispatchEvent(pcShow);
 
         if (pcShow.defaultPrevented) {
             this.open = false;
+
             return;
         }
 
         this.addOpenListeners();
+
         this.originalTrigger = document.activeElement as HTMLElement;
         this.open = true;
+
         this.dialog.showModal();
 
         lockBodyScrolling(this);
@@ -295,7 +296,7 @@ export class PcDialog extends PlacerElement {
 
         animateTo(this.dialog, animation.keyframes, animation.options);
 
-        return waitForEvent(this, "pc-after-show");
+        this.dispatchEvent(new PcAfterShowEvent());
     }
 
     render() {

@@ -2,9 +2,9 @@ import { html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { classMap } from "lit/directives/class-map.js";
+import { PcErrorEvent } from "../../events/pc-error.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import "../icon/icon.js";
 import styles from "./avatar.css";
 
 /**
@@ -27,10 +27,7 @@ import styles from "./avatar.css";
  */
 @customElement("pc-avatar")
 export class PcAvatar extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
     @state() private hasError = false;
 
@@ -50,7 +47,6 @@ export class PcAvatar extends PlacerElement {
     @property({ reflect: true }) shape: "circle" | "rounded" | "square" =
         "circle";
 
-    /** @internal This is an internal method. */
     @watch("image")
     handleImageChange() {
         this.hasError = false;
@@ -58,7 +54,7 @@ export class PcAvatar extends PlacerElement {
 
     private handleImageLoadError() {
         this.hasError = true;
-        emit(this, "pc-error");
+        this.dispatchEvent(new PcErrorEvent());
     }
 
     render() {

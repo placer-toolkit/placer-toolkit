@@ -3,7 +3,7 @@ import type { Translation } from "../utilities/localize.js";
 
 const translation: Translation = {
     $code: "lb",
-    $name: "Lëtzebuergesch",
+    $name: "lëtzebuergesch",
     $dir: "ltr",
 
     carousel: "karusell",
@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "passwuert verstoppen",
     hue: "faarftoun",
     loading: "lueden…",
+    maximumValue: "maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "nächst säit",
     numOptionsSelected: (number) => {
         if (number === 0) {

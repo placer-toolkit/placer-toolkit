@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Fjal loyniorð",
     hue: "Litútónn",
     loading: "Løðir…",
+    maximumValue: "Maks",
+    maximumValueDescriptive: (label) => `${label} (min)`,
+    minimumValue: "Min",
+    minimumValueDescriptive: (label) => `${label} (maks)`,
     nextSlide: "Næsti myndaflokkur",
     numOptionsSelected: (number) => {
         if (number === 0) {

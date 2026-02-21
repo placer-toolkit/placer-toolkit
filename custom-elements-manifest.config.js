@@ -12,6 +12,7 @@ function replace(string, terms) {
     terms.forEach(({ from, to }) => {
         string = string?.replace(from, to);
     });
+
     return string;
 }
 
@@ -27,6 +28,7 @@ function parseCSSProperty(comment) {
     }
 
     const name = nameMatch[1].trim();
+
     let remainingComment = comment.substring(nameMatch[0].length).trim();
 
     if (remainingComment.startsWith(":")) {
@@ -230,6 +232,7 @@ export default {
                             if (declaration.jsDoc?.includes("@internal")) {
                                 return false;
                             }
+
                             return true;
                         },
                     );
@@ -240,6 +243,7 @@ export default {
                                     if (member.jsDoc?.includes("@internal")) {
                                         return false;
                                     }
+
                                     return true;
                                 },
                             );

@@ -17,7 +17,8 @@
 }
 
 :host pc-tag::part(content) {
-    display: initial;
+    display: flex;
+    align-items: center;
     max-inline-size: var(--tag-max-size);
     overflow: hidden;
     white-space: nowrap;

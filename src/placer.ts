@@ -34,6 +34,8 @@ export { PcRating } from "./components/rating/rating.js";
 export { PcResizeObserver } from "./components/resize-observer/resize-observer.js";
 export { PcScroller } from "./components/scroller/scroller.js";
 export { PcSelect } from "./components/select/select.js";
+export { PcSlider } from "./components/slider/slider.js";
+export { PcSkeleton } from "./components/skeleton/skeleton.js";
 export { PcSpinner } from "./components/spinner/spinner.js";
 export { PcSwitch } from "./components/switch/switch.js";
 export { PcTab } from "./components/tab/tab.js";

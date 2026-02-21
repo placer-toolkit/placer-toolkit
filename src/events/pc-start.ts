@@ -1,4 +1,8 @@
-export type PcStartEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcStartEvent extends Event {
+    constructor() {
+        super("pc-start", { bubbles: true, cancelable: false, composed: true });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

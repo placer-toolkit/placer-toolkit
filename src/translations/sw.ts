@@ -18,6 +18,10 @@ const translation: Translation = {
     hidePassword: "Ficha nenosiri",
     hue: "Tona y rangi",
     loading: "Inapakia…",
+    maximumValue: "Juu",
+    maximumValueDescriptive: (label) => `${label} (juu)`,
+    minimumValue: "Chini",
+    minimumValueDescriptive: (label) => `${label} (chini)`,
     nextSlide: "Slaidi inayofuata",
     numOptionsSelected: (number) => {
         if (number === 0) {

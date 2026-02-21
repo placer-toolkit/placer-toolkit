@@ -1,4 +1,8 @@
-export type PcShowEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcShowEvent extends Event {
+    constructor() {
+        super("pc-show", { bubbles: true, cancelable: true, composed: true });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

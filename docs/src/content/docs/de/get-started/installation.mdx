@@ -247,13 +247,13 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
     </pc-tab-panel>
 </pc-tab-group>
 
-### Unterschied zwischen `cdn` und `dist`
+### Unterschied zwischen `cdn/` und `dist/`
 
-Dir wird auffallen, dass CDN‐Links mit `/cdn/` beginnen und npm‐Imports mit `/dist/`. Die `/cdn/`‐Dateien sind separat gebündelt, während `/dist/`‐Dateien nicht vorgebündelt sind, sodass dein Bundler effizienter Deduplizieren und kleinere Bundles erzeugen kann.
+Wahrscheinlich fällt dir auf, dass CDN‐Links mit `cdn/` beginnen und npm‐Imports mit `dist/`. Die `cdn/`‐Dateien sind separat gebündelt, während `dist/`‐Dateien nicht vorgebündelt sind, sodass dein Bundler effizienter Deduplizieren und kleinere Bundles erzeugen kann.
 
 Kurzfassung:
 
-- `/cdn/` ist für CDN‐Nutzer:innen
-- `/dist/` ist für npm‐Nutzer:innen
+- `cdn/` ist für CDN‐Nutzer:innen
+- `dist/` ist für npm‐Nutzer:innen
 
-Diese Änderung wurde in 1.0.0-alpha.1 eingeführt, um Fehler mit `tslib` in Version 0.5.1 zu beheben.
+Diese Änderung wurde in v1.0.0-alpha.1 eingeführt, um Fehler aufgrund der Bare Module Specifier‐Fehler in v0.5.1 zu beheben.

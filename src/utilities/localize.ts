@@ -29,6 +29,10 @@ export interface Translation extends DefaultTranslation {
     hidePassword: string;
     hue: string;
     loading: string;
+    maximumValue: string;
+    maximumValueDescriptive: (label: string) => string;
+    minimumValue: string;
+    minimumValueDescriptive: (label: string) => string;
     nextSlide: string;
     numOptionsSelected: (number: number) => string;
     opacity: string;

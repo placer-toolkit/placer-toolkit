@@ -5,6 +5,7 @@ const locks = new Set();
 /** Returns the width of the document’s scrollbar. */
 function getScrollbarWidth() {
     const documentWidth = document.documentElement.clientWidth;
+
     return Math.abs(window.innerWidth - documentWidth);
 }
 
@@ -39,6 +40,7 @@ export function lockBodyScrolling(lockingElement: HTMLElement) {
         if (scrollbarWidth < 2) {
             scrollbarGutterProperty = "";
         }
+
         document.documentElement.style.setProperty(
             "--pc-scroll-lock-gutter",
             scrollbarGutterProperty,

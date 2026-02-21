@@ -14,7 +14,6 @@ import styles from "./divider.css";
  */
 @customElement("pc-divider")
 export class PcDivider extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     /** Sets the orientation of the divider. */
@@ -26,14 +25,13 @@ export class PcDivider extends PlacerElement {
         this.setAttribute("role", "separator");
     }
 
-    /** @internal This is an internal method. */
     @watch("vertical")
     handleVerticalChange() {
         this.setAttribute("aria-orientation", this.orientation);
     }
 
-    /* The divider is a simple element that does not require any
-       content. This is why we’re rendering an empty shadow root. */
+    /* The divider is a simple custom element that does not require
+       any content. This is why we’re rendering an empty shadow root. */
 }
 
 declare global {

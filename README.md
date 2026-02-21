@@ -69,7 +69,7 @@ Placer Toolkit was built with the help of these fantastic libraries:
 - [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)
 - [Pagefind](https://pagefind.app)
 
-Additionally, Placer Toolkit is heavily inspired by [Shoelace](https://shoelace.style)—a forward‐thinking library of web components. Shoelace is licensed under the [MIT License](https://github.com/shoelace-style/shoelace/blob/next/LICENSE.md). More recently, elements of [Web Awesome](https://webawesome.com) have also influenced Placer Toolkit’s development.
+Additionally, Placer Toolkit is heavily inspired by [Web Awesome](https://webawesome.com)—a meticulously designed and highly customisable web component library. Web Awesome is licensed under the [MIT License](./licenses/@awesome.me/webawesome/LICENSE.md).
 
 The default icon set is [Font Awesome](https://fontawesome.com) which is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0).
 

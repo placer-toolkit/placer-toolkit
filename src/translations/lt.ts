@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Slėpti slaptažodį",
     hue: "Spalvos tonas",
     loading: "Įkeliama…",
+    maximumValue: "Maksimum",
+    maximumValueDescriptive: (label) => `${label} (maksimum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Kita skaidrė",
     numOptionsSelected: (number) => {
         if (number === 0) {

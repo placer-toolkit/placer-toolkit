@@ -24,6 +24,7 @@
     block-size: 100%;
     max-block-size: 100%;
     background-color: var(--pc-color-surface-raised);
+    color: inherit;
     border: none;
     box-shadow: var(--pc-shadow-xl);
     overflow: auto;

@@ -5,10 +5,10 @@ import {
     useTranslatedPath,
 } from "../i18n/utilities.js";
 
-import NavigationBar from "./NavigationBar.astro";
-import Sidebar from "./Sidebar.astro";
 import MobileSidebar from "./MobileSidebar.astro";
 import MobileTableOfContents from "./docs/MobileTableOfContents.astro";
+import NavigationBar from "./NavigationBar.astro";
+import Sidebar from "./Sidebar.astro";
 import TableOfContents from "./docs/TableOfContents.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
@@ -179,7 +179,7 @@ const {
     <body>
         <div class="layout-container">
             <pc-button
-                href="#main-content"
+                href="#_top"
                 appearance="neutral"
                 variant="filled outlined"
                 class="skip-to-main-content pc-visually-hidden"
@@ -211,20 +211,9 @@ const {
                 {
                     !hero ? (
                         <div class="content-layout">
-                            <article data-pagefind-body>
-                                <pc-button
-                                    href="#table-of-contents"
-                                    appearance="neutral"
-                                    variant="filled outlined"
-                                    size="small"
-                                    class="skip-to-toc pc-desktop-only pc-visually-hidden"
-                                    data-pagefind-ignore
-                                >
-                                    {translation(
-                                        "button.skipToTableOfContents",
-                                    )}
-                                </pc-button>
+                            <TableOfContents />
 
+                            <article data-pagefind-body>
                                 <header id="_top">
                                     <h1>{title}</h1>
 
@@ -243,8 +232,6 @@ const {
 
                                 <slot />
                             </article>
-
-                            <TableOfContents />
                         </div>
                     ) : (
                         <>
@@ -399,14 +386,15 @@ const {
 
         <script>
             // Mobile sidebar
-            const mobileSidebar = document.querySelector(
-                ".mobile-sidebar",
-            ) as HTMLDialogElement;
+            import type { PcDrawer } from "placer-toolkit/dist/components/drawer/drawer.js";
+
+            const mobileSidebar =
+                document.querySelector<PcDrawer>(".mobile-sidebar");
             const sidebarToggle = document.querySelector(".sidebar-toggle");
 
             sidebarToggle?.addEventListener(
                 "click",
-                () => (mobileSidebar.open = true),
+                () => (mobileSidebar!.open = true),
             );
         </script>
     </body>

@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Fela lykilorð",
     hue: "Litblær",
     loading: "Hleð…",
+    maximumValue: "Hámark",
+    maximumValueDescriptive: (label) => `${label} (hámark)`,
+    minimumValue: "Lágmark",
+    minimumValueDescriptive: (label) => `${label} (lágmark)`,
     nextSlide: "Næsta glæra",
     numOptionsSelected: (number) => {
         if (number === 0) {

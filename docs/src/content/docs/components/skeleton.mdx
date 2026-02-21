@@ -1,0 +1,238 @@
+---
+title: Skeleton
+description: Skeletons are used to provide a visual representation of where content will eventually be shown.
+---
+
+Skeletons are used to provide a visual representation of where content will eventually be shown.
+
+These are simple containers for scaffolding layouts that mimic what users will see when content has finished loading. This prevents large areas of empty space during asynchronous operations.
+
+This component is trying to not be opinionated, as there are endless possibilities for designing layouts. Therefore, you’ll likely use more than one skeleton to create the effect you want. If you find yourself using them frequently, consider creating a template that renders them with the desired arrangement and styles.
+
+```demo:open
+<div class="skeleton-overview">
+    <header>
+        <pc-skeleton effect="sheen"></pc-skeleton>
+        <pc-skeleton effect="sheen"></pc-skeleton>
+    </header>
+
+    <pc-skeleton effect="sheen"></pc-skeleton>
+    <pc-skeleton effect="sheen"></pc-skeleton>
+    <pc-skeleton effect="sheen"></pc-skeleton>
+</div>
+
+<style>
+    .skeleton-overview header {
+        display: flex;
+        align-items: center;
+        margin-block-end: var(--pc-spacing-m);
+    }
+
+    .skeleton-overview header pc-skeleton:first-child {
+        float: left;
+        margin-inline-end: var(--pc-spacing-l);
+        inline-size: 3rem;
+        block-size: 3rem;
+        vertical-align: middle;
+    }
+
+    .skeleton-overview header pc-skeleton:last-child {
+        flex: 0 0 auto;
+        inline-size: 30%;
+    }
+
+    .skeleton-overview pc-skeleton {
+        margin-block-end: var(--pc-spacing-l);
+    }
+
+    .skeleton-overview pc-skeleton:nth-child(3) {
+        inline-size: 95%;
+    }
+
+    .skeleton-overview pc-skeleton:nth-child(4) {
+        inline-size: 80%;
+    }
+</style>
+```
+
+## Demos
+
+### Effects
+
+There are two built‐in effects, `sheen` and `pulse`. The effects are intentionally subtle, as they can be distracting when used extensively. The default is `none` which displays a static non‐animated skeleton.
+
+```demo
+<div class="skeleton-effects">
+    <div>
+        None
+        <pc-skeleton effect="none"></pc-skeleton>
+    </div>
+    <div>
+        Sheen
+        <pc-skeleton effect="sheen"></pc-skeleton>
+    </div>
+    <div>
+        Pulse
+        <pc-skeleton effect="pulse"></pc-skeleton>
+    </div>
+</div>
+
+<style>
+    .skeleton-effects {
+        display: flex;
+        flex-direction: column;
+        gap: var(--pc-spacing-m);
+    }
+
+    .skeleton-effects div {
+        display: grid;
+        grid-template-columns: 4rem 1fr;
+        align-items: center;
+    }
+
+    .skeleton-effects div pc-skeleton {
+        block-size: 1em;
+    }
+</style>
+```
+
+### Paragraphs
+
+Use multiple skeletons and some CSS styles to simulate paragraphs.
+
+```demo
+<div class="skeleton-paragraphs">
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+</div>
+
+<style>
+    .skeleton-paragraphs pc-skeleton {
+        margin-block-end: var(--pc-spacing-l);
+    }
+
+    .skeleton-paragraphs pc-skeleton:nth-child(2) {
+        inline-size: 95%;
+    }
+
+    .skeleton-paragraphs pc-skeleton:nth-child(4) {
+        inline-size: 90%;
+    }
+
+    .skeleton-paragraphs pc-skeleton:nth-child(5) {
+        inline-size: 50%;
+    }
+</style>
+```
+
+### Avatars
+
+Set a matching width and height to make a circle, square or rounded avatar skeleton.
+
+```demo
+<div class="skeleton-avatars">
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+    <pc-skeleton></pc-skeleton>
+</div>
+
+<style>
+    .skeleton-avatars pc-skeleton {
+        display: inline-flex;
+        margin-inline-end: var(--pc-spacing-s);
+        inline-size: 3rem;
+        block-size: 3rem;
+    }
+
+    .skeleton-avatars pc-skeleton:nth-child(1)::part(indicator) {
+        border-radius: 0;
+    }
+
+    .skeleton-avatars pc-skeleton:nth-child(2)::part(indicator) {
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>
+```
+
+### Custom shapes
+
+Set a `border-radius` on the `indicator` part to make circles, squares and rectangles. For more complex shapes, you can apply `clip-path` to the `indicator` part.
+
+```demo
+<div class="skeleton-shapes">
+    <pc-skeleton class="square"></pc-skeleton>
+    <pc-skeleton class="circle"></pc-skeleton>
+    <pc-skeleton class="triangle"></pc-skeleton>
+    <pc-skeleton class="cross"></pc-skeleton>
+    <pc-skeleton class="comment"></pc-skeleton>
+</div>
+
+<style>
+    .skeleton-shapes pc-skeleton {
+        display: inline-flex;
+        inline-size: 4rem;
+        block-size: 4rem;
+    }
+
+    .skeleton-shapes .square::part(indicator) {
+        border-radius: var(--pc-border-radius-m);
+    }
+
+    .skeleton-shapes .circle::part(indicator) {
+        border-radius: var(--pc-border-radius-circle);
+    }
+
+    .skeleton-shapes .triangle::part(indicator) {
+        border-radius: 0;
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    }
+
+    .skeleton-shapes .cross::part(indicator) {
+        border-radius: 0;
+            clip-path: polygon(
+            20% 0%,
+            0% 20%,
+            30% 50%,
+            0% 80%,
+            20% 100%,
+            50% 70%,
+            80% 100%,
+            100% 80%,
+            70% 50%,
+            100% 20%,
+            80% 0%,
+            50% 30%
+        );
+    }
+
+    .skeleton-shapes .comment::part(indicator) {
+        border-radius: 0;
+        clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
+    }
+
+    .skeleton-shapes pc-skeleton:not(:last-child) {
+        margin-inline-end: var(--pc-spacing-s);
+    }
+</style>
+```
+
+### Colours
+
+Change the `--color` and `--sheen-color` custom properties to adjust the colours of the skeleton.
+
+```demo
+<pc-skeleton
+    effect="sheen"
+    style="
+        --color: var(--pc-color-primary-fill-normal);
+        --sheen-color: color-mix(
+            in oklab,
+            var(--color),
+            var(--pc-color-primary-fill-loud) 90%
+        );
+    "
+></pc-skeleton>
+```

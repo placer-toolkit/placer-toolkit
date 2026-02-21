@@ -1,4 +1,12 @@
-export type PcAfterHideEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcAfterHideEvent extends Event {
+    constructor() {
+        super("pc-after-hide", {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+        });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Ẩn mật khẩu",
     hue: "Tông màu",
     loading: "Đang tải…",
+    maximumValue: "Tối đa",
+    maximumValueDescriptive: (label) => `${label} (tối đa)`,
+    minimumValue: "Tối thiểu",
+    minimumValueDescriptive: (label) => `${label} (tối thiểu)`,
     nextSlide: "Trang tiếp theo",
     numOptionsSelected: (number) => {
         if (number === 0) {

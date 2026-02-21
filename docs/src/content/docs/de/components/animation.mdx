@@ -100,8 +100,8 @@ Diese Demo zeigt alle integrierten Animationen und Easings. Die Animationen basi
         easingName.appendChild(option);
     });
 
-    animationName.addEventListener("pc-change", () => (animation.name = animationName.value));
-    easingName.addEventListener("pc-change", () => (animation.easing = easingName.value));
+    animationName.addEventListener("change", () => (animation.name = animationName.value));
+    easingName.addEventListener("change", () => (animation.easing = easingName.value));
     playbackRate.addEventListener("pc-input", () => (animation.playbackRate = playbackRate.value));
 </script>
 

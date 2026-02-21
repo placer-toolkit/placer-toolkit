@@ -1,7 +1,7 @@
 const navigationBar = document.querySelector<HTMLElement>(".navbar");
 
-const scrollLimitPixels = 360;
-const maxOpacity = 0.9;
+const scrollLimitPixels = 656;
+const maxOpacity = 0.85;
 
 function updateNavigationBarOpacity() {
     const scrollY = document.body.scrollTop || window.scrollY;
@@ -21,5 +21,7 @@ function updateNavigationBarOpacity() {
 }
 
 window.addEventListener("load", updateNavigationBarOpacity);
+
 document.body.addEventListener("scroll", updateNavigationBarOpacity);
+
 window.addEventListener("resize", updateNavigationBarOpacity);

@@ -3,8 +3,8 @@ import { customElement, property, query } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcCloseEvent } from "../../events/pc-close.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import { PcButton } from "../button/button.js";
 import styles from "./tab.css";
 
@@ -27,9 +27,7 @@ let id = 0;
  */
 @customElement("pc-tab")
 export class PcTab extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
     static dependencies = { "pc-button": PcButton };
 
     private readonly localize = new LocalizeController(this);
@@ -37,7 +35,6 @@ export class PcTab extends PlacerElement {
     private readonly attributeID = ++id;
     private readonly componentID = `pc-tab-${this.attributeID}`;
 
-    /** @internal This is an internal class property. */
     @query(".tab") tab!: HTMLElement;
 
     /** The name of the tab panel this tab is associated with. The panel must be located in the same tab group. */
@@ -50,7 +47,7 @@ export class PcTab extends PlacerElement {
     @property({ type: Boolean, reflect: true }) closable = false;
 
     /** Disables the tab. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** @internal This needs to be wrapped in a `@property` decorator, otherwise, `CustomElement` throws a runtime error: `The result must not have attributes.` */
     @property({ type: Number, reflect: true }) tabIndex = 0;
@@ -62,16 +59,15 @@ export class PcTab extends PlacerElement {
 
     private handleCloseClick(event: Event) {
         event.stopPropagation();
-        emit(this, "pc-close");
+
+        this.dispatchEvent(new PcCloseEvent());
     }
 
-    /** @internal This is an internal method. */
     @watch("active")
     handleActiveChange() {
         this.setAttribute("aria-selected", this.active ? "true" : "false");
     }
 
-    /** @internal This is an internal method. */
     @watch("disabled")
     handleDisabledChange() {
         this.setAttribute("aria-disabled", this.disabled ? "true" : "false");

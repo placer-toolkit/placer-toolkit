@@ -1,9 +1,8 @@
 import { html } from "lit";
+import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
-import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./radio.css";
@@ -15,8 +14,8 @@ import styles from "./radio.css";
  *
  * @slot - The radio’s label.
  *
- * @event pc-focus - Emitted when the radio gains focus.
- * @event pc-blur - Emitted when the radio loses focus (i.e., is blurred).
+ * @event focus - Emitted when the radio gains focus.
+ * @event blur - Emitted when the radio loses focus (i.e., is blurred).
  *
  * @csspart base - The component’s base wrapper.
  * @csspart control - The circular container that wraps the radio’s checked state.
@@ -25,14 +24,12 @@ import styles from "./radio.css";
  * @csspart label - The radio’s label.
  */
 @customElement("pc-radio")
-export class PcRadio extends PlacerElement {
-    /** @internal This is an internal static property. */
+export class PcRadio extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
 
-    /** @internal This is an internal class property. */
     @state() checked = false;
-    /** @internal This is an internal class property. */
-    @state() protected hasFocus = false;
+    /** @internal This is used by the Radio Group component to force disable radios while preserving their original disabled state. */
+    @state() forceDisabled = false;
 
     /** The radio’s value. When selected, the radio group will receive this value. */
     @property() value?: string;
@@ -41,35 +38,17 @@ export class PcRadio extends PlacerElement {
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
     /** Disables the radio. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     constructor() {
         super();
 
         this.addEventListener("click", this.handleClick);
-        this.addEventListener("focus", this.handleFocus);
-        this.addEventListener("blur", this.handleBlur);
     }
 
     connectedCallback() {
         super.connectedCallback();
         this.setInitialAttributes();
-    }
-
-    private handleClick() {
-        if (!this.disabled && !this.checked) {
-            this.checked = true;
-        }
-    }
-
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
-    }
-
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
     }
 
     private setInitialAttributes() {
@@ -78,28 +57,58 @@ export class PcRadio extends PlacerElement {
         this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
     }
 
-    /** @internal This is an internal method. */
-    @watch("checked")
-    handleCheckedChange() {
-        this.setAttribute("aria-checked", this.checked ? "true" : "false");
-        this.setAttribute("tabindex", this.checked ? "0" : "-1");
+    updated(changedProperties: PropertyValues<this>) {
+        super.updated(changedProperties);
+
+        if (changedProperties.has("checked")) {
+            this.customStates.set("checked", this.checked);
+            this.setAttribute("aria-checked", this.checked ? "true" : "false");
+
+            if (!this.disabled && !this.forceDisabled) {
+                this.tabIndex = this.checked ? 0 : -1;
+            }
+        }
+
+        if (
+            changedProperties.has("disabled") ||
+            changedProperties.has("forceDisabled")
+        ) {
+            const effectivelyDisabled = this.disabled || this.forceDisabled;
+
+            this.customStates.set("disabled", effectivelyDisabled);
+            this.setAttribute(
+                "aria-disabled",
+                effectivelyDisabled ? "true" : "false",
+            );
+
+            if (effectivelyDisabled) {
+                this.tabIndex = -1;
+            } else {
+                this.tabIndex = this.checked ? 0 : -1;
+            }
+        }
     }
 
-    /** @internal This is an internal method. */
-    @watch("disabled", { waitUntilFirstUpdate: true })
-    handleDisabledChange() {
-        this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
+    /** @override */
+    setValue(): void {
+        // We’re overriding setValue() because we don’t want to set form values from here.
+        // We want to do it in the Radio Group component itself.
     }
+
+    private handleClick = () => {
+        if (!this.disabled && !this.checked) {
+            this.checked = true;
+        }
+    };
 
     render() {
         return html`
             <span
                 part="base"
                 class=${classMap({
-                    "radio": true,
-                    "checked": this.checked,
-                    "disabled": this.disabled,
-                    "has-focus": this.hasFocus,
+                    radio: true,
+                    checked: this.checked,
+                    disabled: this.disabled,
                 })}
             >
                 <span

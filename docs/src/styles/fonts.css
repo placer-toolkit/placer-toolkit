@@ -7,31 +7,3 @@
 @import "./fonts/nunito.css";
 @import "./fonts/playfair-display.css";
 @import "./fonts/source-code-pro.css";
-
-@font-feature-values "Nunito" {
-    @styleset {
-        single-storey-a: 1;
-    }
-}
-
-@font-feature-values "Inter" {
-    @character-variant {
-        tailwind-style: 2, 3, 4, 11;
-    }
-}
-
-* {
-    font-variant-alternates: styleset(single-storey-a)
-        character-variant(tailwind-style);
-}
-
-pc-button::part(base) {
-    font-feature-settings: inherit !important;
-}
-
-pc-dialog,
-pc-dialog [slot~="label"],
-pc-dialog p {
-    color: var(--pc-color-text-normal);
-    font-feature-settings: inherit !important;
-}

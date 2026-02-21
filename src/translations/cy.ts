@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Cuddio cyfrinair",
     hue: "Tôn lliw",
     loading: "Llwytho…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Sleid nesaf",
     numOptionsSelected: (number) => {
         if (number === 0) {

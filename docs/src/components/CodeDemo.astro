@@ -36,7 +36,12 @@ const { open, noCodepen = false } = Astro.props;
 const isOpen = open !== undefined && open !== false;
 ---
 
-<div class="code-demo" data-open={isOpen} data-unique-id={uniqueID}>
+<div
+    class="code-demo"
+    data-open={isOpen}
+    data-unique-id={uniqueID}
+    data-pagefind-ignore="all"
+>
     <div class="preview-block" id={`preview-block-${uniqueID}`}>
         <div class="preview-content-container" aria-live="polite">
             <div id={`preview-content-${uniqueID}`}></div>
@@ -434,13 +439,13 @@ const isOpen = open !== undefined && open !== false;
         overflow: hidden;
         /* 🧪 interpolate-size is an experimental property (✓ Chrome 129, Edge 129) */
         interpolate-size: allow-keywords;
-        transition: max-block-size var(--pc-transition-fast) ease-out;
+        transition: max-block-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .code-block.open {
         max-block-size: max-content;
         overflow-x: auto;
-        transition: max-block-size var(--pc-transition-fast) ease-in;
+        transition: max-block-size 0.45s cubic-bezier(0.2, 1, 0.3, 1);
     }
 
     .code-block :is(pre, code) {
@@ -542,8 +547,11 @@ const isOpen = open !== undefined && open !== false;
     }
 
     .toggle-block pc-button pc-icon {
-        transition: transform var(--pc-transition-fast) ease-in-out;
-        transition-delay: var(--pc-transition-medium);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .code-block.open .toggle-block pc-button pc-icon {
+        transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @media (hover: none) {

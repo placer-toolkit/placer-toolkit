@@ -44,36 +44,41 @@ const categoriesConfiguration: SidebarCategoryConfiguration[] = [
         id: "get-started",
         title: translation("sidebar.section.getStarted") as string,
         sortType: "manual",
+        icon: "rocket",
     },
     {
         id: "design-tokens",
         title: translation("sidebar.section.designTokens") as string,
         sortType: "manual",
         href: translatePath("/docs/design-tokens"),
+        icon: "coins",
     },
     {
         id: "components",
         title: translation("sidebar.section.components") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/components"),
-        icon: "flask",
+        icon: "cubes",
     },
     {
         id: "layout",
         title: translation("sidebar.section.layout") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/layout"),
+        icon: "ruler-combined",
     },
     {
         id: "style-utilities",
         title: translation("sidebar.section.styleUtilities") as string,
         sortType: "alphabetical",
         href: translatePath("/docs/style-utilities"),
+        icon: "brush",
     },
     {
         id: "resources",
         title: translation("sidebar.section.resources") as string,
         sortType: "manual",
+        icon: "book",
     },
 ];
 
@@ -272,11 +277,10 @@ const { isMobile = false } = Astro.props;
 >
     {
         sidebarNavigation.map((category) => (
-            <pc-details variant="outlined" data-id={category.id}>
+            <pc-details variant="plain" data-id={category.id}>
                 <span slot="summary">
                     {category.href ? (
                         <a class="summary-link" href={category.href}>
-                            {category.title}
                             {category.icon && (
                                 <pc-icon
                                     library="default"
@@ -284,9 +288,19 @@ const { isMobile = false } = Astro.props;
                                     name={category.icon}
                                 />
                             )}
+                            {category.title}
                         </a>
                     ) : (
-                        category.title
+                        <>
+                            {category.icon && (
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name={category.icon}
+                                />
+                            )}
+                            {category.title}
+                        </>
                     )}
                 </span>
 
@@ -420,7 +434,7 @@ const { isMobile = false } = Astro.props;
                 let parentDetails = link.closest("pc-details");
 
                 if (parentDetails && !parentDetails.hasAttribute("open")) {
-                    parentDetails.show();
+                    parentDetails.open = true;
                 }
             } else {
                 link.removeAttribute("aria-current");
@@ -489,7 +503,7 @@ const { isMobile = false } = Astro.props;
 
         try {
             const stored = localStorage.getItem("open-sidebar-sections");
-            const openIds = stored ? JSON.parse(stored) : ["get-started"];
+            const openIDs = stored ? JSON.parse(stored) : ["get-started"];
 
             detailsElements.forEach((element) => {
                 const id = element.getAttribute("data-id");
@@ -499,10 +513,10 @@ const { isMobile = false } = Astro.props;
                         .querySelector(`a[aria-current="page"]`)
                         ?.closest(`pc-details[data-id="${id}"]`);
 
-                    if (openIds.includes(id) || isActive) {
-                        element.show();
+                    if (openIDs.includes(id) || isActive) {
+                        element.open = true;
                     } else {
-                        element.hide();
+                        element.open = false;
                     }
                 }
             });
@@ -513,24 +527,12 @@ const { isMobile = false } = Astro.props;
                 const id = element.getAttribute("data-id");
 
                 if (id === "get-started") {
-                    element.show();
+                    element.open = true;
                 } else {
-                    element.hide();
+                    element.open = false;
                 }
             });
         }
-
-        const summaryLinks = container.querySelectorAll(".summary-link");
-
-        summaryLinks.forEach((link) => {
-            link.addEventListener("click", (event) => {
-                event.stopPropagation();
-            });
-
-            link.addEventListener("keydown", (event) => {
-                event.stopPropagation();
-            });
-        });
 
         setTimeout(() => {
             isInitializing = false;
@@ -575,7 +577,9 @@ const { isMobile = false } = Astro.props;
                 }
 
                 window.addEventListener("resize", handleResize);
+
                 handleResize();
+
                 window.__sidebarResizeHandlerAttached__ = true;
             }
         }
@@ -584,24 +588,82 @@ const { isMobile = false } = Astro.props;
 
 <style>
     pc-details:not(:last-of-type) {
-        margin-block-end: var(--pc-spacing-s);
+        margin-block-end: var(--pc-spacing-m);
     }
 
     pc-details::part(base) {
         background-color: transparent;
     }
 
+    pc-details::part(header),
+    pc-details::part(content) {
+        padding: 0;
+    }
+
     pc-details::part(summary) {
         font-weight: var(--pc-font-weight-bold);
     }
 
+    pc-details::part(summary-icon) {
+        color: var(--pc-color-text-quiet);
+    }
+
+    pc-details span[slot="summary"] {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--pc-spacing-s);
+    }
+
     pc-details span[slot="summary"] a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--pc-spacing-s);
         color: var(--pc-color-text-normal);
         text-decoration: none;
     }
 
-    pc-details span[slot="summary"] a pc-icon {
-        color: color-mix(in oklab, currentColor, var(--pc-color-mix-hover));
+    pc-details span[slot="summary"] pc-icon[name="rocket"] {
+        color: var(--pc-color-danger-on-quiet);
+    }
+
+    pc-details span[slot="summary"] pc-icon[name="coins"] {
+        color: var(--pc-color-warning-on-quiet);
+    }
+
+    pc-details span[slot="summary"] pc-icon[name="cubes"] {
+        color: var(--pc-color-primary-on-quiet);
+    }
+
+    :global(.pc-light)
+        pc-details
+        span[slot="summary"]
+        pc-icon[name="ruler-combined"] {
+        color: var(--pc-color-orange-40);
+    }
+
+    :global(.pc-dark)
+        pc-details
+        span[slot="summary"]
+        pc-icon[name="ruler-combined"] {
+        color: var(--pc-color-orange-50);
+    }
+
+    :global(.pc-light) pc-details span[slot="summary"] pc-icon[name="brush"] {
+        color: var(--pc-color-pink-40);
+    }
+
+    :global(.pc-dark) pc-details span[slot="summary"] pc-icon[name="brush"] {
+        color: var(--pc-color-pink-60);
+    }
+
+    :global(.pc-light) pc-details span[slot="summary"] pc-icon[name="book"] {
+        color: var(--pc-color-indigo-20);
+    }
+
+    :global(.pc-dark) pc-details span[slot="summary"] pc-icon[name="book"] {
+        color: var(--pc-color-indigo-60);
     }
 
     @media (hover: hover) {
@@ -625,19 +687,18 @@ const { isMobile = false } = Astro.props;
     pc-details ul {
         display: flex;
         flex-direction: column;
-        gap: var(--pc-spacing-s);
-        margin-inline-start: var(--pc-spacing-xs);
+        gap: 0.375rem;
+        margin-block-start: var(--pc-spacing-s);
+        margin-inline-start: 0.375rem;
         padding-inline-start: var(--pc-spacing-l);
         border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-quiet);
         list-style: none;
     }
 
-    pc-details > ul {
-        margin-block-start: calc(-1 * var(--pc-spacing-m));
-    }
-
     pc-details ul li {
+        display: flex;
+        flex-direction: column;
         margin-inline-start: calc(
             -1 * (var(--pc-spacing-l) + var(--pc-border-width-s))
         );
@@ -668,11 +729,13 @@ const { isMobile = false } = Astro.props;
     }
 
     pc-details ul li a {
+        inline-size: fit-content;
         color: color-mix(
             in oklab,
             var(--pc-color-text-normal),
             var(--pc-color-surface-default) 15%
         );
+        font-size: 0.9em;
         font-weight: var(--pc-font-weight-normal);
         text-decoration: none;
     }

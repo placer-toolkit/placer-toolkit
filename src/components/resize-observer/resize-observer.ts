@@ -1,8 +1,8 @@
 import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
+import { PcResizeEvent } from "../../events/pc-resize.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import styles from "./resize-observer.css";
 
 /**
@@ -16,23 +16,20 @@ import styles from "./resize-observer.css";
  */
 @customElement("pc-resize-observer")
 export class PcResizeObserver extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private resizeObserver!: ResizeObserver;
     private observedElements: HTMLElement[] = [];
 
     /** Disables the resize observer. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     connectedCallback() {
         super.connectedCallback();
 
         this.resizeObserver = new ResizeObserver(
             (entries: ResizeObserverEntry[]) => {
-                emit(this, "pc-resize", {
-                    detail: { entries },
-                });
+                this.dispatchEvent(new PcResizeEvent({ entries }));
             },
         );
 
@@ -76,7 +73,6 @@ export class PcResizeObserver extends PlacerElement {
         this.resizeObserver.disconnect();
     }
 
-    /** @internal This is an internal method. */
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
         if (this.disabled) {

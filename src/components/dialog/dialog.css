@@ -22,6 +22,7 @@
     max-inline-size: calc(100% - var(--pc-spacing-xxl));
     max-block-size: calc(100% - var(--pc-spacing-xxl));
     background-color: var(--pc-color-surface-raised);
+    color: inherit;
     border: none;
     border-radius: var(--pc-panel-border-radius);
     box-shadow: var(--pc-shadow-xl);

@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "ਪਾਸਵਰਡ ਲੁਕਾਓ",
     hue: "ਰੰਗ ਟੋਨ",
     loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    maximumValue: "ਵੱਧ ਤੋਂ ਵੱਧ",
+    maximumValueDescriptive: (label) => `${label} (ਵੱਧ ਤੋਂ ਵੱਧ ਵੈਲਯੂ)`,
+    minimumValue: "ਘੱਟ ਤੋਂ ਘੱਟ",
+    minimumValueDescriptive: (label) => `${label} (ਘੱਟ ਤੋਂ ਘੱਟ ਵੈਲਯੂ)`,
     nextSlide: "ਅਗਲੀ ਸਲਾਈਡ",
     numOptionsSelected: (number) => {
         if (number === 0) {

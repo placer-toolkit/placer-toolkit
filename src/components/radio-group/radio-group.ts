@@ -1,16 +1,11 @@
 import { html } from "lit";
+import type { PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
-import {
-    customErrorValidityState,
-    FormControlController,
-    validValidityState,
-    valueMissingValidityState,
-} from "../../internal/form.js";
+import { RequiredValidator } from "../../internal/validators/required-validator.js";
 import { HasSlotController } from "../../internal/slot.js";
-import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
+import { uniqueID } from "../../internal/math.js";
 import type { PcRadio } from "../radio/radio.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
@@ -26,8 +21,8 @@ import styles from "./radio-group.css";
  * @slot label - The radio group’s label. This is required for proper accessibility. Alternatively, you can use the `label` attribute.
  * @slot hint - Text that describes how to use the radio group. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-change - Emitted when the radio group’s selected value changes.
- * @event pc-input - Emitted when the radio group receives user input.
+ * @event change - Emitted when the radio group’s selected value changes.
+ * @event input - Emitted when the radio group receives user input.
  * @event pc-invalid - Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart form-control - The form control that wraps the label, input and hint.
@@ -36,28 +31,37 @@ import styles from "./radio-group.css";
  * @csspart hint - The radio group’s hint.
  */
 @customElement("pc-radio-group")
-export class PcRadioGroup extends PlacerElement {
-    /** @internal This is an internal static property. */
+export class PcRadioGroup extends PlacerFormAssociatedElement {
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
+    };
     static css = [formControlStyles, sizeStyles, visuallyHiddenStyles, styles];
 
-    /** @internal This is an internal class property. */
-    protected readonly formControlController = new FormControlController(this);
+    static get validators() {
+        const validators = [
+            RequiredValidator({
+                validationElement: Object.assign(
+                    document.createElement("input"),
+                    {
+                        required: true,
+                        type: "radio",
+                        name: uniqueID("__pc-radio"),
+                    },
+                ),
+            }),
+        ];
+
+        return [...super.validators, ...validators];
+    }
+
     private readonly hasSlotController = new HasSlotController(
         this,
         "hint",
         "label",
     );
-    private customValidityMessage = "";
-    private validationTimeout!: number;
 
-    /** @internal This is an internal class property. */
     @query("slot:not([name])") defaultSlot!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
-    @query(".validation-input") validationInput!: HTMLInputElement;
-
-    @state() private errorMessage = "";
-    /** @internal This is an internal class property. */
-    @state() defaultValue = "";
 
     /** The radio group’s label. This is required for proper accessibility. If you need to display HTML, use the `label` slot instead. */
     @property() label = "";
@@ -66,78 +70,171 @@ export class PcRadioGroup extends PlacerElement {
     @property() hint = "";
 
     /** The name of the radio group, submitted as a name/value pair with form data. */
-    @property() name = "option";
+    @property() name: string | null = null;
+
+    private _value: string | null = null;
+
+    get value() {
+        if (this.valueHasChanged) {
+            return this._value;
+        }
+
+        return this._value ?? this.defaultValue;
+    }
 
     /** The current value of the radio group, submitted as a name/value pair with form data. */
-    @property({ reflect: true }) value = "";
+    @state()
+    set value(value: string | number | null) {
+        if (typeof value === "number") {
+            value = String(value);
+        }
+
+        this.valueHasChanged = true;
+        this._value = value;
+    }
+
+    /** The default value of the radio group. Primarily used for resetting the radio group. */
+    @property({ attribute: "value", reflect: true }) defaultValue:
+        | string
+        | null = this.getAttribute("value") || null;
 
     /** The radio group’s size. This size will be applied to all child radios. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
-
     /** Indicates if an option of the radio group must be chosen or not. */
     @property({ type: Boolean, reflect: true }) required = false;
 
-    /** Gets the validity state object. */
-    get validity() {
-        const isRequiredAndEmpty = this.required && !this.value;
-        const hasCustomValidityMessage = this.customValidityMessage !== "";
+    constructor() {
+        super();
 
-        if (hasCustomValidityMessage) {
-            return customErrorValidityState;
-        } else if (isRequiredAndEmpty) {
-            return valueMissingValidityState;
+        this.addEventListener("click", this.handleRadioClick);
+        this.addEventListener("keydown", this.handleKeyDown);
+    }
+
+    /** We use the first available radio as the `validationTarget` similar to native HTML that shows the validation popup on the first radio element. */
+    get validationTarget() {
+        const radio = this.querySelector<PcRadio>(
+            ":is(pc-radio):not([disabled])",
+        );
+
+        if (!radio) {
+            return undefined;
         }
 
-        return validValidityState;
+        return radio;
     }
 
-    /** Gets the validation message. */
-    get validationMessage() {
-        const isRequiredAndEmpty = this.required && !this.value;
-        const hasCustomValidityMessage = this.customValidityMessage !== "";
+    updated(changedProperties: PropertyValues<this>) {
+        if (
+            changedProperties.has("disabled") ||
+            changedProperties.has("size") ||
+            changedProperties.has("value")
+        ) {
+            this.syncRadioElements();
+        }
+    }
 
-        if (hasCustomValidityMessage) {
-            return this.customValidityMessage;
-        } else if (isRequiredAndEmpty) {
-            return this.validationInput.validationMessage;
+    formResetCallback(
+        ...args: Parameters<PlacerFormAssociatedElement["formResetCallback"]>
+    ) {
+        this.value = this.defaultValue;
+
+        super.formResetCallback(...args);
+
+        this.syncRadioElements();
+    }
+
+    private handleRadioClick = (event: Event) => {
+        const clickedRadio = (event.target as HTMLElement).closest<PcRadio>(
+            "pc-radio",
+        );
+
+        if (
+            !clickedRadio ||
+            clickedRadio.disabled ||
+            (clickedRadio as any).forceDisabled ||
+            this.disabled
+        ) {
+            return;
         }
 
-        return "";
-    }
+        const oldValue = this.value;
 
-    connectedCallback() {
-        super.connectedCallback();
-        this.defaultValue = this.value;
-    }
+        this.value = clickedRadio.value ?? null;
 
-    firstUpdated() {
-        this.formControlController.updateValidity();
-    }
+        clickedRadio.checked = true;
+
+        const radios = this.getAllRadios();
+
+        for (const radio of radios) {
+            if (clickedRadio === radio) {
+                continue;
+            }
+
+            radio.checked = false;
+            radio.setAttribute("tabindex", "-1");
+        }
+
+        if (this.value !== oldValue) {
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
+        }
+    };
 
     private getAllRadios() {
         return [...this.querySelectorAll<PcRadio>("pc-radio")];
     }
 
-    private handleRadioClick(event: MouseEvent) {
-        const target = (event.target as HTMLElement).closest<PcRadio>(
-            "pc-radio",
-        )!;
+    private handleLabelClick() {
+        this.focus();
+    }
+
+    private async syncRadioElements() {
         const radios = this.getAllRadios();
-        const oldValue = this.value;
 
-        if (!target || target.disabled) {
-            return;
-        }
+        await Promise.all(
+            radios.map(async (radio) => {
+                await radio.updateComplete;
 
-        this.value = target.value ?? "";
-        radios.forEach((radio) => (radio.checked = radio === target));
+                if (!radio.disabled && radio.value === this.value) {
+                    radio.checked = true;
+                } else {
+                    radio.checked = false;
+                }
+            }),
+        );
 
-        if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+        if (this.disabled) {
+            radios.forEach((radio) => {
+                radio.tabIndex = -1;
+            });
+        } else {
+            const enabledRadios = radios.filter((radio) => !radio.disabled);
+            const checkedRadio = enabledRadios.find((radio) => radio.checked);
+
+            if (enabledRadios.length > 0) {
+                if (checkedRadio) {
+                    enabledRadios.forEach((radio) => {
+                        radio.tabIndex = radio.checked ? 0 : -1;
+                    });
+                } else {
+                    enabledRadios.forEach((radio, index) => {
+                        radio.tabIndex = index === 0 ? 0 : -1;
+                    });
+                }
+            }
+
+            radios
+                .filter((radio) => radio.disabled)
+                .forEach((radio) => {
+                    radio.tabIndex = -1;
+                });
         }
     }
 
@@ -145,12 +242,22 @@ export class PcRadioGroup extends PlacerElement {
         if (
             !["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(
                 event.key,
-            )
+            ) ||
+            this.disabled
         ) {
             return;
         }
 
         const radios = this.getAllRadios().filter((radio) => !radio.disabled);
+
+        if (radios.length <= 0) {
+            return;
+        }
+
+        event.preventDefault();
+
+        const oldValue = this.value;
+
         const checkedRadio = radios.find((radio) => radio.checked) ?? radios[0];
         const increment =
             event.key === " "
@@ -158,8 +265,10 @@ export class PcRadioGroup extends PlacerElement {
                 : ["ArrowUp", "ArrowLeft"].includes(event.key)
                   ? -1
                   : 1;
-        const oldValue = this.value;
+
         let index = radios.indexOf(checkedRadio) + increment;
+
+        if (!index) index = 0;
 
         if (index < 0) {
             index = radios.length - 1;
@@ -174,42 +283,24 @@ export class PcRadioGroup extends PlacerElement {
             radio.setAttribute("tabindex", "-1");
         });
 
-        this.value = radios[index].value ?? "";
+        this.value = radios[index].value ?? null;
         radios[index].checked = true;
 
         radios[index].setAttribute("tabindex", "0");
         radios[index].focus();
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+            });
         }
 
         event.preventDefault();
-    }
-
-    private handleLabelClick() {
-        this.focus();
-    }
-
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
-
-    private async syncRadioElements() {
-        const radios = this.getAllRadios();
-
-        await Promise.all(
-            radios.map(async (radio) => {
-                await radio.updateComplete;
-                radio.checked = radio.value === this.value;
-            }),
-        );
-
-        if (radios.length > 0 && !radios.some((radio) => radio.checked)) {
-            radios[0].setAttribute("tabindex", "0");
-        }
     }
 
     private syncRadios() {
@@ -227,79 +318,12 @@ export class PcRadioGroup extends PlacerElement {
         }
     }
 
-    private updateCheckedRadio() {
-        const radios = this.getAllRadios();
-
-        radios.forEach((radio) => (radio.checked = radio.value === this.value));
-        this.formControlController.setValidity(this.validity.valid);
-    }
-
-    /** @internal This is an internal method. */
-    @watch("size", { waitUntilFirstUpdate: true })
-    handleSizeChange() {
-        this.syncRadios();
-    }
-
-    /** @internal This is an internal method. */
-    @watch("value")
-    handleValueChange() {
-        if (this.hasUpdated) {
-            this.updateCheckedRadio();
-        }
-    }
-
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        const isRequiredAndEmpty = this.required && !this.value;
-        const hasCustomValidityMessage = this.customValidityMessage !== "";
-
-        if (isRequiredAndEmpty || hasCustomValidityMessage) {
-            this.formControlController.emitInvalidEvent();
-            return false;
-        }
-
-        return true;
-    }
-
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the radio group is invalid. */
-    reportValidity(): boolean {
-        const isValid = this.validity.valid;
-
-        this.errorMessage =
-            this.customValidityMessage || isValid
-                ? ""
-                : this.validationInput.validationMessage;
-        this.formControlController.setValidity(isValid);
-        this.validationInput.hidden = true;
-        clearTimeout(this.validationTimeout);
-
-        if (!isValid) {
-            this.validationInput.hidden = false;
-            this.validationInput.reportValidity();
-            this.validationTimeout = setTimeout(
-                () => (this.validationInput.hidden = true),
-                10000,
-            ) as unknown as number;
-        }
-
-        return isValid;
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.customValidityMessage = message;
-        this.errorMessage = message;
-        this.validationInput.setCustomValidity(message);
-        this.formControlController.updateValidity();
-    }
-
     /** Sets focus on the radio group. */
-    public focus(options?: FocusOptions) {
+    focus(options?: FocusOptions) {
+        if (this.disabled) {
+            return;
+        }
+
         const radios = this.getAllRadios();
         const checked = radios.find((radio) => radio.checked);
         const firstEnabledRadio = radios.find((radio) => !radio.disabled);
@@ -334,35 +358,19 @@ export class PcRadioGroup extends PlacerElement {
                     class="label"
                     part="label"
                     id="label"
-                    @click=${this.handleLabelClick}
                     aria-hidden=${hasLabel ? "false" : "true"}
+                    @click=${this.handleLabelClick}
                 >
                     <slot name="label">${this.label}</slot>
                 </label>
 
-                <div class="input" part="input">
-                    <div class="pc-visually-hidden-force">
-                        <div id="error-message" aria-live="assertive">
-                            ${this.errorMessage}
-                        </div>
-                        <label class="validation">
-                            <input
-                                type="text"
-                                class="validation-input"
-                                tabindex="-1"
-                                hidden=""
-                                ?required=${this.required}
-                                @invalid=${this.handleInvalid}
-                            />
-                        </label>
-                    </div>
-
-                    <slot
-                        @slotchange=${this.syncRadios}
-                        @click=${this.handleRadioClick}
-                        @keydown=${this.handleKeyDown}
-                    ></slot>
-                </div>
+                <slot
+                    part="input"
+                    class="input"
+                    @slotchange=${this.syncRadios}
+                    @click=${this.handleRadioClick}
+                    @keydown=${this.handleKeyDown}
+                ></slot>
 
                 <slot
                     class=${classMap({ "has-hint": hasHint })}

@@ -29,12 +29,21 @@ const translation = useTranslations(language);
 <script>
     import type { PcDetails } from "placer-toolkit/dist/components/details/details.js";
 
-    const mobileDetails = document.querySelector<PcDetails>(
+    const mobileTOC = document.querySelector<HTMLDivElement>(".mobile-toc");
+    const mobileDetails = mobileTOC?.querySelector<PcDetails>(
         ".mobile-toc pc-details",
     );
 
     mobileDetails?.addEventListener("click", (event) => {
         if ((event.target as HTMLElement).closest("a")) {
+            mobileDetails.open = false;
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement;
+
+        if (mobileDetails?.open && !mobileTOC?.contains(target)) {
             mobileDetails.open = false;
         }
     });
@@ -112,6 +121,14 @@ const translation = useTranslations(language);
         max-block-size: 300px;
     }
 
+    .mobile-toc
+        pc-details
+        :global(.toc-scroll-fade)::part(content):focus-visible {
+        outline-offset: calc(-1 * var(--pc-focus-ring-width));
+        animation: inset-focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
     .mobile-toc pc-details::part(content) {
         padding-block: 0;
         padding-inline: var(--pc-spacing-l);
@@ -122,7 +139,6 @@ const translation = useTranslations(language);
         align-items: center;
         justify-content: space-between;
         gap: 0.75em;
-        /* Note: I am aware that this deviates from the standard styling of a pc-button, but using similar styling just makes it look… weird. */
         padding-block: calc(var(--pc-form-control-padding-inline) / 3);
         padding-inline: var(--pc-form-control-padding-inline);
         background-color: transparent;

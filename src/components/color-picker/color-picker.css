@@ -383,35 +383,35 @@
     cursor: not-allowed;
 }
 
-.color-popup[data-current-placement^="top"] .color-picker {
+.color-popup[data-current-placement^="top"]::part(popup) {
     transform-origin: bottom;
 }
 
-.color-popup[data-current-placement^="bottom"] .color-picker {
+.color-popup[data-current-placement^="bottom"]::part(popup) {
     transform-origin: top;
 }
 
-.color-popup[data-current-placement^="left"] .color-picker {
+.color-popup[data-current-placement^="left"]::part(popup) {
     transform-origin: right;
 }
 
-.color-popup[data-current-placement^="right"] .color-picker {
+.color-popup[data-current-placement^="right"]::part(popup) {
     transform-origin: left;
 }
 
-.color-popup[data-current-placement="left-start"] .color-picker {
+.color-popup[data-current-placement="left-start"]::part(popup) {
     transform-origin: right top;
 }
 
-.color-popup[data-current-placement="left-end"] .color-picker {
+.color-popup[data-current-placement="left-end"]::part(popup) {
     transform-origin: right bottom;
 }
 
-.color-popup[data-current-placement="right-start"] .color-picker {
+.color-popup[data-current-placement="right-start"]::part(popup) {
     transform-origin: left top;
 }
 
-.color-popup[data-current-placement="right-end"] .color-picker {
+.color-popup[data-current-placement="right-end"]::part(popup) {
     transform-origin: left bottom;
 }
 

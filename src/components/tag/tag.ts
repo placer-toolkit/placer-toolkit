@@ -2,8 +2,8 @@ import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { LocalizeController } from "../../utilities/localize.js";
-import { emit } from "../../internal/emit.js";
-import { PcButton } from "../button/button.js";
+import { PcRemoveEvent } from "../../events/pc-remove.js";
+import "../button/button.js";
 import appearanceStyles from "../../styles/utilities/appearance.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./tag.css";
@@ -25,10 +25,7 @@ import styles from "./tag.css";
  */
 @customElement("pc-tag")
 export class PcTag extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = [appearanceStyles, sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-button": PcButton };
 
     private readonly localize = new LocalizeController(this);
 
@@ -57,7 +54,7 @@ export class PcTag extends PlacerElement {
     @property({ type: Boolean }) removable = false;
 
     private handleRemoveClick() {
-        emit(this, "pc-remove");
+        this.dispatchEvent(new PcRemoveEvent());
     }
 
     render() {

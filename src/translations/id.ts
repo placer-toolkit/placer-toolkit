@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Sembunyikan kata sandi",
     hue: "Nada warna",
     loading: "Memuat…",
+    maximumValue: "Maksimum",
+    maximumValueDescriptive: (label) => `${label} (maksimum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Slide berikutnya",
     numOptionsSelected: (number) => {
         if (number === 0) {

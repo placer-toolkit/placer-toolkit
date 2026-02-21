@@ -1,15 +1,13 @@
 import { html } from "lit";
+import type { PropertyPart, PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
-import { defaultValue } from "../../internal/default-value.js";
-import { FormControlController } from "../../internal/form.js";
+import { MirrorValidator } from "../../internal/validators/mirror-validator.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./textarea.css";
@@ -22,10 +20,10 @@ import styles from "./textarea.css";
  * @slot label - The textarea’s label. Alternatively, you can use the `label` attribute.
  * @slot hint - Text that describes how to use the textarea. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-input - Emitted when the textarea receives input.
- * @event pc-change - Emitted when an alteration to the textarea’s value is committed by the user.
- * @event pc-focus - Emitted when the textarea gains focus.
- * @event pc-blur - Emitted when the textarea loses focus.
+ * @event change - Emitted when an alteration to the textarea’s value is committed by the user.
+ * @event input - Emitted when the textarea receives input.
+ * @event focus - Emitted when the textarea gains focus.
+ * @event blur - Emitted when the textarea loses focus.
  * @event pc-invalid - Emitted when the textarea has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart form-control - The form control that wraps the label, textarea and hint.
@@ -35,13 +33,15 @@ import styles from "./textarea.css";
  * @csspart textarea - The internal `<textarea>` element.
  */
 @customElement("pc-textarea")
-export class PcTextarea extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcTextarea extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
 
-    private readonly formControlController = new FormControlController(this, {
-        assumeInteractionOn: ["pc-blur", "pc-input"],
-    });
+    static get validators() {
+        return [...super.validators, MirrorValidator()];
+    }
+
+    assumeInteractionOn = ["input", "blur"];
+
     private readonly hasSlotController = new HasSlotController(
         this,
         "label",
@@ -49,21 +49,39 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
     );
     private resizeObserver: ResizeObserver | undefined;
 
-    /** @internal This is an internal class property. */
     @query(".control") input!: HTMLTextAreaElement;
-    /** @internal This is an internal class property. */
+    @query('[part~="base"]') base!: HTMLDivElement;
     @query(".size-adjuster") sizeAdjuster!: HTMLDivElement;
 
-    @state() private hasFocus = false;
-
-    /** @internal This is an internal property. */
     @property() title = "";
 
     /** The name of the textarea, submitted as a name/value pair with form data. */
     @property() name = "";
 
+    private _value: string | null = null;
+
     /** The current value of the textarea, submitted as a name/value pair with form data. */
-    @property() value = "";
+    get value() {
+        if (this.valueHasChanged) {
+            return this._value;
+        }
+
+        return this._value ?? this.defaultValue;
+    }
+
+    @state()
+    set value(value: string | null) {
+        if (this._value === value) {
+            return;
+        }
+
+        this.valueHasChanged = true;
+        this._value = value;
+    }
+
+    /** The default value of the textarea. Primarily used for resetting the textarea. */
+    @property({ attribute: "value", reflect: true }) defaultValue: string =
+        this.getAttribute("value") ?? "";
 
     /** The textarea’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
@@ -92,9 +110,6 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
 
     /** Makes the textarea readonly. */
     @property({ type: Boolean, reflect: true }) readonly = false;
-
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
 
     /** Indicates if the textarea must be filled in or not. */
     @property({ type: Boolean, reflect: true }) required = false;
@@ -163,113 +178,122 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
         | "email"
         | "url";
 
-    /** The default value of the textarea. Primarily used for resetting the textarea. */
-    @defaultValue() defaultValue = "";
-
-    /** Gets the validity state object. */
-    get validity() {
-        return this.input.validity;
-    }
-
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.input.validationMessage;
-    }
-
     connectedCallback() {
         super.connectedCallback();
+
+        this.resizeObserver = new ResizeObserver(() =>
+            this.setTextareaDimensions(),
+        );
+
         this.updateComplete.then(() => {
-            if (this.resize === "auto") {
-                this.setTextareaHeight();
+            this.setTextareaDimensions();
+            this.resizeObserver?.observe(this.input);
+
+            if (this.input && this.value !== this.input.value) {
+                const value = this.input.value;
+
+                this.value = value;
             }
         });
     }
 
-    firstUpdated() {
-        this.formControlController.updateValidity();
-    }
-
     disconnectedCallback() {
         super.disconnectedCallback();
-        if (this.resizeObserver) {
-            this.resizeObserver.unobserve(this.input);
-            this.resizeObserver.disconnect();
-            this.resizeObserver = undefined;
+
+        if (this.input) {
+            this.resizeObserver?.unobserve(this.input);
         }
     }
 
-    private handleInput() {
+    private handleChange(event: Event) {
+        this.valueHasChanged = true;
         this.value = this.input.value;
-        emit(this, "pc-input");
+
+        this.setTextareaDimensions();
+        this.checkValidity();
+        this.relayNativeEvent(event, { bubbles: true, composed: true });
     }
 
-    private handleChange() {
+    private handleInput(event: InputEvent) {
+        this.valueHasChanged = true;
         this.value = this.input.value;
-        this.setTextareaHeight();
-        emit(this, "pc-change");
-    }
 
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
+        this.relayNativeEvent(event, { bubbles: true, composed: true });
     }
 
     private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
+        this.checkValidity();
     }
 
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
+    private setTextareaDimensions() {
+        if (this.resize === "none") {
+            this.base.style.inlineSize = "";
+            this.base.style.blockSize = "";
+        }
 
-    private setTextareaHeight() {
         if (this.resize === "auto") {
             // Reset the height to auto to ensure scrollHeight reflects the content size
+            // Once field-sizing: content has better support, we’ll likely switch to it.
+            // https://caniuse.com/mdn-css_properties_field-sizing
+            this.sizeAdjuster.style.blockSize = `${this.input.clientHeight}px`;
             this.input.style.blockSize = "auto";
             this.input.style.blockSize = `${this.input.scrollHeight}px`;
-        } else {
-            this.input.style.blockSize = "";
+
+            this.base.style.inlineSize = "";
+            this.base.style.blockSize = "";
+
+            return;
+        }
+
+        if (this.input.style.inlineSize) {
+            const inlineSize =
+                Number(this.input.style.inlineSize.split(/px/)[0]) + 2;
+
+            this.base.style.inlineSize = `${inlineSize}px`;
+        }
+
+        if (this.input.style.width) {
+            const width = Number(this.input.style.width.split(/px/)[0]) + 2;
+
+            this.base.style.width = `${width}px`;
+        }
+
+        if (this.input.style.blockSize) {
+            const blockSize =
+                Number(this.input.style.blockSize.split(/px/)[0]) + 2;
+
+            this.base.style.height = `${blockSize}px`;
+        }
+
+        if (this.input.style.height) {
+            const height = Number(this.input.style.height.split(/px/)[0]) + 2;
+
+            this.base.style.height = `${height}px`;
         }
     }
 
-    /** @internal This is an internal method. */
-    @watch("disabled", { waitUntilFirstUpdate: true })
-    handleDisabledChange() {
-        this.formControlController.updateValidity();
-    }
-
-    /** @internal This is an internal method. */
     @watch("rows", { waitUntilFirstUpdate: true })
     handleRowsChange() {
-        this.setTextareaHeight();
+        this.setTextareaDimensions();
     }
 
-    /** @internal This is an internal method. */
     @watch("value", { waitUntilFirstUpdate: true })
     async handleValueChange() {
         await this.updateComplete;
-        this.formControlController.updateValidity();
-        this.setTextareaHeight();
+
+        this.checkValidity();
+        this.setTextareaDimensions();
     }
 
-    /** @internal This is an internal method. */
-    @watch("resize", { waitUntilFirstUpdate: true })
-    handleResizeChange() {
-        if (this.resize === "auto") {
-            if (!this.resizeObserver) {
-                this.resizeObserver = new ResizeObserver(() =>
-                    this.setTextareaHeight(),
-                );
-            }
-            this.setTextareaHeight();
-            this.resizeObserver.observe(this.input);
-        } else {
-            if (this.resizeObserver) {
-                this.resizeObserver.unobserve(this.input);
-            }
-            this.input.style.blockSize = "";
+    updated(changedProperties: PropertyValues<this>) {
+        if (changedProperties.has("resize")) {
+            this.setTextareaDimensions();
+        }
+
+        super.updated(changedProperties);
+
+        if (changedProperties.has("value")) {
+            this.customStates.set("blank", !this.value);
         }
     }
 
@@ -288,23 +312,25 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
         this.input.select();
     }
 
-    /** Gets the textarea’s scroll position. */
-    getScrollPosition(): { top: number; left: number } {
+    /** Gets or sets the textarea’s scroll position. */
+    scrollPosition(position?: {
+        top?: number;
+        left?: number;
+    }): { top: number; left: number } | undefined {
+        if (position) {
+            if (typeof position.top === "number") {
+                this.input.scrollTop = position.top;
+            }
+            if (typeof position.left === "number") {
+                this.input.scrollLeft = position.left;
+            }
+            return undefined;
+        }
+
         return {
             top: this.input.scrollTop,
-            left: this.input.scrollLeft,
+            left: this.input.scrollTop,
         };
-    }
-
-    /** Sets the textarea’s scroll position. */
-    setScrollPosition(position: { top?: number; left?: number }) {
-        if (typeof position.top === "number") {
-            this.input.scrollTop = position.top;
-        }
-
-        if (typeof position.left === "number") {
-            this.input.scrollLeft = position.left;
-        }
     }
 
     /** Sets the start and end positions of the text selection (0‐based). */
@@ -336,27 +362,17 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
             selectionEnd,
             selectMode,
         );
+
+        if (this.value !== this.input.value) {
+            this.value = this.input.value;
+            this.setTextareaDimensions();
+        }
     }
 
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.input.checkValidity();
-    }
+    formResetCallback() {
+        this.value = this.defaultValue;
 
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the select is invalid. */
-    reportValidity() {
-        return this.input.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.input.setCustomValidity(message);
-        this.formControlController.updateValidity();
+        super.formResetCallback();
     }
 
     render() {
@@ -397,11 +413,9 @@ export class PcTextarea extends PlacerElement implements PlacerFormControl {
                     enterkeyhint=${ifDefined(this.enterkeyhint)}
                     inputmode=${ifDefined(this.inputmode)}
                     aria-describedby="hint"
-                    @input=${this.handleInput}
                     @change=${this.handleChange}
-                    @focus=${this.handleFocus}
+                    @input=${this.handleInput}
                     @blur=${this.handleBlur}
-                    @invalid=${this.handleInvalid}
                 ></textarea>
 
                 <!-- This part is explicitly undocumented as it isn’t supposed to be accessed by users. -->

@@ -24,6 +24,7 @@
     scrollbar-width: thin;
     scrollbar-color: var(--pc-color-neutral-border-normal) transparent;
     -webkit-text-size-adjust: 100%;
+    z-index: 1;
 }
 
 #content:focus {
@@ -60,6 +61,7 @@
         inset-block: 0;
         inline-size: var(--shadow-size);
         pointer-events: none;
+        z-index: 2;
     }
 
     #start-shadow {
@@ -114,6 +116,7 @@
         inset-inline: 0;
         block-size: var(--shadow-size);
         pointer-events: none;
+        z-index: 2;
     }
 
     #start-shadow {

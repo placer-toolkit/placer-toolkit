@@ -1,16 +1,12 @@
 import { html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-import {
-    FormControlController,
-    validValidityState,
-} from "../../internal/form.js";
 import { HasSlotController } from "../../internal/slot.js";
+import { MirrorValidator } from "../../internal/validators/mirror-validator.js";
+import { PcInvalidEvent } from "../../events/pc-invalid.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import type { PcIcon } from "../icon/icon.js";
 import appearanceStyles from "../../styles/utilities/appearance.css";
 import sizeStyles from "../../styles/utilities/size.css";
@@ -25,8 +21,8 @@ import styles from "./button.css";
  * @slot prefix - A presentational prefix icon or similar element.
  * @slot suffix - A presentational suffix icon or similar element.
  *
- * @event pc-focus - Emitted when the button gains focus.
- * @event pc-blur - Emitted when the button loses focus (i.e., is blurred).
+ * @event focus - Emitted when the button gains focus.
+ * @event blur - Emitted when the button loses focus (i.e., is blurred).
  * @event pc-invalid - Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart base - The component’s base wrapper.
@@ -35,13 +31,18 @@ import styles from "./button.css";
  * @csspart suffix - The container that wraps the suffix.
  */
 @customElement("pc-button")
-export class PcButton extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcButton extends PlacerFormAssociatedElement {
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
+    };
     static css = [appearanceStyles, sizeStyles, styles];
 
-    private readonly formControlController = new FormControlController(this, {
-        assumeInteractionOn: ["click"],
-    });
+    static get validators() {
+        return [...super.validators, MirrorValidator()];
+    }
+
+    assumeInteractionOn = ["click"];
 
     private readonly hasSlotController = new HasSlotController(
         this,
@@ -50,18 +51,13 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
         "suffix",
     );
 
-    /** @internal This is an internal class property. */
     @query(".button") button!: HTMLButtonElement | HTMLLinkElement;
-    /** @internal This is an internal class property. */
     @query("slot:not([name])") labelSlot!: HTMLSlotElement;
 
     @state() private hasFocus = false;
-    /** @internal This is an internal class property. */
     @state() isIconButton = false;
-    /** @internal This is an internal class property. */
     @state() invalid = false;
 
-    /** @internal This is an internal property. */
     @property() title = "";
 
     /** The button’s appearance. */
@@ -78,13 +74,14 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
         | "accent"
         | "filled"
         | "outlined"
+        | "filled outlined"
         | "plain" = "accent";
 
     /** The button’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
     /** Disables the button. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** Draws a pill‐style button. */
     @property({ type: Boolean, reflect: true }) pill = false;
@@ -110,9 +107,6 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
     /** Tells the browser to download the linked file as this file name. Only used when the `href` attribute is present. */
     @property() download?: string;
 
-    /** This is the “form owner” to associate the button with. If omitted, the closest containing form will be used instead. The value of this attribute must be an id of a form in the same document or shadow root as the button. */
-    @property() form?: string;
-
     /** Used to override the form owner’s `action` attribute. */
     @property({ attribute: "formaction" }) formAction?: string;
 
@@ -137,63 +131,57 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
         | "_top"
         | string;
 
-    /** Gets the validity state object. */
-    get validity() {
-        if (this.isButton()) {
-            return (this.button as HTMLButtonElement).validity;
+    private constructLightDOMButton() {
+        const button = document.createElement("button");
+
+        for (const attribute of this.attributes) {
+            if (attribute.name === "style") {
+                continue;
+            }
+
+            button.setAttribute(attribute.name, attribute.value);
         }
 
-        return validValidityState;
-    }
+        button.hidden = true;
+        button.type = this.type;
 
-    /** Gets the validation message. */
-    get validationMessage() {
-        if (this.isButton()) {
-            return (this.button as HTMLButtonElement).validationMessage;
+        if (this.name) {
+            button.name = this.name;
         }
 
-        return "";
+        button.value = this.value || "";
+
+        return button;
     }
 
-    firstUpdated() {
-        if (this.isButton()) {
-            this.formControlController.updateValidity();
+    private handleClick(event: PointerEvent) {
+        if (this.disabled) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            return;
         }
 
-        this.handleLabelSlotChange();
-    }
-
-    private handleClick() {
-        if (this.type === "submit") {
-            this.formControlController.submit();
+        if (this.type !== "submit" && this.type !== "reset") {
+            return;
         }
 
-        if (this.type === "reset") {
-            this.formControlController.reset();
+        const form = this.getForm();
+
+        if (!form) {
+            return;
         }
+
+        const lightDOMButton = this.constructLightDOMButton();
+
+        this.parentElement?.append(lightDOMButton);
+
+        lightDOMButton.click();
+        lightDOMButton.remove();
     }
 
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
-    }
-
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
-    }
-
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
-
-    private isButton() {
-        return this.href ? false : true;
-    }
-
-    private isLink() {
-        return this.href ? true : false;
+    private handleInvalid() {
+        this.dispatchEvent(new PcInvalidEvent());
     }
 
     private handleLabelSlotChange() {
@@ -235,12 +223,22 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
         }
     }
 
-    /** @internal This is an internal method. */
+    private isButton() {
+        return this.href ? false : true;
+    }
+
+    private isLink() {
+        return this.href ? true : false;
+    }
+
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
-        if (this.isButton()) {
-            this.formControlController.setValidity(this.disabled);
-        }
+        this.updateValidity();
+    }
+
+    setValue(..._args: Parameters<PlacerFormAssociatedElement["setValue"]>) {
+        // This is a stub. We don’t want to set a value on the form.
+        // That happens when the button is clicked and added via the light DOM button.
     }
 
     /** Simulates a click on the button. */
@@ -256,37 +254,6 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
     /** Unfocuses the button (i.e., blurs it). */
     blur() {
         this.button.blur();
-    }
-
-    /** Checks for validity but doesn’t show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        if (this.isButton()) {
-            return (this.button as HTMLButtonElement).checkValidity();
-        }
-
-        return true;
-    }
-
-    /** Gets the associated form if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the control is invalid. */
-    reportValidity() {
-        if (this.isButton()) {
-            return (this.button as HTMLButtonElement).reportValidity();
-        }
-
-        return true;
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        if (this.isButton()) {
-            (this.button as HTMLButtonElement).setCustomValidity(message);
-            this.formControlController.updateValidity();
-        }
     }
 
     render() {
@@ -312,8 +279,6 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
                     aria-disabled=${this.disabled ? "true" : "false"}
                     tabindex=${this.disabled ? "-1" : "0"}
                     @click=${this.handleClick}
-                    @focus=${this.handleFocus}
-                    @blur=${this.handleBlur}
                 >
                     <slot class="prefix" part="prefix" name="prefix"></slot>
                     <slot
@@ -345,8 +310,6 @@ export class PcButton extends PlacerElement implements PlacerFormControl {
                     aria-disabled=${this.disabled ? "true" : "false"}
                     tabindex=${this.disabled ? "-1" : "0"}
                     @click=${this.handleClick}
-                    @focus=${this.handleFocus}
-                    @blur=${this.handleBlur}
                     @invalid=${this.handleInvalid}
                 >
                     <slot class="prefix" part="prefix" name="prefix"></slot>

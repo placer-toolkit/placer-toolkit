@@ -7,10 +7,10 @@ import {
     getAnimation,
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
-import { LocalizeController } from "../../utilities/localize.js";
 import { HasSlotController } from "../../internal/slot.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import { LocalizeController } from "../../utilities/localize.js";
+import { PcSubmenuOpeningEvent } from "../../events/pc-submenu-opening.js";
+import "../icon/icon.js";
 import styles from "./dropdown-item.css";
 
 setDefaultAnimation("submenu.show", {
@@ -44,8 +44,8 @@ setDefaultAnimation("submenu.hide", {
  *
  * @dependency pc-icon
  *
- * @event pc-focus - Emitted when the dropdown item gains focus.
- * @event pc-blur - Emitted when the dropdown item loses focus.
+ * @event focus - Emitted when the dropdown item gains focus.
+ * @event blur - Emitted when the dropdown item loses focus.
  *
  * @slot - The dropdown item’s label.
  * @slot icon - An optional icon to display before the label.
@@ -63,10 +63,7 @@ setDefaultAnimation("submenu.hide", {
  */
 @customElement("pc-dropdown-item")
 export class PcDropdownItem extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
     private readonly hasSlotController = new HasSlotController(
         this,
@@ -76,7 +73,6 @@ export class PcDropdownItem extends PlacerElement {
     );
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query("#submenu") submenuElement!: HTMLDivElement;
 
     /** @internal Store whether this item has a submenu. */
@@ -114,7 +110,7 @@ export class PcDropdownItem extends PlacerElement {
     @property({ type: Boolean }) checked = false;
 
     /** Disables the dropdown item. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** Decides whether the submenu is currently open. */
     @property({ type: Boolean, reflect: true }) submenuOpen = false;
@@ -229,18 +225,14 @@ export class PcDropdownItem extends PlacerElement {
 
             if (items.length > 0) {
                 items.forEach((item, index) => (item.active = index === 0));
-                items[0].focus();
+                items[0].focus({ preventScroll: true });
             }
         }, 0);
     }
 
     /** Notifies the parent dropdown that this item is opening its submenu. */
     private notifyParentOfOpening() {
-        emit(this, "pc-submenu-opening", {
-            bubbles: true,
-            composed: true,
-            detail: { item: this },
-        });
+        this.dispatchEvent(new PcSubmenuOpeningEvent({ item: this }));
 
         const parent = this.parentElement;
 

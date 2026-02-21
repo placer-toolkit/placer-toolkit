@@ -1,4 +1,12 @@
-export type PcLazyLoadEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcLazyLoadEvent extends Event {
+    constructor() {
+        super("pc-lazy-load", {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+        });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

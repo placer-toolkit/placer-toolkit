@@ -1,6 +1,7 @@
 ---
 const { keyName } = Astro.props;
 
+// fallback for unknown keys
 const fallbackDisplayKey = keyName
     ? keyName.charAt(0).toUpperCase() + keyName.slice(1)
     : "";
@@ -9,10 +10,8 @@ const fallbackDisplayKey = keyName
 <kbd
     class="keyboard-key"
     data-key={keyName?.toLowerCase() || ""}
-    aria-label={fallbackDisplayKey}
+    aria-label={fallbackDisplayKey}>{fallbackDisplayKey}</kbd
 >
-    {fallbackDisplayKey}
-</kbd>
 
 <script>
     (() => {
@@ -23,34 +22,77 @@ const fallbackDisplayKey = keyName
             navigator.userAgentData?.platform?.toLowerCase().includes("mac") ||
             /mac|iphone|ipad|ipod/i.test(navigator.platform);
 
-        const keyMap = {
-            meta: { win: "Windows", mac: "⌘" },
-            command: { win: "Ctrl", mac: "⌘" },
-            ctrl: { win: "Ctrl", mac: "⌃" },
-            enter: { win: "Enter", mac: "Return" },
-            alt: { win: "Alt", mac: "⌥" },
-            altgr: { win: "AltGr", mac: "⌥" },
-            shift: { win: "Shift", mac: "⇧" },
-            tab: { win: "Tab", mac: "⇥" },
-            delete: { win: "Del", mac: "⌦" },
+        const keyMap: Record<
+            string,
+            { mac: string; macLabel: string; win: string; winLabel: string }
+        > = {
+            meta: {
+                mac: "⌘",
+                macLabel: "Command",
+                win: "Windows",
+                winLabel: "Windows",
+            },
+            command: {
+                mac: "⌘",
+                macLabel: "Command",
+                win: "Ctrl",
+                winLabel: "Control",
+            },
+            ctrl: {
+                mac: "⌃",
+                macLabel: "Control",
+                win: "Ctrl",
+                winLabel: "Control",
+            },
+            shift: {
+                mac: "⇧",
+                macLabel: "Shift",
+                win: "Shift",
+                winLabel: "Shift",
+            },
+            alt: { mac: "⌥", macLabel: "Option", win: "Alt", winLabel: "Alt" },
+            altgr: {
+                mac: "⌥",
+                macLabel: "Option",
+                win: "AltGr",
+                winLabel: "AltGr",
+            },
+            enter: {
+                mac: "Return",
+                macLabel: "Return",
+                win: "Enter",
+                winLabel: "Enter",
+            },
+            delete: {
+                mac: "⌦",
+                macLabel: "Delete",
+                win: "Del",
+                winLabel: "Delete",
+            },
+            tab: { mac: "⇥", macLabel: "Tab", win: "Tab", winLabel: "Tab" },
         };
 
-        keys.forEach((kbd) => {
-            const keyType = kbd.dataset.key;
+        keys.forEach((key) => {
+            const keyType = key.dataset.key;
 
             if (!keyType) {
                 return;
             }
 
-            const keySymbols = keyMap[keyType as keyof typeof keyMap];
+            const keyInfo = keyMap[keyType];
 
-            if (keySymbols) {
-                kbd.textContent = isAppleDevice
-                    ? keySymbols.mac
-                    : keySymbols.win;
+            if (keyInfo) {
+                key.textContent = isAppleDevice ? keyInfo.mac : keyInfo.win;
+                key.setAttribute(
+                    "aria-label",
+                    isAppleDevice ? keyInfo.macLabel : keyInfo.winLabel,
+                );
             } else {
-                kbd.textContent =
+                const display =
                     keyType.charAt(0).toUpperCase() + keyType.slice(1);
+
+                key.textContent = display;
+                key.setAttribute("aria-label", display);
             }
         });
     })();

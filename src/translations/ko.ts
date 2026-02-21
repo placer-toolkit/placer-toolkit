@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "비밀번호 숨기기",
     hue: "색상",
     loading: "로딩 중…",
+    maximumValue: "최대",
+    maximumValueDescriptive: (label) => `${label} (최대값)`,
+    minimumValue: "최소",
+    minimumValueDescriptive: (label) => `${label} (최소값)`,
     nextSlide: "다음 슬라이드",
     numOptionsSelected: (number) => {
         if (number === 0) {

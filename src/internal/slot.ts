@@ -26,10 +26,6 @@ export class HasSlotController implements ReactiveController {
                 const element = node as HTMLElement;
                 const tagName = element.tagName.toLowerCase();
 
-                if (tagName === "sl-visually-hidden") {
-                    return false;
-                }
-
                 if (!element.hasAttribute("slot")) {
                     return true;
                 }
@@ -76,11 +72,30 @@ export class HasSlotController implements ReactiveController {
 }
 
 /** Given a slot, this function iterates over all of its assigned element and text nodes and returns the concatenated HTML as a string. This is useful because `slot.innerHTML` does not work. */
-export function getInnerHTML(slot: HTMLSlotElement): string {
-    const nodes = slot.assignedNodes({ flatten: true });
+
+/**
+ * Given a list of nodes, this function iterates over all of them and returns the concatenated HTML as a string. This is useful for getting the HTML that corresponds to a slot’s assigned nodes (since we can’t use `slot.innerHTML` as an alternative).
+ *
+ * @param nodes - The list of nodes to iterate over.
+ * @param callback - A function that can be used to customise the HTML output for specific types of nodes. If the function returns `undefined`, the default HTML output will be used.
+ */
+export function getInnerHTML(
+    nodes: Iterable<Node>,
+    callback?: (node: Node) => string | undefined,
+): string {
     let html = "";
 
-    [...nodes].forEach((node) => {
+    for (const node of nodes) {
+        if (callback) {
+            const customHTML = callback(node);
+
+            if (customHTML !== undefined) {
+                html += customHTML;
+
+                continue;
+            }
+        }
+
         if (node.nodeType === Node.ELEMENT_NODE) {
             html += (node as HTMLElement).outerHTML;
         }
@@ -88,7 +103,7 @@ export function getInnerHTML(slot: HTMLSlotElement): string {
         if (node.nodeType === Node.TEXT_NODE) {
             html += node.textContent;
         }
-    });
+    }
 
     return html;
 }

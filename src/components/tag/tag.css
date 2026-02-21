@@ -43,7 +43,15 @@
     border-radius: var(--pc-border-radius-pill);
 }
 
+.remove-tag-button {
+    inline-size: 0.75em;
+    block-size: 0.75em;
+}
+
 .remove-tag-button::part(base) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
     inline-size: 0.75em;
     block-size: 0.75em;

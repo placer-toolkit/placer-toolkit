@@ -1,0 +1,322 @@
+---
+title: Slider
+description: Sliders allow the user to select a single value within a given range.
+---
+
+Sliders allow the user to select a single value within a given range.
+
+```demo:open
+<pc-slider
+    label="Number of users"
+    hint="Limit six per team"
+    name="value"
+    value="3"
+    min="0"
+    max="6"
+    with-markers
+    has-tooltip
+>
+    <span slot="reference">Less</span>
+    <span slot="reference">More</span>
+</pc-slider>
+```
+
+<pc-callout appearance="primary">
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="book-open"
+        slot="icon"
+    ></pc-icon>
+    This component works well with standard `<form>` elements. Please refer to the [form controls](/docs/get-started/form-controls) page to learn more about form submission and client‐side validation.
+</pc-callout>
+
+## Demos
+
+### Labels
+
+Use the `label` attribute to give the slider an accessible label. For labels that contain HTML, use the `label` slot instead.
+
+```demo
+<pc-slider label="Volume" min="0" max="100"></pc-slider>
+```
+
+### Hint
+
+Add descriptive hint to a slider with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
+
+```demo
+<pc-slider label="Volume" hint="Controls the volume of the current song." min="0" max="100" value="50"></pc-slider>
+```
+
+### Showing tooltips
+
+Use the `has-tooltip` attribute to display a tooltip with the current value when the slider is focused or being dragged.
+
+```demo
+<pc-slider label="Quality" name="quality" min="0" max="100" value="50" has-tooltip></pc-slider>
+```
+
+### Setting `min`, `max` and `step`
+
+Use the `min` and `max` attributes to define the slider’s range, and the `step` attribute to control the increment between values.
+
+```demo
+<pc-slider label="Between zero and one" min="0" max="1" step="0.1" value="0.5" has-tooltip></pc-slider>
+```
+
+### Showing markers
+
+Use the `with-markers` attribute to display visual indicators at each step increment. This works best with sliders that have a smaller range of values.
+
+```demo
+<pc-slider label="Size" name="size" min="0" max="8" value="4" with-markers></pc-slider>
+```
+
+### Adding references
+
+Use the `reference` slot to add contextual labels below the slider. References are automatically spaced using `justify-content: space-between`, making them easy to align with the start, center and end positions.
+
+```demo
+<pc-slider
+    label="Speed"
+    hint="Controls the speed of the thing you’re currently doing."
+    name="speed"
+    min="1"
+    max="5"
+    value="3"
+    with-markers
+>
+    <span slot="reference">Slow</span>
+    <span slot="reference">Medium</span>
+    <span slot="reference">Fast</span>
+</pc-slider>
+```
+
+<pc-callout appearance="primary">
+    {/* New icon please */}
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="circle-info"
+        slot="icon"
+    ></pc-icon>
+    If you want to show a reference next to a specific marker, you can add `position: absolute` to it and set the `inset-block-start`, `inset-block-end`, `inset-inline-start` or `inset-inline-end` property to a percentage that corresponds to the marker’s position.
+</pc-callout>
+
+### Value formatting
+
+Customise how values are displayed in tooltips and announced to screen readers using the `valueFormatter` property. Set it to a function that accepts a number and returns a formatted string. You can use the [`Intl.NumberFormat` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) to format numbers in many ways.
+
+```demo
+<div class="pc-stack">
+    <!-- Percentage -->
+    <pc-slider
+        class="slider-percentage"
+        label="Percentage"
+        name="percentage"
+        value="0.5"
+        min="0"
+        max="1"
+        step="0.01"
+        has-tooltip
+    ></pc-slider>
+
+    <!-- Duration -->
+    <pc-slider
+        class="slider-duration"
+        label="Duration"
+        name="duration"
+        value="12"
+        min="0"
+        max="24"
+        has-tooltip
+    ></pc-slider>
+
+    <!-- Currency -->
+    <pc-slider
+        class="slider-currency"
+        label="Currency"
+        name="currency"
+        min="0"
+        max="100"
+        value="50"
+        has-tooltip
+    ></pc-slider>
+</div>
+
+<script>
+    const sliderPercentage = document.querySelector(".slider-percentage");
+    const sliderDuration = document.querySelector(".slider-duration");
+    const sliderCurrency = document.querySelector(".slider-currency");
+
+    const percentageFormatter = new Intl.NumberFormat("en-GB", { style: "percent" });
+    const durationFormatter = new Intl.NumberFormat("en-GB", {
+        style: "unit",
+        unit: "hour",
+        unitDisplay: "long",
+    });
+    const currencyFormatter = new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "EUR",
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 0,
+    });
+
+    customElements.whenDefined("pc-slider").then(() => {
+        sliderPercentage.valueFormatter = (value) => percentageFormatter.format(value);
+        sliderDuration.valueFormatter = (value) => durationFormatter.format(value);
+        sliderCurrency.valueFormatter = (value) => currencyFormatter.format(value);
+    });
+</script>
+```
+
+### Range selection
+
+Use the `range` attribute to enable dual‐thumb selection for choosing a range of values. Set the initial thumb positions with the `min-value` and `max-value` attributes.
+
+```demo
+<pc-slider
+    class="slider-range"
+    label="Price range"
+    hint="Select minimum and maximum price"
+    name="price"
+    min="0"
+    max="100"
+    min-value="20"
+    max-value="80"
+    has-tooltip
+    range
+>
+    <span slot="reference">0 €</span>
+    <span slot="reference">50 €</span>
+    <span slot="reference">100 €</span>
+</pc-slider>
+
+<script>
+    const slider = document.querySelector(".slider-range");
+    const formatter = new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "EUR",
+        maximumFractionDigits: 0,
+    });
+
+    customElements.whenDefined("pc-slider").then(() => {
+        slider.valueFormatter = (value) => formatter.format(value);
+    });
+</script>
+```
+
+For range sliders, the `minValue` and `maxValue` properties represent the current positions of the thumbs. When the form is submitted, both values will be included as separate entries with the same name.
+
+```typescript
+const slider = document.querySelector("pc-slider[range]");
+
+console.log(`Minimum value: ${slider.minValue}, maximum value: ${slider.maxValue}`);
+
+slider.minValue = 30;
+slider.maxValue = 70;
+```
+
+### Vertical
+
+Set the `orientation` attribute to `vertical` to create a vertical slider. Vertical sliders automatically centre themselves and fill the available vertical space.
+
+```demo
+<div class="pc-gap-l">
+    <pc-slider
+        orientation="vertical"
+        label="Volume"
+        name="volume"
+        value="65"
+    ></pc-slider>
+    <pc-slider
+        orientation="vertical"
+        label="Bass"
+        name="bass"
+        value="50"
+    ></pc-slider>
+    <pc-slider
+        orientation="vertical"
+        label="Treble"
+        name="treble"
+        value="40"
+    ></pc-slider>
+</div>
+```
+
+Range sliders can also be vertical.
+
+```demo
+<div style="display: flex; align-items: center">
+    <pc-slider
+        class="slider-vertical-range"
+        label="Temperature range"
+        orientation="vertical"
+        tooltip-placement="right"
+        style="inline-size: auto"
+        min="0"
+        max="100"
+        min-value="30"
+        max-value="70"
+        has-tooltip
+        range
+    ></pc-slider>
+</div>
+
+<script>
+    const slider = document.querySelector(".slider-vertical-range");
+
+    slider.valueFormatter = value => {
+        return new Intl.NumberFormat("en-GB", {
+            style: "unit",
+            unit: "celsius",
+            unitDisplay: "short",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 1,
+        }).format(value);
+    };
+</script>
+```
+
+### Size
+
+Control the slider’s size using the `size` attribute.
+
+```demo
+<div class="pc-stack">
+    <pc-slider size="small" value="50" label="Small"></pc-slider>
+    <pc-slider size="medium" value="50" label="Medium"></pc-slider>
+    <pc-slider size="large" value="50" label="Large"></pc-slider>
+</div>
+```
+
+### Indicator offset
+
+By default, the filled indicator extends from the minimum value to the current position. Use the `indicator-offset` attribute to change the starting point of this visual indicator.
+
+```demo
+<pc-slider
+    label="User friendliness"
+    hint="Did you find our product easy to use?"
+    name="value"
+    value="0"
+    min="-5"
+    max="5"
+    indicator-offset="0"
+    with-markers
+    has-tooltip
+>
+    <span slot="reference">Easy</span>
+    <span slot="reference">Moderate</span>
+    <span slot="reference">Difficult</span>
+</pc-slider>
+```
+
+### Disabled
+
+Use the `disabled` attribute to disable a slider.
+
+```demo
+<pc-slider label="Disabled" value="50" disabled></pc-slider>
+```

@@ -1,17 +1,16 @@
 import { html } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
-import { FormControlController } from "../../internal/form.js";
+import { MirrorValidator } from "../../internal/validators/mirror-validator.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { LocalizeController } from "../../utilities/localize.js";
-import { defaultValue } from "../../internal/default-value.js";
+import { PcClearEvent } from "../../events/pc-clear.js";
+import { submitOnEnter } from "../../internal/submit-on-enter.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import "../icon/icon.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./input.css";
@@ -31,10 +30,10 @@ import styles from "./input.css";
  * @slot hide-password-icon - An icon to use to replace the default hide password icon.
  * @slot hint - Text that describes how to use the input. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-change - Emitted when an alteration to the input’s value is committed by the user.
- * @event pc-input - Emitted when the input receives input.
- * @event pc-focus - Emitted when the input gains focus.
- * @event pc-blur - Emitted when the input loses focus (i.e., is blurred).
+ * @event change - Emitted when an alteration to the input’s value is committed by the user.
+ * @event input - Emitted when the input receives input.
+ * @event focus - Emitted when the input gains focus.
+ * @event blur - Emitted when the input loses focus (i.e., is blurred).
  * @event pc-clear - Emitted when the clear button is activated.
  * @event pc-invalid - Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
  *
@@ -49,15 +48,19 @@ import styles from "./input.css";
  * @csspart clear-button - The clear button.
  */
 @customElement("pc-input")
-export class PcInput extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcInput extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
-    private readonly formControlController = new FormControlController(this, {
-        assumeInteractionOn: ["pc-blur", "pc-input"],
-    });
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
+    };
+
+    static get validators() {
+        return [...super.validators, MirrorValidator()];
+    }
+
+    assumeInteractionOn = ["input", "blur"];
 
     private readonly hasSlotController = new HasSlotController(
         this,
@@ -66,19 +69,8 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
     );
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query(".control") input!: HTMLInputElement;
 
-    @state() private hasFocus = false;
-
-    private __numberInput = Object.assign(document.createElement("input"), {
-        type: "number",
-    });
-    private __dateInput = Object.assign(document.createElement("input"), {
-        type: "date",
-    });
-
-    /** @internal This is an internal property. */
     @property() title = "";
 
     /** The type of input. Works the same as a native `<input>` element, but only a subset of types are supported. */
@@ -97,11 +89,31 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
     /** The name of the input, submitted as a name/value pair with form data. */
     @property() name = "";
 
+    private _value: string | null = null;
+
     /** The current value of the input, submitted as a name/value pair with form data. */
-    @property() value = "";
+    get value() {
+        if (this.valueHasChanged) {
+            return this._value;
+        }
+
+        return this._value ?? this.defaultValue;
+    }
+
+    @state()
+    set value(value: string | null) {
+        if (this._value === value) {
+            return;
+        }
+
+        this.valueHasChanged = true;
+        this._value = value;
+    }
 
     /** The default value of the input. Primarily used for resetting the input. */
-    @defaultValue() defaultValue = "";
+    @property({ attribute: "value", reflect: true }) defaultValue:
+        | string
+        | null = this.getAttribute("value") || null;
 
     /** The input’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
@@ -122,7 +134,7 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
     @property({ type: Boolean }) clearable = false;
 
     /** Disables the input. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** Placeholder text to show as a hint when the input is empty. */
     @property() placeholder = "";
@@ -141,9 +153,6 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
     /** Hides the browser’s built‐in increment and decrement spin buttons. Only applies when the input’s `type` is set to `number`. */
     @property({ attribute: "no-spin-buttons", type: Boolean }) noSpinButtons =
         false;
-
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
 
     /** Indicates if the input must be filled in or not. */
     @property({ type: Boolean, reflect: true }) required = false;
@@ -224,63 +233,14 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
         | "email"
         | "url" = "text";
 
-    /** Gets or sets the current value as a `Date` object. Returns `null` fi the value can’t be converted. This will use the native `<input type="{{type}}" />` implementation and may result in an error. */
-    get valueAsDate() {
-        this.__dateInput.type = this.type;
-        this.__dateInput.value = this.value;
-        return this.input?.valueAsDate || this.__dateInput.valueAsDate;
-    }
-
-    set valueAsDate(newValue: Date | null) {
-        this.__dateInput.type = this.type;
-        this.__dateInput.valueAsDate = newValue;
-        this.value = this.__dateInput.value;
-    }
-
-    /** Gets or sets the current value as a number. Returns `NaN` if the value can’t be converted. */
-    get valueAsNumber() {
-        this.__numberInput.value = this.value;
-        return this.input?.valueAsNumber || this.__numberInput.valueAsNumber;
-    }
-
-    set valueAsNumber(newValue: number) {
-        this.__numberInput.valueAsNumber = newValue;
-        this.value = this.__numberInput.value;
-    }
-
-    /** Gets the validity state object. */
-    get validity() {
-        return this.input.validity;
-    }
-
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.input.validationMessage;
-    }
-
-    firstUpdated() {
-        this.formControlController.updateValidity();
-    }
-
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
-    }
-
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
-    }
-
-    private handleChange() {
+    private handleChange(event: Event) {
         this.value = this.input.value;
-        emit(this, "pc-change");
+
+        this.relayNativeEvent(event, { bubbles: true, composed: true });
     }
 
     private handleInput() {
         this.value = this.input.value;
-        this.formControlController.updateValidity();
-        emit(this, "pc-input");
     }
 
     private handleClearClick(event: MouseEvent) {
@@ -288,54 +248,33 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
 
         if (this.value !== "") {
             this.value = "";
-            emit(this, "pc-clear");
-            emit(this, "pc-input");
-            emit(this, "pc-change");
+
+            this.updateComplete.then(() => {
+                this.dispatchEvent(new PcClearEvent());
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
 
         this.input.focus();
     }
 
     private handleKeyDown(event: KeyboardEvent) {
-        const hasModifier =
-            event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
-
-        if (event.key === "Enter" && !hasModifier) {
-            setTimeout(() => {
-                if (!event.defaultPrevented && !event.isComposing) {
-                    this.formControlController.submit();
-                }
-            });
-        }
+        submitOnEnter(event, this);
     }
 
     private handlePasswordToggle() {
         this.passwordVisible = !this.passwordVisible;
     }
 
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
-
-    /** @internal This is an internal method. */
-    @watch("disabled", { waitUntilFirstUpdate: true })
-    handleDisabledChange() {
-        this.formControlController.setValidity(this.disabled);
-    }
-
-    /** @internal This is an internal method. */
     @watch("step", { waitUntilFirstUpdate: true })
     handleStepChange() {
         this.input.step = String(this.step);
-        this.formControlController.updateValidity();
-    }
-
-    /** @internal This is an internal method. */
-    @watch("value", { waitUntilFirstUpdate: true })
-    async handleValueChange() {
-        await this.updateComplete;
-        this.formControlController.updateValidity();
+        this.updateValidity();
     }
 
     /** Focuses the input. */
@@ -411,25 +350,10 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
         }
     }
 
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.input.checkValidity();
-    }
+    formResetCallback() {
+        this.value = this.defaultValue;
 
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the input is invalid. */
-    reportValidity() {
-        return this.input.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.input.setCustomValidity(message);
-        this.formControlController.updateValidity();
+        super.formResetCallback();
     }
 
     render() {
@@ -440,12 +364,13 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
         const hasClearIcon = this.clearable && !this.disabled && !this.readonly;
         const isClearIconVisible =
             hasClearIcon &&
-            (typeof this.value === "number" || this.value.length > 0);
+            (typeof this.value === "number" ||
+                (this.value && this.value.length > 0));
 
         return html`
             <div
-                class="form-control form-control-has-label"
                 part="form-control"
+                class="form-control form-control-has-label"
             >
                 <label
                     part="label"
@@ -487,12 +412,9 @@ export class PcInput extends PlacerElement implements PlacerFormControl {
                         enterkeyhint=${ifDefined(this.enterkeyhint)}
                         inputmode=${ifDefined(this.inputmode)}
                         aria-describedby="hint"
-                        @focus=${this.handleFocus}
-                        @blur=${this.handleBlur}
                         @change=${this.handleChange}
                         @input=${this.handleInput}
                         @keydown=${this.handleKeyDown}
-                        @invalid=${this.handleInvalid}
                     />
 
                     ${isClearIconVisible

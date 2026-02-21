@@ -19,6 +19,10 @@ const translation: Translation = {
     hidePassword: "پنهان کردن رمز عبور",
     hue: "تون رنگ",
     loading: "در حال بارگذاری…",
+    maximumValue: "حداکثر",
+    maximumValueDescriptive: (label) => `${label} (حداکثر مقدار)`,
+    minimumValue: "حداقل",
+    minimumValueDescriptive: (label) => `${label} (حداقل مقدار)`,
     nextSlide: "اسلاید بعدی",
     numOptionsSelected: (number) => {
         if (number === 0) {

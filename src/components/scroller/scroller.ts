@@ -24,17 +24,14 @@ import styles from "./scroller.css";
  */
 @customElement("pc-scroller")
 export class PcScroller extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private readonly localize = new LocalizeController(this);
 
     private resizeObserver = new ResizeObserver(() => this.updateScroll());
 
-    /** @internal This is an internal class property. */
     @query("#content") content!: HTMLElement;
 
-    /** @internal This is an internal class property. */
     @state() canScroll = false;
 
     /** The scroller’s orientation. */

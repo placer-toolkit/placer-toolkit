@@ -2,15 +2,32 @@ export default {
     // UI and tools
     "ui.toc.onThisPage": "On this page",
     "ui.toc.overview": "Overview",
-    "ui.search.button": "Search",
-    "ui.search.searchNotAvailableInDevBuilds":
-        "Search is only available in production builds.<br />Try building and previewing the site to test it out locally.",
     "ui.keyboard.ctrl": "Ctrl",
     "ui.content.contentNotAvailableInYourLanguage":
         "This content is not available in your language yet.",
     "ui.content.englishOnly": "(English‐only)",
-
+    "ui.content.component.since":
+        '<span class="pc-visually-hidden">Since&nbsp;</span> {{since}}',
+    "ui.content.component.since.fallback": "Since unknown version",
+    "ui.content.component.stable": "Stable",
+    "ui.content.component.experimental": "Experimental",
     "ui.content.heading.anchorLabel": "Section titled “{{title}}”",
+
+    // Search
+    "ui.search.label": "Search",
+    "ui.search.label.descriptive": "Search the Placer Toolkit documentation",
+    "ui.search.searchNotAvailableInDevBuilds":
+        "Search is only available in production builds.<br />Try building and previewing the site to test it out locally.",
+    "ui.search.searchingFor": "Searching for <b>{{query}}</b>…",
+    "ui.search.resultFor": "One result for <b>{{query}}</b>",
+    "ui.search.resultsFor": "{{count}} results for <b>{{query}}</b>",
+    "ui.search.noResultsFor": "No results for <b>{{query}}</b>",
+    "ui.search.navigation.up": "Up",
+    "ui.search.navigation.down": "Down",
+    "ui.search.navigation.navigate": "Navigate",
+    "ui.search.navigation.select": "Select",
+    "ui.search.navigation.close": "Close",
+    "ui.search.attribution.poweredBy": "Powered by",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Ready to build with Placer Toolkit?",
@@ -39,8 +56,6 @@ export default {
     "button.sidebar.open": "Open sidebar",
 
     "button.skipToMainContent": "Skip to main content",
-    "button.returnToMainContent": "Return to main content",
-    "button.skipToTableOfContents": "Skip to table of contents",
 
     "privacyPromise.aria": "Our privacy promise",
 

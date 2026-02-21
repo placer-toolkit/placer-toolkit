@@ -4,9 +4,9 @@ description: Every Placer Toolkit component makes use of a shadow DOM to encapsu
 order: 4
 ---
 
-Every Placer Toolkit component makes use of a [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) to encapsulate markup, styles and behaviour. One caveat of this approach is that native `<form>` elements do not recognise form controls located inside a shadow root.
+Placer form controls are form‐associated custom elements, meaning they will submit with forms just like native `<form>` controls. This is made possible by the [`ElementInternals` API](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals).
 
-Placer Toolkit solves this problem by using the [`formdata`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/formdata_event) event, which is [available in all modern browsers](https://caniuse.com/mdn-api_htmlformelement_formdata_event). This means, when a form is submitted, Placer form controls will automatically append their values to the `FormData` object that’s used to submit the form. In most cases, things will “just work”. However, if you’re using a form serialisation library, it might need to be adapted to recognise Placer form controls.
+If you don’t want to use client‐side validation, you can suppress this behaviour by adding the `novalidate` attribute to the surrounding `<form>` element.
 
 <pc-callout appearance="primary">
     <pc-icon
@@ -218,7 +218,7 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
             alert("All fields are valid!");
         });
 
-        input.addEventListener("pc-input", () => {
+        input.addEventListener("input", () => {
             if (input.value === "placer toolkit") {
                 input.setCustomValidity("");
             } else {
@@ -241,32 +241,24 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
 
 ## Custom validation styles
 
-Due to the many ways form controls are used, Placer Toolkit doesn’t provide out‐of‐the‐box validation styles for form controls as part of its default theme. Instead, the following attributes will be applied to reflect a control’s validity as users interact with it. You can use them to create custom styles for any of the validation states you’re interested in.
+Due to the many ways form controls are used, Placer Toolkit doesn’t provide out‐of‐the‐box validation styles for form controls as part of its default theme.
 
-- `data-required`: The form control is required.
-- `data-optional`: The form control is optional.
-- `data-invalid`: The form control is currently invalid.
-- `data-valid`: The form control is currently valid.
-- `data-user-invalid`: The form control is currently invalid and the user has interacted with it.
-- `data-user-valid`: The form control is currently valid and the user has interacted with it.
+Instead, the following [custom states](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/states) will be applied to reflect a control’s validity as users interact with it. You can use them to create custom styles for any of the validation states you’re interested in.
 
-The attributes map to the browser’s built‐in pseudo‐classes for validation: [`:required`](https://developer.mozilla.org/en-US/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/en-US/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) and [`:user-valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid).
+- `:state(required)`: The form control is required.
+- `:state(optional)`: The form control is optional.
+- `:state(invalid)`: The form control is currently invalid.
+- `:state(valid)`: The form control is currently valid.
+- `:state(user-invalid)`: The form control is currently invalid and the user has interacted with it.
+- `:state(user-valid)`: The form control is currently valid and the user has interacted with it.
 
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="road"
-        slot="icon"
-    ></pc-icon>
-    In the future, data attributes will be replaced with custom pseudo‐classes such as `:--valid` and `:--invalid`. Placer Toolkit is using data attributes as a workaround until more browsers support custom states through [`ElementInternals.states`](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/states).
-</pc-callout>
+The custom states map to the browser’s built‐in pseudo‐classes for validation: [`:required`](https://developer.mozilla.org/en-US/docs/Web/CSS/:required), [`:optional`](https://developer.mozilla.org/en-US/docs/Web/CSS/:optional), [`:invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:invalid), [`:valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:valid), [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) and [`:user-valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid).
 
 ### Styling invalid form controls
 
-You can target validity using any of the aforementioned data attributes, but it’s usually preferable to target `data-user-invalid` and `data-user-valid` since they only get applied after a user interaction such as typing or submitting. This prevents empty form controls from appearing invalid immediately, which results in a poor user experience.
+You can target validity using any of the aforementioned custom states, but it’s usually preferable to target `:state(user-invalid)` and `:state(valid)` since they only get applied after a user interaction such as typing or submitting. This prevents empty form controls from appearing invalid immediately, which results in a poor user experience.
 
-This example demonstrates custom validation styles using `data-user-invalid` and `data-user-valid`. Try typing in the fields to see how validity changes with user input.
+This example demonstrates custom validation styles using `:state(user-invalid)` and `:state(user-valid)`. Try typing in the fields to see how validity changes with user input.
 
 ```demo
 <form class="input-validation-custom-styles pc-stack">
@@ -320,50 +312,50 @@ This example demonstrates custom validation styles using `data-user-invalid` and
 
 <style>
     /* User invalid styles */
-    .input-validation-custom-styles pc-input[data-user-invalid]::part(input),
-    .input-validation-custom-styles pc-select[data-user-invalid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-input:state(user-invalid)::part(input),
+    .input-validation-custom-styles pc-select:state(user-invalid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(control) {
         border-color: var(--pc-color-danger-border-loud);
     }
 
-    .input-validation-custom-styles [data-user-invalid]:not(pc-button)::part(label),
-    .input-validation-custom-styles [data-user-invalid]::part(hint),
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(label) {
+    .input-validation-custom-styles :state(user-invalid):not(pc-button)::part(label),
+    .input-validation-custom-styles :state(user-invalid)::part(hint),
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(label) {
         color: var(--pc-color-danger-on-quiet);
     }
 
-    .input-validation-custom-styles pc-checkbox[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-checkbox:state(user-invalid)::part(control) {
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-invalid]::part(input),
-    .input-validation-custom-styles pc-select:focus-within[data-user-invalid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox:focus-within[data-user-invalid]::part(control) {
+    .input-validation-custom-styles pc-input:focus-within:state(user-invalid)::part(input),
+    .input-validation-custom-styles pc-select:focus-within:state(user-invalid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within:state(user-invalid)::part(control) {
         border-color: var(--pc-color-danger-border-loud);
         outline-color: var(--pc-color-danger-border-loud);
     }
 
     /* User valid styles */
-    .input-validation-custom-styles pc-input[data-user-valid]::part(input),
-    .input-validation-custom-styles pc-select[data-user-valid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-input:state(user-valid)::part(input),
+    .input-validation-custom-styles pc-select:state(user-valid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(control) {
         border-color: var(--pc-color-success-border-loud);
     }
 
-    .input-validation-custom-styles [data-user-valid]:not(pc-button)::part(label),
-    .input-validation-custom-styles [data-user-valid]::part(hint),
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(label) {
+    .input-validation-custom-styles :state(user-valid):not(pc-button)::part(label),
+    .input-validation-custom-styles :state(user-valid)::part(hint),
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(label) {
         color: var(--pc-color-success-on-quiet);
     }
 
-    .input-validation-custom-styles pc-checkbox[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-checkbox:state(user-valid)::part(control) {
         background-color: var(--pc-color-success-border-loud);
         outline: none;
     }
 
-    .input-validation-custom-styles pc-input:focus-within[data-user-valid]::part(input),
-    .input-validation-custom-styles pc-select:focus-within[data-user-valid]::part(combobox),
-    .input-validation-custom-styles pc-checkbox:focus-within[data-user-valid]::part(control) {
+    .input-validation-custom-styles pc-input:focus-within:state(user-valid)::part(input),
+    .input-validation-custom-styles pc-select:focus-within:state(user-valid)::part(combobox),
+    .input-validation-custom-styles pc-checkbox:focus-within:state(user-valid)::part(control) {
         border-color: var(--pc-color-success-border-loud);
         outline-color: var(--pc-color-success-border-loud);
     }
@@ -466,7 +458,7 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 
 ## Getting associated form controls
 
-At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of return an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
+At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of returning an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
 
 ```javascript
 import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";

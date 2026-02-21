@@ -19,6 +19,10 @@ const translation: Translation = {
     hidePassword: "پاس ورڈ چھپائیں",
     hue: "رنگ ٹون",
     loading: "لوڈنگ ہو رہی ہے…",
+    maximumValue: "زیادہ سے زیادہ",
+    maximumValueDescriptive: (label) => `${label} (زیادہ سے زیادہ قدر)`,
+    minimumValue: "کم سے کم",
+    minimumValueDescriptive: (label) => `${label} (کم سے کم قدر)`,
     nextSlide: "اگلی سلائیڈ",
     numOptionsSelected: (number) => {
         if (number === 0) {

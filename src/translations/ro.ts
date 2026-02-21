@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Ascunde parola",
     hue: "Ton de culoare",
     loading: "Se încarcă…",
+    maximumValue: "Maxim",
+    maximumValueDescriptive: (label) => `${label} (valoare maximă)`,
+    minimumValue: "Minim",
+    minimumValueDescriptive: (label) => `${label} (valoare minimă)`,
     nextSlide: "Slide‐ul următor",
     numOptionsSelected: (number) => {
         if (number === 0) {

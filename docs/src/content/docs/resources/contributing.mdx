@@ -396,13 +396,13 @@ This creates confusion because the part will be documented, but it won’t work 
 
 ### Custom events
 
-Components must only emit custom events, and all custom events must start with `pc-` as a namespace. For compatibility with frameworks that utilise DOM templates, custom events must have lowercase, kebab‐case names. For example, use `pc-change` instead of `pcChange`.
+Components must only emit custom events, and all custom events must start with `pc-` as a namespace. For compatibility with frameworks that utilise DOM templates, custom events must have lowercase, kebab‐case names. For example, use `pc-show` instead of `pcShow`.
 
 This convention avoids the problem of browsers lowercasing attributes, causing some frameworks to be unable to listen to them. This problem isn’t specific to one framework, but [Vue’s documentation](https://vuejs.org/guide/docs/components/events) provides a good explanation of the problem.
 
 ### Change events
 
-When change events are emitted by Placer Toolkit components, they should be named `pc-change` and they should only be emitted as as result of user input. Programmatic changes, such as setting `element.value = "…"` _should not_ result in a change event being emitted. This is consistent with how native form controls work.
+When change events are emitted by Placer Toolkit components, they should utilise the native event `change` and they should only be emitted as as result of user input. Programmatic changes, such as setting `element.value = "…"` _should not_ result in a change event being emitted. This is consistent with how native form controls work.
 
 ### CSS custom properties
 

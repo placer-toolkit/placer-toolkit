@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Peida parool",
     hue: "Värvitoon",
     loading: "Laadimine…",
+    maximumValue: "Maksimum",
+    maximumValueDescriptive: (label) => `${label} (maksimum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Järgmine slaid",
     numOptionsSelected: (number) => {
         if (number === 0) {

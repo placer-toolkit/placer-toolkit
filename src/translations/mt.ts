@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Aħbi l‐password",
     hue: "Ton ta’ kulur",
     loading: "Tagħbija…",
+    maximumValue: "Massimu",
+    maximumValueDescriptive: (label) => `${label} (massimu)`,
+    minimumValue: "Minimu",
+    minimumValueDescriptive: (label) => `${label} (minimu)`,
     nextSlide: "Slajd li jmiss",
     numOptionsSelected: (number) => {
         if (number === 0) {

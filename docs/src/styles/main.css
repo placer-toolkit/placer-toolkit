@@ -94,17 +94,10 @@ html.no-sidebar .layout-container {
     z-index: 1000;
 }
 
-.skip-to-toc {
-    position: fixed;
-    inset-block-start: calc(3.5rem + var(--pc-spacing-l));
-    inset-inline-start: calc(300px + var(--pc-spacing-l));
-    z-index: 10000000;
-}
-
-.return-to-main-content {
+.skip-to-main-from-toc {
     position: absolute;
-    inset-block-start: var(--pc-spacing-m);
-    inset-inline-start: var(--pc-spacing-m);
+    inset-inline-start: 0;
+    inset-block-start: 0;
     z-index: 100;
 }
 
@@ -156,6 +149,11 @@ main {
     .pc-theme-serene &:not(.hero) article {
         min-inline-size: 68ch;
         max-inline-size: 68ch;
+    }
+
+    & article {
+        grid-row: 1;
+        grid-column: 1;
     }
 
     & article > header h1 {
@@ -220,7 +218,7 @@ main {
     }
 
     main {
-        padding: var(--pc-spacing-xxl) var(--pc-spacing-xxxl);
+        padding: var(--pc-spacing-xxl);
 
         &:not(.hero) article > header,
         &:not(.hero) article {

@@ -10,7 +10,7 @@ const translation: Translation = {
 
     carousel: "輪播圖",
     clearEntry: "清除",
-    loading: "載入中……",
+    loading: "載入中…",
     numOptionsSelected: (number) => {
         if (number === 0) {
             return "未選擇任何項目";

@@ -63,7 +63,7 @@ The size of [radios](/docs/components/radio) will be determined by the radio gro
 <script>
     const radioGroup = document.querySelector(".radio-group-size");
 
-    radioGroup.addEventListener("pc-change", () => {
+    radioGroup.addEventListener("change", () => {
         radioGroup.size = radioGroup.value;
     });
 </script>
@@ -78,6 +78,23 @@ The size of [radios](/docs/components/radio) will be determined by the radio gro
     ></pc-icon>
     [Radios](/docs/components/radio) also have a `size` attribute. This can be useful in certain situations, but it will be ignored when used inside of a radio group.
 </pc-callout>
+
+### Horizontal
+
+Set the `orientation` attribute to `horizontal` to make a horizontal radio group.
+
+```demo
+<pc-radio-group
+    label="Select an option"
+    name="group-1"
+    value="option-1"
+    orientation="horizontal"
+>
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2" disabled>Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
 
 ### Required
 
@@ -129,7 +146,7 @@ Use the `setCustomValidity()` method to set a custom validation message. This wi
         radioGroup.setCustomValidity(errorMessage);
     });
 
-    form.addEventListener("pc-change", () => {
+    form.addEventListener("change", () => {
         const isValid = radioGroup.value === "select-me";
         radioGroup.setCustomValidity(isValid ? "" : errorMessage);
     });

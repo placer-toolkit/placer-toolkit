@@ -1,6 +1,7 @@
 import { html } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import {
     animateTo,
@@ -12,10 +13,13 @@ import {
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import "../icon/icon.js";
 import styles from "./details.css";
 
 setDefaultAnimation("details.show", {
@@ -63,22 +67,16 @@ setDefaultAnimation("details.hide", {
  */
 @customElement("pc-details")
 export class PcDetails extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
+    private detailsObserver!: MutationObserver;
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query(".details") details!: HTMLDetailsElement;
-    /** @internal This is an internal class property. */
     @query(".header") header!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query(".body") body!: HTMLElement;
 
-    /** @internal This is an internal class property. */
-    detailsObserver!: MutationObserver;
+    @state() isAnimating = false;
 
     /** Indicates whether or not the details is open. You can toggle this attribute to show and hide the details, or you can use the `show()` or `hide()` methods and this attribute will reflect the details’ open state. */
     @property({ type: Boolean, reflect: true }) open = false;
@@ -87,11 +85,14 @@ export class PcDetails extends PlacerElement {
     @property() summary?: string;
 
     /** The details’ variant. */
-    @property({ reflect: true }) variant: "filled" | "outlined" | "plain" =
-        "outlined";
+    @property({ reflect: true }) variant:
+        | "filled"
+        | "outlined"
+        | "filled outlined"
+        | "plain" = "outlined";
 
     /** Disables the details so it can’t be toggled. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     firstUpdated() {
         this.body.style.blockSize = this.open ? "auto" : "0";
@@ -114,6 +115,7 @@ export class PcDetails extends PlacerElement {
                 }
             }
         });
+
         this.detailsObserver.observe(this.details, { attributes: true });
     }
 
@@ -123,6 +125,36 @@ export class PcDetails extends PlacerElement {
     }
 
     private handleSummaryClick(event: MouseEvent) {
+        const eventPath = event.composedPath() as HTMLElement[];
+
+        const hasInteractiveElement = eventPath.some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            if (element === this.header) {
+                return false;
+            }
+
+            const tagName = element.tagName?.toLowerCase();
+
+            if (
+                ["a", "button", "input", "textarea", "select"].includes(tagName)
+            ) {
+                return true;
+            }
+
+            if (element instanceof PlacerFormAssociatedElement) {
+                return !("disabled" in element) || !element.disabled;
+            }
+
+            return false;
+        });
+
+        if (hasInteractiveElement) {
+            return;
+        }
+
         event.preventDefault();
 
         if (!this.disabled) {
@@ -131,11 +163,42 @@ export class PcDetails extends PlacerElement {
             } else {
                 this.show();
             }
+
             this.header.focus();
         }
     }
 
     private handleSummaryKeyDown(event: KeyboardEvent) {
+        const eventPath = event.composedPath() as HTMLElement[];
+
+        const hasInteractiveElement = eventPath.some((element) => {
+            if (!(element instanceof HTMLElement)) {
+                return false;
+            }
+
+            if (element === this.header) {
+                return false;
+            }
+
+            const tagName = element.tagName?.toLowerCase();
+
+            if (
+                ["a", "button", "input", "textarea", "select"].includes(tagName)
+            ) {
+                return true;
+            }
+
+            if (element instanceof PlacerFormAssociatedElement) {
+                return !("disabled" in element) || !element.disabled;
+            }
+
+            return false;
+        });
+
+        if (hasInteractiveElement) {
+            return;
+        }
+
         if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
 
@@ -157,21 +220,23 @@ export class PcDetails extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     async handleOpenChange() {
         if (this.open) {
             this.details.open = true;
 
-            const pcShowEvent = emit(this, "pc-show", {
-                cancelable: true,
-            }) as unknown as Event;
+            const pcShow = new PcShowEvent();
 
-            if (pcShowEvent.defaultPrevented) {
+            this.dispatchEvent(pcShow);
+
+            if (pcShow.defaultPrevented) {
                 this.open = false;
                 this.details.open = false;
+
                 return;
             }
+
+            this.isAnimating = true;
 
             await stopAnimations(this.body);
 
@@ -186,17 +251,23 @@ export class PcDetails extends PlacerElement {
             );
 
             this.body.style.blockSize = "auto";
-            emit(this, "pc-after-show");
+
+            this.isAnimating = false;
+
+            this.dispatchEvent(new PcAfterShowEvent());
         } else {
-            const pcHide = emit(this, "pc-hide", {
-                cancelable: true,
-            }) as unknown as Event;
+            const pcHide = new PcHideEvent();
+
+            this.dispatchEvent(pcHide);
 
             if (pcHide.defaultPrevented) {
                 this.details.open = true;
                 this.open = true;
+
                 return;
             }
+
+            this.isAnimating = true;
 
             await stopAnimations(this.body);
 
@@ -212,8 +283,11 @@ export class PcDetails extends PlacerElement {
 
             this.body.style.blockSize = "auto";
 
+            this.isAnimating = false;
+
             this.details.open = false;
-            emit(this, "pc-after-hide");
+
+            this.dispatchEvent(new PcAfterHideEvent());
         }
     }
 

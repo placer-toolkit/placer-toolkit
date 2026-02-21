@@ -1,16 +1,14 @@
 import { html, nothing } from "lit";
+import type { PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
-import { defaultValue } from "../../internal/default-value.js";
-import { FormControlController } from "../../internal/form.js";
 import { HasSlotController } from "../../internal/slot.js";
+import { RequiredValidator } from "../../internal/validators/required-validator.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import "../icon/icon.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./checkbox.css";
@@ -25,10 +23,10 @@ import styles from "./checkbox.css";
  * @slot - The checkbox’s label.
  * @slot hint - Text that describes how to use the checkbox. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-input - Emitted when the checkbox receives input.
- * @event pc-change - Emitted when the checkbox’s state changes.
- * @event pc-focus - Emitted when the checkbox gains focus.
- * @event pc-blur - Emitted when the checkbox loses focus.
+ * @event input - Emitted when the checkbox receives input.
+ * @event change - Emitted when the checkbox’s state changes.
+ * @event focus - Emitted when the checkbox gains focus.
+ * @event blur - Emitted when the checkbox loses focus.
  * @event pc-invalid - Emitted when the checkbox has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart base - The component’s base wrapper.
@@ -41,80 +39,77 @@ import styles from "./checkbox.css";
  * @csspart hint - The container that wraps the checkbox’s hint.
  */
 @customElement("pc-checkbox")
-export class PcCheckbox extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcCheckbox extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
-    private readonly formControlController = new FormControlController(this, {
-        value: (input: PlacerFormControl) => {
-            const control = input as PcCheckbox;
-            return control.checked ? control.value || "on" : undefined;
-        },
-        defaultValue: (input: PlacerFormControl) => {
-            const control = input as PcCheckbox;
-            return control.defaultChecked;
-        },
-        setValue: (input: PlacerFormControl, value: unknown) => {
-            const control = input as PcCheckbox;
-            control.checked = Boolean(value);
-        },
-    });
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
+    };
+
+    static get validators() {
+        const validators = [
+            RequiredValidator({
+                validationProperty: "checked",
+                validationElement: Object.assign(
+                    document.createElement("input"),
+                    {
+                        type: "checkbox",
+                        required: true,
+                    },
+                ),
+            }),
+        ];
+
+        return [...super.validators, ...validators];
+    }
+
     private readonly hasSlotController = new HasSlotController(this, "hint");
 
-    /** @internal This is an internal class property. */
     @query('input[type="checkbox"]') input!: HTMLInputElement;
 
-    @state() private hasFocus = false;
     @state() private isFadingOut = false;
 
-    /** @internal This is an internal property. */
     @property() title = "";
 
-    /** The name of the checkbox, submitted as a name/value pair with form data.  */
+    /** The name of the checkbox, submitted as a name/value pair with form data. */
     @property() name = "";
 
+    private _value: string | null = this.getAttribute("value") ?? null;
+
     /** The current value of the checkbox, submitted as a name/value pair with form data. */
-    @property() value = "";
+    get value(): string | null {
+        const value = this._value || "on";
+
+        return this.checked ? value : null;
+    }
+
+    @property({ reflect: true })
+    set value(value: string | null) {
+        this._value = value;
+    }
 
     /** The checkbox’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
     /** Disables the checkbox. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
-    /** Checks the checkbox off. */
+    /** Checks the checkbox. */
     @property({ type: Boolean, reflect: true }) checked = false;
 
     /** Sets the checkbox’s state to indeterminate. This is usually applied to checkboxes that represent a “Select all/none” behaviour when associated checkboxes have a mix of checked and unchecked states. */
     @property({ type: Boolean, reflect: true }) indeterminate = false;
 
     /** The default value of the checkbox. Primarily used for resetting the checkbox. */
-    @defaultValue("checked") defaultChecked = false;
-
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
+    @property({ type: Boolean, reflect: true, attribute: "checked" })
+    defaultChecked: boolean = this.hasAttribute("checked");
 
     /** Indicates that the checkbox must be checked. */
     @property({ type: Boolean, reflect: true }) required = false;
 
     /** The checkbox’s hint. If you need to display HTML, use the `hint` slot instead. */
     @property() hint = "";
-
-    /** Gets the validity state object. */
-    get validity() {
-        return this.input.validity;
-    }
-
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.input.validationMessage;
-    }
-
-    firstUpdated() {
-        this.formControlController.updateValidity();
-    }
 
     private handleClick() {
         if (!this.indeterminate) {
@@ -124,45 +119,75 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
             }
         }
 
+        this.hasInteracted = true;
         this.checked = !this.checked;
         this.indeterminate = false;
-        emit(this, "pc-change");
+
+        this.updateComplete.then(() => {
+            this.dispatchEvent(
+                new Event("change", { bubbles: true, composed: true }),
+            );
+        });
     }
 
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
+    @watch("defaultChecked")
+    handleDefaultCheckedChange() {
+        if (!this.hasInteracted && this.checked !== this.defaultChecked) {
+            this.checked = this.defaultChecked;
+            this.handleValueOrCheckedChange();
+        }
     }
 
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
+    handleValueOrCheckedChange() {
+        this.setValue(this.checked ? this.value : null, this._value);
+        this.updateValidity();
     }
 
-    private handleInput() {
-        emit(this, "pc-input");
-    }
-
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
-
-    /** @internal This is an internal method. */
-    @watch("disabled", { waitUntilFirstUpdate: true })
+    @watch("disabled")
     handleDisabledChange() {
-        this.formControlController.setValidity(this.disabled);
+        this.customStates.set("disabled", this.disabled);
     }
 
-    /** @internal This is an internal method. */
-    @watch(["checked", "indeterminate"], { waitUntilFirstUpdate: true })
+    @watch(["checked", "indeterminate"])
     handleStateChange() {
         if (!this.indeterminate && this.checked) {
             this.isFadingOut = false;
         }
-        this.input.checked = this.checked;
-        this.input.indeterminate = this.indeterminate;
-        this.formControlController.updateValidity();
+
+        if (this.hasUpdated) {
+            this.input.checked = this.checked;
+            this.input.indeterminate = this.indeterminate;
+        }
+
+        this.customStates.set("checked", this.checked);
+        this.customStates.set("indeterminate", this.indeterminate);
+
+        this.updateValidity();
+    }
+
+    protected willUpdate(changedProperties: PropertyValues<this>): void {
+        super.willUpdate(changedProperties);
+
+        if (changedProperties.has("defaultChecked")) {
+            if (!this.hasInteracted) {
+                this.checked = this.defaultChecked;
+            }
+        }
+
+        if (
+            changedProperties.has("value") ||
+            changedProperties.has("checked")
+        ) {
+            this.handleValueOrCheckedChange();
+        }
+    }
+
+    formResetCallback() {
+        this.checked = this.defaultChecked;
+
+        super.formResetCallback();
+
+        this.handleValueOrCheckedChange();
     }
 
     /** Simulates a click on the checkbox. */
@@ -180,27 +205,6 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
         this.input.blur();
     }
 
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.input.checkValidity();
-    }
-
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the checkbox is invalid. */
-    reportValidity() {
-        return this.input.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.input.setCustomValidity(message);
-        this.formControlController.updateValidity();
-    }
-
     render() {
         const hasHintSlot = this.hasSlotController.test("hint");
         const hasHint = this.hint ? true : !!hasHintSlot;
@@ -209,11 +213,10 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
             <label
                 part="base"
                 class=${classMap({
-                    "checkbox": true,
-                    "checked": this.checked && !this.isFadingOut,
-                    "indeterminate": this.indeterminate,
-                    "disabled": this.disabled,
-                    "has-focus": this.hasFocus,
+                    checkbox: true,
+                    checked: this.checked && !this.isFadingOut,
+                    indeterminate: this.indeterminate,
+                    disabled: this.disabled,
                 })}
             >
                 <input
@@ -229,10 +232,6 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
                     aria-checked=${this.checked ? "true" : "false"}
                     aria-describedby=${this.hint ? "hint" : nothing}
                     @click=${this.handleClick}
-                    @input=${this.handleInput}
-                    @focus=${this.handleFocus}
-                    @blur=${this.handleBlur}
-                    @invalid=${this.handleInvalid}
                 />
 
                 <span
@@ -250,20 +249,20 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
                     ${this.checked || this.isFadingOut
                         ? html`
                               <pc-icon
+                                  part="icon-checked"
                                   library="system"
                                   icon-style="solid"
                                   name="check"
-                                  part="icon-checked"
                               ></pc-icon>
                           `
                         : ""}
                     ${this.indeterminate
                         ? html`
                               <pc-icon
+                                  part="icon-indeterminate"
                                   library="system"
                                   icon-style="solid"
                                   name="minus"
-                                  part="icon-indeterminate"
                               ></pc-icon>
                           `
                         : ""}
@@ -272,14 +271,15 @@ export class PcCheckbox extends PlacerElement implements PlacerFormControl {
                 <slot class="label" part="label"></slot>
             </label>
 
-            <div
-                class=${classMap({ "has-hint": hasHint })}
+            <slot
                 part="hint"
+                class=${classMap({ "has-hint": hasHint })}
+                name="hint"
                 id="hint"
                 aria-hidden=${hasHint ? "false" : "true"}
             >
-                <slot name="hint">${this.hint}</slot>
-            </div>
+                ${this.hint}
+            </slot>
         `;
     }
 }

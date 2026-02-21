@@ -3,7 +3,7 @@
 .navbar {
     background: color-mix(
         in oklab,
-        var(--pc-color-surface-raised) var(--navigation-opacity),
+        var(--pc-color-surface-default) var(--navigation-opacity),
         transparent
     ) !important;
     backdrop-filter: blur(16px);
