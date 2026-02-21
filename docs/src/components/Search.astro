@@ -1,13 +1,26 @@
 ---
 import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 
-import "@pagefind/default-ui/css/ui.css";
+import { Image } from "astro:assets";
+
+import AutoKeyboardSwitch from "./AutoKeyboardSwitch.astro";
+
+import pagefindLightLogo from "../assets/pagefind-wordmark-light.svg";
+import pagefindDarkLogo from "../assets/pagefind-wordmark-dark.svg";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<pc-dialog class="search-dialog" id="search-dialog" no-header>
+<pc-dialog
+    class="search-dialog"
+    id="search-dialog"
+    no-header
+    data-label-searching={translation("ui.search.searchingFor")}
+    data-label-one={translation("ui.search.resultFor")}
+    data-label-multiple={translation("ui.search.resultsFor")}
+    data-label-none={translation("ui.search.noResultsFor")}
+>
     {
         import.meta.env.MODE === "development" && (
             <p
@@ -18,124 +31,362 @@ const translation = useTranslations(language);
             />
         )
     }
-    {import.meta.env.MODE === "production" && <div id="search" />}
+    {
+        import.meta.env.MODE === "production" && (
+            <form
+                class="search-container"
+                role="search"
+                onsubmit="return false"
+                novalidate
+            >
+                <header class="search-header">
+                    <pc-input
+                        class="search-input"
+                        size="large"
+                        label={translation("ui.search.label.descriptive")}
+                        placeholder={translation("ui.search.label")}
+                        type="search"
+                        autofocus=""
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="none"
+                        enterkeyhint="go"
+                        clearable
+                    >
+                        <pc-icon
+                            library="default"
+                            icon-style="solid"
+                            name="magnifying-glass"
+                            slot="prefix"
+                        />
+                    </pc-input>
+                </header>
+
+                <div class="search-results">
+                    <div
+                        class="search-status"
+                        role="status"
+                        aria-live="polite"
+                    />
+                    <div class="search-results-list" id="search-results-list">
+                        <ul class="search-results-list-root" role="list" />
+                    </div>
+                </div>
+            </form>
+        )
+    }
+
+    <footer class="search-footer" slot="footer">
+        {
+            import.meta.env.MODE === "production" && (
+                <div class="keyboard-shortcuts">
+                    <small>
+                        {/* prettier-ignore */}
+                        <kbd><pc-icon library="default" icon-style="solid" name="arrow-up" label={translation("ui.search.navigation.up") as string} /></kbd>
+                        {/* prettier-ignore */}
+                        <kbd><pc-icon library="default" icon-style="solid" name="arrow-down" label={translation("ui.search.navigation.down") as string} /></kbd>
+                        {translation("ui.search.navigation.navigate")}
+                    </small>
+                    <small>
+                        <AutoKeyboardSwitch keyName="enter" />
+                        {translation("ui.search.navigation.select")}
+                    </small>
+                    <small>
+                        <kbd aria-label="Escape">Esc</kbd>
+                        {translation("ui.search.navigation.close")}
+                    </small>
+                </div>
+            )
+        }
+        <div class="pagefind-attribution">
+            <a href="https://pagefind.app">
+                <span>{translation("ui.search.attribution.poweredBy")}</span>
+                <div class="theme-dependent-content-switcher">
+                    <Image
+                        class="light-content"
+                        src={pagefindLightLogo}
+                        width="112"
+                        height="112"
+                        loading="lazy"
+                        alt="Pagefind"
+                    />
+                    <Image
+                        class="dark-content"
+                        src={pagefindDarkLogo}
+                        width="112"
+                        height="112"
+                        loading="lazy"
+                        alt="Pagefind"
+                    />
+                </div>
+            </a>
+        </div>
+    </footer>
 </pc-dialog>
 
 <script>
     import type { PcDialog } from "placer-toolkit/dist/components/dialog/dialog.js";
+    import type { PcInput } from "placer-toolkit/dist/components/input/input.js";
+
+    interface PagefindSubResult {
+        title: string;
+        url: string;
+        excerpt: string;
+    }
+
+    interface PagefindData {
+        url: string;
+        meta: {
+            title: string;
+        };
+        sub_results?: PagefindSubResult[];
+    }
+
+    interface PagefindSearchResult {
+        data(): Promise<PagefindData>;
+    }
+
+    interface PagefindSearchResponse {
+        results: PagefindSearchResult[];
+    }
+
+    interface PagefindModule {
+        init(): Promise<void>;
+        search(query: string): Promise<PagefindSearchResponse | null>;
+    }
 
     const searchDialog = document.querySelector<PcDialog>(".search-dialog");
+    const searchInput = searchDialog?.querySelector<PcInput>(".search-input");
+    const searchStatus = searchDialog?.querySelector(".search-status");
+    const searchList = searchDialog?.querySelector(".search-results-list-root");
 
-    const focusSearch = () => {
-        const searchInput = document.querySelector<HTMLInputElement>(
-            "#search .pagefind-ui__search-input",
+    const labelSearching =
+        searchDialog?.dataset.labelSearching ||
+        "Searching for <b>{{query}}</b>…";
+    const labelResult =
+        searchDialog?.dataset.labelOne || "One result for <b>{{query}}</b>";
+    const labelResults =
+        searchDialog?.dataset.labelMultiple ||
+        "{{count}} results for <b>{{query}}</b>";
+    const labelNoResults =
+        searchDialog?.dataset.labelNone || "No results for <b>{{query}}</b>";
+
+    const path = "/pagefind/pagefind.js";
+
+    let pagefind: PagefindModule | undefined;
+    let debounceTimer: number;
+    let currentSearchTerm = "";
+
+    try {
+        pagefind = (await import(/* @vite-ignore */ path)) as PagefindModule;
+    } catch (error) {
+        console.error(
+            `Pagefind failed to load. Search functionality will therefore be impacted. Error: ${error}`,
         );
+    }
 
-        if (searchInput) {
-            searchInput.focus();
+    const performSearch = async (query: string) => {
+        if (!searchList || !searchStatus) {
+            return;
         }
+
+        if (!query || !pagefind) {
+            searchStatus.innerHTML = "";
+            searchList.innerHTML = "";
+
+            return;
+        }
+
+        if (searchStatus) {
+            searchStatus.innerHTML = labelSearching.replace("{{query}}", query);
+        }
+
+        currentSearchTerm = query;
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = window.setTimeout(async () => {
+            const search = await pagefind.search(query);
+
+            if (!search) {
+                return;
+            }
+
+            if (query !== currentSearchTerm) {
+                return;
+            }
+
+            const count = search.results.length;
+
+            let message = "";
+
+            if (count === 0) {
+                message = labelNoResults.replace("{{query}}", query);
+            } else if (count === 1) {
+                message = labelResult.replace("{{query}}", query);
+            } else {
+                message = labelResults
+                    .replace("{{count}}", count.toString())
+                    .replace("{{query}}", query);
+            }
+
+            searchStatus.innerHTML = message;
+
+            const results = await Promise.all(
+                search.results.slice(0, 8).map((result) => result.data()),
+            );
+
+            searchList!.innerHTML = `
+                ${results
+                    .map((item) => {
+                        const subResults: PagefindSubResult[] = (
+                            item.sub_results ?? []
+                        )
+                            .filter(
+                                (subResult) =>
+                                    subResult.title !== item.meta.title,
+                            )
+                            .slice(0, 3);
+
+                        return `
+                            <li class="result-group" role="listitem">
+                                <a href="${item.url}" class="result-page-header">
+                                    <div class="page-icon" aria-hidden="true"></div>
+                                    <h2 class="result-title">${item.meta.title}</h2>
+                                </a>
+
+                                ${
+                                    subResults.length > 0
+                                        ? `
+                                            <ul class="sub-results-container" role="list">
+                                                ${subResults
+                                                    .map(
+                                                        (
+                                                            subResult: any,
+                                                            index: number,
+                                                        ) => `
+                                                            <li
+                                                                class="sub-result-item ${index === subResults.length - 1 ? "sub-result-item-last" : ""}"
+                                                                role="listitem"
+                                                            >
+                                                                <a href="${subResult.url}" class="sub-result-link">
+                                                                    <div class="sub-result-tree-line" aria-hidden="true"></div>
+                                                                    <div class="sub-result-content">
+                                                                        <h3 class="sub-result-heading">${subResult.title}</h3>
+                                                                        <p class="sub-result-excerpt">${subResult.excerpt}</p>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                        `,
+                                                    )
+                                                    .join("")}
+                                            </ul>
+                                        `
+                                        : ""
+                                }
+                            </li>
+                        `;
+                    })
+                    .join("")}
+            `;
+        }, 120);
     };
+
+    searchInput?.addEventListener("input", (event) => {
+        const target = event.target as HTMLInputElement;
+
+        performSearch(target.value);
+    });
+
+    searchInput?.addEventListener("pc-clear", () => {
+        if (searchStatus) {
+            searchStatus.textContent = "";
+        }
+
+        if (searchList) {
+            searchList.innerHTML = "";
+        }
+    });
+
+    searchDialog?.addEventListener("pc-show", async () => {
+        const nativeInput = searchInput?.shadowRoot?.querySelector("input");
+
+        if (nativeInput) {
+            nativeInput.setAttribute("aria-controls", "search-results-list");
+        }
+
+        if (pagefind) {
+            await pagefind.init();
+        }
+    });
 
     document.addEventListener("keydown", (event) => {
         const isSearchShortcut =
             (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
             event.key === "/";
+        const isTyping = event
+            .composedPath()
+            .some((element) =>
+                ["input", "textarea"].includes(
+                    (element as HTMLElement)?.tagName?.toLowerCase(),
+                ),
+            );
 
-        if (isSearchShortcut) {
-            const isTyping = event.composedPath().some((element) => {
-                const tag = (element as HTMLElement)?.tagName?.toLowerCase();
+        if (isSearchShortcut && !isTyping) {
+            event.preventDefault();
 
-                return (
-                    tag === "textarea" ||
-                    (tag === "input" &&
-                        !["checkbox", "radio"].includes(
-                            (element as HTMLInputElement).type,
-                        ))
-                );
-            });
-
-            if (!isTyping) {
-                event.preventDefault();
-
-                if (searchDialog) {
-                    searchDialog.open = true;
-
-                    focusSearch();
-                }
+            if (searchDialog) {
+                searchDialog.open = true;
             }
         }
-    });
 
-    window.addEventListener("DOMContentLoaded", () => {
-        if (import.meta.env.DEV) {
-            return;
-        }
+        if (
+            searchDialog?.open &&
+            (event.key === "ArrowDown" || event.key === "ArrowUp")
+        ) {
+            const focusable = Array.from(
+                searchList?.querySelectorAll(
+                    "a.result-page-header, a.sub-result-link",
+                ) || [],
+            ) as HTMLAnchorElement[];
 
-        const onIdle =
-            window.requestIdleCallback ||
-            ((callback) => setTimeout(callback, 1));
-
-        onIdle(async () => {
-            // @ts-expect-error — Missing types for the @pagefind/default-ui package
-            const { PagefindUI } = await import("@pagefind/default-ui");
-
-            new PagefindUI({
-                element: "#search",
-                showImages: false,
-                showSubResults: true,
-            });
-
-            const observer = new MutationObserver(() => {
-                const searchInput = document.querySelector<HTMLInputElement>(
-                    "#search .pagefind-ui__search-input",
-                );
-                const hasLabel = document.querySelector(
-                    'label[for="pagefind-ui__search-input"]',
-                );
-
-                if (searchInput && !hasLabel) {
-                    const inputId = "pagefind-ui__search-input";
-
-                    searchInput.id = inputId;
-
-                    const label = document.createElement("label");
-
-                    label.setAttribute("for", inputId);
-                    label.classList.add("pc-visually-hidden");
-                    label.textContent =
-                        "Search the Placer Toolkit documentation…";
-
-                    searchInput
-                        .closest(".pagefind-ui__form")
-                        ?.insertBefore(label, searchInput);
-
-                    if (searchDialog?.open) {
-                        focusSearch();
-                    }
-                }
-            });
-
-            const searchContainer = document.querySelector("#search");
-
-            if (searchContainer) {
-                observer.observe(searchContainer, {
-                    childList: true,
-                    subtree: true,
-                });
+            if (focusable.length === 0) {
+                return;
             }
-        });
-    });
 
-    searchDialog?.addEventListener("pc-show", () => {
-        focusSearch();
+            event.preventDefault();
+
+            const currentIndex = focusable.indexOf(
+                document.activeElement as HTMLAnchorElement,
+            );
+
+            let nextIndex;
+
+            if (event.key === "ArrowDown") {
+                nextIndex = currentIndex + 1;
+
+                if (nextIndex >= focusable.length) {
+                    nextIndex = 0;
+                }
+            } else {
+                nextIndex = currentIndex - 1;
+
+                if (nextIndex < 0) {
+                    searchInput?.focus();
+
+                    return;
+                }
+            }
+
+            focusable[nextIndex]?.focus();
+        }
     });
 </script>
 
 <style is:global>
-    .search-dialog:has(> .dev-warning)::part(body) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    /* #region — Dialog layout + dev warning */
+    .search-dialog {
+        --body-spacing: var(--pc-spacing-xl);
     }
 
     .search-dialog::part(dialog) {
@@ -149,179 +400,158 @@ const translation = useTranslations(language);
         max-block-size: calc(100% - (var(--pc-spacing-xxl) * 2));
     }
 
-    .search-dialog > .dev-warning {
-        text-align: center;
+    .search-dialog:has(> .dev-warning)::part(body) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .search-dialog::part(footer) {
+        padding-block-start: var(--pc-spacing-m);
+        padding-block-end: var(--pc-spacing-l);
+        border-block-start: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+    }
+
+    .search-dialog .dev-warning {
         font-weight: var(--pc-font-weight-semibold);
+        text-align: center;
     }
 
-    #search {
-        --pagefind-ui-primary: var(--pc-color-text-normal);
-        --pagefind-ui-text: var(--pc-color-text-normal);
-        --pagefind-ui-font: var(--pc-font-sans);
-        --pagefind-ui-background: var(--pc-color-neutral-fill-normal);
-        --pagefind-ui-border: var(--pc-color-text-quiet);
-        --pagefind-ui-border-width: 0.0625rem;
-        --pagefind-ui-tag: var(--pc-color-text-quiet);
-
-        --search-result-spacing: var(--pc-spacing-xl);
-        --search-result-pad-inline-start: 3.75rem;
-        --search-result-pad-inline-end: var(--pc-spacing-xl);
-        --search-result-pad-block: 0.9375rem;
-        --search-result-nested-pad-block: 0.625rem;
-        --search-corners: var(--pc-border-radius-m);
-        --search-page-icon-size: 1.875rem;
-        --search-page-icon-inline-start: calc(
-            (
-                    var(--search-result-pad-inline-start) -
-                        var(--search-page-icon-size)
-                ) /
-                2
-        );
-        --search-tree-diagram-size: 2.5rem;
-        --search-tree-diagram-inline-start: calc(
-            (
-                    var(--search-result-pad-inline-start) -
-                        var(--search-tree-diagram-size)
-                ) /
-                2
-        );
+    .search-dialog .search-header {
+        position: sticky;
+        inset-block-start: calc(var(--pc-spacing-xl) * -1);
+        margin-block-start: calc(var(--pc-spacing-xl) * -1);
+        margin-inline: calc(var(--pc-spacing-xl) * -1);
+        padding-block: var(--pc-spacing-xs);
+        padding-inline: var(--pc-spacing-s);
+        background-color: var(--pc-color-surface-raised);
+        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        z-index: 2;
     }
 
-    #search .pagefind-ui__form::before {
-        --pagefind-ui-text: var(--pc-color-text-quiet);
+    .search-dialog .search-header::after {
         content: "";
         position: absolute;
-        inset-block-start: 1.0625rem;
-        inset-inline-start: 0.9375rem;
-        inline-size: 1.125rem;
-        block-size: 1.125rem;
-        opacity: 1;
-        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.5 9.75c0 2.15-.7 4.14-1.875 5.74L23.37 21.4c.59.59.59 1.54 0 2.12s-1.54.59-2.12 0L15.5 17.6c-1.61 1.18-3.6 1.875-5.74 1.875C4.37 19.5 0 15.13 0 9.75S4.37 0 9.75 0S19.5 4.37 19.5 9.75zM9.75 16.5a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 1 0 0 13.5z'/%3E%3C/svg%3E");
-        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19.5 9.75c0 2.15-.7 4.14-1.875 5.74L23.37 21.4c.59.59.59 1.54 0 2.12s-1.54.59-2.12 0L15.5 17.6c-1.61 1.18-3.6 1.875-5.74 1.875C4.37 19.5 0 15.13 0 9.75S4.37 0 9.75 0S19.5 4.37 19.5 9.75zM9.75 16.5a6.75 6.75 0 1 0 0-13.5 6.75 6.75 0 1 0 0 13.5z'/%3E%3C/svg%3E");
+        inset-block-end: calc(var(--pc-border-width-s) * -1);
+        inset-inline: 0;
+        block-size: var(--pc-border-width-m);
+        background-color: var(--pc-color-focus);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.2s cubic-bezier(0.32, 0, 0.67, 0);
     }
 
-    #search .pagefind-ui__search-input {
-        padding-inline-end: calc((1.0625em * 2) + 1.25rem) !important;
-        inline-size: 100%;
-        background-color: var(--pc-form-control-background-color);
-        color: var(--pc-form-control-value-color);
-        border-color: var(--pc-form-control-border-color);
-        border-radius: var(--pc-border-radius-l);
-        font-weight: var(--pc-form-control-value-font-weight);
-        transition: all var(--pc-transition-fast) ease-in-out;
+    .search-dialog .search-header:focus-within::after {
+        transform: scaleX(1);
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    @media (hover: hover) {
-        #search .pagefind-ui__search-input:not(:focus):hover {
-            border-color: color-mix(
-                in oklab,
-                var(--pc-form-control-border-color),
-                var(--pc-color-mix-hover)
-            );
-        }
+    .search-dialog .search-header .search-input::part(label) {
+        position: absolute !important;
+        margin: -1px !important;
+        padding: 0 !important;
+        inline-size: 1px !important;
+        block-size: 1px !important;
+        width: 1px !important;
+        height: 1px !important;
+        clip-path: inset(50%) !important;
+        border: none !important;
+        overflow: hidden !important;
+        white-space: nowrap !important;
     }
 
-    #search .pagefind-ui__search-input:focus {
-        border-color: var(--pc-form-control-border-color);
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
-        animation: focus-ring-animation var(--pc-transition-medium)
-            cubic-bezier(0.33, 1, 0.68, 1);
-    }
-
-    #search .pagefind-ui__search-input::placeholder {
-        color: var(--pc-form-control-placeholder-color);
-        opacity: 1;
-    }
-
-    #search .pagefind-ui__search-clear {
-        inset-block-start: 0.9375rem;
-        inset-inline-end: 1.0625em;
-        padding: 0;
-        inline-size: 1.25rem;
-        block-size: 1.25rem;
+    .search-dialog .search-header .search-input::part(input) {
         background-color: transparent;
-        color: transparent;
-        border-radius: var(--pc-border-radius-circle);
-        overflow: hidden;
-        transition: outline var(--pc-transition-fast) ease-in-out;
+        border: none;
+        border-radius: 0;
     }
 
-    #search .pagefind-ui__search-clear:focus-visible {
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
-        animation: focus-ring-animation var(--pc-transition-medium)
-            cubic-bezier(0.33, 1, 0.68, 1);
+    .search-dialog .search-header .search-input::part(input):focus-within {
+        outline: none;
     }
 
-    #search .pagefind-ui__search-clear::before {
-        content: "";
-        display: block;
-        inline-size: 100%;
-        block-size: 100%;
-        background-color: var(--pc-color-text-quiet);
-        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM167 167c-9.4 9.4-9.4 24.6 0 33.9l55 55-55 55c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l55-55 55 55c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-55-55 55-55c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-55 55-55-55c-9.4-9.4-24.6-9.4-33.9 0z'/%3E%3C/svg%3E")
-            center / 100% no-repeat;
-        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM167 167c-9.4 9.4-9.4 24.6 0 33.9l55 55-55 55c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l55-55 55 55c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-55-55 55-55c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-55 55-55-55c-9.4-9.4-24.6-9.4-33.9 0z'/%3E%3C/svg%3E")
-            center / 100% no-repeat;
+    .search-dialog .search-footer,
+    .search-dialog .search-footer .keyboard-shortcuts {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--pc-spacing-m);
+    }
+
+    .search-dialog .search-footer .keyboard-shortcuts {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .search-dialog .search-footer .keyboard-shortcuts small kbd:last-child {
+        margin-inline-end: var(--pc-spacing-xs);
+    }
+
+    .search-dialog .search-footer .pagefind-attribution a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-s);
+        color: var(--pc-color-text-quiet);
+        font-size: var(--pc-font-size-smaller);
+        text-decoration: none;
+    }
+
+    .search-dialog .search-footer .pagefind-attribution a img {
+        inline-size: auto;
+        block-size: 1rem;
+        border-radius: 0;
+    }
+    /* #endregion */
+
+    /* #region — Search containers */
+    .search-results {
+        margin-block-start: var(--pc-spacing-l);
+    }
+
+    .search-results,
+    .search-results .search-results-list-root {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        flex-direction: column;
+        gap: var(--pc-spacing-l);
+    }
+
+    .search-results .search-results-list .search-results-list-root {
+        margin-inline-start: 0;
+    }
+
+    .search-results .search-status {
+        font-size: var(--pc-font-size-smaller);
+    }
+    /* #endregion */
+
+    /* #region — Result groups */
+    .result-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+
+    /* #region — Page header */
+    .result-group .result-page-header {
+        display: flex;
+        position: relative;
+        align-items: center;
+        gap: var(--pc-spacing-l);
+        padding-block: var(--pc-spacing-l);
+        padding-inline: var(--pc-spacing-xl);
+        padding-inline-start: calc(var(--pc-spacing-xl) * 3);
+        background-color: var(--pc-color-neutral-fill-normal);
+        text-decoration: none;
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
     @media (hover: hover) {
-        #search .pagefind-ui__search-clear:hover::before {
-            background-color: color-mix(
-                in oklab,
-                var(--pc-color-text-quiet),
-                var(--pc-color-mix-hover)
-            );
-        }
-    }
-
-    #search .pagefind-ui__search-clear:active::before {
-        background-color: color-mix(
-            in oklab,
-            var(--pc-color-text-quiet),
-            var(--pc-color-mix-active)
-        );
-    }
-
-    #search .pagefind-ui__results > * + * {
-        margin-block-start: var(--search-result-spacing);
-    }
-
-    #search .pagefind-ui__drawer > .pagefind-ui__message {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-
-    #search .pagefind-ui__result {
-        border: 0;
-        padding: 0;
-    }
-
-    #search .pagefind-ui__result-nested {
-        position: relative;
-        padding: var(--search-result-nested-pad-block)
-            var(--search-result-pad-inline-end);
-        padding-inline-start: var(--search-result-pad-inline-start);
-    }
-
-    #search
-        .pagefind-ui__result-title:not(
-            .pagefind-ui__result-nested > .pagefind-ui__result-title
-        ),
-    #search .pagefind-ui__result-nested {
-        position: relative;
-        background-color: var(--pc-color-neutral-fill-normal);
-    }
-
-    @media (hover: hover) {
-        #search
-            .pagefind-ui__result-title:not(
-                .pagefind-ui__result-nested > .pagefind-ui__result-title
-            ):hover,
-        #search .pagefind-ui__result-nested:hover {
+        .result-group .result-page-header:hover {
             background-color: color-mix(
                 in oklab,
                 var(--pc-color-neutral-fill-normal),
@@ -330,11 +560,7 @@ const translation = useTranslations(language);
         }
     }
 
-    #search
-        .pagefind-ui__result-title:not(
-            .pagefind-ui__result-nested > .pagefind-ui__result-title
-        ):active,
-    #search .pagefind-ui__result-nested:active {
+    .result-group .result-page-header:active {
         background-color: color-mix(
             in oklab,
             var(--pc-color-neutral-fill-normal),
@@ -342,101 +568,173 @@ const translation = useTranslations(language);
         );
     }
 
-    #search
-        .pagefind-ui__result-title:not(
-            .pagefind-ui__result-nested > .pagefind-ui__result-title
-        ):has(.pagefind-ui__result-link:focus-visible),
-    #search
-        .pagefind-ui__result-nested:has(
-            .pagefind-ui__result-link:focus-visible
-        ) {
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
+    .result-group .result-page-header:focus-visible {
         z-index: 1;
-        animation: focus-ring-animation var(--pc-transition-medium)
-            cubic-bezier(0.33, 1, 0.68, 1);
     }
 
-    #search .pagefind-ui__result-thumb,
-    #search .pagefind-ui__result-inner {
-        margin-block-start: 0;
+    .result-group .result-page-header {
+        border-radius: var(--pc-border-radius-m);
     }
 
-    #search .pagefind-ui__result-inner > * {
-        transition: all var(--pc-transition-fast) ease-in-out;
-    }
-
-    #search .pagefind-ui__result-inner > .pagefind-ui__result-nested {
-        border-radius: 0.125rem;
-    }
-
-    #search .pagefind-ui__result-inner > :first-child {
-        border-start-start-radius: var(--search-corners);
-        border-start-end-radius: var(--search-corners);
+    .result-group
+        .result-page-header:has(~ .sub-results-container:not(:empty)) {
+        border-start-start-radius: var(--pc-border-radius-m);
+        border-start-end-radius: var(--pc-border-radius-m);
         border-end-start-radius: 0.125rem;
         border-end-end-radius: 0.125rem;
     }
 
-    #search .pagefind-ui__result-inner > :last-child {
-        border-start-start-radius: 0.125rem;
-        border-start-end-radius: 0.125rem;
-        border-end-start-radius: var(--search-corners);
-        border-end-end-radius: var(--search-corners);
+    .result-group .result-page-header .result-title {
+        color: var(--pc-color-text-normal);
+        font-weight: var(--pc-font-weight-bold);
+        font-size: var(--pc-font-size-m);
     }
 
-    #search
-        .pagefind-ui__result-inner
-        > .pagefind-ui__result-title:not(:has(~ .pagefind-ui__result-nested)) {
-        border-radius: var(--search-corners);
-    }
-
-    #search .pagefind-ui__result-inner > .pagefind-ui__result-title {
-        padding-block: var(--search-result-pad-block);
-        padding-inline: var(--search-result-pad-inline-end);
-        padding-inline-start: var(--search-result-pad-inline-start);
-    }
-
-    #search .pagefind-ui__result-inner > .pagefind-ui__result-title::before {
-        content: "";
+    .result-group .result-page-header .page-icon {
         position: absolute;
         inset-block: 0;
-        inset-inline-start: var(--search-page-icon-inline-start);
-        inline-size: var(--search-page-icon-size);
+        inset-inline-start: var(--pc-spacing-l);
+        inline-size: calc(var(--pc-spacing-l) * 2);
         background-color: var(--pc-color-text-quiet);
-        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
-            center no-repeat;
-        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='currentColor' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
-            center no-repeat;
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
+            center / contain no-repeat;
+        -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 10h1a1 1 0 1 0 0-2H9a1 1 0 0 0 0 2Zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H9Zm11-3V8l-6-6a1 1 0 0 0-1 0H7a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V9Zm-6-4 3 3h-2a1 1 0 0 1-1-1V5Zm4 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5v3a3 3 0 0 0 3 3h3v9Zm-3-3H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2Z'/%3E%3C/svg%3E")
+            center / contain no-repeat;
     }
 
-    #search .pagefind-ui__result-inner {
-        align-items: stretch;
+    .result-group .result-page-header[href*="/docs/get-started/"] .page-icon {
+        background-color: var(--pc-color-danger-on-quiet);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M192 384L88.5 384C63.6 384 48.3 356.9 61.1 335.5L114 247.3C122.7 232.8 138.3 224 155.2 224L250.2 224C326.3 95.1 439.8 88.6 515.7 99.7C528.5 101.6 538.5 111.6 540.3 124.3C551.4 200.2 544.9 313.7 416 389.8L416 484.8C416 501.7 407.2 517.3 392.7 526L304.5 578.9C283.2 591.7 256 576.3 256 551.5L256 448C256 412.7 227.3 384 192 384L191.9 384zM464 224C464 197.5 442.5 176 416 176C389.5 176 368 197.5 368 224C368 250.5 389.5 272 416 272C442.5 272 464 250.5 464 224z'/%3E%3C/svg%3E");
+    }
+
+    .result-group .result-page-header[href*="/docs/design-tokens/"] .page-icon {
+        background-color: var(--pc-color-warning-on-quiet);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M192 160L192 144C192 99.8 278 64 384 64C490 64 576 99.8 576 144L576 160C576 190.6 534.7 217.2 474 230.7C471.6 227.9 469.1 225.2 466.6 222.7C451.1 207.4 431.1 195.8 410.2 187.2C368.3 169.7 313.7 160.1 256 160.1C234.1 160.1 212.7 161.5 192.2 164.2C192 162.9 192 161.5 192 160.1zM496 417L496 370.8C511.1 366.9 525.3 362.3 538.2 356.9C551.4 351.4 564.3 344.7 576 336.6L576 352C576 378.8 544.5 402.5 496 417zM496 321L496 288C496 283.5 495.6 279.2 495 275C510.5 271.1 525 266.4 538.2 260.8C551.4 255.2 564.3 248.6 576 240.5L576 255.9C576 282.7 544.5 306.4 496 320.9zM64 304L64 288C64 243.8 150 208 256 208C362 208 448 243.8 448 288L448 304C448 348.2 362 384 256 384C150 384 64 348.2 64 304zM448 400C448 444.2 362 480 256 480C150 480 64 444.2 64 400L64 384.6C75.6 392.7 88.5 399.3 101.8 404.9C143.7 422.4 198.3 432 256 432C313.7 432 368.3 422.3 410.2 404.9C423.4 399.4 436.3 392.7 448 384.6L448 400zM448 480.6L448 496C448 540.2 362 576 256 576C150 576 64 540.2 64 496L64 480.6C75.6 488.7 88.5 495.3 101.8 500.9C143.7 518.4 198.3 528 256 528C313.7 528 368.3 518.3 410.2 500.9C423.4 495.4 436.3 488.7 448 480.6z'/%3E%3C/svg%3E");
+    }
+
+    .result-group .result-page-header[href*="/docs/components/"] .page-icon {
+        background-color: var(--pc-color-primary-on-quiet);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M348 62.7C330.7 52.7 309.3 52.7 292 62.7L207.8 111.3C190.5 121.3 179.8 139.8 179.8 159.8L179.8 261.7L91.5 312.7C74.2 322.7 63.5 341.2 63.5 361.2L63.5 458.5C63.5 478.5 74.2 497 91.5 507L175.8 555.6C193.1 565.6 214.5 565.6 231.8 555.6L320.1 504.6L408.4 555.6C425.7 565.6 447.1 565.6 464.4 555.6L548.5 507C565.8 497 576.5 478.5 576.5 458.5L576.5 361.2C576.5 341.2 565.8 322.7 548.5 312.7L460.2 261.7L460.2 159.8C460.2 139.8 449.5 121.3 432.2 111.3L348 62.7zM296 356.6L296 463.1L207.7 514.1C206.5 514.8 205.1 515.2 203.7 515.2L203.7 409.9L296 356.6zM527.4 357.2C528.1 358.4 528.5 359.8 528.5 361.2L528.5 458.5C528.5 461.4 527 464 524.5 465.4L440.2 514C439 514.7 437.6 515.1 436.2 515.1L436.2 409.8L527.4 357.2zM412.3 159.8L412.3 261.7L320 315L320 208.5L411.2 155.9C411.9 157.1 412.3 158.5 412.3 159.9z'/%3E%3C/svg%3E");
+    }
+
+    .result-group .result-page-header[href*="/docs/layout/"] .page-icon {
+        background-color: var(--pc-color-orange-40);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M97 505.7C101.5 527.5 120.8 544 144 544L496 544C522.5 544 544 522.5 544 496L544 400C544 373.5 522.5 352 496 352L448 352L448 424C448 437.3 437.3 448 424 448C410.7 448 400 437.3 400 424L400 352L336 352L336 424C336 437.3 325.3 448 312 448C298.7 448 288 437.3 288 424L288 352L216 352C202.7 352 192 341.3 192 328C192 314.7 202.7 304 216 304L288 304L288 240L216 240C202.7 240 192 229.3 192 216C192 202.7 202.7 192 216 192L288 192L288 144C288 117.5 266.5 96 240 96L144 96C117.5 96 96 117.5 96 144L96 496C96 499.3 96.3 502.6 97 505.7z'/%3E%3C/svg%3E");
+    }
+
+    .pc-dark
+        .result-group
+        .result-page-header[href*="/docs/layout/"]
+        .page-icon {
+        background-color: var(--pc-color-orange-50);
+    }
+
+    .result-group
+        .result-page-header[href*="/docs/style-utilities/"]
+        .page-icon {
+        background-color: var(--pc-color-pink-40);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M290.4 70C288.9 66.4 285.4 64 281.5 64L262.5 64C258.6 64 255 66.4 253.6 70L232.9 121.7C229.7 129.7 218.3 129.7 215.1 121.7L194.4 70C192.9 66.4 189.4 64 185.5 64L176 64C149.5 64 128 85.5 128 112L128 320L512 320L512 112C512 85.5 490.5 64 464 64L358.5 64C354.6 64 351 66.4 349.6 70L328.9 121.7C325.7 129.7 314.3 129.7 311.1 121.7L290.4 70zM128 368L128 384C128 419.3 156.7 448 192 448L256 448L256 512C256 547.3 284.7 576 320 576C355.3 576 384 547.3 384 512L384 448L448 448C483.3 448 512 419.3 512 384L512 368L128 368zM320 528C311.2 528 304 520.8 304 512C304 503.2 311.2 496 320 496C328.8 496 336 503.2 336 512C336 520.8 328.8 528 320 528z'/%3E%3C/svg%3E");
+    }
+
+    .pc-dark
+        .result-group
+        .result-page-header[href*="/docs/style-utilities/"]
+        .page-icon {
+        background-color: var(--pc-color-pink-60);
+    }
+
+    .result-group .result-page-header[href*="/docs/resources/"] .page-icon {
+        background-color: var(--pc-color-indigo-20);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M480 576L192 576C139 576 96 533 96 480L96 160C96 107 139 64 192 64L496 64C522.5 64 544 85.5 544 112L544 400C544 420.9 530.6 438.7 512 445.3L512 512C529.7 512 544 526.3 544 544C544 561.7 529.7 576 512 576L480 576zM192 448C174.3 448 160 462.3 160 480C160 497.7 174.3 512 192 512L448 512L448 448L192 448zM224 216C224 229.3 234.7 240 248 240L424 240C437.3 240 448 229.3 448 216C448 202.7 437.3 192 424 192L248 192C234.7 192 224 202.7 224 216zM248 288C234.7 288 224 298.7 224 312C224 325.3 234.7 336 248 336L424 336C437.3 336 448 325.3 448 312C448 298.7 437.3 288 424 288L248 288z'/%3E%3C/svg%3E");
+    }
+
+    .pc-dark
+        .result-group
+        .result-page-header[href*="/docs/resources/"]
+        .page-icon {
+        background-color: var(--pc-color-indigo-60);
+    }
+
+    .result-group .result-page-header[href*="/docs/legal/"] .page-icon {
+        background-color: var(--pc-color-text-quiet);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M384 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L398.4 160C393.2 185.8 375.5 207.1 352 217.3L352 512L512 512C529.7 512 544 526.3 544 544C544 561.7 529.7 576 512 576L128 576C110.3 576 96 561.7 96 544C96 526.3 110.3 512 128 512L288 512L288 217.3C264.5 207 246.8 185.7 241.6 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L256 96C270.6 76.6 293.8 64 320 64C346.2 64 369.4 76.6 384 96zM439.6 384L584.4 384L512 259.8L439.6 384zM512 480C449.1 480 396.8 446 386 401.1C383.4 390.1 387 378.8 392.7 369L487.9 205.8C492.9 197.2 502.1 192 512 192C521.9 192 531.1 197.3 536.1 205.8L631.3 369C637 378.8 640.6 390.1 638 401.1C627.2 445.9 574.9 480 512 480zM126.8 259.8L54.4 384L199.3 384L126.8 259.8zM.9 401.1C-1.7 390.1 1.9 378.8 7.6 369L102.8 205.8C107.8 197.2 117 192 126.9 192C136.8 192 146 197.3 151 205.8L246.2 369C251.9 378.8 255.5 390.1 252.9 401.1C242.1 445.9 189.8 480 126.9 480C64 480 11.7 446 .9 401.1z'/%3E%3C/svg%3E");
+    }
+
+    .result-group .result-page-header[href*="/docs/legal/licence/"] .page-icon {
+        background-color: var(--pc-color-cyan-20);
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 640'%3E%3Cpath d='M128 128C128 92.7 156.7 64 192 64L341.5 64C358.5 64 374.8 70.7 386.8 82.7L493.3 189.3C505.3 201.3 512 217.6 512 234.6L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 128zM336 122.5L336 216C336 229.3 346.7 240 360 240L453.5 240L336 122.5zM216 128C202.7 128 192 138.7 192 152C192 165.3 202.7 176 216 176L264 176C277.3 176 288 165.3 288 152C288 138.7 277.3 128 264 128L216 128zM216 224C202.7 224 192 234.7 192 248C192 261.3 202.7 272 216 272L264 272C277.3 272 288 261.3 288 248C288 234.7 277.3 224 264 224L216 224zM286.3 384C275 384 264.4 389.1 257.4 397.9L197.3 473C189 483.3 190.7 498.5 201 506.7C211.3 514.9 226.5 513.3 234.7 502.9L281.8 444.1L297 494.8C300 505 309.4 511.9 320 511.9L424 511.9C437.3 511.9 448 501.2 448 487.9C448 474.6 437.3 463.9 424 463.9L337.9 463.9L321.8 410.3C317.1 394.6 302.7 383.9 286.3 383.9z'/%3E%3C/svg%3E");
+    }
+
+    .pc-dark
+        .result-group
+        .result-page-header[href*="/docs/legal/licence/"]
+        .page-icon {
+        background-color: var(--pc-color-cyan-50);
+    }
+    /* #endregion */
+
+    /* #region — Subresults */
+    .result-group .sub-results-container {
+        display: flex;
+        flex-direction: column;
         gap: 0.125rem;
+        margin-inline-start: 0;
     }
 
-    #search .pagefind-ui__result-link {
-        position: unset;
-        --pagefind-ui-text: var(--pc-color-text-normal);
-        font-weight: var(--pc-font-weight-bold);
-        outline: none;
+    .result-group .sub-result-item {
+        display: flex;
+        position: relative;
+    }
+
+    .result-group .sub-result-item .sub-result-link {
+        display: flex;
+        position: relative;
+        padding-block: var(--pc-spacing-l);
+        padding-inline: var(--pc-spacing-xl);
+        padding-inline-start: calc(var(--pc-spacing-xl) * 3);
+        inline-size: 100%;
+        background-color: var(--pc-color-neutral-fill-normal);
+        color: inherit;
+        border-radius: 0.125rem;
+        text-decoration: none;
+        transition: all var(--pc-transition-fast) ease-in-out;
     }
 
     @media (hover: hover) {
-        #search .pagefind-ui__result-link:hover {
-            text-decoration: none;
+        .result-group .sub-result-item .sub-result-link:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-normal),
+                var(--pc-color-mix-hover)
+            );
         }
     }
 
-    #search .pagefind-ui__result-nested .pagefind-ui__result-link::before {
-        content: unset;
+    .result-group .sub-result-item .sub-result-link:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            var(--pc-color-mix-active)
+        );
     }
 
-    #search .pagefind-ui__result-nested::before {
-        content: "";
+    .result-group .sub-result-item .sub-result-link:focus-visible {
+        z-index: 1;
+    }
+
+    .result-group .sub-result-item.sub-result-item-last .sub-result-link {
+        border-end-start-radius: var(--pc-border-radius-m);
+        border-end-end-radius: var(--pc-border-radius-m);
+    }
+
+    .result-group .sub-result-item .sub-result-link .sub-result-tree-line {
         position: absolute;
         inset-block: 0;
-        inset-inline-start: var(--search-tree-diagram-inline-start);
-        inline-size: var(--search-tree-diagram-size);
+        inset-inline-start: calc(
+            ((var(--pc-spacing-xl) * 3) - (var(--pc-spacing-xl) * 2)) / 2
+        );
+        inline-size: calc(var(--pc-spacing-xl) * 2);
+        block-size: 100%;
         background-color: var(--pc-color-text-quiet);
         mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-linecap='round' viewBox='0 0 16 1000' preserveAspectRatio='xMinYMin slice'%3E%3Cpath d='M8 0v1000m6-988H8'/%3E%3C/svg%3E")
             0% 0% / 100% no-repeat;
@@ -444,92 +742,47 @@ const translation = useTranslations(language);
             0% 0% / 100% no-repeat;
     }
 
-    #search .pagefind-ui__result-nested:last-of-type::before {
+    .result-group
+        .sub-result-item.sub-result-item-last
+        .sub-result-link
+        .sub-result-tree-line {
         mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 16 16'%3E%3Cpath d='M8 0v12m6 0H8'/%3E%3C/svg%3E");
         -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' viewBox='0 0 16 16'%3E%3Cpath d='M8 0v12m6 0H8'/%3E%3C/svg%3E");
     }
 
-    #search .pagefind-ui__result-link::after {
-        content: "";
-        position: absolute;
-        inset: 0;
+    /* Content Styling */
+    .result-group .sub-result-item .sub-result-link .sub-result-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
     }
 
-    #search
-        .pagefind-ui__result-inner
-        > .pagefind-ui__result-title
-        + .pagefind-ui__result-excerpt {
-        display: none;
-    }
-
-    #search .pagefind-ui__result-excerpt {
-        font-size: var(--pc-font-size-s);
-        overflow-wrap: anywhere;
-    }
-
-    #search mark {
-        padding: 0.125em 0.25em;
-        color: var(--pc-color-warning-on-quiet);
-        background-color: var(--pc-color-warning-fill-quiet);
-        border-radius: var(--pc-border-radius-s);
-    }
-
-    #search .pagefind-ui__filter-value::before {
-        border-color: var(--pc-color-neutral-border-normal);
-    }
-
-    #search .pagefind-ui__result-tags {
-        background-color: var(--pc-color-neutral-fill-normal);
-        margin-block-start: 0;
-        padding: var(--search-result-nested-pad-block)
-            var(--search-result-pad-inline-end);
-    }
-
-    #search .pagefind-ui__button {
-        background-color: var(--pc-color-neutral-fill-normal);
-        border-color: var(--pc-color-neutral-border-normal);
-        color: var(--pc-color-neutral-on-normal);
+    .result-group
+        .sub-result-item
+        .sub-result-link
+        .sub-result-content
+        .sub-result-heading {
+        margin-block-end: 0;
+        color: inherit;
         font-weight: var(--pc-font-weight-bold);
-        padding-inline: var(--pc-spacing-m);
-        transition: all var(--pc-transition-fast) ease-in-out;
+        font-size: var(--pc-font-size-m);
     }
 
-    @media (hover: hover) {
-        #search .pagefind-ui__button:hover {
-            background-color: color-mix(
-                in oklab,
-                var(--pc-color-neutral-fill-normal),
-                var(--pc-color-mix-hover)
-            );
+    .result-group
+        .sub-result-item
+        .sub-result-link
+        .sub-result-content
+        .sub-result-excerpt {
+        font-size: var(--pc-font-size-smaller);
+    }
+    /* #endregion */
+    /* #endregion */
+
+    /* #region — Responsive design */
+    @media screen and (max-width: 570px) {
+        .search-dialog .search-footer {
+            flex-direction: column;
         }
     }
-
-    #search .pagefind-ui__button:active {
-        background-color: color-mix(
-            in oklab,
-            var(--pc-color-neutral-fill-normal),
-            var(--pc-color-mix-active)
-        );
-    }
-
-    #search .pagefind-ui__button:focus-visible {
-        outline: var(--pc-focus-ring);
-        outline-offset: var(--pc-focus-ring-offset);
-        animation: focus-ring-animation var(--pc-transition-medium)
-            cubic-bezier(0.33, 1, 0.68, 1);
-    }
-
-    @keyframes focus-ring-animation {
-        0% {
-            outline-width: 0;
-        }
-
-        50% {
-            outline-width: calc(var(--pc-focus-ring-width) * 2);
-        }
-
-        100% {
-            outline-width: var(--pc-focus-ring-width);
-        }
-    }
+    /* #endregion */
 </style>

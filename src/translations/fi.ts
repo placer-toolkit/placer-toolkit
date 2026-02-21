@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Piilota salasana",
     hue: "Värisävy",
     loading: "Ladataan…",
+    maximumValue: "Maksimi",
+    maximumValueDescriptive: (label) => `${label} (maksimi)`,
+    minimumValue: "Minimi",
+    minimumValueDescriptive: (label) => `${label} (minimi)`,
     nextSlide: "Seuraava dia",
     numOptionsSelected: (number) => {
         if (number === 0) {

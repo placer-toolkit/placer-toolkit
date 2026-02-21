@@ -2,12 +2,14 @@ import { html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
-import { watch } from "../../internal/watch.js";
-import { PcIcon } from "../icon/icon.js";
+import { LocalizeController } from "../../utilities/localize.js";
+import { getText } from "../../internal/get-text.js";
+import "../icon/icon.js";
 import styles from "./option.css";
+import { PcSelect } from "../select/select.js";
 
 /**
- * @summary Options define the selectable items within various form controls such as a [select](/components/select).
+ * @summary Options define the selectable items within various form controls such as a select.
  * @status experimental
  * @since 0.5.1
  *
@@ -25,26 +27,56 @@ import styles from "./option.css";
  */
 @customElement("pc-option")
 export class PcOption extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
     private isInitialized = false;
 
-    /** @internal This is an internal class property. */
+    // The localise controller usage is dynamically added by the Select component.
+    private readonly localize = new LocalizeController(this);
+
     @query(".label") defaultSlot!: HTMLSlotElement;
 
-    /** @internal This is an internal class property. */
     @state() current = false;
-    /** @internal This is an internal class property. */
-    @state() selected = false;
+    /** The default label, generated from the element contents. This is equal to the `label` property in most cases. */
+    @state() defaultLabel = "";
 
     /** The option’s value. When selected, the containing form control will receive this value. The value must be unique from other options in the same group. Values must not contain spaces, as spaces are used as delimiters when listing multiple values. */
     @property({ reflect: true }) value = "";
 
     /** Disables the option, preventing selection. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
+
+    /** @internal — An internal property to detect if the option is selected. */
+    @property({ type: Boolean, attribute: false }) selected = false;
+
+    /** Selects an option initially. */
+    @property({ type: Boolean, attribute: "selected" }) defaultSelected = false;
+
+    _label: string = "";
+
+    get label(): string {
+        if (this._label) {
+            return this._label;
+        }
+
+        if (!this.defaultLabel) {
+            this.updateDefaultLabel();
+        }
+
+        return this.defaultLabel;
+    }
+
+    /** The option’s plain text label. This is usually automatically generated, but can be useful to provide manually for cases involving complex content. */
+    @property()
+    set label(value) {
+        const oldValue = this._label;
+
+        this._label = value || "";
+
+        if (this._label !== oldValue) {
+            this.requestUpdate("label", oldValue);
+        }
+    }
 
     connectedCallback() {
         super.connectedCallback();
@@ -53,6 +85,8 @@ export class PcOption extends PlacerElement {
 
         this.addEventListener("mouseenter", this.handleHover);
         this.addEventListener("mouseleave", this.handleHover);
+
+        this.updateDefaultLabel();
     }
 
     disconnectedCallback() {
@@ -63,18 +97,19 @@ export class PcOption extends PlacerElement {
     }
 
     private handleDefaultSlotChange() {
-        if (!this.isInitialized) {
-            this.isInitialized = true;
+        this.updateDefaultLabel();
 
-            queueMicrotask(() => {
-                customElements.whenDefined("pc-select").then(() => {
-                    const controller = this.closest("pc-select");
+        if (this.isInitialized) {
+            customElements.whenDefined("pc-select").then(() => {
+                const controller = this.closest("pc-select");
 
-                    if (controller) {
-                        controller.handleDefaultSlotChange();
-                    }
-                });
+                if (controller) {
+                    controller.handleDefaultSlotChange();
+                    controller.selectionChanged?.();
+                }
             });
+        } else {
+            this.isInitialized = true;
         }
     }
 
@@ -85,6 +120,21 @@ export class PcOption extends PlacerElement {
             this.customStates.set("hover", false);
         }
     };
+
+    protected willUpdate(changedProperties: PropertyValues<this>): void {
+        if (changedProperties.has("defaultSelected")) {
+            if (!this.closest<PcSelect>("pc-select")?.hasInteracted) {
+                if (this.defaultSelected) {
+                    const oldValue = this.selected;
+
+                    this.selected = this.defaultSelected;
+                    this.requestUpdate("selected", oldValue);
+                }
+            }
+        }
+
+        super.willUpdate(changedProperties);
+    }
 
     updated(changedProperties: PropertyValues<this>) {
         super.updated(changedProperties);
@@ -105,56 +155,43 @@ export class PcOption extends PlacerElement {
             this.handleDefaultSlotChange();
         }
 
+        if (changedProperties.has("value")) {
+            if (typeof this.value !== "string") {
+                this.value = String(this.value);
+            }
+
+            this.handleDefaultSlotChange();
+        }
+
         if (changedProperties.has("current")) {
             this.customStates.set("current", this.current);
         }
     }
 
-    /** @internal This is an internal method. */
-    @watch("disabled")
-    handleDisabledChange() {
-        this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
-    }
+    protected firstUpdated(changedProperties: PropertyValues<this>) {
+        super.firstUpdated(changedProperties);
 
-    /** @internal This is an internal method. */
-    @watch("selected")
-    handleSelectedChange() {
-        this.setAttribute("aria-selected", this.selected ? "true" : "false");
-    }
+        if (this.selected && !this.defaultSelected) {
+            const parent = this.closest<PcSelect>("pc-select");
 
-    /** @internal This is an internal method. */
-    @watch("value")
-    handleValueChange() {
-        if (typeof this.value !== "string") {
-            this.value = String(this.value);
-        }
-
-        if (this.value.includes(" ")) {
-            console.warn(
-                `Option values must not contain a space. All spaces have been replaced with underscores. ${this}`,
-            );
-            this.value = this.value.replace(/ /g, "_");
+            if (parent && !parent.hasInteracted) {
+                parent.selectionChanged?.();
+            }
         }
     }
 
-    /** Returns a plain text label based on the option’s content. */
-    getTextLabel() {
-        const nodes = this.childNodes;
-        let label = "";
+    private updateDefaultLabel() {
+        let oldValue = this.defaultLabel;
 
-        [...nodes].forEach((node) => {
-            if (node.nodeType === Node.ELEMENT_NODE) {
-                if (!(node as HTMLElement).hasAttribute("slot")) {
-                    label += (node as HTMLElement).textContent;
-                }
-            }
+        this.defaultLabel = getText(this).trim();
 
-            if (node.nodeType === Node.TEXT_NODE) {
-                label += node.textContent;
-            }
-        });
+        let changed = this.defaultLabel !== oldValue;
 
-        return label.trim();
+        if (!this._label && changed) {
+            this.requestUpdate("label", oldValue);
+        }
+
+        return changed;
     }
 
     render() {

@@ -19,6 +19,10 @@ const translation: Translation = {
     hidePassword: "پاسورډ پټول",
     hue: "د رنګ ټون",
     loading: "په بارولو کې دی…",
+    maximumValue: "اعظمي",
+    maximumValueDescriptive: (label) => `${label} (اعظمي ارزښت)`,
+    minimumValue: "کمترين",
+    minimumValueDescriptive: (label) => `${label} (کمترين ارزښت)`,
     nextSlide: "راتلونکی سلايډ",
     numOptionsSelected: (number) => {
         if (number === 0) {

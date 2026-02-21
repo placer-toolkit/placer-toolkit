@@ -1,5 +1,5 @@
 import { createHighlighter, type Highlighter } from "shiki";
-import { placerEclipse } from "../styles/syntax/placer-eclipse";
+import { placerEclipse } from "../styles/syntax/placer-eclipse.ts";
 
 const globalShiki = globalThis as unknown as {
     shikiPromise?: Promise<Highlighter>;

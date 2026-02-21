@@ -18,7 +18,6 @@ import styles from "./spinner.css";
  */
 @customElement("pc-spinner")
 export class PcSpinner extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private readonly localize = new LocalizeController(this);

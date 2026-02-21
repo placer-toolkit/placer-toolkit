@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "パスワードを隠す",
     hue: "色相",
     loading: "読み込み中…",
+    maximumValue: "最大",
+    maximumValueDescriptive: (label) => `${label}（最大値）`,
+    minimumValue: "最小",
+    minimumValueDescriptive: (label) => `${label}（最小値）`,
     nextSlide: "次のスライド",
     numOptionsSelected: (number) => {
         if (number === 0) {

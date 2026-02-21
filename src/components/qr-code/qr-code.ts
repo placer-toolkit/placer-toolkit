@@ -15,10 +15,8 @@ import styles from "./qr-code.css";
  */
 @customElement("pc-qr-code")
 export class PcQrCode extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
-    /** @internal This is an internal class property. */
     @query("canvas") canvas!: HTMLElement;
 
     /** The QR code’s value. */
@@ -50,7 +48,6 @@ export class PcQrCode extends PlacerElement {
         this.generate();
     }
 
-    /** @internal This is an internal method. */
     @watch(["background", "errorCorrection", "fill", "radius", "size", "value"])
     generate() {
         if (!this.hasUpdated) {

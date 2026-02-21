@@ -1,6 +1,15 @@
-import type { PcDropdownItem } from "../components/dropdown-item/dropdown-item.js";
+export class PcSelectEvent extends Event {
+    readonly detail;
 
-export type PcSelectEvent = CustomEvent<{ item: PcDropdownItem }>;
+    constructor(detail: PcSelectEventDetail) {
+        super("pc-select", { bubbles: true, cancelable: true, composed: true });
+        this.detail = detail;
+    }
+}
+
+interface PcSelectEventDetail {
+    item: Element;
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

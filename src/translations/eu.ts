@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Ezkutatu pasahitza",
     hue: "Kolore‐tona",
     loading: "Kargatzen…",
+    maximumValue: "Maximo",
+    maximumValueDescriptive: (label) => `${label} (maximo)`,
+    minimumValue: "Minimo",
+    minimumValueDescriptive: (label) => `${label} (minimo)`,
     nextSlide: "Hurrengo diapositiba",
     numOptionsSelected: (number) => {
         if (number === 0) {

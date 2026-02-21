@@ -19,6 +19,10 @@ const translation: Translation = {
     hidePassword: "إخفاء كلمة المرور",
     hue: "درجة اللون",
     loading: "جاري التحميل…",
+    maximumValue: "الحد الأقصى",
+    maximumValueDescriptive: (label) => `${label} (الحد الأقصى)`,
+    minimumValue: "الحد الأدنى",
+    minimumValueDescriptive: (label) => `${label} (الحد الأدنى)`,
     nextSlide: "الشريحة التالية",
     numOptionsSelected: (number) => {
         if (number === 0) {

@@ -5,9 +5,9 @@ export const defaultValue =
     (propertyName = "value") =>
     (proto: ReactiveElement, key: string) => {
         const constructor = proto.constructor as typeof ReactiveElement;
-
         const attributeChangedCallback =
             constructor.prototype.attributeChangedCallback;
+
         constructor.prototype.attributeChangedCallback = function (
             this: ReactiveElement & { [name: string]: unknown },
             name,

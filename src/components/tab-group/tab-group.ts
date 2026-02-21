@@ -9,12 +9,13 @@ import {
 import { PlacerElement } from "../../internal/placer-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcTabHideEvent } from "../../events/pc-tab-hide.js";
+import { PcTabShowEvent } from "../../events/pc-tab-show.js";
 import { scrollIntoView } from "../../internal/scroll.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import "../../internal/scrollend-polyfill.js";
-import { PcButton } from "../button/button.js";
-import { PcResizeObserver } from "../resize-observer/resize-observer.js";
+import "../button/button.js";
+import "../resize-observer/resize-observer.js";
 import type { PcTab } from "../tab/tab.js";
 import type { PcTabPanel } from "../tab-panel/tab-panel.js";
 import styles from "./tab-group.css";
@@ -48,13 +49,7 @@ import styles from "./tab-group.css";
  */
 @customElement("pc-tab-group")
 export class PcTabGroup extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = {
-        "pc-button": PcButton,
-        "pc-resize-observer": PcResizeObserver,
-    };
 
     private readonly localize = new LocalizeController(this);
 
@@ -65,13 +60,9 @@ export class PcTabGroup extends PlacerElement {
     private focusableTabs: PcTab[] = [];
     private panels: PcTabPanel[] = [];
 
-    /** @internal This is an internal class property. */
     @query(".tab-group") tabGroup!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query(".body") body!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query(".navigation") navigation!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query(".indicator") indicator!: HTMLElement;
 
     @state() private hasScrollControls = false;
@@ -378,14 +369,14 @@ export class PcTabGroup extends PlacerElement {
 
             if (options.emitEvents) {
                 if (previousTab) {
-                    emit(this, "pc-tab-hide", {
-                        detail: { name: previousTab.panel },
-                    });
+                    this.dispatchEvent(
+                        new PcTabHideEvent({ name: previousTab.panel }),
+                    );
                 }
 
-                emit(this, "pc-tab-show", {
-                    detail: { name: this.activeTab.panel },
-                });
+                this.dispatchEvent(
+                    new PcTabShowEvent({ name: this.activeTab.panel }),
+                );
             }
         }
     }
@@ -395,6 +386,7 @@ export class PcTabGroup extends PlacerElement {
             const panel = this.panels.find(
                 (element) => element.name === tab.panel,
             );
+
             if (panel) {
                 tab.setAttribute("aria-controls", panel.getAttribute("id")!);
                 panel.setAttribute("aria-labelledby", tab.getAttribute("id")!);
@@ -456,7 +448,9 @@ export class PcTabGroup extends PlacerElement {
         direction: "forward" | "backward",
     ) {
         let nextTab = null;
+
         const iterator = direction === "forward" ? 1 : -1;
+
         let nextIndex = currentIndex + iterator;
 
         while (currentIndex < this.tabs.length) {
@@ -505,7 +499,6 @@ export class PcTabGroup extends PlacerElement {
             : this.navigation.scrollLeft;
     }
 
-    /** @internal This is an internal method. */
     @watch("noScrollControls", { waitUntilFirstUpdate: true })
     updateScrollControls() {
         if (this.noScrollControls) {
@@ -519,7 +512,6 @@ export class PcTabGroup extends PlacerElement {
         this.updateScrollButtons();
     }
 
-    /** @internal This is an internal method. */
     @watch("placement", { waitUntilFirstUpdate: true })
     syncIndicator() {
         const tab = this.getActiveTab();

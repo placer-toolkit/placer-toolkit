@@ -19,7 +19,6 @@ import styles from "./callout.css";
  */
 @customElement("pc-callout")
 export class PcCallout extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = [appearanceStyles, sizeStyles, styles];
 
     /** The callout’s appearance. */
@@ -35,16 +34,15 @@ export class PcCallout extends PlacerElement {
         | "accent"
         | "filled"
         | "outlined"
-        | "plain"
-        | "accent outlined"
-        | "filled outlined" = "filled outlined";
+        | "filled outlined"
+        | "plain" = "filled outlined";
 
     /** The callout’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
     render() {
         return html`
-            <aside part="base" class="callout" aria-live="polite">
+            <aside part="base" class="callout">
                 <div part="icon">
                     <slot name="icon" aria-hidden="true"></slot>
                 </div>

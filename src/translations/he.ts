@@ -19,6 +19,10 @@ const translation: Translation = {
     hidePassword: "הסתר סיסמה",
     hue: "גוון צבע",
     loading: "טוען…",
+    maximumValue: "מקסימום",
+    maximumValueDescriptive: (label) => `${label} (מקסימום)`,
+    minimumValue: "מינימום",
+    minimumValueDescriptive: (label) => `${label} (מינימום)`,
     nextSlide: "השקופית הבאה",
     numOptionsSelected: (number) => {
         if (number === 0) {

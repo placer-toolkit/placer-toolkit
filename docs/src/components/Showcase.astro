@@ -160,7 +160,7 @@ const translatePath = useTranslatedPath(language);
     const beforePanel = document.querySelector('pc-tab-panel[name="before"]');
 
     beforePanel?.querySelectorAll("pc-select").forEach((select) => {
-        select.addEventListener("pc-change", () => {
+        select.addEventListener("change", () => {
             updateIframeSettings(beforeFrame, beforePanel);
         });
     });
@@ -168,7 +168,7 @@ const translatePath = useTranslatedPath(language);
     const afterPanel = document.querySelector('pc-tab-panel[name="after"]');
 
     afterPanel?.querySelectorAll("pc-select").forEach((select) => {
-        select.addEventListener("pc-change", () => {
+        select.addEventListener("change", () => {
             updateIframeSettings(afterFrame, afterPanel);
         });
     });

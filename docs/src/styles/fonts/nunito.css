@@ -5,6 +5,7 @@
     font-weight: 200 1000;
     font-style: normal;
     font-display: swap;
+    font-feature-settings: "ss01" on;
 }
 
 /* Nunito (Italic) */
@@ -14,4 +15,5 @@
     font-weight: 200 1000;
     font-style: italic;
     font-display: swap;
+    font-feature-settings: "ss01" on;
 }

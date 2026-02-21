@@ -69,8 +69,8 @@ Use the `placeholder` attribute to add a placeholder.
 Use the `clearable` attribute to make the select clearable. The clear button only appears when an option is selected.
 
 ```demo
-<pc-select value="option-1" clearable>
-    <pc-option value="option-1">Option 1</pc-option>
+<pc-select clearable>
+    <pc-option value="option-1" selected>Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
 </pc-select>
@@ -114,13 +114,13 @@ Use the `disabled` attribute to disable the select.
 
 ### Multiple options
 
-To allow multiple options to be selected, use the `multiple` attribute. It’s a good practice to use the `clearable` attribute as well when this option is enabled. To set multiple values at once, set `value` to a space‐delimited list of values.
+To allow multiple options to be selected, use the `multiple` attribute. It’s a good practice to use the `clearable` attribute as well when this option is enabled.
 
 ```demo
-<pc-select label="Select a few options" value="option-1 option-2 option-3" multiple clearable>
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
+<pc-select label="Select a few options" multiple clearable>
+    <pc-option value="option-1" selected>Option 1</pc-option>
+    <pc-option value="option-2" selected>Option 2</pc-option>
+    <pc-option value="option-3" selected>Option 3</pc-option>
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
@@ -139,15 +139,13 @@ To allow multiple options to be selected, use the `multiple` attribute. It’s a
 
 ### Setting initial values
 
-Use the `value` attribute to set the initial selection.
-
-When using the `multiple` attribute, the `value` attribute uses space‐delimited values to select more than one option. Because of this, `<pc-option>` values cannot contain spaces. If you’re accessing the `value` property through JavaScript, it will be an array.
+Use the `selected` attribute on the [Option](/docs/components/option) component to set the initial selection.
 
 ```demo
-<pc-select value="option-1 option-2 option-3" multiple clearable>
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
+<pc-select multiple clearable>
+    <pc-option value="option-1" selected>Option 1</pc-option>
+    <pc-option value="option-2" selected>Option 2</pc-option>
+    <pc-option value="option-3" selected>Option 3</pc-option>
     <pc-option value="option-4">Option 4</pc-option>
     <pc-option value="option-5">Option 5</pc-option>
     <pc-option value="option-6">Option 6</pc-option>
@@ -225,6 +223,7 @@ Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid 
         slot="prefix"
     ></pc-icon>
     <pc-badge slot="suffix">New</pc-badge>
+
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
@@ -240,6 +239,7 @@ Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid 
         slot="prefix"
     ></pc-icon>
     <pc-badge slot="suffix">New</pc-badge>
+
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
@@ -255,6 +255,7 @@ Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid 
         slot="prefix"
     ></pc-icon>
     <pc-badge slot="suffix">New</pc-badge>
+
     <pc-option value="option-1">Option 1</pc-option>
     <pc-option value="option-2">Option 2</pc-option>
     <pc-option value="option-3">Option 3</pc-option>
@@ -271,11 +272,10 @@ Remember that custom tags are rendered in a shadow root. To style them, you can 
 <pc-select
     class="custom-tags"
     placeholder="Select one"
-    value="e-mail phone"
     multiple
     clearable
 >
-    <pc-option value="e-mail">
+    <pc-option value="e-mail" selected>
         <pc-icon
             library="default"
             icon-style="solid"
@@ -284,7 +284,7 @@ Remember that custom tags are rendered in a shadow root. To style them, you can 
         ></pc-icon>
         E‐mail
     </pc-option>
-    <pc-option value="phone">
+    <pc-option value="phone" selected>
         <pc-icon
             library="default"
             icon-style="solid"
@@ -312,14 +312,14 @@ Remember that custom tags are rendered in a shadow root. To style them, you can 
 
         // A string, Lit template or HTMLElement can be returned here
         return `
-            <pc-tag removable>
+            <pc-tag data-value="${option.value}" removable>
                 <pc-icon
                     library="default"
                     icon-style="solid"
                     name="${name}"
                     style="padding-inline-end: var(--pc-spacing-s)"
                 ></pc-icon>
-                ${option.getTextLabel()}
+                ${option.label}
             </pc-tag>
         `;
     };
@@ -336,14 +336,14 @@ Here are the following conditions:
 
 For example, `<pc-select value="foo">` will have a value of `""` until `<pc-option value="foo">Foo</pc-option>` connects, at which point its value will become `"foo"` when submitting.
 
-- If a `<pc-select multiple>` with an initial value has multiple values, but only some of the options are present, it will only respect the options that are present, and if a selected option is loaded in later, **and** the value of the select has not changed via user interaction or direct property assignment, it will add the selected option ot the form value and to the `.value` of the select.
+- If a `<pc-select multiple>` with an initial value has multiple values, but only some of the options are present, it will only respect the options that are present, and if a selected option is loaded in later, **and** the value of the select has not changed via user interaction or direct property assignment, it will add the selected option to the form value and to the `value` property of the select.
 
 This can be hard to conceptualise, so here’s a fairly large example showing how lazy‐loaded options work with `<pc-select>` and `<pc-select multiple>` when given initial value attributes. Feel free to play around with it in this code demo.
 
 ```demo
 <form id="lazy-options-example">
     <div>
-        <pc-select name="select-1" value="foo" label="Single select (with existing options)">
+        <pc-select name="select-1" label="Single select (with existing options)">
             <pc-option value="bar">Bar</pc-option>
             <pc-option value="baz">Baz</pc-option>
         </pc-select>
@@ -357,7 +357,6 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
         <pc-select
             label="Single select (with no existing options)"
             name="select-2"
-            value="foo"
         ></pc-select>
         <br />
         <pc-button type="button">Add “foo” option</pc-button>
@@ -369,11 +368,10 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
         <pc-select
             label="Multiple select (with existing options)"
             name="select-3"
-            value="foo bar baz"
             multiple
         >
-            <pc-option value="bar">Bar</pc-option>
-            <pc-option value="baz">Baz</pc-option>
+            <pc-option value="bar" selected>Bar</pc-option>
+            <pc-option value="baz" selected>Baz</pc-option>
         </pc-select>
         <br />
         <pc-button type="button">Add “foo” option</pc-button>
@@ -385,7 +383,6 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
         <pc-select
             label="Multiple select (with no existing options)"
             name="select-4"
-            value="foo"
             multiple
         ></pc-select>
         <br />
@@ -405,8 +402,10 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
 </form>
 
 <script>
-    function addFooOption(e) {
-        const addFooButton = e.target.closest('pc-button[type="button"]');
+    function addFooOption(event) {
+        const addFooButton = event.target.closest(
+            'pc-button[type="button"]'
+        );
 
         if (!addFooButton) {
             return;
@@ -421,11 +420,13 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
         const option = document.createElement("pc-option");
 
         option.setAttribute("value", "foo");
+        option.setAttribute("selected", "");
         option.innerText = "Foo";
+
         select.append(option);
     }
 
-    function handleLazySubmit (event) {
+    function handleLazySubmit(event) {
         event.preventDefault();
 
         const formData = new FormData(event.target);

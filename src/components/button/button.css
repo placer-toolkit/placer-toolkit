@@ -199,39 +199,55 @@
 }
 
 :host(
-        [data-pc-button-group-button-first]:not(
-            [data-pc-button-group-button-last]
-        )
+        .pc-button-group-horizontal.pc-button-group-button-first:not(
+                .pc-button-group-button-last
+            )
     )
     .button {
     border-start-end-radius: 0;
     border-end-end-radius: 0;
 }
 
-:host([data-pc-button-group-button-inner]) .button {
-    border-radius: 0;
-}
-
 :host(
-        [data-pc-button-group-button-last]:not(
-            [data-pc-button-group-button-first]
-        )
+        .pc-button-group-horizontal.pc-button-group-button-last:not(
+                .pc-button-group-button-first
+            )
     )
     .button {
     border-start-start-radius: 0;
     border-end-start-radius: 0;
 }
 
-:host([data-pc-button-group-button]:not([data-pc-button-group-button-first])) {
-    margin-inline-start: calc(-1 * var(--pc-input-border-width));
+:host(
+        .pc-button-group-vertical.pc-button-group-button-first:not(
+                .pc-button-group-button-last
+            )
+    )
+    .button {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
 }
 
-:host([data-pc-button-group-button-hover]),
-:host([data-pc-button-group-button-focus]) {
+:host(
+        .pc-button-group-vertical.pc-button-group-button-last:not(
+                .pc-button-group-button-first
+            )
+    )
+    .button {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+}
+
+:host(.pc-button-group-button-inner) .button {
+    border-radius: 0;
+}
+
+:host(.pc-button-group-button-hover),
+:host(.pc-button-group-button-focus) {
     z-index: 1;
 }
 
-:host([data-pc-button-group-button][checked]) {
+:host(.pc-button-group-button[checked]) {
     z-index: 2;
 }
 

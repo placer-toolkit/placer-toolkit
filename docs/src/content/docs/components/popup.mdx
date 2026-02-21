@@ -75,11 +75,11 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
     const active = container.querySelector('pc-switch[name="active"]');
     const arrow = container.querySelector('pc-switch[name="arrow"]');
 
-    select.addEventListener("pc-change", () => (popup.placement = select.value));
+    select.addEventListener("change", () => (popup.placement = select.value));
     distance.addEventListener("pc-input", () => (popup.distance = distance.value));
     skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
-    active.addEventListener("pc-change", () => (popup.active = active.checked));
-    arrow.addEventListener("pc-change", () => (popup.arrow = arrow.checked));
+    active.addEventListener("change", () => (popup.active = active.checked));
+    arrow.addEventListener("change", () => (popup.arrow = arrow.checked));
 </script>
 
 <style>
@@ -159,7 +159,7 @@ Popups are inactive and hidden until the `active` attribute is applied. Removing
     const popup = container.querySelector("pc-popup");
     const active = container.querySelector("pc-switch");
 
-    active.addEventListener("pc-change", () => (popup.active = active.checked));
+    active.addEventListener("change", () => (popup.active = active.checked));
 </script>
 
 <style>
@@ -248,7 +248,7 @@ Since placement is preferred when using `flip`, you can observe the popup’s cu
     const popup = container.querySelector("pc-popup");
     const placement = container.querySelector("pc-select");
 
-    placement.addEventListener("pc-change", () => (popup.placement = placement.value));
+    placement.addEventListener("change", () => (popup.placement = placement.value));
 </script>
 
 <style>
@@ -442,9 +442,9 @@ By default, the arrow will be aligned as close to the centre of the anchor as po
     const arrowPlacement = container.querySelector('pc-select[name="arrow-placement"]');
     const arrow = container.querySelector('pc-switch[name="arrow"]');
 
-    placement.addEventListener("pc-change", () => (popup.placement = placement.value));
-    arrowPlacement.addEventListener("pc-change", () => (popup.arrowPlacement = arrowPlacement.value));
-    arrow.addEventListener("pc-change", () => (popup.arrow = arrow.checked));
+    placement.addEventListener("change", () => (popup.placement = placement.value));
+    arrowPlacement.addEventListener("change", () => (popup.arrowPlacement = arrowPlacement.value));
+    arrow.addEventListener("change", () => (popup.arrow = arrow.checked));
 </script>
 
 <style>
@@ -511,7 +511,7 @@ Use the `sync` attribute to make the popup the same with or height as the anchor
     const popup = container.querySelector("pc-popup");
     const sync = container.querySelector("pc-select");
 
-    sync.addEventListener("pc-change", () => (popup.sync = sync.value));
+    sync.addEventListener("change", () => (popup.sync = sync.value));
 </script>
 
 <style>
@@ -562,7 +562,7 @@ Scroll the container to see how the popup flips to prevent clipping.
     const popup = container.querySelector("pc-popup");
     const flip = container.querySelector("pc-switch");
 
-    flip.addEventListener("pc-change", () => (popup.flip = flip.checked));
+    flip.addEventListener("change", () => (popup.flip = flip.checked));
 </script>
 
 <style>
@@ -682,7 +682,7 @@ Toggle the switch to see the demo in action.
     const popup = container.querySelector("pc-popup");
     const shift = container.querySelector("pc-switch");
 
-    shift.addEventListener("pc-change", () => (popup.shift = shift.checked));
+    shift.addEventListener("change", () => (popup.shift = shift.checked));
 </script>
 
 <style>
@@ -747,7 +747,7 @@ Scroll the container to see the popup resize as its available space changes.
     const popup = container.querySelector("pc-popup");
     const autoSize = container.querySelector("pc-switch");
 
-    autoSize.addEventListener("pc-change", () => {
+    autoSize.addEventListener("change", () => {
         popup.autoSize = autoSize.checked ? "both" : "";
     });
 </script>
@@ -838,7 +838,7 @@ When a gap exists between the anchor and the popup, this option will add a “ho
     const distance = container.querySelector('pc-input[label="Distance"]');
     const skidding = container.querySelector('pc-input[label="Skidding"]');
 
-    hoverBridge.addEventListener("pc-change", () => (popup.hoverBridge = hoverBridge.checked));
+    hoverBridge.addEventListener("change", () => (popup.hoverBridge = hoverBridge.checked));
     distance.addEventListener("pc-input", () => (popup.distance = distance.value));
     skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
 </script>
@@ -932,7 +932,7 @@ This demo anchors a popup to the mouse cursor using a virtual element. As such, 
         }
     };
 
-    enabled.addEventListener("pc-change", () => {
+    enabled.addEventListener("change", () => {
         popup.active = enabled.checked;
     });
 

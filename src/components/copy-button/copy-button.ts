@@ -7,9 +7,11 @@ import {
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
 import { LocalizeController } from "../../utilities/localize.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
-import { PcTooltip } from "../tooltip/tooltip.js";
+import { PcCopyEvent } from "../../events/pc-copy.js";
+import { PcErrorEvent } from "../../events/pc-error.js";
+import "../icon/icon.js";
+import "../tooltip/tooltip.js";
+import type { PcTooltip } from "../tooltip/tooltip.js";
 import styles from "./copy-button.css";
 
 setDefaultAnimation("copy.in", {
@@ -68,35 +70,26 @@ setDefaultAnimation("copy.out", {
  */
 @customElement("pc-copy-button")
 export class PcCopyButton extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon, "pc-tooltip": PcTooltip };
 
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query('slot[name="copy-icon"]') copyIcon!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query('slot[name="success-icon"]') successIcon!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query('slot[name="error-icon"]') errorIcon!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query("pc-tooltip") tooltip!: PcTooltip;
 
-    /** @internal This is an internal class property. */
     @state() isCopying = false;
-    /** @internal This is an internal class property. */
     @state() status: "rest" | "success" | "error" = "rest";
 
     /** The text value to copy. */
     @property() value = "";
 
-    /**An id that references an element in the same document from which data will be copied. If both this and `value` are present, this value will take precedence. By default, the target element’s `textContent` will be copied. To copy an attribute, append the attribute name wrapped in square brackets (e.g., `from="element[value]"`). To copy a property, append a dot and the property name (e.g., `from="element.value"`). */
+    /** An id that references an element in the same document from which data will be copied. If both this and `value` are present, this value will take precedence. By default, the target element’s `textContent` will be copied. To copy an attribute, append the attribute name wrapped in square brackets (e.g., `from="element[value]"`). To copy a property, append a dot and the property name (e.g., `from="element.value"`). */
     @property() from = "";
 
     /** Disables the copy button. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** A custom label to show in the tooltip. */
     @property({ attribute: "copy-label" }) copyLabel = "";
@@ -155,25 +148,21 @@ export class PcCopyButton extends PlacerElement {
                 }
             } else {
                 this.showStatus("error");
-                emit(this, "pc-error");
+                this.dispatchEvent(new PcErrorEvent());
             }
         }
 
         if (!valueToCopy) {
             this.showStatus("error");
-            emit(this, "pc-error");
+            this.dispatchEvent(new PcErrorEvent());
         } else {
             try {
                 await navigator.clipboard.writeText(valueToCopy);
                 this.showStatus("success");
-                emit(this, "pc-copy", {
-                    detail: {
-                        value: valueToCopy,
-                    },
-                });
+                this.dispatchEvent(new PcCopyEvent({ value: valueToCopy }));
             } catch {
                 this.showStatus("error");
-                emit(this, "pc-error");
+                this.dispatchEvent(new PcErrorEvent());
             }
         }
     }
@@ -193,9 +182,12 @@ export class PcCopyButton extends PlacerElement {
             hideAnimation.keyframes,
             hideAnimation.options,
         ).finished;
+
         this.copyIcon.hidden = true;
         this.status = status;
+
         iconToShow.hidden = false;
+
         await iconToShow.animate(showAnimation.keyframes, showAnimation.options)
             .finished;
 
@@ -204,9 +196,11 @@ export class PcCopyButton extends PlacerElement {
                 hideAnimation.keyframes,
                 hideAnimation.options,
             ).finished;
+
             iconToShow.hidden = true;
             this.status = "rest";
             this.copyIcon.hidden = false;
+
             await this.copyIcon.animate(
                 showAnimation.keyframes,
                 showAnimation.options,
@@ -215,6 +209,21 @@ export class PcCopyButton extends PlacerElement {
             this.tooltip.content = copyLabel;
             this.isCopying = false;
         }, this.feedbackDuration);
+    }
+
+    private get currentStatus() {
+        const copyLabel = this.copyLabel || this.localize.term("copy");
+        const successLabel = this.successLabel || this.localize.term("copied");
+        const errorLabel = this.errorLabel || this.localize.term("error");
+
+        switch (this.status) {
+            case "success":
+                return successLabel;
+            case "error":
+                return errorLabel;
+            default:
+                return copyLabel;
+        }
     }
 
     render() {
@@ -242,6 +251,7 @@ export class PcCopyButton extends PlacerElement {
                     type="button"
                     part="button"
                     ?disabled=${this.disabled}
+                    aria-label=${this.currentStatus}
                     @click=${this.handleCopy}
                 >
                     <slot part="copy-icon" name="copy-icon">

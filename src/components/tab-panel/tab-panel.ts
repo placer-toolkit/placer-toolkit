@@ -18,7 +18,6 @@ let id = 0;
  */
 @customElement("pc-tab-panel")
 export class PcTabPanel extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private readonly attributeID = ++id;

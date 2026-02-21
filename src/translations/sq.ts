@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Fshih fjalëkalimin",
     hue: "Ton ngjyre",
     loading: "Duke u ngarkuar…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Diapozitivi tjetër",
     numOptionsSelected: (number) => {
         if (number === 0) {

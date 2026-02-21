@@ -1,8 +1,8 @@
 import { html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
+import { PcMutationEvent } from "../../events/pc-mutation.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import styles from "./mutation-observer.css";
 
 /**
@@ -16,7 +16,6 @@ import styles from "./mutation-observer.css";
  */
 @customElement("pc-mutation-observer")
 export class PcMutationObserver extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private mutationObserver!: MutationObserver;
@@ -49,7 +48,7 @@ export class PcMutationObserver extends PlacerElement {
     childList = false;
 
     /** Disables the mutation observer. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     connectedCallback() {
         super.connectedCallback();
@@ -67,9 +66,7 @@ export class PcMutationObserver extends PlacerElement {
     }
 
     private handleMutation = (mutationList: MutationRecord[]) => {
-        emit(this, "pc-mutation", {
-            detail: { mutationList },
-        });
+        this.dispatchEvent(new PcMutationEvent({ mutationList }));
     };
 
     private startObserver() {
@@ -97,7 +94,6 @@ export class PcMutationObserver extends PlacerElement {
         this.mutationObserver.disconnect();
     }
 
-    /** @internal This is an internal method. */
     @watch("disabled")
     handleDisabledChange() {
         if (this.disabled) {
@@ -107,7 +103,6 @@ export class PcMutationObserver extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch(
         [
             "attribute",

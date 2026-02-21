@@ -40,7 +40,7 @@ export class PlacerElement extends LitElement {
             this.internals = this.attachInternals();
         } catch {
             console.error(
-                "Element internals are not supported in your browser. Consider using a polyfill.",
+                "ElementInternals are not supported in your browser. Consider using a polyfill.",
             );
         }
 
@@ -115,10 +115,20 @@ export class PlacerElement extends LitElement {
                 return;
             }
 
-            if (active) {
-                this.internals.states.add(customState);
-            } else {
-                this.internals.states.delete(customState);
+            try {
+                if (active) {
+                    this.internals.states.add(customState);
+                } else {
+                    this.internals.states.delete(customState);
+                }
+            } catch (event) {
+                if (String(event).includes("must start with '--'")) {
+                    console.error(
+                        "Your browser implements an outdated version of `CustomStateSet`. Consider using a polyfill.",
+                    );
+                } else {
+                    throw event;
+                }
             }
         },
 
@@ -131,4 +141,17 @@ export class PlacerElement extends LitElement {
             return this.internals.states.has(customState);
         },
     };
+
+    /** @internal Given a native event, this function cancels it and dispatches it again from the host element using the desired event options. */
+    relayNativeEvent(event: Event, eventOptions?: EventInit) {
+        event.stopImmediatePropagation();
+
+        /** @internal This triggers an error in CEM, so we need to ignore it. */
+        this.dispatchEvent(
+            new (event.constructor as typeof Event)(event.type, {
+                ...event,
+                ...eventOptions,
+            }),
+        );
+    }
 }

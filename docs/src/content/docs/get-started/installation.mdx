@@ -176,7 +176,7 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
         If you want to use the tarball file, download the tarball file into the root of your project first.
 
         <pc-button
-            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.3/placer-toolkit-1.0.0-alpha.3.tgz"
+            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.4/placer-toolkit-1.0.0-alpha.4.tgz"
             appearance="primary"
             pill
             download
@@ -248,13 +248,13 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
     </pc-tab-panel>
 </pc-tab-group>
 
-### What’s the difference between `cdn` and `dist`?
+### Difference between `cdn/` and `dist/`
 
-You’ll notice that the CDN links all start with `/cdn/` and npm imports with `/dist/`. The `/cdn/` files are bundled separately from the `/dist/` files. The `/cdn/` files come pre‐bundled, which means all dependencies are inlined, so you don’t need to worry about loading additional libraries. The `/dist/` files **do not** come pre‐bundled, allowing your bundler of choice to more efficiently dedupe dependencies, resulting in smaller bundles and optimal code sharing.
+You may notice that CDN links all start with `cdn/` and npm imports with `dist/`. The `cdn/` files are bundled separately from the `dist/` files. The `cdn/` files come pre‐bundled, which means all dependencies are inlined, so you don’t need to worry about loading additional libraries. The `dist/` files **do not** come pre‐bundled, allowing your bundler of choice to more efficiently dedupe dependencies, resulting in smaller bundles and optimal code sharing.
 
 TL;DR:
 
-- `/cdn/` is for CDN users
-- `/dist/` is for npm users
+- `cdn/` is for CDN users
+- `dist/` is for npm users
 
-This change was introduced in 1.0.0-alpha.1 to fix `tslib` bare module specifier errors in 0.5.1.
+This change was introduced in v1.0.0-alpha.1 to fix bare module specifier errors in v0.5.1.

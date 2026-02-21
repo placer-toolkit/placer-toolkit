@@ -1,4 +1,12 @@
-export type PcAfterExpandEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcAfterExpandEvent extends Event {
+    constructor() {
+        super("pc-after-expand", {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+        });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

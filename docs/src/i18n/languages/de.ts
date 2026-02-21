@@ -2,15 +2,33 @@ export default {
     // UI and tools
     "ui.toc.onThisPage": "Auf dieser Seite",
     "ui.toc.overview": "Überblick",
-    "ui.search.button": "Suchen",
-    "ui.search.searchNotAvailableInDevBuilds":
-        "Die Suche ist nur in Produktions‐Builds verfügbar.<br />Baue die Website und sieh dir die Vorschau an, um sie lokal zu testen.",
     "ui.keyboard.ctrl": "Strg",
     "ui.content.contentNotAvailableInYourLanguage":
         "Dieser Inhalt ist noch nicht in deiner Sprache verfügbar.",
+    "ui.content.component.since":
+        '<span class="pc-visually-hidden">Seit&nbsp;</span> {{since}}',
+    "ui.content.component.since.fallback": "Seit unbekannter Version",
+    "ui.content.component.stable": "Stabil",
+    "ui.content.component.experimental": "Experimentell",
     "ui.content.englishOnly": "(nur Englisch)",
-
     "ui.content.heading.anchorLabel": "Abschnitt betitelt „{{title}}“",
+
+    // Search
+    "ui.search.label": "Suchen",
+    "ui.search.label.descriptive":
+        "Durchsuche die Placer Toolkit‐Dokumentation",
+    "ui.search.searchNotAvailableInDevBuilds":
+        "Die Suche ist nur in Produktions‐Builds verfügbar.<br />Baue die Website und sieh dir die Vorschau an, um sie lokal zu testen.",
+    "ui.search.searchingFor": "<b>{{query}}</b> wird gesucht …",
+    "ui.search.resultFor": "Ein Ergebnis für <b>{{query}}</b>",
+    "ui.search.resultsFor": "{{count}} Ergebnisse für <b>{{query}}</b>",
+    "ui.search.noResultsFor": "Keine Ergebnisse für <b>{{query}}</b>",
+    "ui.search.navigation.up": "Hoch",
+    "ui.search.navigation.down": "Runter",
+    "ui.search.navigation.navigate": "Navigieren",
+    "ui.search.navigation.select": "Auswählen",
+    "ui.search.navigation.close": "Schließen",
+    "ui.search.attribution.poweredBy": "Angetrieben von",
 
     // Landing page and marketing
     "getStartedBanner.readyToStart": "Bereit, mit Placer Toolkit zu bauen?",
@@ -39,8 +57,6 @@ export default {
     "button.sidebar.open": "Seitenleiste öffnen",
 
     "button.skipToMainContent": "Zum Hauptinhalt springen",
-    "button.returnToMainContent": "Zum Hauptinhalt zurückspringen",
-    "button.skipToTableOfContents": "Zum Inhaltsverzeichnis springen",
 
     "privacyPromise.aria": "Unser Datenschutzversprechen",
 
@@ -69,7 +85,7 @@ export default {
 
     // Dialogs
     "contact.paragraph.1":
-        "Wir würden uns freuen, von dir zu hören. Kontaktiere uns bitte bei Fragen oder Anliegen, die du hast.",
+        "Wir würden uns freuen, von dir zu hören. Kontaktiere uns einfach bei Fragen oder Anliegen.",
     "contact.paragraph.2":
         'Du kannst uns per E‐Mail unter <a href="mailto:placer.coc.reports+contact@gmail.com">placer.coc.reports+contact@gmail.com</a> erreichen.',
     "contact.paragraph.3": "Wir freuen uns darauf, von dir zu hören!",

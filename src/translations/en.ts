@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Hide password",
     hue: "Hue",
     loading: "Loading…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum value)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum value)`,
     nextSlide: "Next slide",
     numOptionsSelected: (number) => {
         if (number === 0) {

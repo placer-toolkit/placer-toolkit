@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "પાસવર્ડ છુપાવો",
     hue: "રંગની છટા",
     loading: "લોડ થઈ રહ્યું છે…",
+    maximumValue: "મહત્તમ",
+    maximumValueDescriptive: (label) => `${label} (મહત્તમ)`,
+    minimumValue: "કન્યુનતમ",
+    minimumValueDescriptive: (label) => `${label} (કન્યુનતમ)`,
     nextSlide: "આગલી સ્લાઇડ",
     numOptionsSelected: (number) => {
         if (number === 0) {

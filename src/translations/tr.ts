@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Parolayı gizle",
     hue: "Renk tonu",
     loading: "Yükleniyor…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Sonraki slayt",
     numOptionsSelected: (number) => {
         if (number === 0) {

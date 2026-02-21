@@ -16,7 +16,11 @@ const translation: Translation = {
     goToSlide: (slide, count) => `转到第${slide}张幻灯片，共${count}张`,
     hidePassword: "隐藏密码",
     hue: "色相",
-    loading: "加载中……",
+    loading: "加载中…",
+    maximumValue: "最大值",
+    maximumValueDescriptive: (label) => `${label}（最大值）`,
+    minimumValue: "最小值",
+    minimumValueDescriptive: (label) => `${label}（最小值）`,
     nextSlide: "下一张幻灯片",
     numOptionsSelected: (number) => {
         if (number === 0) {

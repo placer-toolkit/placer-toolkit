@@ -9,13 +9,13 @@ const translation = useTranslations(language);
 
 <aside class="toc" id="table-of-contents">
     <pc-button
+        class="skip-to-main-from-toc pc-desktop-only pc-visually-hidden"
         href="#_top"
         appearance="neutral"
         variant="filled outlined"
         size="small"
-        class="return-to-main-content pc-desktop-only pc-visually-hidden"
     >
-        {translation("button.returnToMainContent")}
+        {translation("button.skipToMainContent")}
     </pc-button>
 
     <DynamicTableOfContents />
@@ -23,6 +23,8 @@ const translation = useTranslations(language);
 
 <style>
     .toc {
+        grid-row: 1;
+        grid-column: 2;
         position: sticky;
         inset-block-start: calc(3.5rem + var(--pc-spacing-xxxl));
         line-height: var(--pc-line-height-dense);

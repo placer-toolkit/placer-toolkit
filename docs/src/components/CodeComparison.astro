@@ -136,8 +136,8 @@ const placerToolkitCode = `<!-- Placer Toolkit -->
 
 const previewHTML = placerToolkitCode.replace(
     /<style>([\s\S]*?)<\/style>/,
-    (match, css) =>
-        `<style>${css.replace(/\.(?=[a-zA-Z])/g, ".preview .")}</style>`,
+    (_match, css) =>
+        `<style>${css.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, ".preview $1$2")}</style>`,
 );
 ---
 
@@ -251,8 +251,8 @@ const previewHTML = placerToolkitCode.replace(
         }
 
         .preview {
+            flex: unset;
             min-inline-size: unset;
-            min-block-size: 35%;
         }
     }
 </style>

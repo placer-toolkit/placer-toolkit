@@ -26,7 +26,6 @@ import styles from "./card.css";
  */
 @customElement("pc-card")
 export class PcCard extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = [sizeStyles, styles];
 
     private readonly hasSlotController = new HasSlotController(
@@ -41,6 +40,7 @@ export class PcCard extends PlacerElement {
         | "accent"
         | "filled"
         | "outlined"
+        | "filled outlined"
         | "plain" = "outlined";
 
     render() {

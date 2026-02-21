@@ -6,7 +6,7 @@ order: 2
 
 Placer Toolkit‐Komponenten sind einfach normale HTML‐Elemente oder genauer gesagt [Custom Elements](https://developer.mozilla.org/de/docs/Web/API/Web_components/Using_custom_elements). Du kannst sie wie jedes andere Element verwenden. Jede Komponente verfügt über eine detaillierte Dokumentation, die ihre vollständige API beschreibt, einschließlich Eigenschaften, Events, Methoden und mehr.
 
-Wenn du neu bei Custom Elements bist, die oft als „Web Components“ bezeichnet werden, wird dich dieser Abschnitt mit deren Nutzung vertraut machen.
+Wenn du neu bei Custom Elements bist, die oft als „Webkomponenten“ bezeichnet werden, wird dich dieser Abschnitt mit deren Nutzung vertraut machen.
 
 ## Attribute und Eigenschaften
 
@@ -22,7 +22,7 @@ Einige Eigenschaften sind boolean, d. h. sie haben nur die Werte true/false. U
 <pc-button disabled>Klick mich</pc-button>
 ```
 
-In seltenen Fällen kann eine Eigenschaft ein Array, ein Objekt oder eine Funktion erfordern. Um beispielsweise die Liste vordefinierter Farbfelder des Color Pickers anzupassen, setze die `swatches`‐Eigenschaft auf ein Array von Farben. Dies muss mit JavaScript erfolgen.
+In seltenen Fällen kann eine Eigenschaft ein Array, ein Objekt oder eine Funktion erfordern. Um beispielsweise die Liste vordefinierter Farbfelder des Color Pickers anzupassen, kannst du die `swatches`‐Eigenschaft auf ein Array von Farben setzen. Dies muss mit JavaScript erfolgen.
 
 ```html
 <pc-color-picker></pc-color-picker>
@@ -38,21 +38,7 @@ Weitere Informationen zu allen Eigenschaften einer Komponente findest du in der 
 
 ## Events
 
-Du kannst Standard‐Events wie `click`, `mouseover`, `mouseout` usw. wie gewohnt abfangen, wie du es normalerweise tun würdest. Es ist jedoch wichtig zu beachten, dass viele Events, die innerhalb des Shadow Roots einer Komponente ausgelöst werden, auf das Host‐Element [re‐targeted](https://dom.spec.whatwg.org/#retarget) werden. Dies kann dazu führen, dass z. B. mehrere `click`‐Handler ausgeführt werden, selbst wenn der/die Nutzer:in nur einmal klickt. Zudem zeigt `event.target` auf das Host‐Element, was die Sache noch verwirrender macht.
-
-Daher solltest du fast immer Custom Events abfangen. Anstatt z. B. das `click`‐Event zu nutzen, um zu erkennen, wann ein `<pc-checkbox>` umgeschaltet wird, nutzt du das `pc-change`‐Event.
-
-```html
-<pc-checkbox>Kreuz mich an</pc-checkbox>
-
-<script>
-    const checkbox = document.querySelector("pc-checkbox");
-
-    checkbox.addEventListener("pc-change", (event) => {
-        console.log(event.target.checked ? "angekreuzt" : "nicht angekreuzt");
-    });
-</script>
-```
+Du kannst Standard‐Events wie `click`, `mouseover`, `mouseout` usw. wie gewohnt abfangen. Außerdem verfügen einige Komponenten über eigene Custom Events. Beispielsweise kannst du auf das `pc-after-show`‐Event abfangen, um zu erkennen, wann ein Dialog oder Drawer geöffnet wurde und seine Animation abgeschlossen ist.
 
 Alle Custom Events haben das Präfix `pc-`, um Kollisionen mit Standard‐Events und anderen Bibliotheken zu vermeiden. Weitere Informationen zu allen Custom Events einer Komponente findest du in der jeweiligen Dokumentation.
 
@@ -82,7 +68,7 @@ Zum Beispiel wird der Standard‐Slot eines Buttons verwendet, um dessen Beschri
 <pc-button>Klick mich</pc-button>
 ```
 
-Einige Komponenten haben auch benannte Slots. Ein benannter Slot kann durch Hinzufügen eines Kindelements mit dem entsprechenden `slot`‐Attribut gefüllt werden. Beachte, wie das Icon unten das Attribut `slot="prefix"` hat? Dies teilt der Komponente mit, das Icon in ihren `prefix`‐Slot zu setzen.
+Einige Komponenten haben auch benannte Slots. Ein benannter Slot kann durch Hinzufügen eines Kindelements mit dem entsprechenden `slot`‐Attribut gefüllt werden. Siehst du, wie das Icon unten das Attribut `slot="prefix"` hat? Dies teilt der Komponente mit, das Icon in ihren `prefix`‐Slot zu setzen.
 
 ```html
 <pc-button>
@@ -132,7 +118,7 @@ Zum Beispiel haben `<button>` und `<pc-button>` beide ein `type`‐Attribut, abe
 
 ## Warten auf das Laden von Komponenten
 
-Webkomponenten werden mit JavaScript registriert, daher kann es je nach Art und Zeitpunkt des Ladens von Placer Toolkit zu einem Flash of Undefined Custom Elements (FOUCE) kommen, wenn die Seite geladen wird. Es gibt mehrere Möglichkeiten, dies zu verhindern – mit einem Opt‐In Utility, einer Custom‐CSS‐Regel oder einem JS‐basierten Promise.
+Webkomponenten werden mit JavaScript registriert, daher kann es je nach Art und Zeitpunkt des Ladens von Placer Toolkit zu einem Flash of Undefined Custom Elements (FOUCE) kommen, wenn die Seite geladen wird. Es gibt mehrere Möglichkeiten, dies zu verhindern – mit einem Opt‐In Utility, einer benutzerdefinierten CSS‐Regel oder einem JS‐basierten Promise.
 
 Eine Möglichkeit ist die Verwendung unseres FOUCE‐Utilities, um FOUCE zu verhindern. Diese Datei wird automatisch beim Laden von `placer.css` geladen.
 
@@ -183,9 +169,9 @@ Eine clevere Möglichkeit, diese Methode zu verwenden, besteht darin, den `<body
 
 ## Komponenten‐Rendering und ‐Aktualisierung
 
-Placer Toolkit‐Komponenten werden mit [Lit](https://lit.dev) erstellt, einer Bibliothek, die das Erstellen von Custom Elements einfacher, wartbarer und deutlich spaßiger macht als Vanilla Web Components. Hier sind einige nützliche Hinweise zum Rendering und zur Aktualisierung, die du kennen solltest.
+Placer Toolkit‐Komponenten werden mit [Lit](https://lit.dev) erstellt, einer Bibliothek, die das Erstellen von Custom Elements einfacher, wartbarer und deutlich spaßiger macht als Vanilla‐Webkomponenten. Hier sind einige nützliche Hinweise zum Rendering und zur Aktualisierung, die du kennen solltest.
 
-Um die Performance zu optimieren und unnötige Re‐Renders zu vermeiden, bündelt Lit Komponentendaten&shy;änderungen. Das bedeutet, dass mehrere Attribut‐ oder Eigenschaftsänderungen gleichzeitig nur zu einem einzigen Re‐Render führen. In den meisten Fällen ist dies unproblematisch, aber manchmal musst du auf die Aktualisierung der Komponente warten, bevor du fortfährst.
+Um die Performance zu optimieren und unnötige Re‐Renders zu vermeiden, bündelt Lit Komponentendatenänderungen. Das bedeutet, dass mehrere Attribut‐ oder Eigenschaftsänderungen gleichzeitig nur zu einem einzigen Re‐Render führen. In den meisten Fällen ist dies unproblematisch, aber manchmal musst du auf die Aktualisierung der Komponente warten, bevor du fortfährst.
 
 Betrachte dieses Beispiel. Wir ändern die `checked`‐Eigenschaft der Checkbox und beobachten das entsprechende `checked`‐Attribut, das zufällig reflektiert wird.
 

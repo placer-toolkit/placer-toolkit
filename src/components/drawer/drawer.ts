@@ -9,16 +9,18 @@ import {
 import { animateTo } from "../../internal/animate.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { parseSpaceDelimitedTokens } from "../../internal/parse.js";
 import {
     lockBodyScrolling,
     unlockBodyScrolling,
 } from "../../internal/scroll.js";
 import { uppercaseFirstLetter } from "../../internal/string.js";
-import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcButton } from "../button/button.js";
+import "../button/button.js";
 import styles from "./drawer.css";
 
 document.addEventListener("click", (event: MouseEvent) => {
@@ -194,16 +196,13 @@ setDefaultAnimation("drawer.denyClose", {
  */
 @customElement("pc-drawer")
 export class PcDrawer extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-button": PcButton };
+
+    private originalTrigger!: HTMLElement | null;
 
     private readonly hasSlotController = new HasSlotController(this, "footer");
     private readonly localize = new LocalizeController(this);
-    private originalTrigger!: HTMLElement | null;
 
-    /** @internal This is an internal class property. */
     @query(".drawer") drawer!: HTMLDialogElement;
 
     /** Indicates whether or not the drawer is open. Toggle this attribute to show and hide the drawer. */
@@ -239,10 +238,9 @@ export class PcDrawer extends PlacerElement {
     }
 
     private async requestClose(source: Element) {
-        const pcHide = emit(this, "pc-hide", {
-            cancelable: true,
-            detail: { source },
-        });
+        const pcHide = new PcHideEvent({ source });
+
+        this.dispatchEvent(pcHide);
 
         if (pcHide.defaultPrevented) {
             this.open = true;
@@ -273,6 +271,7 @@ export class PcDrawer extends PlacerElement {
 
         this.open = false;
         this.drawer.close();
+
         unlockBodyScrolling(this);
 
         const trigger = this.originalTrigger;
@@ -281,7 +280,7 @@ export class PcDrawer extends PlacerElement {
             setTimeout(() => trigger.focus());
         }
 
-        return waitForEvent(this, "pc-after-hide");
+        this.dispatchEvent(new PcAfterHideEvent());
     }
 
     private addOpenListeners() {
@@ -335,7 +334,6 @@ export class PcDrawer extends PlacerElement {
         }
     };
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     handleOpenChange() {
         if (this.open && !this.drawer.open) {
@@ -347,9 +345,9 @@ export class PcDrawer extends PlacerElement {
     }
 
     private async show() {
-        const pcShow = emit(this, "pc-show", {
-            cancelable: true,
-        });
+        const pcShow = new PcShowEvent();
+
+        this.dispatchEvent(pcShow);
 
         if (pcShow.defaultPrevented) {
             this.open = false;
@@ -357,8 +355,10 @@ export class PcDrawer extends PlacerElement {
         }
 
         this.addOpenListeners();
+
         this.originalTrigger = document.activeElement as HTMLElement;
         this.open = true;
+
         this.drawer.showModal();
 
         lockBodyScrolling(this);
@@ -387,7 +387,7 @@ export class PcDrawer extends PlacerElement {
 
         animateTo(this.drawer, animation.keyframes, animation.options);
 
-        return waitForEvent(this, "pc-after-show");
+        this.dispatchEvent(new PcAfterShowEvent());
     }
 
     render() {

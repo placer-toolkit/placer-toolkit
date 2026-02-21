@@ -7,7 +7,6 @@ import { LocalizeController } from "../../utilities/localize.js";
 import { clamp } from "../../internal/math.js";
 import { drag } from "../../internal/drag.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import { PcIcon } from "../icon/icon.js";
 import styles from "./comparer.css";
 
@@ -22,7 +21,7 @@ import styles from "./comparer.css";
  * @slot after - The after content, often an `<img>` or `<svg>` element.
  * @slot handle - The icon used inside the handle.
  *
- * @event pc-change - Emitted when the position of the handle changes.
+ * @event change - Emitted when the position of the handle changes.
  *
  * @csspart base - The component’s base wrapper.
  * @csspart before - The container that wraps the before content.
@@ -35,16 +34,12 @@ import styles from "./comparer.css";
  */
 @customElement("pc-comparer")
 export class PcComparer extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
     static scopedElement = { "pc-icon": PcIcon };
 
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query(".comparer") base!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query(".handle") handle!: HTMLElement;
 
     /** The position of the divider as a percentage. */
@@ -108,10 +103,11 @@ export class PcComparer extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch("position", { waitUntilFirstUpdate: true })
     handlePositionChange() {
-        emit(this, "pc-change");
+        this.dispatchEvent(
+            new Event("change", { bubbles: true, composed: true }),
+        );
     }
 
     render() {
@@ -160,6 +156,7 @@ export class PcComparer extends PlacerElement {
                         part="handle"
                         class="handle"
                         role="scrollbar"
+                        aria-orientation="horizontal"
                         aria-valuenow=${this.position}
                         aria-valuemin="0"
                         aria-valuemax="100"

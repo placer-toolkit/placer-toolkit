@@ -1,8 +1,7 @@
 import { html } from "lit";
-import type { TemplateResult } from "lit";
+import type { PropertyValues, TemplateResult } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
@@ -10,18 +9,23 @@ import {
     setDefaultAnimation,
 } from "../../utilities/animation-registry.js";
 import { animateTo, stopAnimations } from "../../internal/animate.js";
-import { FormControlController } from "../../internal/form.js";
+import { RequiredValidator } from "../../internal/validators/required-validator.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcClearEvent } from "../../events/pc-clear.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcRemoveEvent } from "../../events/pc-remove.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { scrollIntoView } from "../../internal/scroll.js";
 import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import type { PcRemoveEvent } from "../../events/pc-remove.js";
+import "../icon/icon.js";
 import type { PcOption } from "../option/option.js";
-import { PcIcon } from "../icon/icon.js";
-import { PcPopup } from "../popup/popup.js";
-import { PcTag } from "../tag/tag.js";
+import "../popup/popup.js";
+import type { PcPopup } from "../popup/popup.js";
+import "../tag/tag.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./select.css";
@@ -116,11 +120,11 @@ setDefaultAnimation("select.hide", {
  * @slot expand-icon - The icon to show when the select is expanded and collapsed. Rotates on open and close.
  * @slot hint - Text that describes how to use the select. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-input - Emitted when the select receives input.
- * @event pc-change - Emitted when the select’s value changes.
+ * @event change - Emitted when the select’s value changes.
+ * @event input - Emitted when the select receives input.
+ * @event focus - Emitted when the select gains focus.
+ * @event blur - Emitted when the select loses focus.
  * @event pc-clear - Emitted when the select’s value is cleared.
- * @event pc-focus - Emitted when the select gains focus.
- * @event pc-blur - Emitted when the select loses focus.
  * @event pc-show - Emitted when the select’s menu opens.
  * @event pc-after-show - Emitted after the select’s menu opens and all animations are complete.
  * @event pc-hide - Emitted when the select’s menu closes.
@@ -137,28 +141,35 @@ setDefaultAnimation("select.hide", {
  * @csspart display-input - The element that displays the selected option’s label, an `<input>` element.
  * @csspart listbox - The listbox container where options are slotted.
  * @csspart tags - The container that houses option tags when `multiselect` is used.
- * @csspart tag - The individual tags that represent each multiselect option.
+ * @csspart tag - The individual tags that represent each multi‐select option.
  * @csspart tag-base - The tag’s base part.
  * @csspart tag-content - The tag’s content part.
  * @csspart tag-remove-button - The tag’s remove button.
  * @csspart tag-remove-button-base - The tag’s remove button base part.
  * @csspart clear-button - The clear button.
  * @csspart expand-icon - The container that wraps the expand icon.
+ *
+ * @cssproperty --tag-max-size: 10ch - The maximum size of the tags in multi‐select mode until their content is truncated.
  */
 @customElement("pc-select")
-export class PcSelect extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcSelect extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = {
-        "pc-icon": PcIcon,
-        "pc-popup": PcPopup,
-        "pc-tag": PcTag,
-    };
 
-    private readonly formControlController = new FormControlController(this, {
-        assumeInteractionOn: ["pc-blur", "pc-input"],
-    });
+    static get validators() {
+        const validators = [
+            RequiredValidator({
+                validationElement: Object.assign(
+                    document.createElement("select"),
+                    { required: true },
+                ),
+            }),
+        ];
+
+        return [...super.validators, ...validators];
+    }
+
+    assumeInteractionOn = ["input", "blur"];
+
     private readonly hasSlotController = new HasSlotController(
         this,
         "label",
@@ -166,37 +177,51 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     );
     private readonly localize = new LocalizeController(this);
 
+    private selectionOrder: Map<string, number> = new Map();
     private typeToSelectString = "";
     private typeToSelectTimeout!: number;
-    private closeWatcher!: CloseWatcher | null;
 
-    /** @internal This is an internal class property. */
     @query(".select") popup!: PcPopup;
-    /** @internal This is an internal class property. */
     @query(".combobox") combobox!: HTMLSlotElement;
-    /** @internal This is an internal class property. */
     @query(".display-input") displayInput!: HTMLInputElement;
-    /** @internal This is an internal class property. */
     @query(".value-input") valueInput!: HTMLInputElement;
-    /** @internal This is an internal class property. */
     @query(".listbox") listbox!: HTMLSlotElement;
 
-    @state() private hasFocus = false;
-    /** @internal This is an internal class property. */
+    /** Where to anchor native constraint validation. */
+    get validationTarget() {
+        return this.valueInput;
+    }
+
     @state() displayLabel = "";
-    /** @internal This is an internal class property. */
     @state() currentOption!: PcOption;
-    /** @internal This is an internal class property. */
     @state() selectedOptions: PcOption[] = [];
-    @state() private valueHasChanged = false;
+    @state() optionValues: Set<string | null> | undefined;
 
     /** The name of the select, submitted as a name/value pair with form data. */
     @property() name = "";
 
-    private _value: string | string[] = "";
+    private _defaultValue: null | string | string[] = null;
 
     /** The default value of the select. Primarily used for resetting the select. */
-    @property({ attribute: "value" }) defaultValue: string | string[] = "";
+    @property({ attribute: false })
+    set defaultValue(value: null | string | string[]) {
+        this._defaultValue = this.convertDefaultValue(value) || "";
+    }
+
+    get defaultValue() {
+        return this.convertDefaultValue(this._defaultValue);
+    }
+
+    /** @private A converter for `defaultValue` to convert it from an array to a string if it’s a multi‐select. */
+    private convertDefaultValue(value: typeof this.defaultValue) {
+        const isMultiple = this.multiple || this.hasAttribute("multiple");
+
+        if (!isMultiple && Array.isArray(value)) {
+            value = value[0];
+        }
+
+        return value;
+    }
 
     /** The select’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
@@ -212,7 +237,7 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     maxOptionsVisible = 3;
 
     /** Disables the select. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** Adds a clear button when the select is not empty. */
     @property({ type: Boolean }) clearable = false;
@@ -234,9 +259,6 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
 
     /** The select’s hint. If you need to display HTML, use the `hint` slot instead. */
     @property() hint = "";
-
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
 
     /** Indicates if the select must be filled in or not. */
     @property({ type: Boolean, reflect: true }) required = false;
@@ -261,50 +283,94 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                     remove-button-base:tag-remove-button-base
                 "
             >
-                ${option.getTextLabel()}
+                ${option.label}
             </pc-tag>
         `;
     };
 
+    private _value: string[] | undefined | null;
+
+    /** The value of the select, submitted as a name/value pair with form data. This will be a string for single select or an array for multi‐select. */
+    @property({ attribute: "value", reflect: false })
+    set value(value: string | string[] | null) {
+        let oldValue = this.value;
+
+        if ((value as any) instanceof FormData) {
+            value = (value as unknown as FormData).getAll(
+                this.name,
+            ) as string[];
+        }
+
+        if (value != null && !Array.isArray(value)) {
+            value = [value];
+        }
+
+        this._value = value ?? null;
+
+        let newValue = this.value;
+
+        if (newValue !== oldValue) {
+            this.valueHasChanged = true;
+            this.requestUpdate("value", oldValue);
+        }
+    }
+
     get value() {
-        return this._value;
-    }
+        let value = this._value ?? this.defaultValue ?? null;
 
-    /** The current value of the select, submitted as a name/value pair with form data. When the `multiple` attribute is true, the `value` attribute will be a space‐delimited list of values based on the options selected, and the `value` property will be an array. **For this reason, values must not contain spaces.** */
-    @state()
-    set value(value: string | string[]) {
-        if (this.multiple) {
-            value = Array.isArray(value) ? value : value.split(" ");
+        if (value != null) {
+            value = Array.isArray(value) ? value : [value];
+        }
+
+        if (value == null) {
+            this.optionValues = new Set(null);
         } else {
-            value = Array.isArray(value) ? value.join(" ") : value;
+            this.optionValues = new Set(
+                this.getAllOptions()
+                    .filter((option) => !option.disabled)
+                    .map((option) => option.value),
+            );
         }
 
-        if (this._value === value) {
-            return;
+        let finalValue: null | string | string[] = value;
+
+        if (value != null) {
+            finalValue = value.filter((val) => this.optionValues!.has(val));
+            finalValue = this.multiple ? finalValue : finalValue[0];
+            finalValue = finalValue ?? null;
         }
 
-        this.valueHasChanged = true;
-        this._value = value;
-    }
-
-    /** Gets the validity state object. */
-    get validity() {
-        return this.valueInput.validity;
-    }
-
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.valueInput.validationMessage;
+        return finalValue;
     }
 
     connectedCallback() {
         super.connectedCallback();
 
-        setTimeout(() => {
-            this.handleDefaultSlotChange();
-        });
+        this.handleDefaultSlotChange();
 
         this.open = false;
+    }
+
+    private updateDefaultValue() {
+        const allOptions = this.getAllOptions();
+        const defaultSelectedOptions = allOptions.filter(
+            (element) =>
+                element.hasAttribute("selected") || element.defaultSelected,
+        );
+
+        if (defaultSelectedOptions.length > 0) {
+            const selectedValues = defaultSelectedOptions.map(
+                (element) => element.value,
+            );
+
+            this._defaultValue = this.multiple
+                ? selectedValues
+                : selectedValues[0];
+        }
+
+        if (this.hasAttribute("value")) {
+            this._defaultValue = this.getAttribute("value") || null;
+        }
     }
 
     private addOpenListeners() {
@@ -317,17 +383,6 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 "focusin",
                 this.handleDocumentFocusIn,
             );
-        }
-
-        if ("CloseWatcher" in window) {
-            this.closeWatcher?.destroy();
-            this.closeWatcher = new CloseWatcher();
-            this.closeWatcher.onclose = () => {
-                if (this.open) {
-                    this.hide();
-                    this.displayInput.focus({ preventScroll: true });
-                }
-            };
         }
     }
 
@@ -342,19 +397,10 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 this.handleDocumentFocusIn,
             );
         }
-
-        this.closeWatcher?.destroy();
     }
 
     private handleFocus() {
-        this.hasFocus = true;
         this.displayInput.setSelectionRange(0, 0);
-        emit(this, "pc-focus");
-    }
-
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
     }
 
     private handleDocumentFocusIn = (event: Event) => {
@@ -374,9 +420,10 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
             return;
         }
 
-        if (event.key === "Escape" && this.open && !this.closeWatcher) {
+        if (event.key === "Escape" && this.open) {
             event.preventDefault();
             event.stopPropagation();
+
             this.hide();
             this.displayInput.focus({ preventScroll: true });
         }
@@ -390,11 +437,13 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
 
             if (!this.open) {
                 this.show();
+
                 return;
             }
 
             if (this.currentOption && !this.currentOption.disabled) {
                 this.valueHasChanged = true;
+                this.hasInteracted = true;
 
                 if (this.multiple) {
                     this.toggleOptionSelection(this.currentOption);
@@ -403,8 +452,15 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 }
 
                 this.updateComplete.then(() => {
-                    emit(this, "pc-input");
-                    emit(this, "pc-change");
+                    this.dispatchEvent(
+                        new Event("change", { bubbles: true, composed: true }),
+                    );
+                    this.dispatchEvent(
+                        new InputEvent("input", {
+                            bubbles: true,
+                            composed: true,
+                        }),
+                    );
                 });
 
                 if (!this.multiple) {
@@ -419,6 +475,7 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         if (["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
             const allOptions = this.getAllOptions();
             const currentIndex = allOptions.indexOf(this.currentOption);
+
             let newIndex = Math.max(0, currentIndex);
 
             event.preventDefault();
@@ -481,10 +538,11 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
             }
 
             for (const option of allOptions) {
-                const label = option.getTextLabel().toLowerCase();
+                const label = option.label.toLowerCase();
 
                 if (label.startsWith(this.typeToSelectString)) {
                     this.setCurrentOption(option);
+
                     break;
                 }
             }
@@ -503,15 +561,19 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         this.displayInput.focus();
     }
 
+    private handleComboboxClick(event: MouseEvent) {
+        event.preventDefault();
+    }
+
     private handleComboboxMouseDown(event: MouseEvent) {
         const path = event.composedPath();
-        const isIconButton = path.some(
+        const isButton = path.some(
             (element) =>
                 element instanceof Element &&
                 element.tagName.toLowerCase() === "pc-button",
         );
 
-        if (this.disabled || isIconButton) {
+        if (this.disabled || isButton) {
             return;
         }
 
@@ -521,10 +583,6 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     }
 
     private handleComboboxKeyDown(event: KeyboardEvent) {
-        if (event.key === "Tab") {
-            return;
-        }
-
         event.stopPropagation();
         this.handleDocumentKeyDown(event);
     }
@@ -532,16 +590,19 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     private handleClearClick(event: MouseEvent) {
         event.stopPropagation();
 
-        this.valueHasChanged = true;
-
         if (this.value !== "") {
+            this.selectionOrder.clear();
             this.setSelectedOptions([]);
             this.displayInput.focus({ preventScroll: true });
 
             this.updateComplete.then(() => {
-                emit(this, "pc-clear");
-                emit(this, "pc-input");
-                emit(this, "pc-change");
+                this.dispatchEvent(new PcClearEvent());
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
             });
         }
     }
@@ -554,10 +615,11 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     private handleOptionClick(event: MouseEvent) {
         const target = event.target as HTMLElement;
         const option = target.closest("pc-option") as PcOption | null;
-        const oldValue = this.value;
 
         if (option && !option.disabled) {
+            this.hasInteracted = true;
             this.valueHasChanged = true;
+
             if (this.multiple) {
                 this.toggleOptionSelection(option);
             } else {
@@ -568,12 +630,16 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 this.displayInput.focus({ preventScroll: true }),
             );
 
-            if (this.value !== oldValue) {
-                this.updateComplete.then(() => {
-                    emit(this, "pc-input");
-                    emit(this, "pc-change");
-                });
-            }
+            this.requestUpdate("value");
+
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
 
             if (!this.multiple) {
                 this.hide();
@@ -591,33 +657,75 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         }
 
         const allOptions = this.getAllOptions();
-        const val = this.valueHasChanged ? this.value : this.defaultValue;
-        const value = Array.isArray(val) ? val : [val];
-        const values: string[] = [];
 
-        allOptions.forEach((option) => values.push(option.value));
+        this.optionValues = undefined;
 
-        this.setSelectedOptions(
-            allOptions.filter((element) => value.includes(element.value)),
+        this.updateDefaultValue();
+
+        let value = this.value;
+
+        if (value == null || (!this.valueHasChanged && !this.hasInteracted)) {
+            this.selectionChanged();
+
+            return;
+        }
+
+        if (!Array.isArray(value)) {
+            value = [value];
+        }
+
+        const selectedOptions = allOptions.filter((element) =>
+            value.includes(element.value),
         );
+
+        this.setSelectedOptions(selectedOptions);
     }
 
-    private handleTagRemove(event: PcRemoveEvent, option: PcOption) {
+    private handleTagRemove(event: PcRemoveEvent, directOption?: PcOption) {
         event.stopPropagation();
 
+        if (this.disabled) {
+            return;
+        }
+
+        this.hasInteracted = true;
         this.valueHasChanged = true;
 
-        if (!this.disabled) {
+        let option = directOption;
+
+        if (!option) {
+            const tagElement = (event.target as Element).closest(
+                "pc-tag[data-value]",
+            ) as HTMLElement | null;
+
+            if (tagElement) {
+                const value = tagElement.dataset.value;
+
+                option = this.selectedOptions.find(
+                    (option) => option.value === value,
+                );
+            }
+        }
+
+        if (option) {
             this.toggleOptionSelection(option, false);
 
             this.updateComplete.then(() => {
-                emit(this, "pc-input");
-                emit(this, "pc-change");
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
             });
         }
     }
 
     private getAllOptions() {
+        if (!this?.querySelectorAll) {
+            return [];
+        }
+
         return [...this.querySelectorAll<PcOption>("pc-option")];
     }
 
@@ -645,7 +753,13 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         const allOptions = this.getAllOptions();
         const newSelectedOptions = Array.isArray(option) ? option : [option];
 
-        allOptions.forEach((element) => (element.selected = false));
+        allOptions.forEach((element) => {
+            if (newSelectedOptions.includes(element)) {
+                return;
+            }
+
+            element.selected = false;
+        });
 
         if (newSelectedOptions.length) {
             newSelectedOptions.forEach((element) => (element.selected = true));
@@ -664,16 +778,81 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         this.selectionChanged();
     }
 
-    private selectionChanged() {
+    /** @internal This method must be called whenever the selection changes. It will update the selected options’ cache, the current value and the display value. The Option component uses it internally to update labels as they change. */
+    public selectionChanged() {
         const options = this.getAllOptions();
-        this.selectedOptions = options.filter((element) => element.selected);
 
-        const cachedValueHasChanged = this.valueHasChanged;
+        // Update selected options cache
+        const newSelectedOptions = options.filter((element) => {
+            if (!this.hasInteracted && !this.valueHasChanged) {
+                const defaultValue = this.defaultValue;
+                const defaultValues = Array.isArray(defaultValue)
+                    ? defaultValue
+                    : [defaultValue];
+                return (
+                    element.hasAttribute("selected") ||
+                    element.defaultSelected ||
+                    element.selected ||
+                    defaultValues?.includes(element.value)
+                );
+            }
+
+            return element.selected;
+        });
+
+        const newSelectedValues = new Set(
+            newSelectedOptions.map((el) => el.value),
+        );
+
+        for (const value of this.selectionOrder.keys()) {
+            if (!newSelectedValues.has(value)) {
+                this.selectionOrder.delete(value);
+            }
+        }
+
+        const maxOrder =
+            this.selectionOrder.size > 0
+                ? Math.max(...this.selectionOrder.values())
+                : -1;
+
+        let nextOrder = maxOrder + 1;
+
+        for (const option of newSelectedOptions) {
+            if (!this.selectionOrder.has(option.value)) {
+                this.selectionOrder.set(option.value, nextOrder++);
+            }
+        }
+
+        this.selectedOptions = newSelectedOptions.sort((a, b) => {
+            const orderA = this.selectionOrder.get(a.value) ?? 0;
+            const orderB = this.selectionOrder.get(b.value) ?? 0;
+
+            return orderA - orderB;
+        });
+
+        let selectedValues = new Set(
+            this.selectedOptions.map((el) => el.value),
+        );
+
+        if (selectedValues.size > 0 || this._value) {
+            const oldValue = this._value;
+
+            if (this._value == null) {
+                let value = this.defaultValue ?? [];
+
+                this._value = Array.isArray(value) ? value : [value];
+            }
+
+            this._value =
+                this._value?.filter(
+                    (value) => !this.optionValues?.has(value),
+                ) ?? null;
+            this._value?.unshift(...selectedValues);
+            this.requestUpdate("value", oldValue);
+        }
 
         if (this.multiple) {
-            this.value = this.selectedOptions.map((element) => element.value);
-
-            if (this.placeholder && this.value.length === 0) {
+            if (this.placeholder && !this.value?.length) {
                 this.displayLabel = "";
             } else {
                 this.displayLabel = this.localize.term(
@@ -683,89 +862,73 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
             }
         } else {
             const selectedOption = this.selectedOptions[0];
-            this.value = selectedOption?.value ?? "";
-            this.displayLabel = selectedOption?.getTextLabel?.() ?? "";
+
+            this.displayLabel = selectedOption?.label ?? "";
         }
-        this.valueHasChanged = cachedValueHasChanged;
 
         this.updateComplete.then(() => {
-            this.formControlController.updateValidity();
+            this.updateValidity();
         });
     }
 
-    /** @internal This is an internal getter. */
     protected get tags() {
         return this.selectedOptions.map((option, index) => {
             if (index < this.maxOptionsVisible || this.maxOptionsVisible <= 0) {
                 const tag = this.getTag(option, index);
-                return html`
-                    <div
-                        @pc-remove=${(event: PcRemoveEvent) =>
-                            this.handleTagRemove(event, option)}
-                    >
-                        ${typeof tag === "string" ? unsafeHTML(tag) : tag}
-                    </div>
-                `;
+
+                if (!tag) {
+                    return null;
+                }
+
+                return typeof tag === "string" ? unsafeHTML(tag) : tag;
             } else if (index === this.maxOptionsVisible) {
                 return html`
-                    <pc-tag size=${this.size}>
+                    <pc-tag
+                        part="tag"
+                        exportparts="
+                            base:tag-base,
+                            content:tag-content,
+                            remove-button:tag-remove-button,
+                            remove-button-base:tag-remove-button-base
+                        "
+                    >
                         +${this.selectedOptions.length - index}
                     </pc-tag>
                 `;
             }
-            return html``;
+
+            return null;
         });
     }
 
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
+    updated(changedProperties: PropertyValues<this>) {
+        super.updated(changedProperties);
+
+        if (changedProperties.has("value")) {
+            this.customStates.set("blank", !this.value);
+        }
     }
 
-    /** @internal This is an internal method. */
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
         if (this.disabled) {
             this.open = false;
-            this.handleOpenChange();
         }
     }
 
-    attributeChangedCallback(
-        name: string,
-        oldValue: string | null,
-        newValue: string | null,
-    ) {
-        super.attributeChangedCallback(name, oldValue, newValue);
-
-        // This is a backwards compatibility call. In the next major version, we should make a clean separation between “value”, the attribute mapping to the “defaultValue” property and “value”, the non‐reflecting property.
-        if (name === "value") {
-            const cachedValueHasChanged = this.valueHasChanged;
-            this.value = this.defaultValue;
-
-            this.valueHasChanged = cachedValueHasChanged;
-        }
-    }
-
-    /** @internal This is an internal method. */
-    @watch(["defaultValue", "value"], { waitUntilFirstUpdate: true })
+    @watch("value", { waitUntilFirstUpdate: true })
     handleValueChange() {
-        if (!this.valueHasChanged) {
-            const cachedValueHasChanged = this.valueHasChanged;
-            this.value = this.defaultValue;
-
-            this.valueHasChanged = cachedValueHasChanged;
-        }
-
         const allOptions = this.getAllOptions();
         const value = Array.isArray(this.value) ? this.value : [this.value];
 
-        this.setSelectedOptions(
-            allOptions.filter((element) => value.includes(element.value)),
+        const selectedOptions = allOptions.filter((element) =>
+            value.includes(element.value),
         );
+
+        this.setSelectedOptions(selectedOptions);
+        this.updateValidity();
     }
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     async handleOpenChange() {
         if (this.open && !this.disabled) {
@@ -773,10 +936,20 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 this.selectedOptions[0] || this.getFirstOption(),
             );
 
-            emit(this, "pc-show");
+            const pcShow = new PcShowEvent();
+
+            this.dispatchEvent(pcShow);
+
+            if (pcShow.defaultPrevented) {
+                this.open = false;
+
+                return;
+            }
+
             this.addOpenListeners();
 
             await stopAnimations(this);
+
             this.listbox.hidden = false;
             this.popup.active = true;
 
@@ -787,6 +960,7 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
             const { keyframes, options } = getAnimation(this, "select.show", {
                 dir: this.localize.dir(),
             });
+
             await animateTo(this.popup.popup, keyframes, options);
 
             if (this.currentOption) {
@@ -798,20 +972,32 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                 );
             }
 
-            emit(this, "pc-after-show");
+            this.dispatchEvent(new PcAfterShowEvent());
         } else {
-            emit(this, "pc-hide");
+            const pcHide = new PcHideEvent();
+
+            this.dispatchEvent(pcHide);
+
+            if (pcHide.defaultPrevented) {
+                this.open = false;
+
+                return;
+            }
+
             this.removeOpenListeners();
 
             await stopAnimations(this);
+
             const { keyframes, options } = getAnimation(this, "select.hide", {
                 dir: this.localize.dir(),
             });
+
             await animateTo(this.popup.popup, keyframes, options);
+
             this.listbox.hidden = true;
             this.popup.active = false;
 
-            emit(this, "pc-after-hide");
+            this.dispatchEvent(new PcAfterHideEvent());
         }
     }
 
@@ -819,10 +1005,12 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     async show() {
         if (this.open || this.disabled) {
             this.open = false;
+
             return undefined;
         }
 
         this.open = true;
+
         return waitForEvent(this, "pc-after-show");
     }
 
@@ -830,32 +1018,13 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
     async hide() {
         if (!this.open || this.disabled) {
             this.open = false;
+
             return undefined;
         }
 
         this.open = false;
+
         return waitForEvent(this, "pc-after-hide");
-    }
-
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.valueInput.checkValidity();
-    }
-
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the select is invalid. */
-    reportValidity() {
-        return this.valueInput.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.valueInput.setCustomValidity(message);
-        this.formControlController.updateValidity();
     }
 
     /** Focuses the select. */
@@ -868,15 +1037,36 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
         this.displayInput.blur();
     }
 
+    formResetCallback() {
+        this.selectionOrder.clear();
+        this.value = this.defaultValue;
+
+        super.formResetCallback();
+        this.handleValueChange();
+
+        this.updateComplete.then(() => {
+            this.dispatchEvent(
+                new Event("change", { bubbles: true, composed: true }),
+            );
+            this.dispatchEvent(
+                new InputEvent("input", { bubbles: true, composed: true }),
+            );
+        });
+    }
+
     render() {
         const hasLabelSlot = this.hasSlotController.test("label");
         const hasHintSlot = this.hasSlotController.test("hint");
         const hasLabel = this.label ? true : !!hasLabelSlot;
         const hasHint = this.hint ? true : !!hasHintSlot;
         const hasClearIcon =
-            this.clearable && !this.disabled && this.value.length > 0;
-        const isPlaceholderVisible =
-            this.placeholder && this.value && this.value.length <= 0;
+            this.clearable &&
+            !this.disabled &&
+            this.value &&
+            this.value.length > 0;
+        const isPlaceholderVisible = Boolean(
+            this.placeholder && (!this.value || this.value.length === 0),
+        );
 
         return html`
             <div
@@ -948,12 +1138,15 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                                 tabindex="0"
                                 readonly
                                 @focus=${this.handleFocus}
-                                @blur=${this.handleBlur}
                             />
 
                             ${this.multiple
                                 ? html`
-                                      <div part="tags" class="tags">
+                                      <div
+                                          part="tags"
+                                          class="tags"
+                                          @pc-remove=${this.handleTagRemove}
+                                      >
                                           ${this.tags}
                                       </div>
                                   `
@@ -970,7 +1163,6 @@ export class PcSelect extends PlacerElement implements PlacerFormControl {
                                 tabindex="-1"
                                 aria-hidden="true"
                                 @focus=${() => this.focus()}
-                                @invalid=${this.handleInvalid}
                             />
 
                             ${hasClearIcon

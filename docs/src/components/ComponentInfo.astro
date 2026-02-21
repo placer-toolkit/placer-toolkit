@@ -1,4 +1,6 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
 export interface Props {
     componentName: string;
 }
@@ -34,9 +36,11 @@ const loadManifest = async (): Promise<
             }
         );
         const manifest = manifestModule.default ?? manifestModule;
+
         return manifest as CEMManifest & { package?: { version?: string } };
     } catch (error) {
         console.error(`Couldn’t load the CEM file: ${error}`);
+
         return null;
     }
 };
@@ -66,31 +70,35 @@ const componentData = manifest
     ? findComponentData(manifest, componentName)
     : null;
 
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
 const tagName = `<${componentData?.tagName}>`;
-const since = componentData?.since ?? "Since ?";
-const status = componentData?.status ?? "Status ?";
+const sinceVersion = translation("ui.content.component.since", {
+    since: componentData?.since ?? translation("ui.component.since.fallback"),
+});
+
+let status;
+let appearance: "primary" | "warning" | "danger" | null = null;
+
+if (componentData?.status === "stable") {
+    status = translation("ui.content.component.stable");
+    appearance = "primary";
+} else if (componentData?.status === "experimental") {
+    status = translation("ui.content.component.experimental");
+    appearance = "warning";
+} else {
+    status = translation("ui.content.component.since.fallback");
+    appearance = "danger";
+}
 ---
 
 <div class="component-info pc-cluster pc-align-items-center pc-gap-s">
     <code class="tag-name">{tagName}</code>
-    <pc-badge appearance="neutral">{since}</pc-badge>
+    <pc-badge appearance="neutral" set:html={sinceVersion} />
     {
-        status === "stable" && (
-            <pc-badge class="status" appearance="primary">
-                {status}
-            </pc-badge>
-        )
-    }
-    {
-        status === "experimental" && (
-            <pc-badge class="status" appearance="warning">
-                {status}
-            </pc-badge>
-        )
-    }
-    {
-        status === "Status ?" && (
-            <pc-badge class="status" appearance="danger">
+        appearance && (
+            <pc-badge class="status" appearance={appearance}>
                 {status}
             </pc-badge>
         )

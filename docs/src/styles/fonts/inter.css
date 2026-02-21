@@ -5,6 +5,11 @@
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
+    font-feature-settings:
+        "cv03" on,
+        "cv02" on,
+        "cv04" on,
+        "cv11" on;
 }
 
 /* Inter (Italic) */
@@ -14,4 +19,9 @@
     font-weight: 100 900;
     font-style: italic;
     font-display: swap;
+    font-feature-settings:
+        "cv03" on,
+        "cv02" on,
+        "cv04" on,
+        "cv11" on;
 }

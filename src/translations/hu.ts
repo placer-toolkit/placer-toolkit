@@ -18,6 +18,10 @@ const translation: Translation = {
     hidePassword: "Jelszó elrejtése",
     hue: "Színtónus",
     loading: "Betöltés…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Következő dia",
     numOptionsSelected: (number) => {
         if (number === 0) {

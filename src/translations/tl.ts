@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Itago ang password",
     hue: "Tono ng kulay",
     loading: "Naglo‐load…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "Susunod na slide",
     numOptionsSelected: (number) => {
         if (number === 0) {
@@ -27,7 +31,7 @@ const translation: Translation = {
             return `${number} opsyon ang napili`;
         }
     },
-    opacity: "Opasidad",
+    opacity: "Opacity",
     pickAColorFromTheScreen: "Pumili ng kulay mula sa screen",
     previousSlide: "Nakaraang slide",
     progress: "Pag‐usad",

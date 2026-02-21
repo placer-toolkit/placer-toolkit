@@ -1,15 +1,17 @@
 import { html } from "lit";
 import type { HTMLTemplateResult, PropertyValues } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
+import { PcErrorEvent } from "../../events/pc-error.js";
+import { PcLoadEvent } from "../../events/pc-load.js";
 import { getIconLibrary, unwatchIcon, watchIcon } from "./library.js";
 import type { IconLibrary } from "./library.js";
-import { customElement, property, state } from "lit/decorators.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import styles from "./icon.css";
 
 const CACHEABLE_ERROR = Symbol();
 const RETRYABLE_ERROR = Symbol();
+
 type SVGResult =
     | HTMLTemplateResult
     | SVGSVGElement
@@ -17,6 +19,7 @@ type SVGResult =
     | typeof CACHEABLE_ERROR;
 
 let parser: DOMParser;
+
 const iconCache = new Map<string, Promise<SVGResult>>();
 
 interface IconSource {
@@ -42,7 +45,6 @@ interface IconSource {
  */
 @customElement("pc-icon")
 export class PcIcon extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     @state() private svg: SVGElement | HTMLTemplateResult | null = null;
@@ -87,6 +89,7 @@ export class PcIcon extends PlacerElement {
 
     private getIconSource(): IconSource {
         const library = getIconLibrary(this.library);
+
         if (this.name && library) {
             return {
                 url: library.resolver(
@@ -175,7 +178,6 @@ export class PcIcon extends PlacerElement {
         }
     };
 
-    /** @internal This is an internal method. */
     @watch("label")
     handleLabelChange() {
         const hasLabel =
@@ -192,7 +194,6 @@ export class PcIcon extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch(["library", "iconStyle", "name", "src", "autoWidth", "swapOpacity"])
     async setIcon() {
         const { url, fromLibrary } = this.getIconSource();
@@ -224,12 +225,12 @@ export class PcIcon extends PlacerElement {
             case RETRYABLE_ERROR:
             case CACHEABLE_ERROR:
                 this.svg = null;
-                emit(this, "pc-error");
+                this.dispatchEvent(new PcErrorEvent());
                 break;
             default:
                 this.svg = (svg as SVGElement).cloneNode(true) as SVGElement;
                 library?.mutator?.(this.svg, this);
-                emit(this, "pc-load");
+                this.dispatchEvent(new PcLoadEvent());
         }
     }
 

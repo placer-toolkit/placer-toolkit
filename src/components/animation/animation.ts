@@ -1,8 +1,10 @@
 import { html } from "lit";
 import { customElement, property, queryAsync } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
+import { PcCancelEvent } from "../../events/pc-cancel.js";
+import { PcFinishEvent } from "../../events/pc-finish.js";
+import { PcStartEvent } from "../../events/pc-start.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import { animations } from "./animations.js";
 import styles from "./animation.css";
 
@@ -19,13 +21,11 @@ import styles from "./animation.css";
  */
 @customElement("pc-animation")
 export class PcAnimation extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private animation?: Animation;
     private hasStarted = false;
 
-    /** @internal This is an internal class property. */
     @queryAsync("slot") defaultSlot!: Promise<HTMLSlotElement>;
 
     /** The name of the built‐in animation to use. For custom animations, use the `keyframes` prop. */
@@ -89,13 +89,13 @@ export class PcAnimation extends PlacerElement {
     private handleAnimationFinish = () => {
         this.play = false;
         this.hasStarted = false;
-        emit(this, "pc-finish");
+        this.dispatchEvent(new PcFinishEvent());
     };
 
     private handleAnimationCancel = () => {
         this.play = false;
         this.hasStarted = false;
-        emit(this, "pc-cancel");
+        this.dispatchEvent(new PcCancelEvent());
     };
 
     private handleSlotChange() {
@@ -137,7 +137,7 @@ export class PcAnimation extends PlacerElement {
 
         if (this.play) {
             this.hasStarted = true;
-            emit(this, "pc-start");
+            this.dispatchEvent(new PcStartEvent());
         } else {
             this.animation.pause();
         }
@@ -160,7 +160,6 @@ export class PcAnimation extends PlacerElement {
         }
     }
 
-    /** @internal This is an internal method. */
     @watch([
         "name",
         "delay",
@@ -181,13 +180,12 @@ export class PcAnimation extends PlacerElement {
         this.createAnimation();
     }
 
-    /** @internal This is an internal method. */
     @watch("play")
     handlePlayChange() {
         if (this.animation) {
             if (this.play && !this.hasStarted) {
                 this.hasStarted = true;
-                emit(this, "pc-start");
+                this.dispatchEvent(new PcStartEvent());
             }
 
             if (this.play) {
@@ -198,10 +196,10 @@ export class PcAnimation extends PlacerElement {
 
             return true;
         }
+
         return false;
     }
 
-    /** @internal This is an internal method. */
     @watch("playbackRate")
     handlePlaybackRateChange() {
         if (this.animation) {

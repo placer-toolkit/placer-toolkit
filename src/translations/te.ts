@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "పాస్‌వర్డ్‌ను దాచు",
     hue: "రంగు టోన్",
     loading: "లోడ్ అవుతోంది…",
+    maximumValue: "గరిష్ట",
+    maximumValueDescriptive: (label) => `${label} (గరిష్ట విలువ)`,
+    minimumValue: "కనిష్ట",
+    minimumValueDescriptive: (label) => `${label} (కనిష్ట విలువ)`,
     nextSlide: "తదుపరి స్లయిడ్",
     numOptionsSelected: (number) => {
         if (number === 0) {

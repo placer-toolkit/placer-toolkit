@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Folaigh an pasfhocal",
     hue: "Tóin datha",
     loading: "Lódáil…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
     nextSlide: "An chéad sleamhnán eile",
     numOptionsSelected: (number) => {
         if (number === 0) {

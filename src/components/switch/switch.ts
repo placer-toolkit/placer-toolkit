@@ -1,15 +1,13 @@
 import { html } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
+import type { PropertyValues } from "lit";
+import { customElement, property, query } from "lit/decorators.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { live } from "lit/directives/live.js";
-import { defaultValue } from "../../internal/default-value.js";
-import { FormControlController } from "../../internal/form.js";
+import { MirrorValidator } from "../../internal/validators/mirror-validator.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./switch.css";
@@ -22,10 +20,10 @@ import styles from "./switch.css";
  * @slot - The switch’s label.
  * @slot hint - Text that describes how to use the switch. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-change - Emitted when the switch’s state changes.
- * @event pc-focus - Emitted when the switch gains focus.
- * @event pc-blur - Emitted when the switch loses focus (i.e., is blurred).
- * @event pc-input - Emitted when the switch receives input.
+ * @event change - Emitted when the switch’s state changes.
+ * @event input - Emitted when the switch receives input.
+ * @event focus - Emitted when the switch gains focus.
+ * @event blur - Emitted when the switch loses focus (i.e., is blurred).
  * @event pc-invalid - Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart base - The component’s base wrapper.
@@ -39,54 +37,50 @@ import styles from "./switch.css";
  * @cssproperty --thumb-size: 0.75em - The size of the thumb.
  */
 @customElement("pc-switch")
-export class PcSwitch extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcSwitch extends PlacerFormAssociatedElement {
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
+    };
     static css = [formControlStyles, sizeStyles, styles];
 
-    private readonly formControlController = new FormControlController(this, {
-        value: (input: PlacerFormControl) => {
-            const control = input as PcSwitch;
-            return control.checked ? control.value || "on" : undefined;
-        },
-        defaultValue: (input: PlacerFormControl) => {
-            const control = input as PcSwitch;
-            return control.defaultChecked;
-        },
-        setValue: (input: PlacerFormControl, value: unknown) => {
-            const control = input as PcSwitch;
-            control.checked = Boolean(value);
-        },
-    });
+    static get validators() {
+        return [...super.validators, MirrorValidator()];
+    }
+
     private readonly hasSlotController = new HasSlotController(this, "hint");
 
-    /** @internal This is an internal class property. */
     @query('input[type="checkbox"]') input!: HTMLInputElement;
 
-    @state() private hasFocus = false;
-
-    /** @internal This is an internal property. */
     @property() title = "";
 
     /** The name of the switch, submitted as a name/value pair with form data. */
     @property() name = "";
 
+    private _value: string | null = this.getAttribute("value") ?? null;
+
     /** The current value of the switch, submitted as a name/value pair with form data. */
-    @property() value!: string;
+    get value(): string | null {
+        return this._value ?? "on";
+    }
+
+    @property({ reflect: true })
+    set value(value: string | null) {
+        this._value = value;
+    }
 
     /** The switch’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
 
     /** Disables the switch. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
-    /** Enables the switch. */
+    /** Checks the switch off. */
     @property({ type: Boolean, reflect: true }) checked = false;
 
     /** The default value of the switch. Primarily used for resetting the switch. */
-    @defaultValue("checked") defaultChecked = false;
-
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
+    @property({ type: Boolean, attribute: "checked", reflect: true })
+    defaultChecked: boolean = this.hasAttribute("checked");
 
     /** Makes the switch a required field. */
     @property({ type: Boolean, reflect: true }) required = false;
@@ -94,69 +88,96 @@ export class PcSwitch extends PlacerElement implements PlacerFormControl {
     /** The switch’s hint. if you need to display HTML, use the `hint` slot instead. */
     @property() hint = "";
 
-    /** Gets the validity state object. */
-    get validity() {
-        return this.input.validity;
-    }
+    firstUpdated(changedProperties: PropertyValues<typeof this>) {
+        super.firstUpdated(changedProperties);
 
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.input.validationMessage;
-    }
-
-    firstUpdated() {
-        this.formControlController.updateValidity();
+        this.handleValueOrCheckedChange();
     }
 
     private handleClick() {
+        this.hasInteracted = true;
         this.checked = !this.checked;
-        emit(this, "pc-change");
-    }
 
-    private handleInput() {
-        emit(this, "pc-input");
-    }
-
-    private handleFocus() {
-        this.hasFocus = true;
-        emit(this, "pc-focus");
-    }
-
-    private handleBlur() {
-        this.hasFocus = false;
-        emit(this, "pc-blur");
-    }
-
-    private handleInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
+        this.updateComplete.then(() => {
+            this.dispatchEvent(
+                new Event("change", { bubbles: true, composed: true }),
+            );
+        });
     }
 
     private handleKeyDown(event: KeyboardEvent) {
         if (event.key === "ArrowLeft") {
             event.preventDefault();
+
             this.checked = false;
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         } else if (event.key === "ArrowRight") {
             event.preventDefault();
+
             this.checked = true;
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
-    /** @internal This is an internal method. */
-    @watch("checked", { waitUntilFirstUpdate: true })
-    handleCheckedChange() {
-        this.input.checked = this.checked;
-        this.formControlController.updateValidity();
+    protected willUpdate(changedProperties: PropertyValues<this>): void {
+        super.willUpdate(changedProperties);
+
+        if (changedProperties.has("defaultChecked")) {
+            if (!this.hasInteracted) {
+                this.checked = this.defaultChecked;
+            }
+        }
+
+        if (
+            changedProperties.has("value") ||
+            changedProperties.has("checked")
+        ) {
+            this.handleValueOrCheckedChange();
+        }
     }
 
-    /** @internal This is an internal method. */
+    handleValueOrCheckedChange() {
+        this.setValue(this.checked ? this.value : null, this._value);
+        this.updateValidity();
+    }
+
+    @watch("defaultChecked")
+    handleDefaultCheckedChange() {
+        if (!this.hasInteracted && this.checked !== this.defaultChecked) {
+            this.checked = this.defaultChecked;
+            this.handleValueOrCheckedChange();
+        }
+    }
+
+    @watch(["checked"])
+    handleStateChange() {
+        if (this.hasUpdated) {
+            this.input.checked = this.checked;
+        }
+
+        this.customStates.set("checked", this.checked);
+        this.updateValidity();
+    }
+
     @watch("disabled", { waitUntilFirstUpdate: true })
     handleDisabledChange() {
-        this.formControlController.setValidity(true);
+        this.updateValidity();
     }
 
     /** Simulates a click on the switch. */
@@ -169,30 +190,28 @@ export class PcSwitch extends PlacerElement implements PlacerFormControl {
         this.input.focus(options);
     }
 
-    /** Unfocuses/blurs the switch. */
+    /** Unfocuses the switch (i.e., blurs it). */
     blur() {
         this.input.blur();
     }
 
-    /** Checks for validity but doesn’t show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.input.checkValidity();
+    setValue(
+        value: string | File | FormData | null,
+        stateValue?: string | File | FormData | null | undefined,
+    ): void {
+        if (!this.checked) {
+            this.internals.setFormValue(null, null);
+
+            return;
+        }
+
+        this.internals.setFormValue(value ?? "on", stateValue);
     }
 
-    /** Gets the associated form if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the control is invalid. */
-    reportValidity() {
-        return this.input.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.input.setCustomValidity(message);
-        this.formControlController.updateValidity();
+    formResetCallback(): void {
+        this.checked = this.defaultChecked;
+        super.formResetCallback();
+        this.handleValueOrCheckedChange();
     }
 
     render() {
@@ -220,10 +239,6 @@ export class PcSwitch extends PlacerElement implements PlacerFormControl {
                     aria-checked=${this.checked ? "true" : "false"}
                     aria-describedby="hint"
                     @click=${this.handleClick}
-                    @input=${this.handleInput}
-                    @focus=${this.handleFocus}
-                    @blur=${this.handleBlur}
-                    @invalid=${this.handleInvalid}
                     @keydown=${this.handleKeyDown}
                 />
 

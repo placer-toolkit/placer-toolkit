@@ -18,6 +18,10 @@ const translation: Translation = {
     hidePassword: "पासवर्ड छुपाएँ",
     hue: "रंग छटा",
     loading: "लोड हो रहा है…",
+    maximumValue: "अधिकतम",
+    maximumValueDescriptive: (label) => `${label} (अधिकतम मान)`,
+    minimumValue: "न्यूनतम",
+    minimumValueDescriptive: (label) => `${label} (न्यूनतम मान)`,
     nextSlide: "अगली स्लाइड",
     numOptionsSelected: (number) => {
         if (number === 0) {

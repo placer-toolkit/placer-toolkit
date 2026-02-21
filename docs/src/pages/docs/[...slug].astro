@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+
 import Page from "../../layouts/Page.astro";
 
 import APITable from "../../components/APITable.astro";
@@ -60,7 +61,7 @@ function titleToComponentName(title: string) {
 }
 
 const { post } = Astro.props as { post: CollectionEntry<"docs"> };
-const { Content, headings } = await render(post);
+const { Content } = await render(post);
 
 const slug = (Astro.params as Record<string, string>).slug as string;
 
@@ -70,11 +71,7 @@ const componentName = isComponentPage
     : undefined;
 ---
 
-<Page
-    {...post.data}
-    headings={headings}
-    {...!isComponentPage ? {} : { component: componentName }}
->
+<Page {...post.data} {...!isComponentPage ? {} : { component: componentName }}>
     <Content components={{ CodeBlock, CodeDemo }} />
 
     {isComponentPage && <APITable componentName={componentName ?? ""} />}

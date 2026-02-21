@@ -30,107 +30,83 @@ const { isMobile = false } = Astro.props;
 </div>
 
 <script>
-    // TOC generation
-    document.addEventListener("DOMContentLoaded", () => {
+    import type { PcScroller } from "placer-toolkit/dist/components/scroller/scroller.js";
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        // TOC generation
         const tocs = document.querySelectorAll(".toc");
 
-        tocs.forEach((toc) => {
+        for (const toc of tocs) {
             const tocList = toc.querySelector<HTMLUListElement>(".toc-ul");
 
+            if (!tocList) {
+                continue;
+            }
+
+            const article = document.querySelector("article");
+
+            if (!article) {
+                continue;
+            }
+
+            const articleHeader = article.querySelector('header[id="_top"]');
             const headings = Array.from(
-                document
-                    .querySelector("article")!
-                    .querySelectorAll("h2[id], h3[id]"),
+                article.querySelectorAll("h2[id], h3[id]"),
             );
             const items = headings.map((element) => ({
                 depth: element.tagName === "H2" ? 2 : 3,
                 slug: element.id,
-                text: (() => {
-                    return element.textContent?.trim() || "";
-                })(),
+                text: element.textContent?.trim() || "",
             }));
 
-            function createTOCItem({
-                depth,
-                slug,
-                text,
-            }: {
-                depth: number;
-                slug: string;
-                text: string;
-            }) {
-                const li = document.createElement("li");
-
-                li.className = `toc-item depth-${depth}`;
-
-                const a = document.createElement("a");
-
-                a.href = `#${slug}`;
-                a.textContent = text;
-
-                li.appendChild(a);
-
-                return li;
-            }
+            tocList.innerHTML = "";
 
             const overviewItem = document.createElement("li");
+            const overviewID = articleHeader?.id || "_top";
 
             overviewItem.className = "toc-item depth-2";
+            overviewItem.innerHTML = `
+                <a href="#${overviewID}">
+                    ${tocList.dataset.overview || "Overview"}
+                </a>
+            `;
 
-            const overviewLink = document.createElement("a");
+            tocList.appendChild(overviewItem);
 
-            overviewLink.href = "#_top";
-            overviewLink.textContent = tocList?.dataset?.overview ?? "";
-            overviewItem.appendChild(overviewLink);
-
-            if (!tocList) {
-                return;
-            }
-
-            tocList.innerHTML = "";
-            tocList.appendChild(overviewItem.cloneNode(true));
+            let lastH2Li: HTMLLIElement = overviewItem;
 
             items.forEach((item) => {
-                if (item.depth > 1 && item.depth < 4) {
-                    tocList.appendChild(createTOCItem(item));
+                const li = document.createElement("li");
+
+                li.className = `toc-item depth-${item.depth}`;
+                li.innerHTML = `<a href="#${item.slug}">${item.text}</a>`;
+
+                if (item.depth === 2) {
+                    tocList.appendChild(li);
+
+                    lastH2Li = li;
+                } else if (item.depth === 3 && lastH2Li) {
+                    let nestedUl = lastH2Li.querySelector("ul");
+
+                    if (!nestedUl) {
+                        nestedUl = document.createElement("ul");
+                        nestedUl.className = "toc-ul depth-3";
+
+                        lastH2Li.appendChild(nestedUl);
+                    }
+
+                    nestedUl.appendChild(li);
                 }
             });
-        });
-    });
 
-    // TOC scrollspy
-    document.addEventListener("DOMContentLoaded", () => {
-        const tocs = document.querySelectorAll(".toc");
-
-        tocs.forEach((toc) => {
-            if (!toc) {
-                return;
-            }
-
+            // Scrollspy
             const links = Array.from(
                 toc.querySelectorAll<HTMLAnchorElement>(".toc-ul a"),
             );
-            const idToLink = new Map(
-                links.map((link) => [
-                    link.getAttribute("href")?.slice(1),
-                    link,
-                ]),
-            );
+            const marker = toc.querySelector<HTMLElement>(".toc-marker");
+            const tocInner = toc.querySelector<HTMLElement>(".toc-inner");
 
-            const tocScroller = toc.querySelector<HTMLElement>("pc-scroller");
-            const tocContent =
-                tocScroller?.shadowRoot?.querySelector<HTMLElement>("#content");
-
-            if (!tocScroller || !tocContent) {
-                return;
-            }
-
-            const tocInner =
-                tocScroller.querySelector<HTMLElement>(".toc-inner");
-            const marker =
-                tocScroller.querySelector<HTMLElement>(".toc-marker");
-
-            function moveMarkerToLink(link: HTMLAnchorElement) {
+            function moveMarker(link: HTMLAnchorElement) {
                 if (!marker || !tocInner) {
                     return;
                 }
@@ -141,141 +117,100 @@ const { isMobile = false } = Astro.props;
                     return;
                 }
 
-                const liRect = li.getBoundingClientRect();
-                const innerRect = tocInner.getBoundingClientRect();
+                const linkHeight = link.offsetHeight;
+                const markerHeight = marker.offsetHeight;
 
-                let y = liRect.top - innerRect.top;
-
-                y += liRect.height / 2 - marker.offsetHeight / 2;
+                const y = li.offsetTop + linkHeight / 2 - markerHeight / 2;
 
                 marker.style.transform = `translateY(${y}px)`;
             }
 
-            function setActiveId(id: string) {
-                const link = links.find(
-                    (a) => a.getAttribute("href") === `#${id}`,
-                );
+            function setActiveID(id: string) {
+                const targetID = id || "_top";
 
-                if (!link) {
-                    return;
-                }
+                let activeLink: HTMLAnchorElement | null = null;
 
-                links.forEach((a) => {
-                    const isActive = a === link;
-
-                    a.classList.toggle("active", isActive);
+                links.forEach((link) => {
+                    const isActive =
+                        link.getAttribute("href") === `#${targetID}`;
 
                     if (isActive) {
-                        a.setAttribute("aria-current", "location");
+                        link.setAttribute("aria-current", "location");
+
+                        activeLink = link;
                     } else {
-                        a.removeAttribute("aria-current");
+                        link.removeAttribute("aria-current");
                     }
                 });
 
-                moveMarkerToLink(link);
+                if (activeLink) {
+                    moveMarker(activeLink);
+                }
             }
+
+            const elementsToWatch = [...headings];
+
+            if (articleHeader) {
+                elementsToWatch.unshift(articleHeader);
+            }
+
+            const isMobileTOC = toc.classList.contains("mobile-toc");
+            const topMargin = isMobileTOC ? 106 : 56;
 
             const observer = new IntersectionObserver(
                 (entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting && entry.target.id) {
-                            setActiveId(entry.target.id);
-                        }
-                    });
+                    const visibleEntry = entries.find(
+                        (event) => event.isIntersecting,
+                    );
+
+                    if (visibleEntry) {
+                        setActiveID(visibleEntry.target.id);
+                    }
                 },
                 {
                     root: null,
-                    rootMargin: "0px 0px -60% 0px",
+                    rootMargin: `-${topMargin}px 0% -${window.innerHeight - topMargin - 50}px 0%`,
                     threshold: 0,
                 },
             );
 
-            idToLink.forEach((_link, id) => {
-                if (!id) {
-                    return;
-                }
+            elementsToWatch.forEach((element) => observer.observe(element));
 
-                const heading = document.getElementById(id);
+            await customElements.whenDefined("pc-scroller");
 
-                if (heading) {
-                    observer.observe(heading);
-                }
-            });
+            const tocScroller = toc.querySelector<PcScroller>("pc-scroller");
+            const content = tocScroller?.shadowRoot?.querySelector("#content");
 
-            function determineActiveFromPosition() {
-                const targetLine = window.innerHeight * 0.18;
-
-                let chosenID: string | null = null;
-                let chosenTop = -Infinity;
-
-                idToLink.forEach((_link, id) => {
-                    if (!id) {
-                        return;
-                    }
-
-                    const element = document.getElementById(id);
-
-                    if (!element) {
-                        return;
-                    }
-
-                    const top = element.getBoundingClientRect().top;
-
-                    if (top <= targetLine && top > chosenTop) {
-                        chosenTop = top;
-                        chosenID = id;
-                    }
-                });
-
-                if (!chosenID) {
-                    let nearestID: string | null = null;
-                    let nearestDistance = Infinity;
-
-                    idToLink.forEach((_link, id) => {
-                        if (!id) {
-                            return;
-                        }
-
-                        const element = document.getElementById(id);
-
-                        if (!element) {
-                            return;
-                        }
-
-                        const distance = Math.abs(
-                            element.getBoundingClientRect().top - targetLine,
+            if (content) {
+                content.addEventListener(
+                    "scroll",
+                    () => {
+                        const active = toc.querySelector(
+                            'a[aria-current="location"]',
                         );
 
-                        if (distance < nearestDistance) {
-                            nearestDistance = distance;
-                            nearestID = id;
+                        if (active) {
+                            moveMarker(active as HTMLAnchorElement);
                         }
-                    });
-
-                    chosenID = nearestID;
-                }
-
-                if (chosenID) {
-                    setActiveId(chosenID);
-                }
+                    },
+                    { passive: true },
+                );
             }
 
-            tocContent.addEventListener("scroll", () => {
-                const activeLink =
-                    tocScroller.querySelector<HTMLAnchorElement>(
-                        ".toc-ul a.active",
+            window.addEventListener(
+                "resize",
+                () => {
+                    const active = toc.querySelector<HTMLAnchorElement>(
+                        'a[aria-current="location"]',
                     );
 
-                if (activeLink) {
-                    moveMarkerToLink(activeLink);
-                }
-            });
-
-            determineActiveFromPosition();
-
-            window.addEventListener("load", determineActiveFromPosition);
-            window.addEventListener("resize", determineActiveFromPosition);
-        });
+                    if (active) {
+                        moveMarker(active);
+                    }
+                },
+                { passive: true },
+            );
+        }
     });
 </script>
 
@@ -287,11 +222,6 @@ const { isMobile = false } = Astro.props;
     .toc-container .toc-scroll-fade {
         position: relative;
         max-block-size: calc(100dvh - 3.5rem - var(--pc-spacing-xxxl));
-    }
-
-    .toc-container .toc-scroll-fade::part(start-shadow),
-    .toc-container .toc-scroll-fade::part(end-shadow) {
-        z-index: 1;
     }
 
     .toc-container .toc-scroll-fade .toc-heading:not(.toc-mobile .toc-heading) {
@@ -330,29 +260,36 @@ const { isMobile = false } = Astro.props;
 
     .toc-container .toc-scroll-fade .toc-inner .toc-ul {
         margin-inline-start: 0;
+        inline-size: 100%;
         font-size: var(--pc-font-size-s);
         list-style: none;
     }
 
+    .toc-container .toc-scroll-fade .toc-inner .toc-ul.depth-3 {
+        margin-inline-start: var(--pc-spacing-m);
+    }
+
     .toc-container .toc-scroll-fade .toc-inner .toc-ul .toc-item {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
         margin-block: 0.75rem;
         margin-inline: 0;
 
-        &.depth-3 {
-            margin-inline-start: var(--pc-spacing-m);
+        &.depth-3:last-child {
+            margin-block-end: 0;
         }
 
         a {
-            display: inline-block;
+            display: block;
+            inline-size: 100%;
             color: var(--pc-color-text-quiet);
             font-weight: var(--pc-font-weight-normal);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             text-decoration: none;
-            max-inline-size: 100%;
             transition: color var(--pc-transition-fast) ease-in-out;
 
             @media (hover: hover) {
@@ -373,7 +310,7 @@ const { isMobile = false } = Astro.props;
                 );
             }
 
-            &.active {
+            &[aria-current="location"] {
                 color: var(--pc-color-primary-fill-loud);
                 font-weight: var(--pc-font-weight-semibold);
             }

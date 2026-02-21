@@ -6,6 +6,7 @@ import { customElement, property, query } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcRepositionEvent } from "../../events/pc-reposition.js";
 import {
     arrow,
     autoUpdate,
@@ -18,7 +19,6 @@ import {
     size,
 } from "@floating-ui/dom";
 import { offsetParent } from "composed-offset-position";
-import { emit } from "../../internal/emit.js";
 import styles from "./popup.css";
 
 export interface VirtualElement {
@@ -46,7 +46,7 @@ const supportsPopover =
  * @slot - The popup’s content.
  * @slot anchor - The element the popup will be anchored to. If the anchor lives outside of the popup, you can use the `anchor` attribute/property instead.
  *
- * @event pc-reposition - Emitted when the popup is repositioned. This even can fire a lot, so avoid putting expensive operations in your event listener or consider debouncing it.
+ * @event pc-reposition - Emitted when the popup is repositioned. This event can fire a lot, so avoid putting expensive operations in your event listener or consider debouncing it.
  *
  * @csspart arrow - The arrow’s container. Avoid setting positioning properties, as these values are assigned dynamically as the popup moves.
  * @csspart popup - The popup’s container.
@@ -57,7 +57,6 @@ const supportsPopover =
  */
 @customElement("pc-popup")
 export class PcPopup extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
 
     private readonly localize = new LocalizeController(this);
@@ -65,7 +64,6 @@ export class PcPopup extends PlacerElement {
     private anchorElement!: Element | VirtualElement | null;
     private cleanup: ReturnType<typeof autoUpdate> | undefined;
 
-    /** @internal This is an internal class property. */
     @query(".popup") popup!: HTMLElement;
     @query(".arrow") private arrowElement!: HTMLElement;
 
@@ -463,7 +461,7 @@ export class PcPopup extends PlacerElement {
 
         requestAnimationFrame(() => this.updateHoverBridge());
 
-        emit(this, "pc-reposition");
+        this.dispatchEvent(new PcRepositionEvent());
     }
 
     private updateHoverBridge = () => {

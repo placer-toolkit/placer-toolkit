@@ -1,7 +1,7 @@
 {
     "name": "placer-toolkit",
     "type": "module",
-    "version": "1.0.0-alpha.3",
+    "version": "1.0.0-alpha.4",
     "description": "A web component library that’s designed to be flexible and accessible. Built with Lit.",
     "keywords": [
         "lit",
@@ -44,6 +44,7 @@
     "files": [
         "cdn",
         "dist",
+        "licenses",
         "LICENSE.md",
         "THIRD-PARTY-NOTICES.md",
         "README.md"

@@ -11,10 +11,10 @@ import { classMap } from "lit/directives/class-map.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcHoverEvent } from "../../events/pc-hover.js";
 import { clamp } from "../../internal/math.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import { PcIcon } from "../icon/icon.js";
+import "../icon/icon.js";
 import styles from "./rating.css";
 
 /**
@@ -24,25 +24,21 @@ import styles from "./rating.css";
  *
  * @dependency pc-icon
  *
- * @event pc-change - Emitted when the rating’s value changes.
+ * @event change - Emitted when the rating’s value changes.
  * @event {{ phase: "start" | "move" | "end", value: number }} pc-hover - Emitted when the user hovers over a value. The `phase` property indicates when hovering starts, moves to a new value or ends. The `value` property tells what the rating’s value would be if the user were to commit to the hovered value.
  *
  * @csspart base - The component’s base wrapper.
  *
- * @cssproperty --icon-color: var(--pc-color-neutral-fill-normal) - The inactive colour for icons.
+ * @cssproperty --icon-color: var(--pc-color-neutral-border-loud) - The inactive colour for icons.
  * @cssproperty --icon-color-active: var(--pc-color-warning-fill-loud) - The active colour for icons.
  * @cssproperty --icon-size: 1.2rem - The icons’ size.
  */
 @customElement("pc-rating")
 export class PcRating extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = styles;
-    /** @internal This is an internal static property. */
-    static dependencies = { "pc-icon": PcIcon };
 
     private readonly localize = new LocalizeController(this);
 
-    /** @internal This is an internal class property. */
     @query(".rating") rating!: HTMLElement;
 
     @state() private hoverValue = 0;
@@ -64,13 +60,21 @@ export class PcRating extends PlacerElement {
     @property({ type: Boolean, reflect: true }) readonly = false;
 
     /** Disables the rating. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** A property that customises the icon to be rendered. The first and only argument is the rating’s current value. The property should return a string containing trusted HTML of the icon to render at the specified value. This works well with `<pc-icon>` elements. */
-    @property() getIcon: (value: number) => string = () =>
-        `
-            <pc-icon library="system" icon-style="solid" name="star"></pc-icon>
-        `;
+    @property() getIcon: (value: number, isSelected: boolean) => string = (
+        _value,
+        isSelected,
+    ) => {
+        return isSelected
+            ? `
+                <pc-icon library="system" icon-style="solid" name="star"></pc-icon>
+            `
+            : `
+                <pc-icon library="system" icon-style="regular" name="star"></pc-icon>
+            `;
+    };
 
     private getValueFromMousePosition(event: MouseEvent) {
         return this.getValueFromXCoordinate(event.clientX);
@@ -102,7 +106,11 @@ export class PcRating extends PlacerElement {
         }
 
         this.setValue(this.getValueFromMousePosition(event));
-        emit(this, "pc-change");
+        this.updateComplete.then(() => {
+            this.dispatchEvent(
+                new Event("change", { bubbles: true, composed: true }),
+            );
+        });
     }
 
     private setValue(newValue: number) {
@@ -129,7 +137,9 @@ export class PcRating extends PlacerElement {
             (isRTL && event.key === "ArrowRight")
         ) {
             const decrement = event.shiftKey ? 1 : this.precision;
+
             this.value = Math.max(0, this.value - decrement);
+
             event.preventDefault();
         }
 
@@ -139,7 +149,9 @@ export class PcRating extends PlacerElement {
             (isRTL && event.key === "ArrowLeft")
         ) {
             const increment = event.shiftKey ? 1 : this.precision;
+
             this.value = Math.min(this.max, this.value + increment);
+
             event.preventDefault();
         }
 
@@ -154,7 +166,11 @@ export class PcRating extends PlacerElement {
         }
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
@@ -186,7 +202,9 @@ export class PcRating extends PlacerElement {
     private handleTouchEnd(event: TouchEvent) {
         this.isHovering = false;
         this.setValue(this.hoverValue);
-        emit(this, "pc-change");
+        this.dispatchEvent(
+            new Event("change", { bubbles: true, composed: true }),
+        );
 
         event.preventDefault();
     }
@@ -196,26 +214,21 @@ export class PcRating extends PlacerElement {
         return Math.ceil(numberToRound * multiplier) / multiplier;
     }
 
-    /** @internal This is an internal method. */
     @watch("hoverValue")
     handleHoverValueChange() {
-        emit(this, "pc-hover", {
-            detail: {
-                phase: "move",
-                value: this.hoverValue,
-            },
-        });
+        this.dispatchEvent(
+            new PcHoverEvent({ phase: "move", value: this.hoverValue }),
+        );
     }
 
-    /** @internal This is an internal method. */
     @watch("isHovering")
     handleIsHoveringChange() {
-        emit(this, "pc-hover", {
-            detail: {
+        this.dispatchEvent(
+            new PcHoverEvent({
                 phase: this.isHovering ? "start" : "end",
                 value: this.hoverValue,
-            },
-        });
+            }),
+        );
     }
 
     /** Focuses the rating. */
@@ -267,6 +280,8 @@ export class PcRating extends PlacerElement {
             >
                 <span class="rating-icons">
                     ${counter.map((index) => {
+                        const isSelected = displayValue >= index + 1;
+
                         if (displayValue > index && displayValue < index + 1) {
                             return html`
                                 <span
@@ -293,7 +308,9 @@ export class PcRating extends PlacerElement {
                                                   }%)`,
                                         })}
                                     >
-                                        ${unsafeHTML(this.getIcon(index + 1))}
+                                        ${unsafeHTML(
+                                            this.getIcon(index + 1, false),
+                                        )}
                                     </div>
                                     <div
                                         class="rating-partial-filled"
@@ -311,7 +328,9 @@ export class PcRating extends PlacerElement {
                                                   }% 0 0)`,
                                         })}
                                     >
-                                        ${unsafeHTML(this.getIcon(index + 1))}
+                                        ${unsafeHTML(
+                                            this.getIcon(index + 1, true),
+                                        )}
                                     </div>
                                 </span>
                             `;
@@ -329,7 +348,9 @@ export class PcRating extends PlacerElement {
                                 })}
                                 role="presentation"
                             >
-                                ${unsafeHTML(this.getIcon(index + 1))}
+                                ${unsafeHTML(
+                                    this.getIcon(index + 1, isSelected),
+                                )}
                             </span>
                         `;
                     })}

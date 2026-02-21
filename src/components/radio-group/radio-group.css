@@ -4,9 +4,9 @@
 
 .form-control {
     position: relative;
-    border: none;
     margin: 0;
     padding: 0;
+    border: none;
 }
 
 .input {
@@ -21,21 +21,21 @@
 
 .has-label .label {
     display: inline-block;
-    color: var(--pc-input-label-color);
-    line-height: var(--pc-line-height-normal);
     margin-block-end: var(--pc-spacing-xs);
     padding: 0;
+    color: var(--pc-input-label-color);
+    line-height: var(--pc-line-height-normal);
     transition: color var(--pc-transition-fast) ease-in-out;
 }
 
 :host([required]) .label::after {
     content: var(--pc-input-required-content);
-    color: var(--pc-input-required-content-color);
     margin-inline-start: var(--pc-input-required-content-offset);
+    color: var(--pc-input-required-content-color);
 }
 
 .has-hint .hint {
+    margin-block-start: var(--pc-spacing-xs);
     color: var(--pc-input-hint-color);
     font-family: var(--pc-input-font-family);
-    margin-block-start: var(--pc-spacing-xs);
 }

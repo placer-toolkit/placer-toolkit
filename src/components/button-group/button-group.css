@@ -5,9 +5,29 @@
 .button-group {
     display: flex;
     position: relative;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: var(--pc-spacing-xxxs);
     isolation: isolate;
+}
+
+@media (hover: hover) {
+    .button-group > :hover,
+    .button-group::slotted(:hover) {
+        z-index: 1;
+    }
+}
+
+.button-group > :focus,
+.button-group::slotted(:focus),
+.button-group > [aria-checked="true"],
+.button-group::slotted([aria-checked="true"]),
+.button-group > [checked],
+.button-group::slotted([checked]) {
+    z-index: 2 !important;
+}
+
+:host([orientation="vertical"]) .button-group {
+    flex-direction: column;
 }
 
 .button-group.has-outlined {

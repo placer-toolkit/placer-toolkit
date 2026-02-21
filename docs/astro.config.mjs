@@ -38,6 +38,10 @@ export default defineConfig({
         ],
     },
     vite: {
+        optimizeDeps: {
+            exclude: ["placer-toolkit"],
+        },
+        noExternal: ["placer-toolkit"],
         server: {
             watch: {
                 usePolling: false,

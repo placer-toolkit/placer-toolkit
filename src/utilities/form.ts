@@ -1,5 +1,3 @@
-import { formCollections } from "../internal/form.js";
-
 export function serialize(form: HTMLFormElement) {
     const formData = new FormData(form);
     const object: Record<string, unknown> = {};
@@ -18,24 +16,4 @@ export function serialize(form: HTMLFormElement) {
     });
 
     return object;
-}
-
-export function getFormControls(form: HTMLFormElement) {
-    const rootNode = form.getRootNode() as Document | ShadowRoot;
-    const allNodes = [...rootNode.querySelectorAll("*")];
-    const formControls = [...form.elements];
-    const collection = formCollections.get(form);
-    const placerFormControls = collection ? Array.from(collection) : [];
-
-    return [...formControls, ...placerFormControls].sort(
-        (a: Element, b: Element) => {
-            if (allNodes.indexOf(a) < allNodes.indexOf(b)) {
-                return -1;
-            }
-            if (allNodes.indexOf(a) > allNodes.indexOf(b)) {
-                return 1;
-            }
-            return 0;
-        },
-    );
 }

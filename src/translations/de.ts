@@ -16,7 +16,11 @@ const translation: Translation = {
     goToSlide: (slide, count) => `Gehe zu Folie ${slide} von ${count}`,
     hidePassword: "Passwort verbergen",
     hue: "Farbton",
-    loading: "Wird geladen …",
+    loading: "Wird geladen …",
+    maximumValue: "Höchstwert",
+    maximumValueDescriptive: (label) => `${label} (Höchstwert)`,
+    minimumValue: "Mindestwert",
+    minimumValueDescriptive: (label) => `${label} (Mindestwert)`,
     nextSlide: "Nächste Folie",
     numOptionsSelected: (number) => {
         if (number === 0) {

@@ -1,5 +1,5 @@
 :host {
-    --icon-color: var(--pc-color-neutral-fill-normal);
+    --icon-color: var(--pc-color-neutral-border-loud);
     --icon-color-active: var(--pc-color-warning-fill-loud);
     --icon-size: 1.2rem;
 

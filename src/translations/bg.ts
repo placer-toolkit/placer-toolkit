@@ -17,6 +17,10 @@ const translation: Translation = {
     hidePassword: "Скрий паролата",
     hue: "Оттенък",
     loading: "Зареждане…",
+    maximumValue: "Максимум",
+    maximumValueDescriptive: (label) => `${label} (максимално значение)`,
+    minimumValue: "Минимум",
+    minimumValueDescriptive: (label) => `${label} (минимално значение)`,
     nextSlide: "Следващ слайд",
     numOptionsSelected: (number) => {
         if (number === 0) {

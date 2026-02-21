@@ -1,4 +1,12 @@
-export type PcRemoveEvent = CustomEvent<Record<PropertyKey, never>>;
+export class PcRemoveEvent extends Event {
+    constructor() {
+        super("pc-remove", {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+        });
+    }
+}
 
 declare global {
     interface GlobalEventHandlersEventMap {

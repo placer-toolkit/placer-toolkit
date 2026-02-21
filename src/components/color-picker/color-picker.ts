@@ -1,4 +1,5 @@
 import { html } from "lit";
+import type { PropertyValues } from "lit";
 import {
     customElement,
     eventOptions,
@@ -6,14 +7,18 @@ import {
     query,
     state,
 } from "lit/decorators.js";
+import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { PlacerElement } from "../../internal/placer-element.js";
-import type { PlacerFormControl } from "../../internal/placer-form-control.js";
-import { FormControlController } from "../../internal/form.js";
 import { HasSlotController } from "../../internal/slot.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { RequiredValidator } from "../../internal/validators/required-validator.js";
+import { PcAfterHideEvent } from "../../events/pc-after-hide.js";
+import { PcAfterShowEvent } from "../../events/pc-after-show.js";
+import { PcHideEvent } from "../../events/pc-hide.js";
+import { PcInvalidEvent } from "../../events/pc-invalid.js";
+import { PcShowEvent } from "../../events/pc-show.js";
 import { animateTo } from "../../internal/animate.js";
 import {
     getAnimation,
@@ -21,23 +26,19 @@ import {
 } from "../../utilities/animation-registry.js";
 import { TinyColor } from "@ctrl/tinycolor";
 import { clamp } from "../../internal/math.js";
-import { defaultValue } from "../../internal/default-value.js";
 import { drag } from "../../internal/drag.js";
 import { waitForEvent } from "../../internal/event.js";
 import { watch } from "../../internal/watch.js";
-import { emit } from "../../internal/emit.js";
-import type { PcChangeEvent } from "../../events/pc-change.js";
-import type { PcInputEvent } from "../../events/pc-input.js";
-import { PcButton } from "../button/button.js";
-import { PcButtonGroup } from "../button-group/button-group.js";
-import { PcIcon } from "../icon/icon.js";
-import { PcInput } from "../input/input.js";
-import { PcPopup } from "../popup/popup.js";
+import "../button/button.js";
+import "../button-group/button-group.js";
+import "../icon/icon.js";
+import "../input/input.js";
+import type { PcInput } from "../input/input.js";
+import "../popup/popup.js";
+import type { PcPopup } from "../popup/popup.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./color-picker.css";
-
-const hasEyeDropper = "EyeDropper" in window;
 
 interface EyeDropperConstructor {
     new (): EyeDropperInterface;
@@ -136,10 +137,10 @@ setDefaultAnimation("colorPicker.hide", {
  * @slot label - The colour picker’s label. Alternatively, you can use the `label` attribute.
  * @slot hint - The colour picker’s hint. Alternatively, you can use the `hint` attribute.
  *
- * @event pc-change - Emitted when the colour picker’s value changes.
- * @event pc-input - Emitted when the colour picker receives input.
- * @event pc-focus - Emitted when the colour picker receives focus.
- * @event pc-blur - Emitted when the colour picker loses focus (i.e., is blurred).
+ * @event change - Emitted when the colour picker’s value changes.
+ * @event input - Emitted when the colour picker receives input.
+ * @event focus - Emitted when the colour picker receives focus.
+ * @event blur - Emitted when the colour picker loses focus (i.e., is blurred).
  * @event pc-invalid - Emitted when the form control has been checked for validity and its constraints aren’t satisfied.
  *
  * @csspart base - The component’s base wrapper.
@@ -181,19 +182,19 @@ setDefaultAnimation("colorPicker.hide", {
  * @animation colorPicker.hide - The animation to use when hiding the colour picker popup.
  */
 @customElement("pc-color-picker")
-export class PcColorPicker extends PlacerElement implements PlacerFormControl {
-    /** @internal This is an internal static property. */
+export class PcColorPicker extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
-    /** @internal This is an internal static property. */
-    static dependencies = {
-        "pc-button": PcButton,
-        "pc-button-group": PcButtonGroup,
-        "pc-icon": PcIcon,
-        "pc-input": PcInput,
-        "pc-popup": PcPopup,
+
+    static shadowRootOptions = {
+        ...PlacerFormAssociatedElement.shadowRootOptions,
+        delegatesFocus: true,
     };
 
-    private readonly formControlController = new FormControlController(this);
+    static get validators() {
+        const validators = [RequiredValidator()];
+
+        return [...super.validators, ...validators];
+    }
 
     private readonly hasSlotController = new HasSlotController(
         this,
@@ -204,18 +205,22 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
     private isSafeValue = false;
 
-    /** @internal This is an internal class property. */
     @query('[part~="base"]') base!: HTMLElement;
-    /** @internal This is an internal class property. */
     @query('[part~="input"]') input!: PcInput;
-    /** @internal This is an internal class property. */
     @query('[part~="popup"]') popup!: PcPopup;
-    /** @internal This is an internal class property. */
     @query('[part~="preview"]') previewButton!: HTMLButtonElement;
-    /** @internal This is an internal class property. */
     @query('[part~="trigger"]') trigger!: HTMLButtonElement;
 
+    get validationTarget(): PcInput | HTMLButtonElement {
+        if (this.popup?.active) {
+            return this.input;
+        }
+
+        return this.trigger;
+    }
+
     @state() private hasFocus = false;
+    @state() private hasEyeDropper = false;
     @state() private isDraggingGridHandle = false;
     @state() private isEmpty = false;
     @state() private inputValue = "";
@@ -224,11 +229,31 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     @state() private brightness = 100;
     @state() private alpha = 100;
 
+    private _value: string | null = null;
+
+    /** The current value of the input, submitted as a name/value pair with form data. */
+    get value() {
+        if (this.valueHasChanged) {
+            return this._value;
+        }
+
+        return this._value ?? this.defaultValue;
+    }
+
     /** The current value of the colour picker. The value’s format will vary based on the `format` attribute. To get the value in a specific format, use the `getFormattedValue()` method. The value is submitted as a name/value pair with form data. */
-    @property() value = "";
+    @state() set value(value: string | null) {
+        if (this._value === value) {
+            return;
+        }
+
+        this.valueHasChanged = true;
+        this._value = value;
+    }
 
     /** The default value of the colour picker. Primarily used for resetting the colour picker. */
-    @defaultValue() defaultValue = "";
+    @property({ attribute: "value", reflect: true }) defaultValue:
+        | string
+        | null = this.getAttribute("value") || null;
 
     /** The colour picker’s label. If you need to display HTML, use the `label` slot instead. */
     @property() label = "";
@@ -253,7 +278,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     @property() name = "";
 
     /** Disables the colour picker. */
-    @property({ type: Boolean, reflect: true }) disabled = false;
+    @property({ type: Boolean }) disabled = false;
 
     /** Indicates whether or not the popup is open. You can  toggle this attribute to show and hide the popup, or you can use the `show()` and `hide()` methods and this attribute will reflect the popup’s open state. */
     @property({ type: Boolean, reflect: true }) open = false;
@@ -267,9 +292,6 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     /** One or more predefined colour swatches to display as presets in the colour picker. Can include any format the colour picker can parse, including hex, rgb, hsl, hsv and CSS colour names. Each colour must be separated by a semicolon (`;`). Alternatively, you can pass an array of colour values to this property using JavaScript. */
     @property() swatches: string | string[] = "";
 
-    /** By default, form controls are associated with the nearest containing `<form>` element. This attribute allows you to place the form control outside of a form and associate it with the form that has this `id`. The form must be in the same document or shadow root for this to work. */
-    @property({ reflect: true }) form = "";
-
     /** Indicates if the colour picker must be filled in or not. */
     @property({ type: Boolean, reflect: true }) required = false;
 
@@ -280,20 +302,12 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         this.addEventListener("focusout", this.handleFocusOut);
     }
 
-    firstUpdated() {
-        this.input.updateComplete.then(() => {
-            this.formControlController.updateValidity();
-        });
-    }
-
     private handleFocusIn = () => {
         this.hasFocus = true;
-        emit(this, "pc-focus");
     };
 
     private handleFocusOut = () => {
         this.hasFocus = false;
-        emit(this, "pc-blur");
     };
 
     private handleFormatToggle() {
@@ -301,10 +315,16 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         const nextIndex = (formats.indexOf(this.format) + 1) % formats.length;
 
         this.format = formats[nextIndex] as "hex" | "rgb" | "hsl" | "hsv";
-        this.setColor(this.value);
+        this.setColor(this.value || "");
 
-        emit(this, "pc-change");
-        emit(this, "pc-input");
+        this.updateComplete.then(() => {
+            this.dispatchEvent(
+                new Event("change", { bubbles: true, composed: true }),
+            );
+            this.dispatchEvent(
+                new InputEvent("input", { bubbles: true, composed: true }),
+            );
+        });
     }
 
     private handleAlphaDrag(event: PointerEvent) {
@@ -327,13 +347,29 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
                 if (this.value !== currentValue) {
                     currentValue = this.value;
-                    emit(this, "pc-input");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new InputEvent("input", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             onStop: () => {
                 if (this.value !== initialValue) {
                     initialValue = this.value;
-                    emit(this, "pc-change");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             initialEvent: event,
@@ -343,13 +379,14 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     private handleHueDrag(event: PointerEvent) {
         const container =
             this.shadowRoot!.querySelector<HTMLElement>(".hue-slider")!;
-        const handle = container.querySelector<HTMLElement>(".slider-thumb")!;
+        const thumb = container.querySelector<HTMLElement>(".slider-thumb")!;
+
         const { width } = container.getBoundingClientRect();
 
         let initialValue = this.value;
         let currentValue = this.value;
 
-        handle.focus();
+        thumb.focus();
         event.preventDefault();
 
         drag(container, {
@@ -359,13 +396,29 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
                 if (this.value !== currentValue) {
                     currentValue = this.value;
-                    emit(this, "pc-input");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new InputEvent("input", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             onStop: () => {
                 if (this.value !== initialValue) {
                     initialValue = this.value;
-                    emit(this, "pc-change");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             initialEvent: event,
@@ -375,6 +428,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     private handleGridDrag(event: PointerEvent) {
         const grid = this.shadowRoot!.querySelector<HTMLElement>(".grid")!;
         const handle = grid.querySelector<HTMLElement>(".grid-handle")!;
+
         const { width, height } = grid.getBoundingClientRect();
 
         let initialValue = this.value;
@@ -393,14 +447,31 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
                 if (this.value !== currentValue) {
                     currentValue = this.value;
-                    emit(this, "pc-input");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new InputEvent("input", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             onStop: () => {
                 this.isDraggingGridHandle = false;
+
                 if (this.value !== initialValue) {
                     initialValue = this.value;
-                    emit(this, "pc-change");
+
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             },
             initialEvent: event,
@@ -436,8 +507,14 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
@@ -470,8 +547,14 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
@@ -504,12 +587,18 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
-    private handleInputChange(event: PcChangeEvent) {
+    private handleInputChange(event: Event) {
         const target = event.target as HTMLInputElement;
         const oldValue = this.value;
 
@@ -517,19 +606,25 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
         if (this.input.value) {
             this.setColor(target.value);
-            target.value = this.value;
+            target.value = this.value || "";
         } else {
             this.value = "";
         }
 
         if (this.value !== oldValue) {
-            emit(this, "pc-change");
-            emit(this, "pc-input");
+            this.updateComplete.then(() => {
+                this.dispatchEvent(
+                    new Event("change", { bubbles: true, composed: true }),
+                );
+                this.dispatchEvent(
+                    new InputEvent("input", { bubbles: true, composed: true }),
+                );
+            });
         }
     }
 
-    private handleInputInput(event: PcInputEvent) {
-        this.formControlController.updateValidity();
+    private handleInputInput(event: InputEvent) {
+        this.updateValidity();
 
         event.stopPropagation();
     }
@@ -540,11 +635,23 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
             if (this.input.value) {
                 this.setColor(this.input.value);
-                this.input.value = this.value;
+                this.input.value = this.value || "";
 
                 if (this.value !== oldValue) {
-                    emit(this, "pc-change");
-                    emit(this, "pc-input");
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                        this.dispatchEvent(
+                            new InputEvent("input", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
 
                 setTimeout(() => this.input.select());
@@ -554,17 +661,16 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
     }
 
-    private handleInputInvalid(event: Event) {
-        this.formControlController.setValidity(false);
-        this.formControlController.emitInvalidEvent(event);
-    }
-
     @eventOptions({ passive: false })
     private handleTouchMove(event: TouchEvent) {
         event.preventDefault();
     }
 
     private parseColor(colorString: string) {
+        if (!colorString || colorString.trim() === "") {
+            return null;
+        }
+
         const color = new TinyColor(colorString);
 
         if (!color.isValid) {
@@ -712,7 +818,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
     }
 
     private handleEyeDropper() {
-        if (!hasEyeDropper) {
+        if (!this.hasEyeDropper) {
             return;
         }
 
@@ -726,8 +832,20 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 this.setColor(colorSelectionResult.sRGBHex);
 
                 if (this.value !== oldValue) {
-                    emit(this, "pc-change");
-                    emit(this, "pc-input");
+                    this.updateComplete.then(() => {
+                        this.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                        this.dispatchEvent(
+                            new InputEvent("input", {
+                                bubbles: true,
+                                composed: true,
+                            }),
+                        );
+                    });
                 }
             })
             .catch();
@@ -740,13 +858,23 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
             this.setColor(color);
 
             if (this.value !== oldValue) {
-                emit(this, "pc-change");
-                emit(this, "pc-input");
+                this.updateComplete.then(() => {
+                    this.dispatchEvent(
+                        new Event("change", { bubbles: true, composed: true }),
+                    );
+                    this.dispatchEvent(
+                        new InputEvent("input", {
+                            bubbles: true,
+                            composed: true,
+                        }),
+                    );
+                });
             }
         }
     }
 
-    private getHexString(
+    /** Generates a hex string from HSV values. The hue value must be within 0–360. All other arguments must be within 0–100. */
+    getHexString(
         hue: number,
         saturation: number,
         brightness: number,
@@ -767,19 +895,27 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         event.stopImmediatePropagation();
     }
 
-    /** @internal This is an internal method. */
     @watch("format", { waitUntilFirstUpdate: true })
     handleFormatChange() {
         this.syncValues();
     }
 
-    /** @internal This is an internal method. */
     @watch("opacity", { waitUntilFirstUpdate: true })
     handleOpacityChange() {
         this.alpha = 100;
     }
 
-    /** @internal This is an internal method. */
+    protected willUpdate(changedProperties: PropertyValues<this>): void {
+        super.willUpdate(changedProperties);
+
+        if (changedProperties.has("value")) {
+            this.handleValueChange(
+                changedProperties.get("value") || "",
+                this.value || "",
+            );
+        }
+    }
+
     @watch("value")
     handleValueChange(oldValue: string | undefined, newValue: string) {
         this.isEmpty = !newValue;
@@ -795,7 +931,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
             const newColor = this.parseColor(newValue);
 
             if (newColor !== null) {
-                this.inputValue = this.value;
+                this.inputValue = this.value || "";
                 this.hue = newColor.hsva.h;
                 this.saturation = newColor.hsva.s;
                 this.brightness = newColor.hsva.v;
@@ -805,6 +941,8 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 this.inputValue = oldValue ?? "";
             }
         }
+
+        this.requestUpdate();
     }
 
     /** Focuses the colour picker. */
@@ -872,6 +1010,47 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
     }
 
+    private reportValidityAfterShow = () => {
+        this.removeEventListener("invalid", this.emitInvalid);
+
+        this.reportValidity();
+
+        this.addEventListener("invalid", this.emitInvalid);
+    };
+
+    /** Checks for validity and shows the browser’s validation message if the control is invalid. */
+    reportValidity() {
+        if (!this.inline && !this.validity.valid && !this.open) {
+            this.show();
+
+            this.addEventListener(
+                "pc-after-show",
+                () => this.reportValidityAfterShow,
+                { once: true },
+            );
+
+            if (!this.disabled) {
+                this.dispatchEvent(new PcInvalidEvent());
+            }
+
+            return false;
+        }
+
+        return super.reportValidity();
+    }
+
+    formResetCallback() {
+        this.value = this.defaultValue;
+
+        super.formResetCallback();
+    }
+
+    firstUpdated(changedProperties: PropertyValues<this>): void {
+        super.firstUpdated(changedProperties);
+
+        this.hasEyeDropper = "EyeDropper" in window;
+    }
+
     private handleKeyDown = (event: KeyboardEvent) => {
         if (this.open && event.key === "Escape") {
             event.stopPropagation();
@@ -919,7 +1098,6 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
     };
 
-    /** @internal This is an internal method. */
     handleTriggerClick() {
         if (this.open) {
             this.hide();
@@ -929,7 +1107,6 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
     }
 
-    /** @internal This is an internal method. */
     async handleTriggerKeyDown(event: KeyboardEvent) {
         if ([" ", "Enter"].includes(event.key)) {
             event.preventDefault();
@@ -938,14 +1115,12 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
     }
 
-    /** @internal This is an internal method. */
     handleTriggerKeyUp(event: KeyboardEvent) {
         if (event.key === " ") {
             event.preventDefault();
         }
     }
 
-    /** @internal This is an internal method. */
     updateAccessibleTrigger() {
         const accessibleTrigger = this.trigger;
 
@@ -965,6 +1140,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
 
         this.open = true;
+
         return waitForEvent(this, "pc-after-show");
     }
 
@@ -975,37 +1151,37 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
         }
 
         this.open = false;
+
         return waitForEvent(this, "pc-after-hide");
     }
 
-    /** @internal This is an internal method. */
     addOpenListeners() {
         this.base.addEventListener("keydown", this.handleKeyDown);
         document.addEventListener("keydown", this.handleDocumentKeyDown);
         document.addEventListener("mousedown", this.handleDocumentMouseDown);
     }
 
-    /** @internal This is an internal method. */
     removeOpenListeners() {
         if (this.base) {
             this.base.removeEventListener("keydown", this.handleKeyDown);
         }
+
         document.removeEventListener("keydown", this.handleDocumentKeyDown);
         document.removeEventListener("mousedown", this.handleDocumentMouseDown);
     }
 
-    /** @internal This is an internal method. */
     @watch("open", { waitUntilFirstUpdate: true })
     async handleOpenChange() {
         if (this.disabled) {
             this.open = false;
+
             return;
         }
 
         this.updateAccessibleTrigger();
 
         if (this.open) {
-            emit(this, "pc-show");
+            this.dispatchEvent(new PcShowEvent());
 
             this.addOpenListeners();
 
@@ -1020,9 +1196,9 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
 
             animateTo(this.popup.popup, animation.keyframes, animation.options);
 
-            waitForEvent(this, "pc-after-show");
+            this.dispatchEvent(new PcAfterShowEvent());
         } else {
-            emit(this, "pc-hide");
+            this.dispatchEvent(new PcHideEvent());
 
             this.removeOpenListeners();
 
@@ -1039,55 +1215,8 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
             this.base.hidden = true;
             this.popup.active = false;
 
-            waitForEvent(this, "pc-after-hide");
+            this.dispatchEvent(new PcAfterHideEvent());
         }
-    }
-
-    /** Gets the validity state object. */
-    get validity() {
-        return this.input.validity;
-    }
-
-    /** Gets the validation message. */
-    get validationMessage() {
-        return this.input.validationMessage;
-    }
-
-    /** Checks for validity but does not show a validation message. Returns `true` when valid and `false` when invalid. */
-    checkValidity() {
-        return this.input.checkValidity();
-    }
-
-    /** Gets the associated form, if one exists. */
-    getForm(): HTMLFormElement | null {
-        return this.formControlController.getForm();
-    }
-
-    /** Checks for validity and shows the browser’s validation message if the control is invalid. */
-    reportValidity() {
-        if (!this.inline && !this.validity.valid && !this.open) {
-            this.show();
-
-            this.addEventListener(
-                "pc-after-show",
-                () => this.input.reportValidity(),
-                { once: true },
-            );
-
-            if (!this.disabled) {
-                this.formControlController.emitInvalidEvent();
-            }
-
-            return false;
-        }
-
-        return this.input.reportValidity();
-    }
-
-    /** Sets a custom validation message. Pass an empty string to restore validity. */
-    setCustomValidity(message: string) {
-        this.input.setCustomValidity(message);
-        this.formControlController.updateValidity();
     }
 
     render() {
@@ -1259,11 +1388,10 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                         ?disabled=${this.disabled}
                         aria-label=${this.localize.term("currentValue")}
                         @keydown=${this.handleInputKeyDown}
-                        @pc-change=${this.handleInputChange}
-                        @pc-input=${this.handleInputInput}
-                        @pc-focus=${this.stopNestedEventPropagation}
-                        @pc-blur=${this.stopNestedEventPropagation}
-                        @pc-invalid=${this.handleInputInvalid}
+                        @change=${this.handleInputChange}
+                        @input=${this.handleInputInput}
+                        @focus=${this.stopNestedEventPropagation}
+                        @blur=${this.stopNestedEventPropagation}
                     >
                         ${!this.isEmpty
                             ? html`
@@ -1304,7 +1432,7 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                                   </pc-button>
                               `
                             : ""}
-                        ${hasEyeDropper
+                        ${this.hasEyeDropper
                             ? html`
                                   <pc-button
                                       part="eyedropper-button"
@@ -1408,7 +1536,6 @@ export class PcColorPicker extends PlacerElement implements PlacerFormControl {
                 placement="bottom-start"
                 distance="0"
                 skidding="0"
-                sync="width"
                 flip
                 flip-fallback-strategy="best-fit"
                 shift

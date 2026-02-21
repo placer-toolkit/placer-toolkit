@@ -15,7 +15,6 @@ import styles from "./badge.css";
  */
 @customElement("pc-badge")
 export class PcBadge extends PlacerElement {
-    /** @internal This is an internal static property. */
     static css = [appearanceStyles, styles];
 
     /** The badge’s appearance. */
@@ -27,8 +26,11 @@ export class PcBadge extends PlacerElement {
         | "danger" = "primary";
 
     /** The badge’s variant. */
-    @property({ reflect: true }) variant: "accent" | "filled" | "outlined" =
-        "accent";
+    @property({ reflect: true }) variant:
+        | "accent"
+        | "filled"
+        | "outlined"
+        | "filled outlined" = "accent";
 
     /** Gives the badge a rounded rectangle shape. */
     @property({ type: Boolean, reflect: true }) rounded = false;
