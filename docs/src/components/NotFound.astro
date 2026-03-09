@@ -59,7 +59,15 @@ const translation = useTranslations(language);
                             icon-style="solid"
                             name="house"
                             slot="prefix"></pc-icon>
+
                         {translation("notfound.button.home")}
+
+                        <pc-icon
+                            class="arrow-right-move"
+                            library="default"
+                            icon-style="solid"
+                            name="chevron-right"
+                            slot="suffix"></pc-icon>
                     </pc-button>
                     <pc-button
                         id="random-link"
@@ -71,7 +79,15 @@ const translation = useTranslations(language);
                             icon-style="solid"
                             name="dice-six"
                             slot="prefix"></pc-icon>
+
                         {translation("notfound.button.lucky")}
+
+                        <pc-icon
+                            class="arrow-right-move"
+                            library="default"
+                            icon-style="solid"
+                            name="chevron-right"
+                            slot="suffix"></pc-icon>
                     </pc-button>
                 </div>
             </footer>
@@ -248,7 +264,7 @@ const translation = useTranslations(language);
         text-align: center;
     }
 
-    .notfound-container .content footer pc-button:first-child::part(base) {
+    .notfound-container .content footer > pc-button:first-child::part(base) {
         justify-content: flex-start;
     }
 
@@ -259,6 +275,10 @@ const translation = useTranslations(language);
             translate var(--pc-transition-medium) cubic-bezier(0.4, 0, 0.2, 1),
             border-radius var(--pc-transition-medium)
                 cubic-bezier(0.68, 0, 0.32, 1.6);
+    }
+
+    .notfound-container .content footer pc-button [slot="suffix"] {
+        display: none;
     }
 
     @media (hover: hover) {
@@ -310,6 +330,40 @@ const translation = useTranslations(language);
         .notfound-container .logo {
             transform: translate(-6rem, -19rem) rotate(10deg);
             animation: logo-movement-mobile 3s infinite alternate ease-in-out;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .notfound-container .content footer {
+            inline-size: calc(100dvw - var(--pc-spacing-xxl));
+        }
+
+        .notfound-container .content footer div {
+            flex-direction: column;
+        }
+
+        .notfound-container .content footer pc-button::part(base) {
+            justify-content: flex-start;
+        }
+
+        .notfound-container .content footer pc-button::part(suffix) {
+            margin-inline-start: auto;
+        }
+
+        .notfound-container .content footer pc-button [slot="suffix"] {
+            display: flex;
+            transition: all var(--pc-transition-medium)
+                cubic-bezier(0.22, 1.5, 0.36, 1);
+        }
+
+        @media (hover: hover) {
+            .notfound-container .content footer pc-button [slot="suffix"] {
+                opacity: 0;
+            }
+
+            .notfound-container .content footer pc-button:hover [slot="suffix"] {
+                opacity: 1;
+            }
         }
     }
 </style>

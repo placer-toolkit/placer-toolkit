@@ -80,7 +80,7 @@ label:not(.disabled) .switch:active {
     pointer-events: none;
 }
 
-label:not(.disabled) .input:focus-visible ~ .switch .thumb {
+label:not(.disabled) .input:focus-visible ~ .switch {
     outline: var(--pc-focus-ring);
     outline-offset: var(--pc-focus-ring-offset);
     animation: focus-ring-animation var(--pc-transition-medium)

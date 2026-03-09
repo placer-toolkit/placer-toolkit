@@ -1,50 +1,48 @@
 import { registerTranslation } from "./index.js";
 import type { Translation } from "../utilities/localize.js";
 
-/* Note: This file contains literal U+200F (Right-to-Left Mark) characters after numbers.
-   Do not remove them – they ensure correct number display in RTL text. */
 const translation: Translation = {
     $code: "pa",
-    $name: "پنجابی",
-    $dir: "rtl",
+    $name: "ਪੰਜਾਬੀ",
+    $dir: "ltr",
 
-    carousel: "کیروسَل",
-    clearEntry: "اندراج صاف کرو",
-    close: "بند کرو",
-    copied: "کاپی ہو گئی!",
-    copy: "کاپی کرو",
-    currentValue: "موجودہ ویلیو",
-    error: "غلطی",
-    goToSlide: (slide, count) => `${count}‏ وچوں سلائیڈ ${slide}‏ اُتے جاؤ`,
-    hidePassword: "پاس ورڈ لُکاؤ",
-    hue: "رنگ ٹون",
-    loading: "لوڈ ہورہا ہے…",
-    maximumValue: "زیادہ سے زیادہ",
-    maximumValueDescriptive: (label) => `${label} (زیادہ سے زیادہ قدر)`,
-    minimumValue: "کم سے کم",
-    minimumValueDescriptive: (label) => `${label} (کم سے کم قدر)`,
-    nextSlide: "اگلی سلائیڈ",
+    carousel: "ਕੈਰੋਸਲ",
+    clearEntry: "ਐਂਟਰੀ ਸਾਫ਼ ਕਰੋ",
+    close: "ਬੰਦ ਕਰੋ",
+    copied: "ਕਾਪੀ ਕੀਤਾ ਗਿਆ!",
+    copy: "ਕਾਪੀ ਕਰੋ",
+    currentValue: "ਮੌਜੂਦਾ ਮੁੱਲ",
+    error: "ਗਲਤੀ",
+    goToSlide: (slide, count) => `ਸਲਾਈਡ ${slide} 'ਤੇ ਜਾਓ ${count} ਵਿੱਚੋਂ`,
+    hidePassword: "ਪਾਸਵਰਡ ਲੁਕਾਓ",
+    hue: "ਰੰਗ ਟੋਨ",
+    loading: "ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…",
+    maximumValue: "ਵੱਧ ਤੋਂ ਵੱਧ",
+    maximumValueDescriptive: (label) => `${label} (ਵੱਧ ਤੋਂ ਵੱਧ ਵੈਲਯੂ)`,
+    minimumValue: "ਘੱਟ ਤੋਂ ਘੱਟ",
+    minimumValueDescriptive: (label) => `${label} (ਘੱਟ ਤੋਂ ਘੱਟ ਵੈਲਯੂ)`,
+    nextSlide: "ਅਗਲੀ ਸਲਾਈਡ",
     numOptionsSelected: (number) => {
         if (number === 0) {
-            return "کوئی آپشن نہیں چُنا گیا";
+            return "ਕੋਈ ਵਿਕਲਪ ਨਹੀਂ ਚੁਣਿਆ ਗਿਆ";
         } else if (number === 1) {
-            return "اک آپشن چُنا گیا";
+            return "ਇੱਕ ਵਿਕਲਪ ਚੁਣਿਆ ਗਿਆ";
         } else {
-            return `${number}‏ آپشنز چُنے گئے`;
+            return `${number} ਵਿਕਲਪ ਚੁਣੇ ਗਏ`;
         }
     },
-    opacity: "غیر شفافیت",
-    pickAColorFromTheScreen: "سکرین توں اک رنگ چُنو",
-    previousSlide: "پچھلی سلائیڈ",
-    progress: "ترقی",
-    remove: "ہٹاؤ",
-    resize: "سائز بدلو",
-    scrollableRegion: "سکرول والا حصہ",
-    scrollToEnd: "آخر تک سکرول کرو",
-    scrollToStart: "شروع تک سکرول کرو",
-    showPassword: "پاس ورڈ وکھاؤ",
-    slideNum: (slide) => `سلائیڈ ${slide}‏`,
-    toggleColorFormat: "رنگ دا فارمیٹ بدلو",
+    opacity: "ਅਪਾਰਦਰਸ਼ਤਾ",
+    pickAColorFromTheScreen: "ਸਕ੍ਰੀਨ ਤੋਂ ਇੱਕ ਰੰਗ ਚੁਣੋ",
+    previousSlide: "ਪਿਛਲੀ ਸਲਾਈਡ",
+    progress: "ਤਰੱਕੀ",
+    remove: "ਹਟਾਓ",
+    resize: "ਆਕਾਰ ਬਦਲੋ",
+    scrollableRegion: "ਸਕਰੋਲ ਕਰਨ ਯੋਗ ਖੇਤਰ",
+    scrollToEnd: "ਅੰਤ ਤੱਕ ਸਕਰੋਲ ਕਰੋ",
+    scrollToStart: "ਸ਼ੁਰੂਆਤ ਤੱਕ ਸਕਰੋਲ ਕਰੋ",
+    showPassword: "ਪਾਸਵਰਡ ਦਿਖਾਓ",
+    slideNum: (slide) => `ਸਲਾਈਡ ${slide}`,
+    toggleColorFormat: "ਰੰਗ ਦਾ ਫਾਰਮੈਟ ਬਦਲੋ",
 };
 
 registerTranslation(translation);

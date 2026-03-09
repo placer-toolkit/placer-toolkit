@@ -1,7 +1,12 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
 const { keyName } = Astro.props;
 
-// fallback for unknown keys
+// Fallback for unknown keys
 const fallbackDisplayKey = keyName
     ? keyName.charAt(0).toUpperCase() + keyName.slice(1)
     : "";
@@ -10,11 +15,24 @@ const fallbackDisplayKey = keyName
 <kbd
     class="keyboard-key"
     data-key={keyName?.toLowerCase() || ""}
+    data-ctrl={translation("ui.keyboard.ctrl")}
+    data-ctrl-label={translation("ui.keyboard.ctrl.label")}
+    data-shift={translation("ui.keyboard.shift")}
+    data-shift-label={translation("ui.keyboard.shift.label")}
+    data-enter={translation("ui.keyboard.enter")}
+    data-enter-label={translation("ui.keyboard.enter.label")}
+    data-delete={translation("ui.keyboard.delete")}
+    data-delete-label={translation("ui.keyboard.delete.label")}
+    data-mac-ctrl-label={translation("ui.keyboard.mac.ctrl.label")}
+    data-mac-option-label={translation("ui.keyboard.mac.option.label")}
+    data-mac-command-label={translation("ui.keyboard.mac.command.label")}
+    data-mac-enter={translation("ui.keyboard.mac.enter")}
+    data-mac-enter-label={translation("ui.keyboard.mac.enter.label")}
     aria-label={fallbackDisplayKey}>{fallbackDisplayKey}</kbd
 >
 
 <script>
-    (() => {
+    function updateKeys() {
         const keys = document.querySelectorAll<HTMLElement>(".keyboard-key");
 
         const isAppleDevice =
@@ -22,57 +40,76 @@ const fallbackDisplayKey = keyName
             navigator.userAgentData?.platform?.toLowerCase().includes("mac") ||
             /mac|iphone|ipad|ipod/i.test(navigator.platform);
 
-        const keyMap: Record<
-            string,
-            { mac: string; macLabel: string; win: string; winLabel: string }
-        > = {
-            meta: {
-                mac: "⌘",
-                macLabel: "Command",
-                win: "Windows",
-                winLabel: "Windows",
-            },
-            command: {
-                mac: "⌘",
-                macLabel: "Command",
-                win: "Ctrl",
-                winLabel: "Control",
-            },
-            ctrl: {
-                mac: "⌃",
-                macLabel: "Control",
-                win: "Ctrl",
-                winLabel: "Control",
-            },
-            shift: {
-                mac: "⇧",
-                macLabel: "Shift",
-                win: "Shift",
-                winLabel: "Shift",
-            },
-            alt: { mac: "⌥", macLabel: "Option", win: "Alt", winLabel: "Alt" },
-            altgr: {
-                mac: "⌥",
-                macLabel: "Option",
-                win: "AltGr",
-                winLabel: "AltGr",
-            },
-            enter: {
-                mac: "Return",
-                macLabel: "Return",
-                win: "Enter",
-                winLabel: "Enter",
-            },
-            delete: {
-                mac: "⌦",
-                macLabel: "Delete",
-                win: "Del",
-                winLabel: "Delete",
-            },
-            tab: { mac: "⇥", macLabel: "Tab", win: "Tab", winLabel: "Tab" },
-        };
-
         keys.forEach((key) => {
+            const ctrlKey = key.dataset.ctrl as string;
+            const ctrlKeyLabel = key.dataset.ctrlLabel as string;
+            const shiftKey = key.dataset.shift as string;
+            const shiftKeyLabel = key.dataset.shiftLabel as string;
+            const enterKey = key.dataset.enter as string;
+            const enterKeyLabel = key.dataset.enterLabel as string;
+            const deleteKey = key.dataset.delete as string;
+            const deleteKeyLabel = key.dataset.deleteLabel as string;
+            const macCtrlKeyLabel = key.dataset.macCtrlLabel as string;
+            const macOptionKeyLabel = key.dataset.macOptionLabel as string;
+            const macCommandKeyLabel = key.dataset.macCommandLabel as string;
+            const macEnterKey = key.dataset.macEnter as string;
+            const macEnterKeyLabel = key.dataset.macEnterLabel as string;
+
+            const keyMap: Record<
+                string,
+                { mac: string; macLabel: string; win: string; winLabel: string }
+            > = {
+                meta: {
+                    mac: "⌘",
+                    macLabel: macCommandKeyLabel,
+                    win: "Windows",
+                    winLabel: "Windows",
+                },
+                command: {
+                    mac: "⌘",
+                    macLabel: macCommandKeyLabel,
+                    win: ctrlKey,
+                    winLabel: ctrlKeyLabel,
+                },
+                ctrl: {
+                    mac: "⌃",
+                    macLabel: macCtrlKeyLabel,
+                    win: ctrlKey,
+                    winLabel: ctrlKeyLabel,
+                },
+                shift: {
+                    mac: "⇧",
+                    macLabel: shiftKeyLabel,
+                    win: shiftKey,
+                    winLabel: shiftKeyLabel,
+                },
+                alt: {
+                    mac: "⌥",
+                    macLabel: macOptionKeyLabel,
+                    win: "Alt",
+                    winLabel: "Alt",
+                },
+                altgr: {
+                    mac: "⌥",
+                    macLabel: macOptionKeyLabel,
+                    win: "AltGr",
+                    winLabel: "AltGr",
+                },
+                enter: {
+                    mac: macEnterKey,
+                    macLabel: macEnterKeyLabel,
+                    win: enterKey,
+                    winLabel: enterKeyLabel,
+                },
+                delete: {
+                    mac: "⌦",
+                    macLabel: deleteKeyLabel,
+                    win: deleteKey,
+                    winLabel: deleteKeyLabel,
+                },
+                tab: { mac: "⇥", macLabel: "Tab", win: "Tab", winLabel: "Tab" },
+            };
+
             const keyType = key.dataset.key;
 
             if (!keyType) {
@@ -83,6 +120,7 @@ const fallbackDisplayKey = keyName
 
             if (keyInfo) {
                 key.textContent = isAppleDevice ? keyInfo.mac : keyInfo.win;
+
                 key.setAttribute(
                     "aria-label",
                     isAppleDevice ? keyInfo.macLabel : keyInfo.winLabel,
@@ -92,8 +130,11 @@ const fallbackDisplayKey = keyName
                     keyType.charAt(0).toUpperCase() + keyType.slice(1);
 
                 key.textContent = display;
+
                 key.setAttribute("aria-label", display);
             }
         });
-    })();
+    }
+
+    document.addEventListener("astro:page-load", updateKeys);
 </script>

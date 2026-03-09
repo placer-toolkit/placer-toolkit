@@ -4,6 +4,8 @@ description: Placer Toolkit follows Semantic Versioning. Breaking changes to com
 order: 5
 ---
 
+import AutoKeyboardSwitch from "../../../components/AutoKeyboardSwitch.astro";
+
 {/* The changelog is maintained in English only. Due to its high update frequency
     and technical nature, translations would quickly become outdated or inaccurate. */}
 
@@ -45,24 +47,36 @@ This rating applies to smaller, localised changes that affect only a minority of
 
 This rating flags minor changes that impact consistency or adherence to future API standards. It affects component usage going forward but does not break current functionality. A simple migration guide is always provided (e.g., the focus ring animation update in v1.0.0-alpha.1).
 
+## Preview
+
+### Milestones
+
+- Added three locales: Georgian (ka), Kazakh (kk) and Kazakh Latin (2021) (kk-Latn).
+
+### Enhancements
+
+- Standardised the Punjabi (pa) locales to align with CLDR standards.<br />**⚠️ Breaking change:** `pa` is now the Gurmukhi script (LTR) and `pa-Arab` is now the Shahmukhi script (RTL). If you were using `pa` to get the Shahmukhi variant, you must now use `pa-Arab`. If you were using `pa-Guru` to get the Gurmukhi variant, you must now use `pa-Guru`.
+- Added the `.pc-cite-block` class for the `<figure>` element to cite blockquotes.
+- Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch).
+
 ## 1.0.0-alpha.4
 
 ### Milestones
 
 - Switched to `PlacerFormAssociatedElement` which uses the `ElementInternals` API for the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components.<br />**⚠️ Breaking change:** This change may break your old forms if you rely on the `[data-*]` attributes. Since we now use the `ElementInternals` API, we now use custom states. Change your CSS to use `:state()` instead of `[data-*]`.
     ```diff
-    -pc-select[data-required] { /* … */}
-    -pc-select[data-optional] { /* … */}
-    -pc-select[data-invalid] { /* … */}
-    -pc-select[data-valid] { /* … */}
-    -pc-select[data-user-invalid] { /* … */}
-    -pc-select[data-user-invalid] { /* … */}
-    +pc-select:state(required) { /* … */}
-    +pc-select:state(optional) { /* … */}
-    +pc-select:state(invalid) { /* … */}
-    +pc-select:state(valid) { /* … */}
-    +pc-select:state(user-invalid) { /* … */}
-    +pc-select:state(user-invalid) { /* … */}
+    -pc-select[data-required] { /* … */ }
+    -pc-select[data-optional] { /* … */ }
+    -pc-select[data-invalid] { /* … */ }
+    -pc-select[data-valid] { /* … */ }
+    -pc-select[data-user-invalid] { /* … */ }
+    -pc-select[data-user-invalid] { /* … */ }
+    +pc-select:state(required) { /* … */ }
+    +pc-select:state(optional) { /* … */ }
+    +pc-select:state(invalid) { /* … */ }
+    +pc-select:state(valid) { /* … */ }
+    +pc-select:state(user-invalid) { /* … */ }
+    +pc-select:state(user-invalid) { /* … */ }
     ```
 - Added two new components: [Skeleton](/docs/components/skeleton) and [Slider](/docs/components/slider).
 - Added a _maybe useless_ locale: Polytonic Greek (el-polyton).

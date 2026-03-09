@@ -13,7 +13,12 @@ export default defineConfig({
         mdx({
             rehypePlugins: [rehypeSlug, rehypeAnchorHeadings],
         }),
-        sitemap(),
+        sitemap({
+            filter: (page) =>
+                !/^https:\/\/placer-toolkit\.vercel\.app(?:\/[a-zA-Z0-9-]{2,5})?\/404\/?$/.test(
+                    page,
+                ),
+        }),
     ],
     i18n: {
         locales: ["en", "de"],

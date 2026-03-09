@@ -1,6 +1,7 @@
 ---
 title: Format Number
 description: Formats a number using the specified locale and options.
+category: utilities
 ---
 
 Formats a number using the specified locale and options.
@@ -26,7 +27,7 @@ Localisation is handled by the browser’s [`Intl.DateTimeFormat` API](https://d
     const formatter = container.querySelector("pc-format-number");
     const input = container.querySelector("pc-input");
 
-    input.addEventListener("pc-input", () => (formatter.value = input.value || 0));
+    input.addEventListener("input", () => (formatter.value = input.value || 0));
 </script>
 ```
 

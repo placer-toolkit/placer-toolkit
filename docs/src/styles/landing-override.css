@@ -10,7 +10,7 @@
     -webkit-backdrop-filter: blur(16px);
 }
 
-.pc-dark body {
+html.pc-dark {
     --indigo-overlay: color-mix(
         in oklab,
         var(--pc-color-neutral-05),
@@ -35,10 +35,11 @@
         radial-gradient(var(--indigo-overlay), transparent 40%)
             no-repeat -60vw -40vh / 105vw 200vh,
         radial-gradient(var(--indigo-overlay), transparent 65%) no-repeat 50%
-            calc(100% + 20rem) / 60rem 30rem;
+            calc(100% + 20rem) / 60rem 30rem,
+        var(--pc-color-surface-default);
 }
 
-.pc-light body {
+html.pc-light {
     --indigo-overlay-light: color-mix(
         in oklab,
         var(--pc-color-neutral-95),
@@ -62,7 +63,8 @@
         radial-gradient(var(--blue-overlay-light), transparent 40%)
             no-repeat -60vw -40vh / 105vw 200vh,
         radial-gradient(var(--indigo-overlay-light), transparent 65%) no-repeat
-            50% calc(100% + 20rem) / 60rem 30rem;
+            50% calc(100% + 20rem) / 60rem 30rem,
+        var(--pc-color-surface-default);
 }
 
 h1,

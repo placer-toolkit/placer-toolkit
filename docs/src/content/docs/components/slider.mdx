@@ -1,6 +1,7 @@
 ---
 title: Slider
 description: Sliders allow the user to select a single value within a given range.
+category: formControls
 ---
 
 Sliders allow the user to select a single value within a given range.
@@ -94,11 +95,10 @@ Use the `reference` slot to add contextual labels below the slider. References a
 ```
 
 <pc-callout appearance="primary">
-    {/* New icon please */}
     <pc-icon
         library="default"
         icon-style="solid"
-        name="circle-info"
+        name="location-crosshairs"
         slot="icon"
     ></pc-icon>
     If you want to show a reference next to a specific marker, you can add `position: absolute` to it and set the `inset-block-start`, `inset-block-end`, `inset-inline-start` or `inset-inline-end` property to a percentage that corresponds to the marker’s position.

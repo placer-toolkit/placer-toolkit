@@ -58,10 +58,12 @@ const findComponentData = (
             (decl) =>
                 decl.name === componentName || decl.tagName === componentName,
         );
+
         if (declaration) {
             return declaration;
         }
     }
+
     return null;
 };
 
@@ -112,9 +114,5 @@ if (componentData?.status === "stable") {
 
     code.tag-name {
         padding-block: 0;
-    }
-
-    pc-badge.status {
-        text-transform: capitalize;
     }
 </style>

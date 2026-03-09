@@ -27,7 +27,6 @@
         -moz-osx-font-smoothing: grayscale;
         text-size-adjust: 100%;
         -webkit-text-size-adjust: 100%;
-        -moz-text-size-adjust: 100%;
     }
     /* #endregion */
 
@@ -106,11 +105,20 @@
         }
     }
 
-    blockquote {
+    blockquote,
+    figure.pc-cite-block figcaption {
         margin-inline-start: 0;
         padding-inline-start: var(--pc-spacing-l);
         border-inline-start: var(--pc-border-width-l) var(--pc-border-style)
             var(--pc-color-border-quiet);
+    }
+
+    figure.pc-cite-block blockquote {
+        margin-block-end: 0;
+    }
+
+    figure.pc-cite-block figcaption {
+        padding-block-start: var(--pc-spacing-s);
     }
 
     hr {
@@ -221,13 +229,13 @@
     kbd {
         padding-block: 0.125em;
         padding-inline: 0.25em;
-        font-family: var(--pc-font-mono);
-        font-size: round(calc(var(--pc-font-size-smaller) / 1.1), 1px);
         background-color: var(--pc-color-neutral-fill-normal);
         color: inherit;
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-normal);
         border-radius: var(--pc-border-radius-s);
+        font-family: var(--pc-font-mono);
+        font-size: round(calc(var(--pc-font-size-smaller) / 1.1), 1px);
         white-space: nowrap;
         user-select: none;
         -webkit-user-select: none;

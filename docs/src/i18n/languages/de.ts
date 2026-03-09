@@ -2,7 +2,7 @@ export default {
     // UI and tools
     "ui.toc.onThisPage": "Auf dieser Seite",
     "ui.toc.overview": "Überblick",
-    "ui.keyboard.ctrl": "Strg",
+
     "ui.content.contentNotAvailableInYourLanguage":
         "Dieser Inhalt ist noch nicht in deiner Sprache verfügbar.",
     "ui.content.component.since":
@@ -13,16 +13,31 @@ export default {
     "ui.content.englishOnly": "(nur Englisch)",
     "ui.content.heading.anchorLabel": "Abschnitt betitelt „{{title}}“",
 
+    // Keyboard
+    "ui.keyboard.ctrl": "Strg",
+    "ui.keyboard.ctrl.label": "Steuerung",
+    "ui.keyboard.shift": "⇧",
+    "ui.keyboard.shift.label": "Umschalttaste",
+    "ui.keyboard.enter": "Eingabe",
+    "ui.keyboard.enter.label": "Eingabetaste",
+    "ui.keyboard.delete": "Entf",
+    "ui.keyboard.delete.label": "Entfernen",
+    "ui.keyboard.mac.ctrl.label": "Control‐Taste",
+    "ui.keyboard.mac.option.label": "Wahltaste",
+    "ui.keyboard.mac.command.label": "Befehlstaste",
+    "ui.keyboard.mac.enter": "⏎",
+    "ui.keyboard.mac.enter.label": "Zeilenschalter",
+
     // Search
     "ui.search.label": "Suchen",
     "ui.search.label.descriptive":
         "Durchsuche die Placer Toolkit‐Dokumentation",
     "ui.search.searchNotAvailableInDevBuilds":
         "Die Suche ist nur in Produktions‐Builds verfügbar.<br />Baue die Website und sieh dir die Vorschau an, um sie lokal zu testen.",
-    "ui.search.searchingFor": "<b>{{query}}</b> wird gesucht …",
-    "ui.search.resultFor": "Ein Ergebnis für <b>{{query}}</b>",
-    "ui.search.resultsFor": "{{count}} Ergebnisse für <b>{{query}}</b>",
-    "ui.search.noResultsFor": "Keine Ergebnisse für <b>{{query}}</b>",
+    "ui.search.searchingFor": "<mark>{{query}}</mark> wird gesucht …",
+    "ui.search.resultFor": "Ein Ergebnis für <mark>{{query}}</mark>",
+    "ui.search.resultsFor": "{{count}} Ergebnisse für <mark>{{query}}</mark>",
+    "ui.search.noResultsFor": "Keine Ergebnisse für <mark>{{query}}</mark>",
     "ui.search.navigation.up": "Hoch",
     "ui.search.navigation.down": "Runter",
     "ui.search.navigation.navigate": "Navigieren",
@@ -47,6 +62,15 @@ export default {
     "sidebar.section.layout": "Layout",
     "sidebar.section.styleUtilities": "Style‐Utilities",
     "sidebar.section.resources": "Ressourcen",
+
+    // Component catalogue
+    "catalog.components.actions": "Aktionen",
+    "catalog.components.feedbackAndStatus": "Feedback und Status",
+    "catalog.components.imagery": "Visuals",
+    "catalog.components.formControls": "Formularsteuerelemente",
+    "catalog.components.navigation": "Navigation",
+    "catalog.components.organisation": "Layout",
+    "catalog.components.utilities": "Utilities",
 
     // Labels
     "button.getStarted": "Los geht’s",
@@ -135,11 +159,37 @@ export default {
     "apiTable.tabs.cdnImport": "CDN (Import)",
     "apiTable.tabs.npmImport": "npm (Import)",
 
+    "apiTable.readOnlyPromise":
+        'Ein schreibgeschütztes Promise, das erfüllt ist, sobald die Komponente <a href="/de/docs/get-started/usage/#komponentenrendering-und-aktualisierung">fertig aktualisiert</a> wurde.',
+
+    "apiTable.learnMore.attributesAndProperties":
+        'Erfahre mehr über <a href="/de/docs/get-started/usage/#attribute-und-eigenschaften">Attribute und Eigenschaften</a>.',
+    "apiTable.learnMore.slots":
+        'Erfahre mehr über <a href="/de/docs/get-started/usage/#slots">die Benutzung von Slots</a>.',
+    "apiTable.learnMore.methods":
+        'Erfahre mehr über <a href="/de/docs/get-started/usage/#methoden">Methoden</a>.',
+    "apiTable.learnMore.events":
+        'Erfahre mehr über <a href="/de/docs/get-started/usage/#events">Events</a>.',
+    "apiTable.learnMore.cssCustomProperties":
+        'Erfahre mehr über <a href="/de/docs/get-started/customisation/#benutzerdefinierte-eigenschaften">das Anpassen von benutzerdefinierten Eigenschaften</a>.',
+    "apiTable.learnMore.cssParts":
+        'Erfahre mehr über <a href="/de/docs/get-started/customisation/#css-parts">das Anpassen von CSS‐Parts</a>.',
+    "apiTable.learnMore.animations":
+        'Erfahre mehr über <a href="/de/docs/get-started/customisation/#animationen">das Anpassen von Animationen</a>.',
+
+    "apiTable.importing.note":
+        "Wenn du den Autoloader oder den Standard‐Loader nutzt, kannst du diesen Abschnitt überspringen. Falls du „Cherry Picking“ betreibst, kannst du die folgenden Snippets verwenden, um diese Komponente zu importieren.",
+    "apiTable.importing.cdnScript":
+        "Um diese Komponente manuell vom CDN zu importieren, kannst du dieses Code‐Snippet kopieren und es in dein HTML einfügen.",
+    "apiTable.importing.cdnImport":
+        "Um diese Komponente manuell vom CDN zu importieren, kannst du dieses Code‐Snippet kopieren und es in deine JavaScript‐Datei einfügen.",
+    "apiTable.importing.npmImport":
+        "Um diese Komponente manuell von npm zu importieren, kannst du dieses Code‐Snippet kopieren und es in deine JavaScript‐Datei einfügen.",
+
+    "apiTable.dependencies.note":
+        "Diese Komponente importiert automatisch folgende Komponenten:",
+
     // Code comparison
-    "codeComparison.logo": "Placer Toolkit‐Logo",
-    "codeComparison.dropdown.addUser": "Nutzer:in hinzufügen",
-    "codeComparison.dropdown.deleteAccount": "Account löschen",
-    "codeComparison.report": "Melden",
     "codeComparison.signIn": "Anmelden",
     "codeComparison.email": "E‐Mail",
     "codeComparison.email.example": "test@beispiel.de",

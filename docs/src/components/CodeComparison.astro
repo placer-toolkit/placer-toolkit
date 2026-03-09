@@ -141,7 +141,7 @@ const previewHTML = placerToolkitCode.replace(
 );
 ---
 
-<div class="code-comparison">
+<height-sync class="code-comparison">
     <pc-comparer>
         <div slot="before">
             <CodeBlock language="html" showLineNumbers>
@@ -156,24 +156,39 @@ const previewHTML = placerToolkitCode.replace(
     </pc-comparer>
 
     <div class="preview" set:html={previewHTML} />
-</div>
+</height-sync>
 
 <script>
-    import type { PcComparer } from "placer-toolkit/dist/components/comparer/comparer.js";
+    class HeightSync extends HTMLElement {
+        private observer: ResizeObserver | null = null;
 
-    const codeComparison = document.querySelector(".code-comparison");
-    const comparer = codeComparison?.querySelector<PcComparer>("pc-comparer");
-    const preview = codeComparison?.querySelector(".preview");
+        connectedCallback() {
+            const comparer = this.querySelector("pc-comparer");
+            const preview = this.querySelector(".preview");
 
-    if (preview && comparer) {
-        const resizeObserver = new ResizeObserver((entries) => {
-            for (let entry of entries) {
-                comparer.style.blockSize = `${entry.contentRect.height}px`;
+            if (!comparer || !preview) {
+                return;
             }
-        });
 
-        resizeObserver.observe(preview);
+            this.observer = new ResizeObserver((entries) => {
+                for (let entry of entries) {
+                    const height = entry.contentRect.height;
+
+                    if (height > 0) {
+                        (comparer as HTMLElement).style.blockSize = `${height}px`;
+                    }
+                }
+            });
+
+            this.observer.observe(preview);
+        }
+
+        disconnectedCallback() {
+            this.observer?.disconnect();
+        }
     }
+
+    customElements.define("height-sync", HeightSync);
 </script>
 
 <style>
