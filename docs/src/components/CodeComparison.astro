@@ -163,7 +163,7 @@ const previewHTML = placerToolkitCode.replace(
         private observer: ResizeObserver | null = null;
 
         connectedCallback() {
-            const comparer = this.querySelector("pc-comparer");
+            const comparer = this.querySelector(".code-comparison pc-comparer");
             const preview = this.querySelector(".preview");
 
             if (!comparer || !preview) {
@@ -175,7 +175,8 @@ const previewHTML = placerToolkitCode.replace(
                     const height = entry.contentRect.height;
 
                     if (height > 0) {
-                        (comparer as HTMLElement).style.blockSize = `${height}px`;
+                        (comparer as HTMLElement).style.blockSize =
+                            `${height}px`;
                     }
                 }
             });
@@ -200,7 +201,7 @@ const previewHTML = placerToolkitCode.replace(
         margin-block-end: var(--pc-spacing-xxl);
     }
 
-    pc-comparer {
+    .code-comparison pc-comparer {
         --divider-width: 0.0625rem;
 
         flex: 1;
@@ -208,45 +209,47 @@ const previewHTML = placerToolkitCode.replace(
         overflow: hidden;
     }
 
-    pc-comparer [slot~="before"],
-    pc-comparer [slot~="after"] {
+    .code-comparison pc-comparer [slot~="before"],
+    .code-comparison pc-comparer [slot~="after"] {
         block-size: 100%;
         overflow: hidden;
     }
 
-    pc-comparer::part(before),
-    pc-comparer::part(after) {
+    .code-comparison pc-comparer::part(before),
+    .code-comparison pc-comparer::part(after) {
         pointer-events: auto;
     }
 
-    pc-comparer::part(divider),
-    pc-comparer::part(handle) {
+    .code-comparison pc-comparer::part(divider),
+    .code-comparison pc-comparer::part(handle) {
         background-color: var(--pc-color-surface-border);
         translate: unset;
     }
 
-    pc-comparer :global(.code-block-container) {
+    .code-comparison pc-comparer :global(.code-block-container) {
         display: flex;
         flex-direction: column;
         block-size: 100%;
     }
 
-    pc-comparer :global(.code-block) {
+    .code-comparison pc-comparer :global(.code-block) {
+        block-size: 100%;
+        max-block-size: 100%;
         border-radius: var(--pc-border-radius-xl);
         overflow: hidden;
     }
 
-    pc-comparer :global(.code-block pre) {
-        overflow: auto;
+    .code-comparison pc-comparer :global(.code-block pre) {
         block-size: 100%;
+        overflow: auto;
     }
 
-    pc-comparer :global(.code-block pre:focus-visible) {
+    .code-comparison pc-comparer :global(.code-block pre:focus-visible) {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
     }
 
-    pc-comparer :global(pc-copy-button) {
+    .code-comparison pc-comparer :global(pc-copy-button) {
         display: none;
     }
 

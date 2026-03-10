@@ -14,7 +14,7 @@ export default defineConfig({
             rehypePlugins: [rehypeSlug, rehypeAnchorHeadings],
         }),
         sitemap({
-            filter: (page) =>
+            filter: (page: string) =>
                 !/^https:\/\/placer-toolkit\.vercel\.app(?:\/[a-zA-Z0-9-]{2,5})?\/404\/?$/.test(
                     page,
                 ),
@@ -46,7 +46,6 @@ export default defineConfig({
         optimizeDeps: {
             exclude: ["placer-toolkit"],
         },
-        noExternal: ["placer-toolkit"],
         server: {
             watch: {
                 usePolling: false,
@@ -56,10 +55,6 @@ export default defineConfig({
                     "**/.astro/**",
                     "**/dist/**",
                 ],
-                awaitWriteFinish: {
-                    stabilityThreshold: 1500,
-                    pollInterval: 100,
-                },
             },
         },
     },

@@ -361,9 +361,14 @@ const translation = useTranslations(language);
                 opacity: 0;
             }
 
-            .notfound-container .content footer pc-button:hover [slot="suffix"] {
+            .notfound-container .content footer pc-button:hover
+                [slot="suffix"] {
                 opacity: 1;
             }
+        }
+
+        .notfound-container .content footer pc-button:active [slot="suffix"] {
+            opacity: 1;
         }
     }
 </style>

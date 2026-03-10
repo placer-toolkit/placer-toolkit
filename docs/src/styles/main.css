@@ -21,13 +21,10 @@ body {
     margin: 0;
     padding: 0;
     min-block-size: 100%;
+    overflow-x: clip;
     scroll-behavior: smooth;
     scroll-padding-block-start: calc(3.5rem + var(--pc-content-spacing));
     -webkit-overflow-scrolling: touch;
-}
-
-body {
-    overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -49,9 +46,11 @@ body {
 }
 
 /* Language‐specific word break optimisations */
-[lang~="de"]:not(:has([lang~="en"])) {
+:lang(en),
+:lang(de) {
     hyphens: auto;
     overflow-wrap: break-word;
+    hyphenate-limit-chars: 10 4 4;
 }
 
 code,
