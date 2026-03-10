@@ -13,7 +13,12 @@ export default defineConfig({
         mdx({
             rehypePlugins: [rehypeSlug, rehypeAnchorHeadings],
         }),
-        sitemap(),
+        sitemap({
+            filter: (page: string) =>
+                !/^https:\/\/placer-toolkit\.vercel\.app(?:\/[a-zA-Z0-9-]{2,5})?\/404\/?$/.test(
+                    page,
+                ),
+        }),
     ],
     i18n: {
         locales: ["en", "de"],
@@ -41,7 +46,6 @@ export default defineConfig({
         optimizeDeps: {
             exclude: ["placer-toolkit"],
         },
-        noExternal: ["placer-toolkit"],
         server: {
             watch: {
                 usePolling: false,
@@ -51,10 +55,6 @@ export default defineConfig({
                     "**/.astro/**",
                     "**/dist/**",
                 ],
-                awaitWriteFinish: {
-                    stabilityThreshold: 1500,
-                    pollInterval: 100,
-                },
             },
         },
     },

@@ -25,11 +25,10 @@ const html = highlighter.codeToHtml(rawCode, {
 const uniqueID = Math.random().toString(36).slice(2, 11);
 
 const finalHTML = html
-    .replace(
-        /<code(\s+class="[^"]*")?/,
-        `<code id="code-content-${uniqueID}"$1`,
-    )
-    .replace(/ tabindex="0"/g, "");
+    .replace(/(<pre[^>]*?)\s+tabindex="[^"]*"/g, "$1")
+    .replace("<pre", '<pre tabindex="-1"')
+    .replace(/(<code[^>]*?)\s+tabindex="[^"]*"/g, "$1")
+    .replace("<code", `<code id="code-content-${uniqueID}" tabindex="-1"`);
 
 const { open, noCodepen = false } = Astro.props;
 
@@ -115,7 +114,7 @@ const isOpen = open !== undefined && open !== false;
 <script>
     import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
         document
             .querySelectorAll<HTMLDivElement>(".code-demo")
             .forEach((demoElement) => {
@@ -152,7 +151,7 @@ const isOpen = open !== undefined && open !== false;
                     !resizeHandle
                 ) {
                     console.error(
-                        "[Code Demo]: Required elements are missing.",
+                        "[Code Demo:] Required elements are missing.",
                     );
 
                     return;
@@ -220,13 +219,13 @@ const isOpen = open !== undefined && open !== false;
                             if (isAsync && result instanceof Promise) {
                                 result.catch((error) => {
                                     console.error(
-                                        `[Code Demo]: An asynchronous script error occurred. ${error}`,
+                                        `[Code Demo:] An asynchronous script error occurred. ${error}`,
                                     );
                                 });
                             }
                         } catch (error) {
                             console.error(
-                                `[Code Demo]: An error occurred executing the script. ${error}`,
+                                `[Code Demo:] An error occurred executing the script. ${error}`,
                             );
                         }
                     });
@@ -260,7 +259,7 @@ const isOpen = open !== undefined && open !== false;
                             : "rotate(0deg)";
                     });
                 } else {
-                    console.error("[Code Demo]: The toggle setup failed.");
+                    console.error("[Code Demo:] The toggle setup failed.");
                 }
 
                 let isResizing = false;
@@ -359,7 +358,7 @@ const isOpen = open !== undefined && open !== false;
                     });
                 } else {
                     console.error(
-                        "[Code Demo]: The CodePen button can’t be found.",
+                        "[Code Demo:] The CodePen button can’t be found.",
                     );
                 }
 

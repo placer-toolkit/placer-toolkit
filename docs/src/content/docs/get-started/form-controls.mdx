@@ -180,7 +180,7 @@ Some input types will automatically trigger constraints, such as `email` and `ur
     // Wait for components to be defined before attaching the event listener to the form
     await Promise.all([
         customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-input"),
     ]).then(() => {
         form.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -256,7 +256,7 @@ The custom states map to the browser’s built‐in pseudo‐classes for validat
 
 ### Styling invalid form controls
 
-You can target validity using any of the aforementioned custom states, but it’s usually preferable to target `:state(user-invalid)` and `:state(valid)` since they only get applied after a user interaction such as typing or submitting. This prevents empty form controls from appearing invalid immediately, which results in a poor user experience.
+You can target validity using any of the aforementioned custom states, but it’s usually preferable to target `:state(user-invalid)` and `:state(user-valid)` since they only get applied after a user interaction such as typing or submitting. This prevents empty form controls from appearing invalid immediately, which results in a poor user experience.
 
 This example demonstrates custom validation styles using `:state(user-invalid)` and `:state(user-valid)`. Try typing in the fields to see how validity changes with user input.
 

@@ -433,22 +433,3 @@
         /* #endregion */
     }
 }
-
-@layer pc-theme-overrides {
-    .pc-theme-serene {
-        @media (hover: hover) {
-            pc-button::part(base):hover,
-            pc-input::part(input):not(:focus):hover,
-            pc-select::part(combobox):not(:focus):hover,
-            pc-textarea::part(base):not(:focus):hover {
-                box-shadow: var(--pc-shadow-m);
-            }
-        }
-
-        pc-input::part(input):focus,
-        pc-select::part(combobox):focus,
-        pc-textarea::part(base):focus {
-            box-shadow: inset var(--pc-shadow-m);
-        }
-    }
-}

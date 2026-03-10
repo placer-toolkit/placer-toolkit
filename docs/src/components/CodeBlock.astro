@@ -26,8 +26,9 @@ const html = highlighter.codeToHtml(rawCode, {
 const uniqueID = Math.random().toString(36).slice(2, 11);
 
 const finalHTML = html
-    .replace(/<code(\s+class="[^"]*")?/, `<code id="${uniqueID}"$1`)
-    .replace(/ tabindex="0"/g, "");
+    .replace(/(<(?:pre|code)[^>]*)\s+tabindex="[^"]*"/g, "$1")
+    .replace(/<pre([^>]*)>/g, '<pre$1 tabindex="-1">')
+    .replace(/<code([^>]*)>/g, `<code id="${uniqueID}"$1 tabindex="-1">`);
 
 const isTerminal = ["bash", "shell", "sh"].includes(language);
 ---

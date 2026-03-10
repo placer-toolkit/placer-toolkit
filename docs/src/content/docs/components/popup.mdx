@@ -1,6 +1,7 @@
 ---
 title: Popup
 description: Popup is a utility that lets you declaratively anchor “popup” containers to another element.
+category: utilities
 ---
 
 Popup is a utility that lets you declaratively anchor “popup” containers to another element.
@@ -76,8 +77,8 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
     const arrow = container.querySelector('pc-switch[name="arrow"]');
 
     select.addEventListener("change", () => (popup.placement = select.value));
-    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
-    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+    distance.addEventListener("input", () => (popup.distance = distance.value));
+    skidding.addEventListener("input", () => (popup.skidding = skidding.value));
     active.addEventListener("change", () => (popup.active = active.checked));
     arrow.addEventListener("change", () => (popup.arrow = arrow.checked));
 </script>
@@ -301,7 +302,7 @@ Use the `distance` attribute to change the distance between the popup and its an
     const popup = container.querySelector("pc-popup");
     const distance = container.querySelector("pc-input");
 
-    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
+    distance.addEventListener("input", () => (popup.distance = distance.value));
 </script>
 
 <style>
@@ -355,7 +356,7 @@ The `skidding` attribute is similar to `distance`, but instead allows you to off
     const popup = container.querySelector("pc-popup");
     const skidding = container.querySelector("pc-input");
 
-    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+    skidding.addEventListener("input", () => (popup.skidding = skidding.value));
 </script>
 
 <style>
@@ -839,8 +840,8 @@ When a gap exists between the anchor and the popup, this option will add a “ho
     const skidding = container.querySelector('pc-input[label="Skidding"]');
 
     hoverBridge.addEventListener("change", () => (popup.hoverBridge = hoverBridge.checked));
-    distance.addEventListener("pc-input", () => (popup.distance = distance.value));
-    skidding.addEventListener("pc-input", () => (popup.skidding = skidding.value));
+    distance.addEventListener("input", () => (popup.distance = distance.value));
+    skidding.addEventListener("input", () => (popup.skidding = skidding.value));
 </script>
 
 <style>

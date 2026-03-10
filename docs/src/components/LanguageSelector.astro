@@ -137,7 +137,7 @@ const translation = useTranslations(language);
         },
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
         const popup = document.querySelector<PcPopup>(".language-selector");
 
         if (!popup) {

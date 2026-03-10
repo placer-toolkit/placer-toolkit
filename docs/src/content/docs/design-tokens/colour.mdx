@@ -1,7 +1,6 @@
 ---
 title: Colour
 description: Placer Toolkit’s colour system is made up of CSS custom properties to help with consistent colour usage throughout your project.
-order: 2
 ---
 
 Placer Toolkit’s colour system is made up of CSS custom properties to help with consistent colour usage throughout your project.
@@ -192,8 +191,8 @@ Finally, each colour is named according to how much attention it draws. Here, we
                                                 className="color-palette-swatch"
                                                 style={{
                                                     justifyContent: "center",
+                                                    minInlineSize: "4.6875rem",
                                                     border: `var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-${appearance}-${group}-${attention})`,
-                                                    minWidth: "4.6875rem",
                                                 }}
                                             ></div>
                                         ) : (
@@ -201,9 +200,9 @@ Finally, each colour is named according to how much attention it draws. Here, we
                                                 className="color-palette-swatch"
                                                 style={{
                                                     justifyContent: "center",
+                                                    minInlineSize: "4.6875rem",
                                                     backgroundColor: `var(--pc-color-${appearance}-fill-${attention})`,
                                                     color: `var(--pc-color-${appearance}-on-${attention})`,
-                                                    minWidth: "4.6875rem",
                                                 }}
                                             >
                                                 {group === "on" ? "AaBb" : ""}

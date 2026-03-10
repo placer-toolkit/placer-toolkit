@@ -32,9 +32,54 @@ const { isMobile = false } = Astro.props;
 <script>
     import type { PcScroller } from "placer-toolkit/dist/components/scroller/scroller.js";
 
-    document.addEventListener("DOMContentLoaded", async () => {
-        // TOC generation
+    document.addEventListener("astro:page-load", async () => {
         const tocs = document.querySelectorAll(".toc");
+        const article = document.querySelector("article");
+
+        if (!article || tocs.length === 0) {
+            return;
+        }
+
+        const articleHeader = article.querySelector('header[id="_top"]');
+        const headings = Array.from(article.querySelectorAll("h2[id], h3[id]"));
+        const elementsToWatch = articleHeader
+            ? [articleHeader, ...headings]
+            : headings;
+
+        let isInitialLoad = true;
+
+        function setActiveID(id: string) {
+            const targetID = id || "_top";
+            const allLinks =
+                document.querySelectorAll<HTMLAnchorElement>(".toc-ul a");
+
+            allLinks.forEach((link) => {
+                const isActive = link.getAttribute("href") === `#${targetID}`;
+
+                if (isActive) {
+                    link.setAttribute("aria-current", "location");
+                } else {
+                    link.removeAttribute("aria-current");
+                }
+            });
+
+            tocs.forEach((toc) => {
+                const activeLink = toc.querySelector<HTMLAnchorElement>(
+                    'a[aria-current="location"]',
+                );
+                const marker = toc.querySelector<HTMLElement>(".toc-marker");
+                const li = activeLink?.closest("li");
+
+                if (activeLink && marker && li) {
+                    const y =
+                        li.offsetTop +
+                        activeLink.offsetHeight / 2 -
+                        marker.offsetHeight / 2;
+
+                    marker.style.transform = `translateY(${y}px)`;
+                }
+            });
+        }
 
         for (const toc of tocs) {
             const tocList = toc.querySelector<HTMLUListElement>(".toc-ul");
@@ -43,30 +88,13 @@ const { isMobile = false } = Astro.props;
                 continue;
             }
 
-            const article = document.querySelector("article");
-
-            if (!article) {
-                continue;
-            }
-
-            const articleHeader = article.querySelector('header[id="_top"]');
-            const headings = Array.from(
-                article.querySelectorAll("h2[id], h3[id]"),
-            );
-            const items = headings.map((element) => ({
-                depth: element.tagName === "H2" ? 2 : 3,
-                slug: element.id,
-                text: element.textContent?.trim() || "",
-            }));
-
             tocList.innerHTML = "";
 
             const overviewItem = document.createElement("li");
-            const overviewID = articleHeader?.id || "_top";
 
             overviewItem.className = "toc-item depth-2";
             overviewItem.innerHTML = `
-                <a href="#${overviewID}">
+                <a href="#${articleHeader?.id || "_top"}">
                     ${tocList.dataset.overview || "Overview"}
                 </a>
             `;
@@ -75,17 +103,22 @@ const { isMobile = false } = Astro.props;
 
             let lastH2Li: HTMLLIElement = overviewItem;
 
-            items.forEach((item) => {
+            headings.forEach((heading) => {
+                const depth = heading.tagName === "H2" ? 2 : 3;
                 const li = document.createElement("li");
 
-                li.className = `toc-item depth-${item.depth}`;
-                li.innerHTML = `<a href="#${item.slug}">${item.text}</a>`;
+                li.className = `toc-item depth-${depth}`;
+                li.innerHTML = `
+                    <a href="#${heading.id}">
+                        ${heading.textContent?.trim() || ""}
+                    </a>
+                `;
 
-                if (item.depth === 2) {
+                if (depth === 2) {
                     tocList.appendChild(li);
 
                     lastH2Li = li;
-                } else if (item.depth === 3 && lastH2Li) {
+                } else if (depth === 3 && lastH2Li) {
                     let nestedUl = lastH2Li.querySelector("ul");
 
                     if (!nestedUl) {
@@ -99,118 +132,79 @@ const { isMobile = false } = Astro.props;
                 }
             });
 
-            // Scrollspy
-            const links = Array.from(
-                toc.querySelectorAll<HTMLAnchorElement>(".toc-ul a"),
-            );
-            const marker = toc.querySelector<HTMLElement>(".toc-marker");
-            const tocInner = toc.querySelector<HTMLElement>(".toc-inner");
-
-            function moveMarker(link: HTMLAnchorElement) {
-                if (!marker || !tocInner) {
-                    return;
-                }
-
-                const li = link.closest("li");
-
-                if (!li) {
-                    return;
-                }
-
-                const linkHeight = link.offsetHeight;
-                const markerHeight = marker.offsetHeight;
-
-                const y = li.offsetTop + linkHeight / 2 - markerHeight / 2;
-
-                marker.style.transform = `translateY(${y}px)`;
-            }
-
-            function setActiveID(id: string) {
-                const targetID = id || "_top";
-
-                let activeLink: HTMLAnchorElement | null = null;
-
-                links.forEach((link) => {
-                    const isActive =
-                        link.getAttribute("href") === `#${targetID}`;
-
-                    if (isActive) {
-                        link.setAttribute("aria-current", "location");
-
-                        activeLink = link;
-                    } else {
-                        link.removeAttribute("aria-current");
-                    }
-                });
-
-                if (activeLink) {
-                    moveMarker(activeLink);
-                }
-            }
-
-            const elementsToWatch = [...headings];
-
-            if (articleHeader) {
-                elementsToWatch.unshift(articleHeader);
-            }
-
-            const isMobileTOC = toc.classList.contains("mobile-toc");
-            const topMargin = isMobileTOC ? 106 : 56;
-
-            const observer = new IntersectionObserver(
-                (entries) => {
-                    const visibleEntry = entries.find(
-                        (event) => event.isIntersecting,
-                    );
-
-                    if (visibleEntry) {
-                        setActiveID(visibleEntry.target.id);
-                    }
-                },
-                {
-                    root: null,
-                    rootMargin: `-${topMargin}px 0% -${window.innerHeight - topMargin - 50}px 0%`,
-                    threshold: 0,
-                },
-            );
-
-            elementsToWatch.forEach((element) => observer.observe(element));
-
             await customElements.whenDefined("pc-scroller");
 
             const tocScroller = toc.querySelector<PcScroller>("pc-scroller");
             const content = tocScroller?.shadowRoot?.querySelector("#content");
 
-            if (content) {
-                content.addEventListener(
-                    "scroll",
-                    () => {
-                        const active = toc.querySelector(
-                            'a[aria-current="location"]',
-                        );
-
-                        if (active) {
-                            moveMarker(active as HTMLAnchorElement);
-                        }
-                    },
-                    { passive: true },
-                );
-            }
-
-            window.addEventListener(
-                "resize",
-                () => {
-                    const active = toc.querySelector<HTMLAnchorElement>(
-                        'a[aria-current="location"]',
-                    );
-
-                    if (active) {
-                        moveMarker(active);
-                    }
-                },
+            content?.addEventListener(
+                "scroll",
+                () =>
+                    setActiveID(
+                        document
+                            .querySelector('a[aria-current="location"]')
+                            ?.getAttribute("href")
+                            ?.replace("#", "") || "",
+                    ),
                 { passive: true },
             );
         }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.rootBounds) {
+                        return;
+                    }
+
+                    if (isInitialLoad && !entry.isIntersecting) {
+                        return;
+                    }
+
+                    if (entry.isIntersecting) {
+                        setActiveID(entry.target.id);
+                    } else if (
+                        !entry.isIntersecting &&
+                        entry.boundingClientRect.top > entry.rootBounds.top
+                    ) {
+                        const index = elementsToWatch.indexOf(
+                            entry.target as HTMLElement,
+                        );
+                        const previousItem = elementsToWatch[index - 1];
+
+                        if (previousItem) {
+                            setActiveID(previousItem.id);
+                        }
+                    }
+                });
+
+                if (isInitialLoad) {
+                    isInitialLoad = false;
+                }
+            },
+            {
+                rootMargin: "-100px 0% -80% 0%",
+                threshold: 0,
+            },
+        );
+
+        elementsToWatch.forEach((element) => observer.observe(element));
+
+        if (window.scrollY < 50) {
+            setActiveID(articleHeader?.id || "_top");
+        }
+
+        window.addEventListener(
+            "resize",
+            () =>
+                setActiveID(
+                    document
+                        .querySelector('a[aria-current="location"]')
+                        ?.getAttribute("href")
+                        ?.replace("#", "") || "",
+                ),
+            { passive: true },
+        );
     });
 </script>
 
@@ -266,7 +260,7 @@ const { isMobile = false } = Astro.props;
     }
 
     .toc-container .toc-scroll-fade .toc-inner .toc-ul.depth-3 {
-        margin-inline-start: var(--pc-spacing-m);
+        padding-inline-start: var(--pc-spacing-m);
     }
 
     .toc-container .toc-scroll-fade .toc-inner .toc-ul .toc-item {

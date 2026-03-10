@@ -4,7 +4,7 @@ const scrollLimitPixels = 656;
 const maxOpacity = 0.85;
 
 function updateNavigationBarOpacity() {
-    const scrollY = document.body.scrollTop || window.scrollY;
+    const scrollY = window.scrollY;
 
     let scrollProgressPercent = (scrollY / scrollLimitPixels) * 100;
 
@@ -20,8 +20,7 @@ function updateNavigationBarOpacity() {
     );
 }
 
-window.addEventListener("load", updateNavigationBarOpacity);
-
-document.body.addEventListener("scroll", updateNavigationBarOpacity);
-
+document.addEventListener("astro:page-load", updateNavigationBarOpacity);
+document.addEventListener("astro:after-swap", updateNavigationBarOpacity);
+window.addEventListener("scroll", updateNavigationBarOpacity);
 window.addEventListener("resize", updateNavigationBarOpacity);

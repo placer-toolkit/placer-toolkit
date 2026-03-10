@@ -3,46 +3,83 @@ import type { Translation } from "../utilities/localize.js";
 
 const translation: Translation = {
     $code: "lb",
-    $name: "lëtzebuergesch",
+    $name: "Lëtzebuergesch",
     $dir: "ltr",
 
-    carousel: "karusell",
-    clearEntry: "agab ewechhuelen",
-    close: "zoumaachen",
-    copied: "kopéiert!",
-    copy: "kopéieren",
-    currentValue: "aktuellen wäert",
-    error: "feeler",
-    goToSlide: (slide, count) => `gitt op d’säit ${slide} vun ${count}`,
-    hidePassword: "passwuert verstoppen",
-    hue: "faarftoun",
-    loading: "lueden…",
-    maximumValue: "maximum",
-    maximumValueDescriptive: (label) => `${label} (maximum)`,
-    minimumValue: "minimum",
-    minimumValueDescriptive: (label) => `${label} (minimum)`,
-    nextSlide: "nächst säit",
+    carousel: "Karusell",
+    clearEntry: "Agab läschen",
+    close: "Zoumaachen",
+    copied: "Kopéiert!",
+    copy: "Kopéieren",
+    currentValue: "Aktuelle Wäert",
+    error: "Feeler",
+    goToSlide: (slide, count) => {
+        /* This is an attempt of following the vu/vun distinction in Luxembourgish.
+           It is compatible with numbers from 0 to 1 000 000, which should be plenty for UI. */
+        const getPreposition = (number: number) => {
+            if (number < 1 || number >= 1000000) {
+                return "vun";
+            }
+
+            const keepN = [1, 2, 3, 8, 10, 11, 12, 13, 18, 19];
+
+            if (number <= 19) {
+                return keepN.includes(number) ? "vun" : "vu";
+            }
+
+            if (number < 100) {
+                const lastDigit = number % 10;
+
+                if (lastDigit === 0) {
+                    return [20, 30, 80, 90].includes(number) ? "vun" : "vu";
+                }
+
+                return [1, 2, 3, 8, 9].includes(lastDigit) ? "vun" : "vu";
+            }
+
+            const magnitude = number >= 1000 ? 1000 : 100;
+            const lead = Math.floor(number / magnitude);
+
+            if (lead > 10 && lead < 20) {
+                return keepN.includes(lead) ? "vun" : "vu";
+            }
+
+            const firstDigitOfLead = parseInt(lead.toString()[0]);
+
+            return [1, 2, 3, 8, 9].includes(firstDigitOfLead) ? "vun" : "vu";
+        };
+
+        return `Gitt op d’Säit ${slide} ${getPreposition(count)} ${count}`;
+    },
+    hidePassword: "Passwuert verstoppen",
+    hue: "Faarftoun",
+    loading: "Lueden…",
+    maximumValue: "Maximum",
+    maximumValueDescriptive: (label) => `${label} (Maximum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (Minimum)`,
+    nextSlide: "Nächst Säit",
     numOptionsSelected: (number) => {
         if (number === 0) {
-            return "keng optiounen ausgewielt";
+            return "Keng Optiounen ausgewielt";
         } else if (number === 1) {
-            return "eng optioun ausgewielt";
+            return "Eng Optioun ausgewielt";
         } else {
-            return `${number} optiounen ausgewielt`;
+            return `${number} Optiounen ausgewielt`;
         }
     },
-    opacity: "duerchsichtegkeet",
-    pickAColorFromTheScreen: "faarf vum bildschierm wielen",
-    previousSlide: "vireg säit",
-    progress: "fortschrëtt",
-    remove: "ewechhuelen",
-    resize: "gréisst änneren",
-    scrollableRegion: "scrollberäich",
-    scrollToEnd: "bis zum schluss scrollen",
-    scrollToStart: "bis zum ufank scrollen",
-    showPassword: "passwuert weisen",
-    slideNum: (slide) => `säit ${slide}`,
-    toggleColorFormat: "faarfformaat änneren",
+    opacity: "Opazitéit",
+    pickAColorFromTheScreen: "Faarf vum Bildschierm wielen",
+    previousSlide: "Vireg Säit",
+    progress: "Fortschrëtt",
+    remove: "Ewechhuelen",
+    resize: "Gréisst änneren",
+    scrollableRegion: "Scrollberäich",
+    scrollToEnd: "Bis zum Schluss scrollen",
+    scrollToStart: "Bis zum Ufank scrollen",
+    showPassword: "Passwuert weisen",
+    slideNum: (slide) => `Säit ${slide}`,
+    toggleColorFormat: "Faarfformat änneren",
 };
 
 registerTranslation(translation);

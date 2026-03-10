@@ -3,7 +3,6 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    scroll-behavior: smooth;
 }
 
 html ::selection,
@@ -21,9 +20,9 @@ html,
 body {
     margin: 0;
     padding: 0;
-    block-size: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    min-block-size: 100%;
+    overflow-x: clip;
+    scroll-behavior: smooth;
     scroll-padding-block-start: calc(3.5rem + var(--pc-content-spacing));
     -webkit-overflow-scrolling: touch;
 }
@@ -40,15 +39,6 @@ body {
     }
 }
 
-.hero.theme-transition {
-    transition: none !important;
-}
-
-/* This is necessary to prevent double scrollbars from appearing in the Popup docs. */
-html {
-    overflow-y: hidden;
-}
-
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto !important;
@@ -56,9 +46,11 @@ html {
 }
 
 /* Language‐specific word break optimisations */
-[lang~="de"]:not(:has([lang~="en"])) {
+:lang(en),
+:lang(de) {
     hyphens: auto;
     overflow-wrap: break-word;
+    hyphenate-limit-chars: 10 4 4;
 }
 
 code,
@@ -99,25 +91,6 @@ html.no-sidebar .layout-container {
     inset-inline-start: 0;
     inset-block-start: 0;
     z-index: 100;
-}
-
-/* Dialog and drawer re‐style */
-html.hero pc-dialog::part(dialog) {
-    background-color: color-mix(
-        in oklab,
-        var(--pc-color-surface-raised),
-        transparent 30%
-    );
-    backdrop-filter: blur(8px);
-}
-
-html.hero pc-drawer::part(drawer) {
-    background-color: color-mix(
-        in oklab,
-        var(--pc-color-surface-raised),
-        transparent 30%
-    ) !important;
-    backdrop-filter: blur(8px);
 }
 
 /* Main content area */
