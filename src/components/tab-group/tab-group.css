@@ -17,7 +17,9 @@
 
 .indicator {
     position: absolute;
-    transition: all var(--pc-transition-medium) ease-in-out;
+    transition:
+        translate 0.4s cubic-bezier(0.2, 1, 0.3, 1),
+        inline-size 0.4s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
 .has-scroll-controls .navigation-container {

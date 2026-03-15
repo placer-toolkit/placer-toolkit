@@ -106,23 +106,10 @@ export class PcSwitch extends PlacerFormAssociatedElement {
     }
 
     private handleKeyDown(event: KeyboardEvent) {
-        if (event.key === "ArrowLeft") {
+        if (event.key === "Enter") {
             event.preventDefault();
 
-            this.checked = false;
-
-            this.updateComplete.then(() => {
-                this.dispatchEvent(
-                    new Event("change", { bubbles: true, composed: true }),
-                );
-                this.dispatchEvent(
-                    new InputEvent("input", { bubbles: true, composed: true }),
-                );
-            });
-        } else if (event.key === "ArrowRight") {
-            event.preventDefault();
-
-            this.checked = true;
+            this.checked = !this.checked;
 
             this.updateComplete.then(() => {
                 this.dispatchEvent(

@@ -133,6 +133,7 @@ const findComponentData = (
             (decl) =>
                 decl.name === componentName || decl.tagName === componentName,
         );
+
         if (declaration) {
             return declaration;
         }
@@ -499,23 +500,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                                     <td class="name">
                                         <code>updateComplete</code>
                                     </td>
-                                    <td>
-                                        {language === "en" && (
-                                            <>
-                                                A read‐only promise that resolves when
-                                                the component has
-                                                <a href="/docs/get-started/usage/#component-rendering-and-updating">finished updating</a>.
-                                            </>
-                                        )}
-                                        {language === "de" && (
-                                            <>
-                                                Ein schreibgeschütztes Promise, das erfüllt ist,
-                                                sobald die Komponente
-                                                <a href="/de/docs/get-started/usage/#komponentenrendering-und-aktualisierung">
-                                                    fertig aktualisiert</a> wurde.
-                                            </>
-                                        )}
-                                    </td>
+                                    <td set:html={translation("apiTable.readOnlyPromise")}></td>
                                     <td style="text-align: center">
                                         <pc-icon
                                             class="does-not-reflect"
@@ -530,18 +515,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/usage/#attributes-and-properties">customising animations</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/usage/#attribute-und-eigenschaften">Attribute und Eigenschaften</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.attributesAndProperties")}></p>
                 </section>
             )}
 
@@ -579,18 +553,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/usage/#slots">using slots</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/usage/#slots">die Benutzung von Slots</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.slots")}></p>
                 </section>
             )}
 
@@ -648,18 +611,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/usage/#methods">methods</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/usage/#methoden">Methoden</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.methods")}></p>
                 </section>
             )}
 
@@ -703,18 +655,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/usage/#events">events</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/usage/#events">Events</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.events")}></p>
                 </section>
             )}
 
@@ -756,20 +697,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/customisation/#custom-properties">customising custom properties</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über
-                                <a href="/de/docs/get-started/customisation/#benutzerdefinierte-eigenschaften">
-                                    das Anpassen von benutzerdefinierten Eigenschaften</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.cssCustomProperties")}></p>
                 </section>
             )}
 
@@ -803,18 +731,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/customisation/#css-parts">customising CSS parts</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/customisation/#css-parts">das Anpassen von CSS‐Parts</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.cssParts")}></p>
                 </section>
             )}
 
@@ -848,41 +765,14 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                             </tbody>
                         </table>
                     </pc-scroller>
-                    <p>
-                        {language === "en" && (
-                            <>
-                                Learn more about <a href="/docs/get-started/customisation/#animations">customising animations</a>.
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Erfahre mehr über <a href="/de/docs/get-started/customisation/#animationen">das Anpassen von Animationen</a>.
-                            </>
-                        )}
-                    </p>
+                    <p set:html={translation("apiTable.learnMore.animations")}></p>
                 </section>
             )}
 
             <section class="api-section">
                 <Heading level="2">{translation("apiTable.heading.importing")}</Heading>
 
-                <p>
-                    {language === "en" && (
-                        <>
-                            If you’re using the autoloader or the standard loader,
-                            you can skip this section. But if you’re cherry picking,
-                            you can use any of the following snippets to import this component.
-                        </>
-                    )}
-                    {language === "de" && (
-                        <>
-                            Wenn du den Autoloader oder den Standard‐Loader nutzt,
-                            kannst du diesen Abschnitt überspringen. Falls du
-                            „Cherry Picking“ betreibst, kannst du die folgenden
-                            Snippets verwenden, um diese Komponente zu importieren.
-                        </>
-                    )}
-                </p>
+                <p>{translation("apiTable.importing.note")}</p>
 
                 <pc-tab-group>
                     <pc-tab slot="navigation" panel="cdn-script-tag">
@@ -897,18 +787,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
                     <pc-tab-panel name="cdn-script-tag">
                         <p>
-                            {language === "en" && (
-                                <>
-                                    To manually import this component from the CDN,
-                                    copy this code snippet and paste it in your HTML.
-                                </>
-                            )}
-                            {language === "de" && (
-                                <>
-                                    Um diese Komponente manuell vom CDN zu importieren,
-                                    kannst du dieses Code‐Snippet kopieren und es in dein HTML einfügen.
-                                </>
-                            )}
+                            {translation("apiTable.importing.cdnScript")}
                         </p>
                         <CodeBlock language="html">
                         {`<script type="module" src="${cdnURL}"></script>`}
@@ -916,18 +795,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                     </pc-tab-panel>
                     <pc-tab-panel name="cdn-import">
                         <p>
-                            {language === "en" && (
-                                <>
-                                    To manually import this component from the CDN, copy
-                                    this code snippet and paste it in your JavaScript file.
-                                </>
-                            )}
-                            {language === "de" && (
-                                <>
-                                    Um diese Komponente manuell vom CDN zu importieren, kannst du
-                                    dieses Code‐Snippet kopieren und es in deine JavaScript‐Datei einfügen.
-                                </>
-                            )}
+                            {translation("apiTable.importing.cdnImport")}
                         </p>
                         <CodeBlock language="javascript">
                         {`import "${cdnURL}";`}
@@ -935,18 +803,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                     </pc-tab-panel>
                     <pc-tab-panel name="npm-import">
                         <p>
-                            {language === "en" && (
-                                <>
-                                    To manually import this component from npm, copy this
-                                    code snippet and paste it in your JavaScript file.
-                                </>
-                            )}
-                            {language === "de" && (
-                                <>
-                                    Um diese Komponente manuell von npm zu importieren, kannst du
-                                    dieses Code‐Snippet kopieren und es in deine JavaScript‐Datei einfügen.
-                                </>
-                            )}
+                            {translation("apiTable.importing.npmImport")}
                         </p>
                         <CodeBlock language="javascript">
                         {`import "${importPath}";`}
@@ -960,16 +817,7 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
                     <Heading level="2">{translation("apiTable.heading.dependencies")}</Heading>
 
                     <p>
-                        {language === "en" && (
-                            <>
-                                This component automatically imports these components:
-                            </>
-                        )}
-                        {language === "de" && (
-                            <>
-                                Diese Komponente importiert automatisch folgende Komponenten:
-                            </>
-                        )}
+                        {translation("apiTable.dependencies.note")}
                     </p>
                     <ul>
                         {dependencies.map((dependency) => (
@@ -1007,5 +855,13 @@ const importPath = `placer-toolkit/dist/components/${componentPath}/${componentP
 
     section pc-scroller table .type-info b {
         font-weight: var(--pc-font-weight-semibold);
+    }
+
+    section pc-scroller table pc-icon.reflects {
+        color: var(--pc-color-success-50);
+    }
+
+    section pc-scroller table pc-icon.does-not-reflect {
+        color: var(--pc-color-danger-50);
     }
 </style>

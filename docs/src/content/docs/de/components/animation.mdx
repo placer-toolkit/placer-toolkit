@@ -1,6 +1,7 @@
 ---
 title: Animation
 description: Animiere Elemente deklarativ mit fast 100 integrierten Presets oder erstelle deine eigenen Animationen mit benutzerdefinierten Keyframes. Diese Animationen basieren auf der Web Animations API.
+category: utilities
 ---
 
 import AutoKeyboardSwitch from "../../../../components/AutoKeyboardSwitch.astro";
@@ -102,7 +103,7 @@ Diese Demo zeigt alle integrierten Animationen und Easings. Die Animationen basi
 
     animationName.addEventListener("change", () => (animation.name = animationName.value));
     easingName.addEventListener("change", () => (animation.easing = easingName.value));
-    playbackRate.addEventListener("pc-input", () => (animation.playbackRate = playbackRate.value));
+    playbackRate.addEventListener("input", () => (animation.playbackRate = playbackRate.value));
 </script>
 
 <style>

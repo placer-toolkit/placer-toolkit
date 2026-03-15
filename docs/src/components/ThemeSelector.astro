@@ -37,10 +37,6 @@ const translation = useTranslations(language);
 <script>
     import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
 
-    const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-    ).matches;
-
     let currentTheme: "light" | "dark" | null = null;
 
     function isEditableInPath(path: EventTarget[]) {
@@ -95,21 +91,21 @@ const translation = useTranslations(language);
         }
     }
 
-    function applyColorTheme(theme: "light" | "dark" | null) {
+    function applyColorTheme(theme: "light" | "dark" | null, skipTransition: boolean) {
         const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
         const effectiveTheme =
             theme ?? (prefersLight.matches ? "light" : "dark");
 
         const nextClass = `pc-${effectiveTheme}`;
 
-        if (!prefersReducedMotion) {
+        if (!skipTransition) {
             document.documentElement.classList.add("theme-transition");
         }
 
         document.documentElement.classList.remove("pc-light", "pc-dark");
         document.documentElement.classList.add(nextClass);
 
-        if (!prefersReducedMotion) {
+        if (!skipTransition) {
             setTimeout(() => {
                 document.documentElement.classList.remove("theme-transition");
             }, 300);
@@ -122,6 +118,7 @@ const translation = useTranslations(language);
         }
 
         currentTheme = theme;
+
         updateIcon(theme);
     }
 
@@ -135,6 +132,72 @@ const translation = useTranslations(language);
         } else {
             return "light";
         }
+    }
+
+    function getStoredStyleTheme() {
+        return parseStyleTheme(
+            localStorage.getItem("saved-color-theme") ?? "",
+        );
+    }
+
+    function applyStyleTheme(styleTheme: string) {
+        const root = document.documentElement;
+
+        root.classList.remove(
+            "pc-theme-utility",
+            "pc-palette-vibrant",
+            "pc-theme-serene",
+            "pc-palette-muted",
+        );
+
+        if (styleTheme === "utility") {
+            root.classList.add("pc-theme-utility", "pc-palette-vibrant");
+        } else if (styleTheme === "serene") {
+            root.classList.add("pc-theme-serene", "pc-palette-muted");
+        }
+
+        localStorage.setItem("saved-color-theme", styleTheme);
+    }
+
+    function applyCustomizations() {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+
+        const button = document.querySelector(".color-scheme-toggle");
+        const themeSelector = document.querySelector(".theme-selector");
+
+        currentTheme = getStoredTheme();
+
+        let currentStyleTheme = getStoredStyleTheme();
+
+        applyColorTheme(currentTheme, true);
+        applyStyleTheme(currentStyleTheme);
+
+        button?.addEventListener("click", () => {
+            const nextTheme = cycleTheme(currentTheme);
+
+            applyColorTheme(nextTheme, false);
+        });
+
+        themeSelector?.addEventListener("pc-select", (event) => {
+            const customEvent = event as CustomEvent;
+            const newStyleTheme = customEvent.detail.item.value;
+
+            if (typeof newStyleTheme === "string") {
+                const finalTheme = parseStyleTheme(newStyleTheme);
+
+                if (finalTheme !== currentStyleTheme) {
+                    currentStyleTheme = finalTheme;
+
+                    applyStyleTheme(currentStyleTheme);
+                }
+            }
+        });
+
+        prefersLight.addEventListener("change", () => {
+            if (currentTheme === null) {
+                applyColorTheme(null, true);
+            }
+        });
     }
 
     document.addEventListener(
@@ -161,73 +224,11 @@ const translation = useTranslations(language);
 
             const nextTheme = cycleTheme(currentTheme);
 
-            applyColorTheme(nextTheme);
+            applyColorTheme(nextTheme, false);
         },
         { capture: true, passive: false },
     );
 
-    window.addEventListener("DOMContentLoaded", () => {
-        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
-
-        function getStoredStyleTheme() {
-            return parseStyleTheme(
-                localStorage.getItem("saved-color-theme") ?? "",
-            );
-        }
-
-        function applyStyleTheme(styleTheme: string) {
-            const root = document.documentElement;
-
-            root.classList.remove(
-                "pc-theme-utility",
-                "pc-palette-vibrant",
-                "pc-theme-serene",
-                "pc-palette-muted",
-            );
-
-            if (styleTheme === "utility") {
-                root.classList.add("pc-theme-utility", "pc-palette-vibrant");
-            } else if (styleTheme === "serene") {
-                root.classList.add("pc-theme-serene", "pc-palette-muted");
-            }
-
-            localStorage.setItem("saved-color-theme", styleTheme);
-        }
-
-        const button = document.querySelector(".color-scheme-toggle");
-        const themeSelector = document.querySelector(".theme-selector");
-
-        currentTheme = getStoredTheme();
-
-        let currentStyleTheme = getStoredStyleTheme();
-
-        applyColorTheme(currentTheme);
-        applyStyleTheme(currentStyleTheme);
-
-        button?.addEventListener("click", () => {
-            const nextTheme = cycleTheme(currentTheme);
-
-            applyColorTheme(nextTheme);
-        });
-
-        themeSelector?.addEventListener("pc-select", (event) => {
-            const customEvent = event as CustomEvent;
-            const newStyleTheme = customEvent.detail.item.value;
-
-            if (typeof newStyleTheme === "string") {
-                const finalTheme = parseStyleTheme(newStyleTheme);
-
-                if (finalTheme !== currentStyleTheme) {
-                    currentStyleTheme = finalTheme;
-                    applyStyleTheme(currentStyleTheme);
-                }
-            }
-        });
-
-        prefersLight.addEventListener("change", () => {
-            if (currentTheme === null) {
-                applyColorTheme(null);
-            }
-        });
-    });
+    document.addEventListener("astro:page-load", () => applyCustomizations());
+    document.addEventListener("astro:before-swap", () => applyCustomizations());
 </script>

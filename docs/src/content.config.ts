@@ -1,3 +1,4 @@
+// @ts-expect-error
 import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
@@ -12,6 +13,7 @@ const docs = defineCollection({
         description: z.string().optional(),
         slug: z.string().optional(),
         order: z.number().optional(),
+        category: z.string().optional(),
         isChildOf: z.string().nullable().optional(),
     }),
 });

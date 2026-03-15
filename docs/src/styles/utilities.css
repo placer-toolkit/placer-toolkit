@@ -49,7 +49,7 @@ pc-button:active {
     .arrow-right-move,
     .arrow-down-move,
     .arrow-left-move {
-        transition-duration: 100ms !important;
+        transition-duration: 0.1s !important;
         transition-timing-function: ease-out !important;
     }
 }

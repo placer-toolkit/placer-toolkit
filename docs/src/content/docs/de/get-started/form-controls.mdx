@@ -180,7 +180,7 @@ Einige Eingabetypen lösen automatisch Einschränkungen aus, z. B. `email` und
     // Warte, bis die Komponenten definiert sind, bevor du den Event‐Listener anhängst
     await Promise.all([
         customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-button"),
+        customElements.whenDefined("pc-input"),
     ]).then(() => {
         form.addEventListener("submit", (event) => {
             event.preventDefault();
