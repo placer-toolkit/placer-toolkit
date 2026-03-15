@@ -1,6 +1,6 @@
 ---
 import { getShiki } from "../scripts/shiki-process.ts";
-import { version } from "../helpers/version.js";
+import { version } from "../helpers/version.ts";
 
 let rawCode = await Astro.slots.render("default");
 
@@ -8,12 +8,23 @@ if (typeof rawCode !== "string") {
     rawCode = "";
 }
 
-rawCode = rawCode
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&");
+function unescapeHTML(string: string) {
+    let previousLayer;
+
+    do {
+        previousLayer = string;
+        string = string
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, "&");
+    } while (string !== previousLayer);
+
+    return string;
+}
+
+rawCode = unescapeHTML(rawCode || "");
 
 const highlighter = await getShiki();
 
@@ -45,11 +56,13 @@ const isOpen = open !== undefined && open !== false;
         <div class="preview-content-container" aria-live="polite">
             <div id={`preview-content-${uniqueID}`}></div>
         </div>
-        <!-- The resize handle should NOT be able to be focused with keyboard navigation to match native behaviour -->
+        <!-- The resize handle should NOT be able to be focused
+             with keyboard navigation to match native behaviour. -->
         <div
             class="resize-handle"
             id={`resize-handle-${uniqueID}`}
             tabindex="-1"
+            aria-hidden="true"
         >
             <pc-icon
                 library="default"
@@ -59,9 +72,8 @@ const isOpen = open !== undefined && open !== false;
     </div>
 
     <div
-        class="code-block"
+        class:list={{ "code-block": true, "open": isOpen }}
         id={`code-block-${uniqueID}`}
-        class:list={[{ open: isOpen }]}
         aria-hidden={!isOpen}
         inert={!isOpen || undefined}
     >
@@ -76,6 +88,7 @@ const isOpen = open !== undefined && open !== false;
             size="small"
             id={`toggle-button-${uniqueID}`}
             aria-expanded={isOpen}
+            aria-controls={`code-block-${uniqueID}`}
         >
             Code
             <pc-icon
@@ -95,7 +108,7 @@ const isOpen = open !== undefined && open !== false;
                     variant="plain"
                     size="small"
                     class="codepen-button"
-                    id={`toggle-button-${uniqueID}`}
+                    id={`codepen-button-${uniqueID}`}
                     data-version={version}
                 >
                     <pc-icon
@@ -118,42 +131,50 @@ const isOpen = open !== undefined && open !== false;
         document
             .querySelectorAll<HTMLDivElement>(".code-demo")
             .forEach((demoElement) => {
-                const uniqueId = demoElement.dataset.uniqueId;
+                const uniqueID = demoElement.dataset.uniqueId;
 
                 const codeElement = demoElement.querySelector(
-                    `#code-content-${uniqueId}`,
+                    `#code-content-${uniqueID}`,
                 ) as HTMLElement | null;
                 const previewTargetElement = demoElement.querySelector(
-                    `#preview-content-${uniqueId}`,
+                    `#preview-content-${uniqueID}`,
                 ) as HTMLElement | null;
                 const toggleButton = demoElement.querySelector<PcButton>(
-                    `#toggle-button-${uniqueId}`,
+                    `#toggle-button-${uniqueID}`,
                 );
                 const codeBlock = demoElement.querySelector(
-                    `#code-block-${uniqueId}`,
+                    `#code-block-${uniqueID}`,
                 );
                 const chevron = demoElement.querySelector(
-                    `#chevron-${uniqueId}`,
+                    `#chevron-${uniqueID}`,
                 ) as HTMLElement;
                 const previewBlock = demoElement.querySelector(
-                    `#preview-block-${uniqueId}`,
+                    `#preview-block-${uniqueID}`,
                 ) as HTMLElement | null;
                 const resizeHandle = demoElement.querySelector(
-                    `#resize-handle-${uniqueId}`,
+                    `#resize-handle-${uniqueID}`,
                 ) as HTMLElement | null;
                 const codepenButton =
                     demoElement.querySelector<PcButton>(".codepen-button");
 
-                if (
-                    !codeElement ||
-                    !previewTargetElement ||
-                    !previewBlock ||
-                    !resizeHandle
-                ) {
-                    console.error(
-                        "[Code Demo:] Required elements are missing.",
-                    );
+                const requiredElements = {
+                    codeElement,
+                    previewTargetElement,
+                    previewBlock,
+                    resizeHandle,
+                    toggleButton,
+                    chevron,
+                    codeBlock,
+                };
 
+                const missing = Object.entries(requiredElements)
+                    .filter(([_, value]) => !value)
+                    .map(([name]) => name);
+
+                if (missing.length > 0) {
+                    console.error(
+                        `Code Demo (ID: ${uniqueID}): Missing elements – ${missing.join(", ")}`,
+                    );
                     return;
                 }
 
@@ -219,13 +240,13 @@ const isOpen = open !== undefined && open !== false;
                             if (isAsync && result instanceof Promise) {
                                 result.catch((error) => {
                                     console.error(
-                                        `[Code Demo:] An asynchronous script error occurred. ${error}`,
+                                        `Code Demo: An asynchronous script error occurred. ${error}`,
                                     );
                                 });
                             }
                         } catch (error) {
                             console.error(
-                                `[Code Demo:] An error occurred executing the script. ${error}`,
+                                `Code Demo: An error occurred executing the script. ${error}`,
                             );
                         }
                     });
@@ -239,10 +260,6 @@ const isOpen = open !== undefined && open !== false;
                         codeVisible = !codeVisible;
 
                         codeBlock.classList.toggle("open", codeVisible);
-                        toggleButton.setAttribute(
-                            "aria-expanded",
-                            String(codeVisible),
-                        );
                         codeBlock.setAttribute(
                             "aria-hidden",
                             String(!codeVisible),
@@ -254,12 +271,22 @@ const isOpen = open !== undefined && open !== false;
                             codeBlock.setAttribute("inert", "");
                         }
 
+                        const internalButton =
+                            toggleButton.shadowRoot?.querySelector("button");
+
+                        if (internalButton) {
+                            internalButton.setAttribute(
+                                "aria-expanded",
+                                String(codeVisible),
+                            );
+                        }
+
                         chevron.style.transform = codeVisible
                             ? "rotate(180deg)"
                             : "rotate(0deg)";
                     });
                 } else {
-                    console.error("[Code Demo:] The toggle setup failed.");
+                    console.error("Code Demo: The toggle setup failed.");
                 }
 
                 let isResizing = false;
@@ -358,7 +385,7 @@ const isOpen = open !== undefined && open !== false;
                     });
                 } else {
                     console.error(
-                        "[Code Demo:] The CodePen button can’t be found.",
+                        "Code Demo: The CodePen button can’t be found.",
                     );
                 }
 

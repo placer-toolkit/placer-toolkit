@@ -213,6 +213,8 @@ const translatePath = useTranslatedPath(language);
             library="default"
             icon-style="solid"
             name="pause"
+            {/* This label isn’t localised yet because it won’t be accessible to
+                screen readers anyways. This could be used in the future though. */}
             label="Pause animation"></pc-icon>
     </pc-button>
 </div>
@@ -262,7 +264,7 @@ const translatePath = useTranslatedPath(language);
 
 <style>
     :global(#main-content) {
-        padding-block-start: 0;
+        padding-block-start: 0 !important;
     }
 
     .landing-cta {

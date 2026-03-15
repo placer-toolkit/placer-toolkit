@@ -9,12 +9,23 @@ if (typeof rawCode !== "string") {
     rawCode = "";
 }
 
-rawCode = rawCode
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&amp;/g, "&");
+function unescapeHTML(string: string) {
+    let previousLayer;
+
+    do {
+        previousLayer = string;
+        string = string
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, "&");
+    } while (string !== previousLayer);
+
+    return string;
+}
+
+rawCode = unescapeHTML(rawCode || "");
 
 const highlighter = await getShiki();
 

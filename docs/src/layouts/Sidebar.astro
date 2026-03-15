@@ -17,14 +17,13 @@ const translation = useTranslations(language);
 
 <style>
     .sidebar {
-        grid-area: sidebar;
-        position: sticky;
-        inset-block-start: 3.5rem;
+        position: fixed;
+        inset-block-start: var(--navigation-bar-height);
         inset-inline-start: 0;
         padding: var(--pc-spacing-xl);
-        min-inline-size: 300px;
-        max-inline-size: 300px;
-        block-size: calc(100dvh - 3.5rem);
+        min-inline-size: var(--sidebar-width);
+        max-inline-size: var(--sidebar-width);
+        block-size: calc(100dvh - var(--navigation-bar-height));
         background-color: var(--pc-color-surface-default);
         border-inline-end: var(--pc-panel-border-width)
             var(--pc-panel-border-style) var(--pc-color-surface-border);

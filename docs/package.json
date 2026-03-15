@@ -12,16 +12,19 @@
     "dependencies": {
         "@astrojs/mdx": "^5.0.0",
         "@astrojs/sitemap": "^3.7.1",
-        "astro": "^6.0.0",
+        "astro": "^6.0.4",
         "node-fetch": "^3.3.2",
         "placer-toolkit": "file:../placer-toolkit-1.0.0-alpha.4.tgz",
         "sharp": "^0.34.4"
     },
     "devDependencies": {
+        "prettier": "3.8.1",
+        "prettier-plugin-astro": "0.14.1",
         "rehype-autolink-headings": "^7.1.0",
         "rehype-slug": "^6.0.0",
         "remark-mdx": "^3.1.1",
-        "shiki": "^3.22.0",
-        "unist-util-visit": "^5.0.0"
+        "shiki": "^4.0.2",
+        "unist-util-visit": "^5.0.0",
+        "vite-plugin-compression": "^0.5.1"
     }
 }

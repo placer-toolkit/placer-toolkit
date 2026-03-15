@@ -42,7 +42,16 @@ import "../../styles/fonts.css";
         <script>
             import "placer-toolkit/cdn/placer.js";
             import "placer-toolkit/cdn/translations/de.js";
-
+        </script>
+        <script>
+            if (
+                import.meta.env.MODE === "production" &&
+                "serviceWorker" in navigator
+            ) {
+                navigator.serviceWorker.register("/cache-icons.js");
+            }
+        </script>
+        <script>
             const htmlElement = document.documentElement;
 
             function applySettings(settings: {

@@ -23,10 +23,6 @@ Components with the <pc-badge appearance="warning">Experimental</pc-badge> badge
     During the alpha period, things might break! We take breaking changes very seriously, but sometimes they’re necessary to make the final product better.
 </pc-callout>
 
-{/* This is a static list of the changelog over at GitHub. Make sure to copy the exact list
-    that you create here over to GitHub with GFM syntax instead of our web and Astro components.
-    Also refactor paths that are referencing this site with / (root) to the built site. */}
-
 ## Breaking change ratings
 
 In Placer Toolkit changelogs, we use consistent ratings to clearly communicate the scope and impact of every breaking change. The usage and description of each rating is detailed below.
@@ -51,19 +47,20 @@ This rating flags minor changes that impact consistency or adherence to future A
 
 ### Milestones
 
-- Added three locales: Georgian (ka), Kazakh (kk) and Kazakh Latin (2021) (kk-Latn).
+- Added three locales: Georgian (ka), Kazakh (kk) and Kazakh Latin (2021) (kk-Latn). [pull:84]
 
 ### Enhancements
 
-- Standardised the Punjabi (pa) locales to align with CLDR standards.<br />**⚠️ Breaking change:** `pa` is now the Gurmukhi script (LTR) and `pa-Arab` is now the Shahmukhi script (RTL). If you were using `pa` to get the Shahmukhi variant, you must now use `pa-Arab`. If you were using `pa-Guru` to get the Gurmukhi variant, you must now use `pa-Guru`.
-- Added the `.pc-cite-block` class for the `<figure>` element to cite blockquotes.
-- Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch).
+- Standardised the Punjabi (pa) locales to align with CLDR standards. [pull:84]<br />**⚠️ Breaking change:** `pa` is now the Gurmukhi script (LTR) and `pa-Arab` is now the Shahmukhi script (RTL). If you were using `pa` to get the Shahmukhi variant, you must now use `pa-Arab`. If you were using `pa-Guru` to get the Gurmukhi variant, you must now use `pa-Guru`.
+- Added the `.pc-cite-block` class for the `<figure>` element to cite blockquotes. [pull:84]
+- Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch). [pull:84]
+- Improved the tab indicator animation in the [Tab Group](/docs/components/tab-group) component to be more lively. [pull:84]
 
 ## 1.0.0-alpha.4
 
 ### Milestones
 
-- Switched to `PlacerFormAssociatedElement` which uses the `ElementInternals` API for the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components.<br />**⚠️ Breaking change:** This change may break your old forms if you rely on the `[data-*]` attributes. Since we now use the `ElementInternals` API, we now use custom states. Change your CSS to use `:state()` instead of `[data-*]`.
+- Switched to `PlacerFormAssociatedElement` which uses the `ElementInternals` API for the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components. [pull:78]<br />**⚠️ Breaking change:** This change may break your old forms if you rely on the `[data-*]` attributes. Since we now use the `ElementInternals` API, we now use custom states. Change your CSS to use `:state()` instead of `[data-*]`.
     ```diff
     -pc-select[data-required] { /* … */ }
     -pc-select[data-optional] { /* … */ }
@@ -78,30 +75,30 @@ This rating flags minor changes that impact consistency or adherence to future A
     +pc-select:state(user-invalid) { /* … */ }
     +pc-select:state(user-invalid) { /* … */ }
     ```
-- Added two new components: [Skeleton](/docs/components/skeleton) and [Slider](/docs/components/slider).
-- Added a _maybe useless_ locale: Polytonic Greek (el-polyton).
+- Added two new components: [Skeleton](/docs/components/skeleton) and [Slider](/docs/components/slider). [pull:78]
+- Added a _maybe useless_ locale: Polytonic Greek (el-polyton). [pull:78]
 
 ### Enhancements
 
-- Relicensed the logo under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0) from All rights reserved. [github#61]
-- Added a disclaimer to parts of the project licensed under All rights reserved to grant contributors a perpetual, non‐exclusive licence to allow modifications as long as it’s a contribution to this project. [github#61]
-- Bumped the Font Awesome version from 7.1.0 to 7.2.0 in the [Icon](/docs/components/icon) component.
-- Added a `body` CSS part in the [Details](/docs/components/details) component. [github#68]
-- Changed the behaviour of the `disabled` attribute/property to no longer reflect in the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components.
-- Updated the internal event system to use explicit classes instead of a simple `emit()`.<br />**🔮 Future usage warnings:** If you’re building a component, emit events by importing one of the event classes inside the `events/` folder. If the event class doesn’t seem to exist, create one yourself based on another event class.
-- Merged `getScrollPosition()` and `setScrollPosition()` in the [Textarea](/docs/components/textarea) component.<br />**⚠️ Breaking change:** Replace `getScrollPosition()` and `setScrollPosition()` references with `scrollPosition()`, the underlying API should remain the same.
-- Made the `getHexString()` method public in the [Color Picker](/docs/components/color-picker) component.
-- Renamed some prefixed events on the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components.<br />**🚨 Major breaking change:** Previous events will no longer work. Switch to the unprefixed versions to retain behaviour.
+- Relicensed the logo under [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0) from All rights reserved. [pull:61]
+- Added a disclaimer to parts of the project licensed under All rights reserved to grant contributors a perpetual, non‐exclusive licence to allow modifications as long as it’s a contribution to this project. [pull:61]
+- Bumped the Font Awesome version from 7.1.0 to 7.2.0 in the [Icon](/docs/components/icon) component. [pull:78]
+- Added a `body` CSS part in the [Details](/docs/components/details) component. [pull:68]
+- Changed the behaviour of the `disabled` attribute/property to no longer reflect in the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components. [pull:78]
+- Updated the internal event system to use explicit classes instead of a simple `emit()`. [pull:78]<br />**🔮 Future usage warnings:** If you’re building a component, emit events by importing one of the event classes inside the `events/` folder. If the event class doesn’t seem to exist, create one yourself based on another event class.
+- Merged `getScrollPosition()` and `setScrollPosition()` in the [Textarea](/docs/components/textarea) component. [pull:78]<br />**⚠️ Breaking change:** Replace `getScrollPosition()` and `setScrollPosition()` references with `scrollPosition()`, the underlying API should remain the same.
+- Made the `getHexString()` method public in the [Color Picker](/docs/components/color-picker) component. [pull:78]
+- Renamed some prefixed events on the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components. [pull:78]<br />**🚨 Major breaking change:** Previous events will no longer work. Switch to the unprefixed versions to retain behaviour.
     - `pc-input` → `input`
     - `pc-change` → `change`
     - `pc-focus` → `focus`
     - `pc-blur` → `blur` (`blur` no longer bubbles; use `focusout` if you need bubbling)
-- Rewrote button group classes for the [Button](/docs/components/button) component.<br />**⚠️ Breaking change:** If you manually restyle the buttons, specifically the ones targeting button groups, we no longer use `data-` attributes and instead use classes. If you have any of these `data-` attributes in your theme or stylesheet, please update them accordingly.
+- Rewrote button group classes for the [Button](/docs/components/button) component. [pull:78]<br />**⚠️ Breaking change:** If you manually restyle the buttons, specifically the ones targeting button groups, we no longer use `data-` attributes and instead use classes. If you have any of these `data-` attributes in your theme or stylesheet, please update them accordingly.
     - `[data-pc-button-group-button]` → `.pc-button-group-button`
     - `[data-pc-button-group-button-first]` → `.pc-button-group-button-first`
     - `[data-pc-button-group-button-inner]` → `.pc-button-group-button-inner`
     - `[data-pc-button-group-button-last]` → `.pc-button-group-button-last`
-- Replaced the old usage of the `value` attribute/property in the [Select](/docs/components/select) component for initial option selection to use the `selected` attribute/property in the [Option](/docs/components/option) component.<br />**⚠️ Breaking change:** You have to switch to the new one, otherwise, initial option selection will no longer work.
+- Replaced the old usage of the `value` attribute/property in the [Select](/docs/components/select) component for initial option selection to use the `selected` attribute/property in the [Option](/docs/components/option) component. [pull:78]<br />**⚠️ Breaking change:** You have to switch to the new one, otherwise, initial option selection will no longer work.
     ```diff
     -<pc-select value="option-1">
     -    <pc-option value="option-1">Option 1</pc-option>
@@ -111,18 +108,18 @@ This rating flags minor changes that impact consistency or adherence to future A
          <pc-option value="option-3">Option 3</pc-option>
      </pc-select>
     ```
-- Added `vertical` orientation support in the [Button Group](/docs/components/button-group) and [Radio Group](/docs/components/radio-group) components.
+- Added `vertical` orientation support in the [Button Group](/docs/components/button-group) and [Radio Group](/docs/components/radio-group) components. [pull:78]
 
 ### Bug fixes
 
-- Fixed an opacity rounding bug in the [Color Picker](/docs/components/color-picker) component. [github#64]
-- Fixed an anti‐aliasing rendering bug in the pixel background used in some parts of the [Color Picker](/docs/components/color-picker) component. [github#64]
-- Fixed close button alignment in the [Tag](/docs/components/tag) component.
-- Resolved an accessibility issue about a missing `aria-label` in the [Copy Button](/docs/components/copy-button) component.
-- Changed the inactive stars to use the Regular icon style to follow [WCAG 2.2 success criterion 1.4.1](https://www.w3.org/TR/WCAG22/#use-of-color).
-- Fixed the interaction prevention when interactive elements are placed inside the [Details](/docs/components/details) component’s summary.
-- Fixed the shadows of the [Scroller](/docs/components/scroller) component being under the content sometimes.
-- Removed the `aria-live` attribute in the [Callout](/docs/components/callout) component’s internals, as it is almost always used for static content.
+- Fixed an opacity rounding bug in the [Color Picker](/docs/components/color-picker) component. [pull:64]
+- Fixed an anti‐aliasing rendering bug in the pixel background used in some parts of the [Color Picker](/docs/components/color-picker) component. [pull:64]
+- Fixed close button alignment in the [Tag](/docs/components/tag) component. [pull:78]
+- Resolved an accessibility issue about a missing `aria-label` in the [Copy Button](/docs/components/copy-button) component. [pull:78]
+- Changed the inactive stars to use the Regular icon style to follow [WCAG 2.2 success criterion 1.4.1](https://www.w3.org/TR/WCAG22/#use-of-color). [pull:78]
+- Fixed the interaction prevention when interactive elements are placed inside the [Details](/docs/components/details) component’s summary. [pull:78]
+- Fixed the shadows of the [Scroller](/docs/components/scroller) component being under the content sometimes. [pull:78]
+- Removed the `aria-live` attribute in the [Callout](/docs/components/callout) component’s internals, as it is almost always used for static content. [pull:78]
 
 Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.3...1.0.0-alpha.4).
 
@@ -130,12 +127,12 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 
 ### Milestones
 
-- Changed the licencing of the documentation from MIT to CC BY 4.0 and all rights reserved. See more info [here](/docs/legal/licence). [github#38]
+- Changed the licencing of the documentation from MIT to CC BY 4.0 and all rights reserved. See more info [here](/docs/legal/licence). [pull:38]
 
 ### Enhancements
 
-- Improved colour contrast in all Placer Toolkit components. [github#38]
-- Added CDN files to the `"exports"` object in `package.json`. [github#38]
+- Improved colour contrast in all Placer Toolkit components. [pull:38]
+- Added CDN files to the `"exports"` object in `package.json`. [pull:38]
 
 Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.2...1.0.0-alpha.3).
 
@@ -143,21 +140,21 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 
 ### Milestones
 
-- Added one new component: [Color Picker](/docs/components/color-picker). [github#24]
+- Added one new component: [Color Picker](/docs/components/color-picker). [pull:24]
 
 ### Enhancements
 
-- Published the [accessibility statement](/docs/resources/accessibility) to increase awareness with WCAG AA compliance. [github#11]
-- Expanded the [Contributing](/docs/resources/contributing/#branches) documentation with a new **Branches** section. [github#14]
-- Removed the `es-419` locale, replacing it with `es` (neutral Spanish). [github#24]<br />**⚠️ Breaking change:** Update all references from `es-419` to `es`; otherwise, English will be used as the fallback.
-- Introduced a base `pt` locale, with `pt-br` and `pt-pt` overrides carried over from previous versions. [github#24]
-- Replaced Bunny Fonts with [Fontsource](https://fontsource.org) on the Placer Toolkit site to improve performance. [github#15]
+- Published the [accessibility statement](/docs/resources/accessibility) to increase awareness with WCAG AA compliance. [pull:11]
+- Expanded the [Contributing](/docs/resources/contributing/#branches) documentation with a new **Branches** section. [pull:14]
+- Removed the `es-419` locale, replacing it with `es` (neutral Spanish). [pull:24]<br />**⚠️ Breaking change:** Update all references from `es-419` to `es`; otherwise, English will be used as the fallback.
+- Introduced a base `pt` locale, with `pt-br` and `pt-pt` overrides carried over from previous versions. [pull:24]
+- Replaced Bunny Fonts with [Fontsource](https://fontsource.org) on the Placer Toolkit site to improve performance. [pull:15]
 
 ### Bug fixes
 
-- Corrected the PR template so that it now applies when creating a PR. [github#10]
-- Resolved an issue in the GitHub Remark plugin that produced `issue` in URLs instead of `issues` when no API key was provided. [github#15]
-- Prevented the preview block from overflowing in small viewports. [github#24]
+- Corrected the PR template so that it now applies when creating a PR. [pull:10]
+- Resolved an issue in the GitHub Remark plugin that produced `issue` in URLs instead of `issues` when no API key was provided. [pull:15]
+- Prevented the preview block from overflowing in small viewports. [pull:24]
 
 ### Known bugs
 

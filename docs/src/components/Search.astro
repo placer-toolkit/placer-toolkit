@@ -45,7 +45,9 @@ const translation = useTranslations(language);
                             <pc-input
                                 class="search-input"
                                 size="large"
-                                label={translation("ui.search.label.descriptive")}
+                                label={translation(
+                                    "ui.search.label.descriptive",
+                                )}
                                 placeholder={translation("ui.search.label")}
                                 type="search"
                                 autofocus=""
@@ -54,6 +56,7 @@ const translation = useTranslations(language);
                                 autocapitalize="none"
                                 enterkeyhint="go"
                                 clearable
+                                aria-controls="search-results-list"
                             >
                                 <pc-icon
                                     library="default"
@@ -70,8 +73,14 @@ const translation = useTranslations(language);
                                 role="status"
                                 aria-live="polite"
                             />
-                            <div class="search-results-list" id="search-results-list">
-                                <ul class="search-results-list-root" role="list" />
+                            <div
+                                class="search-results-list"
+                                id="search-results-list"
+                            >
+                                <ul
+                                    class="search-results-list-root"
+                                    role="list"
+                                />
                             </div>
                         </div>
                     </form>
@@ -103,7 +112,8 @@ const translation = useTranslations(language);
             }
             <div class="pagefind-attribution">
                 <a href="https://pagefind.app">
-                    <span>{translation("ui.search.attribution.poweredBy")}</span>
+                    <span>{translation("ui.search.attribution.poweredBy")}</span
+                    >
                     <div class="theme-dependent-content-switcher">
                         <Image
                             class="light-content"
@@ -169,7 +179,7 @@ const translation = useTranslations(language);
         private searchStatus!: HTMLDivElement | null;
         private searchList!: HTMLDivElement | null;
 
-        private labels = { searching: "", one: "", multiple: "", none: ""};
+        private labels = { searching: "", one: "", multiple: "", none: "" };
 
         async connectedCallback() {
             this.searchDialog = this.querySelector(".search-dialog");
@@ -178,10 +188,18 @@ const translation = useTranslations(language);
             this.searchList = this.querySelector(".search-results-list-root");
 
             this.labels = {
-                searching: this.searchDialog?.dataset.labelSearching || "Searching for <mark>{{query}}</mark>…",
-                one: this.searchDialog?.dataset.labelOne || "One result for <mark>{{query}}</mark>",
-                multiple: this.searchDialog?.dataset.labelMultiple || "{{count}} results for <mark>{{query}}</mark>",
-                none: this.searchDialog?.dataset.labelNone || "No results for <mark>{{query}}</mark>"
+                searching:
+                    this.searchDialog?.dataset.labelSearching ||
+                    "Searching for <mark>{{query}}</mark>…",
+                one:
+                    this.searchDialog?.dataset.labelOne ||
+                    "One result for <mark>{{query}}</mark>",
+                multiple:
+                    this.searchDialog?.dataset.labelMultiple ||
+                    "{{count}} results for <mark>{{query}}</mark>",
+                none:
+                    this.searchDialog?.dataset.labelNone ||
+                    "No results for <mark>{{query}}</mark>",
             };
 
             await this.loadPagefind();
@@ -215,12 +233,6 @@ const translation = useTranslations(language);
             });
 
             this.searchDialog?.addEventListener("pc-show", async () => {
-                const nativeInput = this.searchInput?.shadowRoot?.querySelector("input");
-
-                if (nativeInput) {
-                    nativeInput.setAttribute("aria-controls", "search-results-list");
-                }
-
                 if (this.pagefind) {
                     await this.pagefind.init();
                 }
@@ -287,14 +299,16 @@ const translation = useTranslations(language);
 
                 focusable[nextIndex]?.focus();
             }
-        }
+        };
 
         private async loadPagefind() {
             if (import.meta.env.MODE === "production" && !this.pagefind) {
                 try {
                     const path = "/pagefind/pagefind.js";
 
-                    this.pagefind = (await import(/* @vite-ignore */ path)) as PagefindModule;
+                    this.pagefind = (await import(
+                        /* @vite-ignore */ path
+                    )) as PagefindModule;
                 } catch (error) {
                     console.error(
                         `Pagefind failed to load. Search functionality will therefore be impacted. Error: ${error}`,
@@ -316,7 +330,10 @@ const translation = useTranslations(language);
             }
 
             if (this.searchStatus) {
-                this.searchStatus.innerHTML = this.labels.searching.replace("{{query}}", this.escapeHTML(query));
+                this.searchStatus.innerHTML = this.labels.searching.replace(
+                    "{{query}}",
+                    this.escapeHTML(query),
+                );
             }
 
             this.currentSearchTerm = query;
@@ -334,10 +351,18 @@ const translation = useTranslations(language);
             }, 120);
         }
 
-        private async renderResults(results: PagefindSearchResult[], query: string) {
+        private async renderResults(
+            results: PagefindSearchResult[],
+            query: string,
+        ) {
             const count = results.length;
 
-            let message = count === 0 ? this.labels.none : count === 1 ? this.labels.one : this.labels.multiple;
+            let message =
+                count === 0
+                    ? this.labels.none
+                    : count === 1
+                      ? this.labels.one
+                      : this.labels.multiple;
 
             if (this.searchStatus) {
                 this.searchStatus.innerHTML = message
@@ -347,7 +372,7 @@ const translation = useTranslations(language);
 
             if (this.searchList) {
                 const data = await Promise.all(
-                    results.slice(0, 15).map((result) => result.data())
+                    results.slice(0, 15).map((result) => result.data()),
                 );
 
                 this.searchList.innerHTML = data
@@ -380,7 +405,11 @@ const translation = useTranslations(language);
             `;
         }
 
-        private subResultItemTemplate(subResult: PagefindSubResult, index: number, total: number) {
+        private subResultItemTemplate(
+            subResult: PagefindSubResult,
+            index: number,
+            total: number,
+        ) {
             const isLast = index === total - 1;
 
             return `

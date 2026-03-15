@@ -196,7 +196,7 @@ We also have a style guide called [Placer Style Guide](https://github.com/placer
 
 ### GitHub Flavored Markdown
 
-The Placer Toolkit documentation uses MDX with the [`@astrojs/mdx`](https://docs.astro.build/en/guides/integrations-guide/mdx) integration. With this integration, it automatically converts straight to smart quotes with [SmartyPants](https://github.com/silvenon/remark-smartypants) and other stuff. It supports standard Markdown from the [GFM spec](https://github.github.com/gfm) as well as JSX expressions.
+The Placer Toolkit documentation uses MDX with the [`@astrojs/mdx`](https://docs.astro.build/en/guides/integrations-guide/mdx) integration. With this integration, it automatically converts straight quotes to smart quotes with [SmartyPants](https://github.com/silvenon/remark-smartypants) and other stuff. It supports standard Markdown from the [GFM spec](https://github.github.com/gfm) as well as JSX expressions.
 
 #### Code blocks
 
@@ -212,7 +212,7 @@ Code demos are used to show demonstrations of different states of a component. T
 ```
 ````
 
-You can also append attributes to expand the code by default or remove the CodePen button. The order of these attributes don’t matter.
+You can also append attributes to expand the code by default or remove the CodePen button. The order of these attributes doesn’t matter.
 
 ````jsx
 ```demo:no-codepen:open
@@ -263,12 +263,14 @@ There are many keys that can be remapped. Here’s a list of all the available k
 - `tab`
 - `delete`
 
-#### GitHub issues
+#### GitHub links
 
-To link to a GitHub issue, PR or discussion, you can use this custom Markdown syntax. Make sure to replace `#167` with the correct issue, PR or discussion number.
+To link to a GitHub issue, PR or discussion, you can use this custom Markdown syntax. This automatically generates a link to the corresponding item in the [`placer-toolkit/placer-toolkit` GitHub repository](https://github.com/placer-toolkit/placer-toolkit).
 
 ```markdown
-[github#167]
+[issue:475]
+[pull:187]
+[discussion:832]
 ```
 
 ### Localisation
@@ -403,6 +405,28 @@ This convention avoids the problem of browsers lowercasing attributes, causing s
 
 When change events are emitted by Placer Toolkit components, they should utilise the native event `change` and they should only be emitted as as result of user input. Programmatic changes, such as setting `element.value = "…"` _should not_ result in a change event being emitted. This is consistent with how native form controls work.
 
+### Data attribute invokers
+
+Some components can be controlled using [data attributes](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/data-*) that trigger specific behaviours. These components must use the following convention:
+
+```html
+<pc-button data-component="action id">Data attribute invoker</pc-button>
+```
+
+The `data-component` attribute corresponds to the component’s name without the `pc-` prefix. For example, `data-dialog` must control a `<pc-dialog>` component.
+
+The `action` parameter is required and must be a concise descriptive term indicating the intended behaviour, e.g. `open` and `close`.
+
+The `id` parameter must point to the `id` of the target component. You can omit the `id` only if the component wraps the element with the `data-` attribute.
+
+```html
+<pc-dialog id="my-dialog">Dialog content</pc-dialog>
+
+<pc-button data-component="open my-dialog">
+    Data attribute invoker
+</pc-button>
+```
+
 ### CSS custom properties
 
 To expose custom properties as part of a component’s API, scope them to the `:host` block.
@@ -490,12 +514,23 @@ For non‐dependencies, _the user_ should decide what gets registered, even if i
 
 Form controls should support submission and validation through the following conventions:
 
+- All form controls must extend from `PlacerFormAssociatedElement`.
 - All form controls must use `name`, `value` and `disabled` properties in the same manner as `HTMLInputElement`.
-- All form controls must have a `setCustomValidity()` method so the user can set a custom validation message.
-- All form controls must have a `reportValidity()` method that report their validity during form submission.
+- All form controls with the `disabled` property must not reflect the `disabled` attribute.
 - All form controls must have an `invalid` property that reflects their validity.
-- All form controls should mirror their native validation attributes such as `required`, `pattern`, `minlength`, `maxlength`, etc. when possible.
+- All form controls should mirror their native validation attributes such as `required`, `pattern`, `minlength`, `maxlength`, etc. when possible with the help of the `MirrorValidator`.
 - All form controls must be tested to work with the standard `<form>` element.
+- All form controls that do not have an editable value such as a button only need this property:
+    ```typescript
+    @property({ reflect: true }) value = "";
+    ```
+- All form controls that do have an editable value such as an input or textarea should have these properties:
+    ```typescript
+    @property({ attribute: false }) value = "";
+    @property({ attribute: "value", reflect: true }) defaultValue = "";
+    ```
+    We do this to align with how native form controls work.
+- All form controls that do have an editable property such as `checked` or `selected` should also have a `defaultSelected` and `defaultChecked` property respectively for use when the form is reset.
 
 ### System icons
 

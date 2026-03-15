@@ -106,7 +106,9 @@ const translatePath = useTranslatedPath(language);
                 <span class="label">{translation("ui.search.label")}</span>
                 <span slot="suffix">
                     {/* prettier-ignore */}
-                    <kbd class="search-key">{translation("ui.keyboard.ctrl")}</kbd>
+                    <kbd class="search-key"
+                        >{translation("ui.keyboard.ctrl")}</kbd
+                    >
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>
@@ -164,15 +166,14 @@ const translatePath = useTranslatedPath(language);
     }
 
     .navbar {
-        grid-area: navbar;
-        position: sticky;
+        position: fixed;
         inset-block-start: 0;
         inset-block: 0;
         background-color: var(--pc-color-surface-default);
         border-block-end: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         inline-size: 100vw;
-        block-size: 3.5rem;
+        block-size: var(--navigation-bar-height);
         z-index: 2;
         pointer-events: auto;
     }
