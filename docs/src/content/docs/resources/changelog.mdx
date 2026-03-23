@@ -56,6 +56,11 @@ This rating flags minor changes that impact consistency or adherence to future A
 - Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch). [pull:84]
 - Improved the tab indicator animation in the [Tab Group](/docs/components/tab-group) component to be more lively. [pull:84]
 
+### Bug fixes
+
+- Removed the `aria-checked` attribute on the [Dropdown Item](/docs/components/dropdown-item) component if it isn’t `type="checkbox"`. [pull:84]
+- Removed the `required` attribute on the [Slider](/docs/components/slider) component, as sliders always have a value and the native slider doesn’t have a `required` attribute. [pull:84]
+
 ## 1.0.0-alpha.4
 
 ### Milestones

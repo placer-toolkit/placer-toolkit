@@ -1,5 +1,9 @@
 /* This is an internal utility only used by Placer Toolkit, hence it isn’t listed in any docs. */
 @layer pc-utilities {
+    .pc-scroll-lock {
+        overflow: hidden !important;
+    }
+
     @supports (scrollbar-gutter: stable) {
         .pc-scroll-lock {
             scrollbar-gutter: var(--pc-scroll-lock-gutter) !important;

@@ -69,6 +69,42 @@ const {
             name="viewport"
             content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-visual"
         />
+        <script is:inline>
+            function getSavedCustomizations() {
+                const savedColorScheme =
+                    localStorage.getItem("saved-color-scheme");
+                const colorScheme =
+                    savedColorScheme === "light" || savedColorScheme === "dark"
+                        ? savedColorScheme
+                        : window.matchMedia("(prefers-color-scheme: light)")
+                                .matches
+                          ? "light"
+                          : "dark";
+
+                document.documentElement.classList.add(`pc-${colorScheme}`);
+
+                const theme = localStorage.getItem("saved-theme");
+
+                if (theme === "utility") {
+                    document.documentElement.classList.add(
+                        "pc-theme-utility",
+                        "pc-palette-vibrant",
+                    );
+                } else if (theme === "serene") {
+                    document.documentElement.classList.add(
+                        "pc-theme-serene",
+                        "pc-palette-muted",
+                    );
+                }
+            }
+
+            document.addEventListener(
+                "astro:after-swap",
+                getSavedCustomizations,
+            );
+
+            (() => getSavedCustomizations())();
+        </script>
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
         <meta
@@ -161,6 +197,7 @@ const {
         <script>
             // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
             import "placer-toolkit/cdn/placer.js";
+            import "placer-toolkit/cdn/components/video-player/video-player.js";
             import "placer-toolkit/cdn/translations/de.js";
         </script>
         <script>
@@ -170,19 +207,6 @@ const {
             ) {
                 navigator.serviceWorker.register("/cache-icons.js");
             }
-        </script>
-        <script is:inline>
-            (() => {
-                const prefersDark = window.matchMedia(
-                    "(prefers-color-scheme: dark)",
-                ).matches;
-                const theme = prefersDark ? "pc-dark" : "pc-light";
-
-                document.documentElement.classList.add(theme);
-                document.documentElement.classList.remove(
-                    theme === "pc-dark" ? "pc-light" : "pc-dark",
-                );
-            })();
         </script>
         <!-- Simple Analytics -->
         {

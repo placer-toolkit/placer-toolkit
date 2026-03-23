@@ -36,7 +36,7 @@ export default {
     "ui.search.searchingFor": "Searching for <mark>{{query}}</mark>…",
     "ui.search.resultFor": "One result for <mark>{{query}}</mark>",
     "ui.search.resultsFor": "{{count}} results for <mark>{{query}}</mark>",
-    "ui.search.noResultsFor": "No results for <mark>{{query}}</mark>",
+    "ui.search.noResults": "No results found",
     "ui.search.navigation.up": "Up",
     "ui.search.navigation.down": "Down",
     "ui.search.navigation.navigate": "Navigate",

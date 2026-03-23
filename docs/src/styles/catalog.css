@@ -69,11 +69,11 @@
             padding-block-end: var(--pc-spacing-l);
             inline-size: 100%;
             block-size: calc(4rem + var(--pc-spacing-xl) + var(--pc-spacing-l));
-        }
 
-        div[slot="media"] svg {
-            border-radius: 0;
-            overflow: visible;
+            svg {
+                border-radius: 0;
+                overflow: visible;
+            }
         }
 
         .catalog-title {
@@ -86,7 +86,7 @@
             border-block-end-width: 0;
         }
 
-        .header-minimization & .catalog-title[slot="header"] {
+        .header-minimization &.catalog-title[slot="header"] {
             text-align: start;
         }
 

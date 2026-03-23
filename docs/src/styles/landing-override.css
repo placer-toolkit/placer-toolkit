@@ -1,7 +1,7 @@
 @import "./fonts/space-grotesk.css";
 
 .navbar {
-    background: color-mix(
+    background-color: color-mix(
         in oklab,
         var(--pc-color-surface-default) var(--navigation-opacity),
         transparent

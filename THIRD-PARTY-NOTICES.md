@@ -29,13 +29,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - **Repository:** https://github.com/open-wc/custom-elements-manifest
 - ⚠️ **Licence text not found:** Please manually verify at the repository link above.
 
-### @esbuild/win32-x64@0.27.2
+### @esbuild/win32-x64@0.27.3
 
 - **Licence:** MIT
 - **Repository:** https://github.com/evanw/esbuild
 - ⚠️ **Licence text not found:** Please manually verify at the repository link above.
 
-### @floating-ui/core@1.7.3
+### @floating-ui/core@1.7.4
 
 - **Licence:** MIT
 - **Repository:** https://github.com/floating-ui/floating-ui
@@ -63,7 +63,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
 </details>
 
-### @floating-ui/dom@1.7.4
+### @floating-ui/dom@1.7.5
 
 - **Licence:** MIT
 - **Repository:** https://github.com/floating-ui/floating-ui
@@ -128,68 +128,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
   <pre>MIT License
 
 Copyright (c) 2020 GitHub
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</pre>
-</details>
-
-### @isaacs/balanced-match@4.0.1
-
-- **Licence:** MIT
-- **Repository:** https://github.com/isaacs/balanced-match
-<details>
-  <summary>View full MIT licence text</summary>
-  <pre>(MIT)
-
-Original code Copyright Julian Gruber <julian@juliangruber.com>
-
-Port to TypeScript Copyright Isaac Z. Schlueter <i@izs.me>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</pre>
-</details>
-
-### @isaacs/brace-expansion@5.0.0
-
-- **Licence:** MIT
-- **Repository:** _Not provided_
-<details>
-  <summary>View full MIT licence text</summary>
-  <pre>MIT License
-
-Copyright Julian Gruber <julian@juliangruber.com>
-
-TypeScript port Copyright Isaac Z. Schlueter <i@izs.me>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -714,6 +652,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</pre>
 </details>
 
+### balanced-match@4.0.3
+
+- **Licence:** MIT
+- **Repository:** https://github.com/juliangruber/balanced-match
+<details>
+  <summary>View full MIT licence text</summary>
+  <pre>(MIT)
+
+Original code Copyright Julian Gruber <julian@juliangruber.com>
+
+Port to TypeScript Copyright Isaac Z. Schlueter <i@izs.me>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+</details>
+
 ### binary-extensions@2.3.0
 
 - **Licence:** MIT
@@ -741,6 +710,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   <pre>MIT License
 
 Copyright (c) 2013 Julian Gruber <julian@juliangruber.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+</details>
+
+### brace-expansion@5.0.2
+
+- **Licence:** MIT
+- **Repository:** https://github.com/juliangruber/brace-expansion
+<details>
+  <summary>View full MIT licence text</summary>
+  <pre>MIT License
+
+Copyright Julian Gruber <julian@juliangruber.com>
+
+TypeScript port Copyright Isaac Z. Schlueter <i@izs.me>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1017,7 +1017,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</pre>
 </details>
 
-### comment-parser@1.4.1
+### comment-parser@1.4.5
 
 - **Licence:** MIT
 - **Repository:** https://github.com/yavorskiy/comment-parser
@@ -1303,7 +1303,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
 </details>
 
-### esbuild@0.27.2
+### esbuild@0.27.3
 
 - **Licence:** MIT
 - **Repository:** https://github.com/evanw/esbuild
@@ -1639,7 +1639,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</pre>
 </details>
 
-### glob@13.0.0
+### glob@13.0.6
 
 - **Licence:** BlueOak-1.0.0
 - **Repository:** https://github.com/isaacs/node-glob
@@ -2424,7 +2424,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
 </details>
 
-### lru-cache@11.2.4
+### lru-cache@11.2.6
 
 - **Licence:** BlueOak-1.0.0
 - **Repository:** https://github.com/isaacs/node-lru-cache
@@ -2562,7 +2562,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
 </details>
 
-### minimatch@10.1.1
+### minimatch@10.2.2
 
 - **Licence:** BlueOak-1.0.0
 - **Repository:** https://github.com/isaacs/minimatch
@@ -2674,27 +2674,67 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre>
 </details>
 
-### minipass@7.1.2
+### minipass@7.1.3
 
-- **Licence:** ISC
+- **Licence:** BlueOak-1.0.0
 - **Repository:** https://github.com/isaacs/minipass
 <details>
-  <summary>View full ISC licence text</summary>
-  <pre>The ISC License
+  <summary>View full BlueOak-1.0.0 licence text</summary>
+  <pre># Blue Oak Model License
 
-Copyright (c) 2017-2023 npm, Inc., Isaac Z. Schlueter, and Contributors
+Version 1.0.0
 
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted, provided that the above
-copyright notice and this permission notice appear in all copies.
+## Purpose
 
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
-WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
-ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
-IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</pre>
+This license gives everyone as much permission to work with
+this software as possible, while protecting contributors
+from liability.
+
+## Acceptance
+
+In order to receive this license, you must agree to its
+rules.  The rules of this license are both obligations
+under that agreement and conditions to your license.
+You must not do anything with this software that triggers
+a rule that you cannot or will not follow.
+
+## Copyright
+
+Each contributor licenses you to do everything with this
+software that would otherwise infringe that contributor's
+copyright in it.
+
+## Notices
+
+You must ensure that everyone who gets a copy of
+any part of this software from you, with or without
+changes, also gets the text of this license or a link to
+<https://blueoakcouncil.org/license/1.0.0>.
+
+## Excuse
+
+If anyone notifies you in writing that you have not
+complied with [Notices](#notices), you can keep your
+license by taking all practical steps to comply within 30
+days after the notice.  If you do not do so, your license
+ends immediately.
+
+## Patent
+
+Each contributor licenses you to do everything with this
+software that would otherwise infringe any patent claims
+they can license or become able to license.
+
+## Reliability
+
+No contributor can revoke this license.
+
+## No Liability
+
+***As far as the law allows, this software comes as is,
+without any warranty or condition, and no contributor
+will be liable to anyone for any damages related to this
+software or this license, under any kind of legal claim.***</pre>
 </details>
 
 ### mkdirp@0.5.6
@@ -3098,7 +3138,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</pre>
 </details>
 
-### path-scurry@2.0.1
+### path-scurry@2.0.2
 
 - **Licence:** BlueOak-1.0.0
 - **Repository:** https://github.com/isaacs/path-scurry
@@ -3236,7 +3276,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</pre>
 </details>
 
-### prettier@3.7.4
+### prettier@3.8.1
 
 - **Licence:** MIT
 - **Repository:** https://github.com/prettier/prettier
@@ -3584,7 +3624,7 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
 IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</pre>
 </details>
 
-### semver@7.7.3
+### semver@7.7.4
 
 - **Licence:** ISC
 - **Repository:** https://github.com/npm/node-semver

@@ -37,7 +37,7 @@ const translation = useTranslations(language);
 <script>
     import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
 
-    let currentTheme: "light" | "dark" | null = null;
+    let currentColorScheme: "light" | "dark" | null = getStoredColorScheme();
 
     function isEditableInPath(path: EventTarget[]) {
         return path.some((element) => {
@@ -67,8 +67,8 @@ const translation = useTranslations(language);
             : "default";
     }
 
-    function getStoredTheme(): "light" | "dark" | null {
-        const stored = localStorage.getItem("saved-theme");
+    function getStoredColorScheme(): "light" | "dark" | null {
+        const stored = localStorage.getItem("saved-color-scheme");
         return stored ? parseTheme(stored) : null;
     }
 
@@ -91,7 +91,10 @@ const translation = useTranslations(language);
         }
     }
 
-    function applyColorTheme(theme: "light" | "dark" | null, skipTransition: boolean) {
+    function applyColorTheme(
+        theme: "light" | "dark" | null,
+        skipTransition: boolean,
+    ) {
         const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
         const effectiveTheme =
             theme ?? (prefersLight.matches ? "light" : "dark");
@@ -112,12 +115,12 @@ const translation = useTranslations(language);
         }
 
         if (theme === null) {
-            localStorage.removeItem("saved-theme");
+            localStorage.removeItem("saved-color-scheme");
         } else {
-            localStorage.setItem("saved-theme", theme);
+            localStorage.setItem("saved-color-scheme", theme);
         }
 
-        currentTheme = theme;
+        currentColorScheme = theme;
 
         updateIcon(theme);
     }
@@ -134,13 +137,11 @@ const translation = useTranslations(language);
         }
     }
 
-    function getStoredStyleTheme() {
-        return parseStyleTheme(
-            localStorage.getItem("saved-color-theme") ?? "",
-        );
+    function getStoredTheme() {
+        return parseTheme(localStorage.getItem("saved-theme") ?? "");
     }
 
-    function applyStyleTheme(styleTheme: string) {
+    function applyTheme(theme: string) {
         const root = document.documentElement;
 
         root.classList.remove(
@@ -150,13 +151,13 @@ const translation = useTranslations(language);
             "pc-palette-muted",
         );
 
-        if (styleTheme === "utility") {
+        if (theme === "utility") {
             root.classList.add("pc-theme-utility", "pc-palette-vibrant");
-        } else if (styleTheme === "serene") {
+        } else if (theme === "serene") {
             root.classList.add("pc-theme-serene", "pc-palette-muted");
         }
 
-        localStorage.setItem("saved-color-theme", styleTheme);
+        localStorage.setItem("saved-theme", theme);
     }
 
     function applyCustomizations() {
@@ -165,15 +166,14 @@ const translation = useTranslations(language);
         const button = document.querySelector(".color-scheme-toggle");
         const themeSelector = document.querySelector(".theme-selector");
 
-        currentTheme = getStoredTheme();
+        currentColorScheme = getStoredColorScheme();
 
-        let currentStyleTheme = getStoredStyleTheme();
+        let currentTheme: string = getStoredTheme() ?? "default";
 
-        applyColorTheme(currentTheme, true);
-        applyStyleTheme(currentStyleTheme);
+        updateIcon(currentColorScheme);
 
         button?.addEventListener("click", () => {
-            const nextTheme = cycleTheme(currentTheme);
+            const nextTheme = cycleTheme(currentColorScheme);
 
             applyColorTheme(nextTheme, false);
         });
@@ -185,16 +185,16 @@ const translation = useTranslations(language);
             if (typeof newStyleTheme === "string") {
                 const finalTheme = parseStyleTheme(newStyleTheme);
 
-                if (finalTheme !== currentStyleTheme) {
-                    currentStyleTheme = finalTheme;
+                if (finalTheme !== currentTheme) {
+                    currentTheme = finalTheme;
 
-                    applyStyleTheme(currentStyleTheme);
+                    applyTheme(currentTheme);
                 }
             }
         });
 
         prefersLight.addEventListener("change", () => {
-            if (currentTheme === null) {
+            if (currentColorScheme === null) {
                 applyColorTheme(null, true);
             }
         });
@@ -222,13 +222,14 @@ const translation = useTranslations(language);
 
             event.preventDefault();
 
-            const nextTheme = cycleTheme(currentTheme);
+            const nextTheme = cycleTheme(currentColorScheme);
 
             applyColorTheme(nextTheme, false);
         },
         { capture: true, passive: false },
     );
 
-    document.addEventListener("astro:page-load", () => applyCustomizations());
-    document.addEventListener("astro:before-swap", () => applyCustomizations());
+    document.addEventListener("astro:after-swap", () => applyCustomizations());
+
+    (() => applyCustomizations())();
 </script>

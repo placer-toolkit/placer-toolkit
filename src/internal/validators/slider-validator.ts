@@ -1,15 +1,10 @@
 import type { PcSlider } from "../../components/slider/slider.js";
 import type { Validator } from "../placer-form-associated-element.js";
 
-/** This is a comprehensive validator for sliders that handles required, range and step validation. */
+/** This is a comprehensive validator for sliders that handles range and step validation. */
 export const SliderValidator = (): Validator<PcSlider> => {
-    const nativeRequiredRange = Object.assign(document.createElement("input"), {
-        type: "range",
-        required: true,
-    });
-
     return {
-        observedAttributes: ["required", "min", "max", "step"],
+        observedAttributes: ["min", "max", "step"],
         checkValidity(element) {
             const validity: ReturnType<Validator["checkValidity"]> = {
                 message: "",
@@ -36,15 +31,6 @@ export const SliderValidator = (): Validator<PcSlider> => {
                 return input.validationMessage;
             };
 
-            if (element.required && !element.hasInteracted) {
-                validity.isValid = false;
-                validity.invalidKeys.push("valueMissing");
-                validity.message =
-                    nativeRequiredRange.validationMessage ||
-                    "Please fill out this field.";
-                return validity;
-            }
-
             if (element.isRange) {
                 const minValue = element.minValue;
                 const maxValue = element.maxValue;
@@ -60,6 +46,7 @@ export const SliderValidator = (): Validator<PcSlider> => {
                             element.step,
                         ) ||
                         `Value must be greater than or equal to ${element.min}.`;
+
                     return validity;
                 }
 
@@ -74,10 +61,10 @@ export const SliderValidator = (): Validator<PcSlider> => {
                             element.step,
                         ) ||
                         `Value must be less than or equal to ${element.max}.`;
+
                     return validity;
                 }
 
-                // Check step mismatch
                 if (element.step && element.step !== 1) {
                     const minStepMismatch =
                         (minValue - element.min) % element.step !== 0;
@@ -87,7 +74,9 @@ export const SliderValidator = (): Validator<PcSlider> => {
                     if (minStepMismatch || maxStepMismatch) {
                         validity.isValid = false;
                         validity.invalidKeys.push("stepMismatch");
+
                         const testValue = minStepMismatch ? minValue : maxValue;
+
                         validity.message =
                             createNativeRange(
                                 testValue,
@@ -95,6 +84,7 @@ export const SliderValidator = (): Validator<PcSlider> => {
                                 element.max,
                                 element.step,
                             ) || `Value must be a multiple of ${element.step}.`;
+
                         return validity;
                     }
                 }

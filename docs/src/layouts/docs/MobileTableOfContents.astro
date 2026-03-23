@@ -40,7 +40,7 @@ const translation = useTranslations(language);
         }
     });
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener("pointerdown", (event) => {
         const target = event.target as HTMLElement;
 
         if (mobileDetails?.open && !mobileTOC?.contains(target)) {

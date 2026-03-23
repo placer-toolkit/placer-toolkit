@@ -1,0 +1,49 @@
+WEBVTT
+
+STYLE
+::cue(v[voice="Alice"]) { color: #ff5555; }
+::cue(v[voice="Bob"]) { color: #55ff55; }
+::cue(.important) { text-decoration: underline; }
+::cue(.strikethrough) { text-decoration: line-through; }
+::cue(.note) { background-color: rgba(255,255,0,0.3); }
+
+NOTE This file is testing nearly all WebVTT features
+
+00:00:00.000 --> 00:00:04.000
+<v Alice>Hello! <b>Bold</b> <i>Italic</i> <u>Underline</u> <s>Strikethrough</s></v>
+<v Bob>Hell</v>
+
+00:00:04.500 --> 00:00:08.000 align:center line:10% position:50%
+<v Bob>Hey Alice! <c.important>This is important!</c></v>
+
+00:00:08.500 --> 00:00:12.000 align:end line:80% position:90%
+<v Alice>Notice the <c.note>yellow background note</c></v>
+
+00:00:12.500 --> 00:00:16.000
+<v Narrator>This cue has <ruby>漢字<rt>kanji</rt></ruby> and <ruby>東京<rt>Tokyo</rt></ruby> for ruby testing</v>
+
+00:00:16.500 --> 00:00:20.000 align:center line:50% position:50%
+<v Bob><i>Speaker styling with classes</i> and <c.important><b>combined styles</b></c></v>
+
+00:00:20.500 --> 00:00:24.000 align:start line:30% position:25%
+<v Alice>Testing multiple <c.note>cues with <u>underline</u></c> and colors</v>
+
+00:00:24.500 --> 00:00:28.000 align:end line:70% position:75%
+<v Bob>Right-aligned cue with <s>strikethrough</s> and <b>bold</b></v>
+
+00:00:28.500 --> 00:00:32.000 align:center line:20% position:50%
+<v Narrator>This cue demonstrates automatic line positioning and center alignment</v>
+
+00:00:32.500 --> 00:00:36.000
+<v Alice>Mixing everything: <b>bold</b> <i>italic</i> <u>underline</u> <s>strike</s> <c.note>highlight</c> <ruby>日<rt>hi</rt></ruby></v>
+
+00:00:36.500 --> 00:00:40.000 align:start position:15%
+<v Bob>Left-aligned with class styling
+and <c.important>important cue</c></v>
+
+00:00:40.500 --> 00:00:44.000 align:end position:85%
+<v Alice>Right-aligned, multiple cues, ruby:
+<ruby>漢<rt>kan</rt></ruby> <ruby>字<rt>ji</rt></ruby></v>
+
+00:00:44.500 --> 00:00:48.000
+<v Narrator>End of feature test: <b>bold</b>, <i>italic</i>, <u>underline</u>, <s>strikethrough</s>, <c.note>note</c>, <ruby>東京<rt>Tokyo</rt></ruby></v>

@@ -178,9 +178,6 @@ export class PcSlider extends PlacerFormAssociatedElement {
     /** The granularity the value must adhere to when incrementing and decrementing the value. */
     @property({ type: Number }) step: number = 1;
 
-    /** Indicates if the slider must be interacted with or not. */
-    @property({ type: Boolean, reflect: true }) required = false;
-
     /** Tells the browser to focus the slider when the page loads or a dialog is shown. */
     @property({ type: Boolean }) autofocus!: boolean;
 

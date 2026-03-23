@@ -1,8 +1,5 @@
-import coreConfiguration from "../prettier.config.mjs";
-
 /** @type {import("prettier").Config} */
 export default {
-    ...coreConfiguration,
     plugins: ["prettier-plugin-astro"],
     overrides: [
         {
@@ -12,4 +9,20 @@ export default {
             },
         },
     ],
+    arrowParens: "always",
+    bracketSpacing: true,
+    htmlWhitespaceSensitivity: "css",
+    insertPragma: false,
+    bracketSameLine: false,
+    jsxSingleQuote: false,
+    printWidth: 80,
+    proseWrap: "preserve",
+    quoteProps: "consistent",
+    requirePragma: false,
+    semi: true,
+    singleQuote: false,
+    tabWidth: 4,
+    trailingComma: "all",
+    endOfLine: "lf",
+    useTabs: false,
 };
