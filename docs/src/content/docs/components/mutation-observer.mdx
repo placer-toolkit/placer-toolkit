@@ -1,6 +1,7 @@
 ---
 title: Mutation Observer
 description: The Mutation Observer component offers a thin, declarative interface to the MutationObserver API.
+category: utilities
 ---
 
 The Mutation Observer component offers a thin, declarative interface to the [`MutationObserver` API](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
@@ -88,9 +89,9 @@ Use the `child-list` attribute to watch for new child elements that are added or
 <style>
     .mutation-child-list .buttons {
         display: flex;
+        margin-block-end: var(--pc-spacing-l);
         gap: var(--pc-spacing-xs);
         flex-wrap: wrap;
-        margin-block-end: var(--pc-spacing-l);
     }
 </style>
 ```

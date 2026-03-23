@@ -1,0 +1,220 @@
+---
+title: Farbe
+description: Das Farbsystem von Placer Toolkit besteht aus CSS‐benutzerdefinierten Eigenschaften, um eine konsistente Farbverwendung in deinem gesamten Projekt zu gewährleisten.
+---
+
+Das Farbsystem von Placer Toolkit besteht aus CSS‐benutzerdefinierten Eigenschaften, um eine konsistente Farbverwendung in deinem gesamten Projekt zu gewährleisten.
+
+Farben sind in drei Hauptkategorien organisiert:
+
+- [Farbschemata](#farbschemata), die ein vollständiges Spektrum von Farbtönen bieten.
+- [Grundfarben](#grundfarben), die die Basis für dein Design bilden.
+- [Semantische Farben](#semantische-farben), die Aufmerksamkeit erzeugen und Bedeutung vermitteln.
+
+## Farbschemata
+
+Farbschemata werden durch deine Farbpalette bestimmt und bestehen aus den grundlegendsten Farbtokens deines Designs. Jeder Token wird durch einen Namen identifiziert, z. B. rot oder blau, sowie durch einen numerischen Farbton basierend auf der Helligkeit der Farbe. Auf dieser Skala liegt 95 nahe bei reinem Weiß und 05 nahe bei reinem Schwarz.
+
+Du kannst diese Farbtöne verwenden, um einen zugänglichen Farbkontrast gemäß den [WCAG 2.2 Erfolgskriterien](https://w3.org/TR/WCAG22/#contrast-minimum) sicherzustellen:
+
+- Ein Unterschied von 40 gewährleistet ein Mindestkontrastverhältnis von 3∶1, geeignet für große Texte und Icons (AA)
+- Ein Unterschied von 50 gewährleistet ein Mindestkontrastverhältnis von 4,5∶1, geeignet für normalen Text (AA) und große Texte (AAA)
+- Ein Unterschied von 60 gewährleistet ein Mindestkontrastverhältnis von 7∶1, geeignet für alle Texte (AAA)
+
+Die Standardpalette definiert 10 Farbtöne, jeder mit einer Skala von 11 Farbabstufungen im Format `--pc-color-{hue}-{tint}`.
+
+{[
+    "grey", "red", "orange", "yellow", "green",
+    "cyan", "blue", "indigo", "purple", "pink",
+].map((hue) => (
+    <div className="color-palette">
+        <div className="color-palette-name">
+            <span>{hue.charAt(0).toUpperCase() + hue.slice(1)}</span>
+            <br />
+            <code>{`--pc-color-${hue}-{tint}`}</code>
+        </div>
+        {[
+            "05", "10", "20", "30", "40", "50",
+            "60", "70", "80", "90", "95",
+        ].map((tint) => (
+            <div className="color-palette-swatch-container">
+                <div
+                    className="color-palette-swatch"
+                    style={{ backgroundColor: `var(--pc-color-${hue}-${tint})` }}
+                ></div>
+                <span>{tint}</span>
+            </div>
+        ))}
+    </div>
+))}
+
+### Semantische Skalen
+
+Jeder Farbton kann den Skalen `neutral`, `primary`, `success`, `warning` und `danger` zugeordnet werden. Wie die Tokens in der Farbschema‐Skala wird jeder Token durch seine semantische Gruppe und einen numerischen Farbton im Format `--pc-color-{group}-{tint}` identifiziert.
+
+{[
+    "neutral", "primary", "success", "warning", "danger"
+].map((group) => (
+    <div className="color-palette">
+        <div className="color-palette-name">
+            <span>{group.charAt(0).toUpperCase() + group.slice(1)}</span>
+            <br />
+            <code>{`--pc-color-${group}-{tint}`}</code>
+        </div>
+        {[
+            "05", "10", "20", "30", "40", "50",
+            "60", "70", "80", "90", "95",
+        ].map((tint) => (
+            <div className="color-palette-swatch-container">
+                <div
+                    className="color-palette-swatch"
+                    style={{ backgroundColor: `var(--pc-color-${group}-${tint})` }}
+                ></div>
+                <span>{tint}</span>
+            </div>
+        ))}
+    </div>
+))}
+
+## Grundfarben
+
+Grundfarben bilden die Basis für Inhalt und Struktur deines Projekts. Diese Farben werden entsprechend ihrer Rolle im Design benannt.
+
+### Flächen
+
+Flächen sind Hintergrundebenen, auf denen andere Inhalte liegen. Flächenfarben vermitteln visuelle Hierarchie durch ein Gefühl von Tiefe. Beispielsweise erscheint `--pc-color-surface-raised` optisch vorne für den/die Benutzer:in und wird für Elemente wie Dialoge und Pop‐up‐Menüs verwendet, während `--pc-color-surface-lowered` weiter entfernt erscheint und für passive Container wie eingestellte Abschnitte oder gruppierte Formularbereiche genutzt wird.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                                                                 |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-color-surface-raised`    | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-raised); box-shadow: var(--pc-shadow-s)"></div>        |
+| `--pc-color-surface-default`   | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-default)"></div>                                       |
+| `--pc-color-surface-lowered`   | <div class="color-palette-swatch" style="background-color: var(--pc-color-surface-lowered); box-shadow: inset var(--pc-shadow-s)"></div> |
+| `--pc-color-surface-border`    | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-surface-border)"></div>  |
+
+### Text
+
+Textfarben werden für normalen Text verwendet. Wir empfehlen ein Mindestkontrastverhältnis von 4,5∶1 zwischen Text‐ und Flächenfarben.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                |
+| ------------------------------ | --------------------------------------------------------------------------------------- |
+| `--pc-color-text-normal`       | <div class="color-palette-swatch" style="color: var(--pc-color-text-normal)">AaBb</div> |
+| `--pc-color-text-quiet`        | <div class="color-palette-swatch" style="color: var(--pc-color-text-quiet)">AaBb</div>  |
+| `--pc-color-text-link`         | <div class="color-palette-swatch" style="color: var(--pc-color-text-link)">AaBb</div>   |
+
+### Overlays
+
+Overlays bieten einen Hintergrund, um Inhalte hervorzuheben, wobei der Hintergrund oft durchscheinen kann.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                          |
+| ------------------------------ | ------------------------------------------------------------------------------------------------- |
+| `--pc-color-overlay-modal`     | <div class="color-palette-swatch" style="background-color: var(--pc-color-overlay-modal)"></div>  |
+| `--pc-color-overlay-inline`    | <div class="color-palette-swatch" style="background-color: var(--pc-color-overlay-inline)"></div> |
+
+### Schatten
+
+Placer Toolkit verwendet eine einzelne Farbe für alle Schatten. Diese wird zusammen mit anderen [Schatten‐Tokens](/de/docs/design-tokens/shadows) verwendet, um die Schatten deines Designs zu erstellen.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                  |
+| ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `--pc-color-shadow`            | <div class="color-palette-swatch" style="background-color: var(--pc-color-shadow)"></div> |
+
+### Interaktionen
+
+#### Fokus
+
+Placer Toolkit verwendet eine einzelne Fokusfarbe für vorhersehbare Tastaturnavigation. Diese wird zusammen mit anderen [Fokus‐Tokens](/de/docs/design-tokens/focus) verwendet, um `--pc-focus-ring` zu erstellen. Wir empfehlen ein Mindestkontrastverhältnis von 3∶1 gegenüber Flächen‐ und Hintergrundfarben, wo immer möglich.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-color-focus`             | <div class="color-palette-swatch" style="outline: var(--pc-focus-ring-width) var(--pc-focus-ring-style) var(--pc-color-focus)"></div> |
+
+#### Hover‐ und Active‐Zustände
+
+Placer Toolkit nutzt `color-mix()`, um konsistente Hover‐ und Active‐Zustände über Komponenten hinweg zu erzielen, ohne zahlreiche manuell gewählte Farben zu benötigen. Über `color-mix()` erzeugen diese benutzerdefinierte Eigenschaften kontextabhängig Hover- und Active‐Farben basierend auf der Farbe der Komponente.
+
+| Benutzerdefinierte Eigenschaft | Vorschau                                                                                                                       |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `--pc-color-mix-hover`         | <div class="color-mix-demo color-palette-swatch" style="--mix-color: var(--pc-color-mix-hover)"><small>gemischt</small></div>  |
+| `--pc-color-mix-active`        | <div class="color-mix-demo color-palette-swatch" style="--mix-color: var(--pc-color-mix-active)"><small>gemischt</small></div> |
+
+## Semantische Farben
+
+Semantische Farben verstärken eine bestimmte Botschaft, Nutzung oder erwartetes Ergebnis durch vertraute und bedeutungsvolle Farbtöne. Jede Farbe wird durch ihre semantische Gruppe, Rolle und Aufmerksamkeit mit dem Format `--pc-color-{group}-{role}-{attention}` identifiziert. Es gibt fünf Gruppen semantischer Farben:
+
+- **Primary** zur Betonung deiner Akzentfarbe.
+- **Success** für Gültigkeit oder Bestätigung.
+- **Neutral** für gewöhnliche oder inaktive Inhalte.
+- **Warning** für Vorsicht oder Unsicherheit.
+- **Danger** für Fehler oder Risiko.
+
+Jede Gruppe definiert Farben für spezifische Rollen, sodass Farben leicht und mit vorhersehbarem Kontrast zusammengesetzt werden können. Es gibt drei Rollen:
+
+- **Fill** für Hintergrundfarben oder Flächen größer als wenige Pixel.
+- **Border** für Rahmen, Trenner und andere Linienbreiten-Elemente.
+- **On** für Inhalte, die auf einer Fill‐Fläche angezeigt werden, gepaart mit derselben Aufmerksamkeit.
+
+Schließlich wird jede Farbe nach dem Grad der Aufmerksamkeit benannt. Hier nutzen wir Lärm als Analogie: Ein lauter Ton zieht mehr Aufmerksamkeit auf sich als ein leiser. Es gibt drei Aufmerksamkeitsstufen:
+
+- **Quiet** zieht die wenigste Aufmerksamkeit auf sich.
+- **Normal** zieht mittlere Aufmerksamkeit auf sich.
+- **Loud** zieht die meiste Aufmerksamkeit auf sich.
+
+{(() => {
+    const appearances = ["primary", "success", "neutral", "warning", "danger"];
+    const groups = ["fill", "border", "on"];
+    const attentions = ["quiet", "normal", "loud"];
+
+    return (
+        <pc-scroller>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Benutzerdefinierte Eigenschaft</th>
+                        {appearances.map((appearance) => (
+                            <th style={{ textAlign: "center" }}>
+                                <code>{appearance}</code>
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {groups.map((group) => (
+                        attentions.map((attention) => (
+                            <tr>
+                                <td>
+                                    <code>{`--pc-color-*-${group}-${attention}`}</code>
+                                </td>
+                                {appearances.map((appearance) => (
+                                    <td>
+                                        {group === "border" ? (
+                                            <div
+                                                className="color-palette-swatch"
+                                                style={{
+                                                    justifyContent: "center",
+                                                    minInlineSize: "4.6875rem",
+                                                    border: `var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-${appearance}-${group}-${attention})`,
+                                                }}
+                                            ></div>
+                                        ) : (
+                                            <div
+                                                className="color-palette-swatch"
+                                                style={{
+                                                    justifyContent: "center",
+                                                    minInlineSize: "4.6875rem",
+                                                    backgroundColor: `var(--pc-color-${appearance}-fill-${attention})`,
+                                                    color: `var(--pc-color-${appearance}-on-${attention})`,
+                                                }}
+                                            >
+                                                {group === "on" ? "AaBb" : ""}
+                                            </div>
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </table>
+        </pc-scroller>
+    );
+})()}

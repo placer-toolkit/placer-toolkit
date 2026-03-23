@@ -1,0 +1,369 @@
+:host {
+    --control-offset: 0.5em;
+
+    display: block;
+    max-inline-size: 100%;
+}
+
+.frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+
+    .title {
+        position: absolute;
+        inset-block-start: var(--pc-spacing-s);
+        inset-inline-start: var(--pc-spacing-s);
+        padding-block: var(--pc-spacing-xs);
+        padding-inline: var(--pc-spacing-s);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-20),
+            transparent 20%
+        );
+        color: var(--pc-color-neutral-90);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border-radius: var(--pc-border-radius-m);
+        font-size: var(--pc-font-size-s);
+        opacity: 0;
+        transition: opacity var(--pc-transition-fast) ease-in-out;
+        z-index: 2;
+
+        :host(.controls-visible) &,
+        :host(:focus-within) & {
+            opacity: 1;
+        }
+    }
+
+    video {
+        display: block;
+        inline-size: 100%;
+        block-size: 100%;
+        border-radius: var(--pc-border-radius-l);
+        box-shadow: var(--pc-shadow-l);
+    }
+
+    .captions {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 2;
+
+        .caption-line {
+            position: absolute;
+            inset: 0;
+
+            .caption-cue {
+                position: absolute;
+                padding-block: var(--pc-spacing-xxs);
+                padding-inline: var(--pc-spacing-xs);
+                max-inline-size: 90%;
+                background-color: color-mix(
+                    in oklab,
+                    var(--pc-color-neutral-20),
+                    transparent 20%
+                );
+                color: var(--pc-color-neutral-90);
+                border-radius: var(--pc-border-radius-s);
+                font-family: var(--pc-font-sans);
+                font-size: var(--pc-font-size-s);
+                text-align: center;
+
+                & ruby rt {
+                    font-size: var(--pc-font-size-smaller);
+                    line-height: var(--pc-line-height-densest);
+                }
+
+                :host(.controls-visible) & {
+                    --control-offset: calc(
+                        (var(--pc-spacing-m) * 3) + 2.25rem + 0.5em
+                    );
+                }
+            }
+        }
+    }
+
+    .bar {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        inset-block-end: calc(2.25rem + (var(--pc-spacing-m) * 2));
+        inset-inline: 0;
+        padding-inline: var(--pc-spacing-m);
+        block-size: 0.5em;
+        opacity: 0;
+
+        :host(.controls-visible) &,
+        :host(:focus-within) & {
+            opacity: 1;
+        }
+
+        .progress-wrapper {
+            position: relative;
+            inline-size: 100%;
+            block-size: 100%;
+            background-color: var(--pc-color-neutral-fill-normal);
+            border-radius: var(--pc-border-radius-pill);
+
+            .buffered {
+                position: absolute;
+                inset-block: 0;
+                inset-inline-start: 0;
+                inline-size: 0;
+                background-color: var(--pc-color-neutral-border-normal);
+                border-radius: inherit;
+                pointer-events: none;
+            }
+
+            .progress {
+                position: absolute;
+                inset-block: 0;
+                inset-inline-start: 0;
+                margin: 0;
+                inline-size: 100%;
+                block-size: 100%;
+                appearance: none;
+                -webkit-appearance: none;
+                background-color: transparent;
+                border-radius: inherit;
+                outline: none;
+                touch-action: none;
+                cursor: pointer;
+
+                &::part(slider) {
+                    margin-block-start: 0;
+                }
+
+                &::part(label) {
+                    position: absolute !important;
+                    margin: -1px !important;
+                    padding: 0 !important;
+                    inline-size: 1px !important;
+                    block-size: 1px !important;
+                    width: 1px !important;
+                    height: 1px !important;
+                    clip-path: inset(50%) !important;
+                    border: none !important;
+                    overflow: hidden !important;
+                    white-space: nowrap !important;
+                }
+
+                &::part(track) {
+                    background-color: transparent;
+                }
+
+                &::part(thumb) {
+                    border: var(--pc-border-width-s) var(--pc-border-style)
+                        var(--pc-color-primary-border-loud);
+                }
+            }
+        }
+    }
+
+    .controls {
+        display: flex;
+        position: absolute;
+        align-items: center;
+        inset-block-end: var(--pc-spacing-m);
+        inset-inline: var(--pc-spacing-m);
+        gap: var(--pc-spacing-s);
+        block-size: 2.25rem;
+        opacity: 0;
+        transition: opacity var(--pc-transition-fast) ease-in-out;
+
+        :host(.controls-visible) &,
+        :host(:focus-within) & {
+            opacity: 1;
+        }
+
+        > pc-button,
+        pc-button-group > pc-button,
+        pc-button-group > pc-popup > pc-button {
+            &::part(base),
+            &::part(base) {
+                background-color: color-mix(
+                    in oklab,
+                    var(--pc-color-neutral-20),
+                    transparent 20%
+                );
+                color: var(--pc-color-neutral-90);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                border-radius: var(--pc-border-radius-circle);
+
+                @media (hover: hover) {
+                    &:hover,
+                    &:hover {
+                        background-color: color-mix(
+                            in oklab,
+                            color-mix(
+                                in oklab,
+                                var(--pc-color-neutral-20),
+                                transparent 20%
+                            ),
+                            var(--pc-color-mix-hover)
+                        );
+                    }
+                }
+
+                pc-button:not(.mute) &:active {
+                    background-color: color-mix(
+                        in oklab,
+                        color-mix(
+                            in oklab,
+                            var(--pc-color-neutral-20),
+                            transparent 20%
+                        ),
+                        var(--pc-color-mix-active)
+                    );
+                }
+            }
+
+            .mute {
+                display: inline-flex;
+                align-items: center;
+                inline-size: var(--pc-form-control-height);
+                transition: inline-size var(--pc-transition-fast) ease-in-out;
+
+                @media (hover: hover) {
+                    &:hover,
+                    &:focus-within {
+                        inline-size: calc(
+                            var(--pc-form-control-height) + 4.375rem +
+                                var(--pc-spacing-m)
+                        );
+                    }
+                }
+
+                @media (hover: none) {
+                    & {
+                        display: none;
+                    }
+                }
+
+                &::part(base) {
+                    aspect-ratio: auto;
+                    inline-size: 100%;
+                    border-radius: var(--pc-border-radius-pill);
+                }
+
+                .volume {
+                    display: block;
+                    margin: 0;
+                    inline-size: 0;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition:
+                        margin var(--pc-transition-fast) ease-in-out,
+                        inline-size var(--pc-transition-fast) ease-in-out,
+                        opacity var(--pc-transition-fast) ease-in-out;
+
+                    @media (hover: hover) {
+                        .mute:hover > &,
+                        .mute:focus-within > & {
+                            margin-inline-start: var(--pc-spacing-m);
+                            inline-size: 4.375rem;
+                            opacity: 1;
+                            pointer-events: auto;
+                        }
+                    }
+
+                    &::part(label) {
+                        position: absolute !important;
+                        margin: -1px !important;
+                        padding: 0 !important;
+                        inline-size: 1px !important;
+                        block-size: 1px !important;
+                        width: 1px !important;
+                        height: 1px !important;
+                        clip-path: inset(50%) !important;
+                        border: none !important;
+                        overflow: hidden !important;
+                        white-space: nowrap !important;
+                    }
+                }
+            }
+        }
+
+        pc-popup .settings-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: var(--pc-spacing-s);
+            inline-size: 15rem;
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-20),
+                transparent 20%
+            );
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: calc(
+                var(--pc-border-radius-m) + var(--pc-spacing-s)
+            );
+
+            pc-button {
+                inline-size: 100%;
+
+                &::part(base) {
+                    background-color: transparent;
+
+                    pc-button:has(> pc-icon[slot="suffix"]) & {
+                        margin-inline-start: auto;
+                    }
+
+                    pc-button:not(:has(> pc-icon[slot="suffix"])) & {
+                        justify-content: flex-start;
+                    }
+
+                    @media (hover: hover) {
+                        &:hover {
+                            background-color: color-mix(
+                                in oklab,
+                                transparent,
+                                var(--pc-color-mix-hover)
+                            ) !important;
+                        }
+                    }
+
+                    &:active {
+                        background-color: color-mix(
+                            in oklab,
+                            transparent,
+                            var(--pc-color-mix-active)
+                        ) !important;
+                    }
+                }
+            }
+        }
+
+        .time-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding-inline: var(--pc-form-control-padding-inline);
+            block-size: var(--pc-form-control-height);
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-20),
+                transparent 20%
+            );
+            color: var(--pc-color-neutral-90);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: var(--pc-border-radius-pill);
+            font-size: var(--pc-font-size-s);
+            font-variant-numeric: tabular-nums;
+            line-height: calc(var(--pc-form-control-height) * 2);
+            user-select: none;
+            -webkit-user-select: none;
+            white-space: nowrap;
+        }
+
+        .spacer {
+            flex: 1;
+        }
+    }
+}

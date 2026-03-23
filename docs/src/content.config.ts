@@ -12,6 +12,7 @@ const docs = defineCollection({
         description: z.string().optional(),
         slug: z.string().optional(),
         order: z.number().optional(),
+        category: z.string().optional(),
         isChildOf: z.string().nullable().optional(),
     }),
 });

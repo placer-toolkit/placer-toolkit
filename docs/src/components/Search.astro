@@ -12,117 +12,131 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<pc-dialog
-    class="search-dialog"
-    id="search-dialog"
-    no-header
-    data-label-searching={translation("ui.search.searchingFor")}
-    data-label-one={translation("ui.search.resultFor")}
-    data-label-multiple={translation("ui.search.resultsFor")}
-    data-label-none={translation("ui.search.noResultsFor")}
->
-    {
-        import.meta.env.MODE === "development" && (
-            <p
-                class="dev-warning"
-                set:html={translation(
-                    "ui.search.searchNotAvailableInDevBuilds",
-                )}
-            />
-        )
-    }
-    {
-        import.meta.env.MODE === "production" && (
-            <form
-                class="search-container"
-                role="search"
-                onsubmit="return false"
-                novalidate
-            >
-                <header class="search-header">
-                    <pc-input
-                        class="search-input"
-                        size="large"
-                        label={translation("ui.search.label.descriptive")}
-                        placeholder={translation("ui.search.label")}
-                        type="search"
-                        autofocus=""
-                        autocomplete="off"
-                        autocorrect="off"
-                        autocapitalize="none"
-                        enterkeyhint="go"
-                        clearable
-                    >
-                        <pc-icon
-                            library="default"
-                            icon-style="solid"
-                            name="magnifying-glass"
-                            slot="prefix"
-                        />
-                    </pc-input>
-                </header>
-
-                <div class="search-results">
-                    <div
-                        class="search-status"
-                        role="status"
-                        aria-live="polite"
-                    />
-                    <div class="search-results-list" id="search-results-list">
-                        <ul class="search-results-list-root" role="list" />
-                    </div>
-                </div>
-            </form>
-        )
-    }
-
-    <footer class="search-footer" slot="footer">
+<search-controller>
+    <pc-dialog
+        class="search-dialog"
+        id="search-dialog"
+        no-header
+        data-label-searching={translation("ui.search.searchingFor")}
+        data-label-one={translation("ui.search.resultFor")}
+        data-label-multiple={translation("ui.search.resultsFor")}
+        data-label-none={translation("ui.search.noResults")}
+    >
         {
-            import.meta.env.MODE === "production" && (
-                <div class="keyboard-shortcuts">
-                    <small>
-                        {/* prettier-ignore */}
-                        <kbd><pc-icon library="default" icon-style="solid" name="arrow-up" label={translation("ui.search.navigation.up") as string} /></kbd>
-                        {/* prettier-ignore */}
-                        <kbd><pc-icon library="default" icon-style="solid" name="arrow-down" label={translation("ui.search.navigation.down") as string} /></kbd>
-                        {translation("ui.search.navigation.navigate")}
-                    </small>
-                    <small>
-                        <AutoKeyboardSwitch keyName="enter" />
-                        {translation("ui.search.navigation.select")}
-                    </small>
-                    <small>
-                        <kbd aria-label="Escape">Esc</kbd>
-                        {translation("ui.search.navigation.close")}
-                    </small>
-                </div>
+            import.meta.env.MODE === "development" && (
+                <p
+                    class="dev-warning"
+                    set:html={translation(
+                        "ui.search.searchNotAvailableInDevBuilds",
+                    )}
+                />
             )
         }
-        <div class="pagefind-attribution">
-            <a href="https://pagefind.app">
-                <span>{translation("ui.search.attribution.poweredBy")}</span>
-                <div class="theme-dependent-content-switcher">
-                    <Image
-                        class="light-content"
-                        src={pagefindLightLogo}
-                        width="112"
-                        height="112"
-                        loading="lazy"
-                        alt="Pagefind"
-                    />
-                    <Image
-                        class="dark-content"
-                        src={pagefindDarkLogo}
-                        width="112"
-                        height="112"
-                        loading="lazy"
-                        alt="Pagefind"
-                    />
-                </div>
-            </a>
-        </div>
-    </footer>
-</pc-dialog>
+        {
+            import.meta.env.MODE === "production" && (
+                <search>
+                    <form
+                        class="search-container"
+                        role="search"
+                        onsubmit="return false"
+                        novalidate
+                    >
+                        <header class="search-header">
+                            <pc-input
+                                class="search-input"
+                                size="large"
+                                label={translation(
+                                    "ui.search.label.descriptive",
+                                )}
+                                placeholder={translation("ui.search.label")}
+                                type="search"
+                                autofocus=""
+                                autocomplete="off"
+                                autocorrect="off"
+                                autocapitalize="none"
+                                enterkeyhint="search"
+                                clearable
+                                aria-controls="search-results-list"
+                            >
+                                <pc-icon
+                                    library="default"
+                                    icon-style="solid"
+                                    name="magnifying-glass"
+                                    slot="prefix"
+                                />
+                            </pc-input>
+                        </header>
+
+                        <div class="search-results">
+                            <div
+                                class="search-status"
+                                role="status"
+                                aria-live="polite"
+                            />
+                            <div
+                                class="search-results-list"
+                                id="search-results-list"
+                            >
+                                <ul
+                                    class="search-results-list-root"
+                                    role="list"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                </search>
+            )
+        }
+
+        <footer class="search-footer" slot="footer">
+            {
+                import.meta.env.MODE === "production" && (
+                    <div class="keyboard-shortcuts">
+                        <small>
+                            {/* prettier-ignore */}
+                            <kbd><pc-icon library="default" icon-style="solid" name="arrow-down" label={translation("ui.search.navigation.down") as string} /></kbd>
+                            {/* prettier-ignore */}
+                            <kbd><pc-icon library="default" icon-style="solid" name="arrow-up" label={translation("ui.search.navigation.up") as string} /></kbd>
+                            {translation("ui.search.navigation.navigate")}
+                        </small>
+                        <small>
+                            <AutoKeyboardSwitch keyName="enter" />
+                            {translation("ui.search.navigation.select")}
+                        </small>
+                        <small>
+                            <kbd aria-label="Escape">Esc</kbd>
+                            {translation("ui.search.navigation.close")}
+                        </small>
+                    </div>
+                )
+            }
+            <div class="pagefind-attribution">
+                <a href="https://pagefind.app">
+                    <span>{translation("ui.search.attribution.poweredBy")}</span
+                    >
+                    <div class="theme-dependent-content-switcher">
+                        <Image
+                            class="light-content"
+                            src={pagefindLightLogo}
+                            width="112"
+                            height="112"
+                            loading="lazy"
+                            alt="Pagefind"
+                        />
+                        <Image
+                            class="dark-content"
+                            src={pagefindDarkLogo}
+                            width="112"
+                            height="112"
+                            loading="lazy"
+                            alt="Pagefind"
+                        />
+                    </div>
+                </a>
+            </div>
+        </footer>
+    </pc-dialog>
+</search-controller>
 
 <script>
     import type { PcDialog } from "placer-toolkit/dist/components/dialog/dialog.js";
@@ -155,249 +169,303 @@ const translation = useTranslations(language);
         search(query: string): Promise<PagefindSearchResponse | null>;
     }
 
-    const searchDialog = document.querySelector<PcDialog>(".search-dialog");
-    const searchInput = searchDialog?.querySelector<PcInput>(".search-input");
-    const searchStatus = searchDialog?.querySelector(".search-status");
-    const searchList = searchDialog?.querySelector(".search-results-list-root");
+    class SearchController extends HTMLElement {
+        private pagefind: PagefindModule | undefined;
+        private debounceTimer?: number;
+        private currentSearchTerm = "";
 
-    const labelSearching =
-        searchDialog?.dataset.labelSearching ||
-        "Searching for <b>{{query}}</b>…";
-    const labelResult =
-        searchDialog?.dataset.labelOne || "One result for <b>{{query}}</b>";
-    const labelResults =
-        searchDialog?.dataset.labelMultiple ||
-        "{{count}} results for <b>{{query}}</b>";
-    const labelNoResults =
-        searchDialog?.dataset.labelNone || "No results for <b>{{query}}</b>";
+        private searchDialog!: PcDialog | null;
+        private searchInput!: PcInput | null;
+        private searchStatus!: HTMLDivElement | null;
+        private searchList!: HTMLDivElement | null;
 
-    const path = "/pagefind/pagefind.js";
+        private labels = { searching: "", one: "", multiple: "", none: "" };
 
-    let pagefind: PagefindModule | undefined;
-    let debounceTimer: number;
-    let currentSearchTerm = "";
+        async connectedCallback() {
+            this.searchDialog = this.querySelector(".search-dialog");
+            this.searchInput = this.querySelector(".search-input");
+            this.searchStatus = this.querySelector(".search-status");
+            this.searchList = this.querySelector(".search-results-list-root");
 
-    try {
-        pagefind = (await import(/* @vite-ignore */ path)) as PagefindModule;
-    } catch (error) {
-        console.error(
-            `Pagefind failed to load. Search functionality will therefore be impacted. Error: ${error}`,
-        );
-    }
+            this.labels = {
+                searching:
+                    this.searchDialog?.dataset.labelSearching ||
+                    "Searching for <mark>{{query}}</mark>…",
+                one:
+                    this.searchDialog?.dataset.labelOne ||
+                    "One result for <mark>{{query}}</mark>",
+                multiple:
+                    this.searchDialog?.dataset.labelMultiple ||
+                    "{{count}} results for <mark>{{query}}</mark>",
+                none: `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path
+                            d="M15 8.5c0 1.43438-.4656 2.7594-1.25 3.8344l3.9563 3.9593c.3906.3907.3906 1.0251 0 1.4157-.3907.3906-1.0251.3906-1.4157 0L12.3344 13.75C11.2594 14.5344 9.93438 15 8.5 15 4.90937 15 2 12.0906 2 8.5 2 4.90937 4.90937 2 8.5 2 12.0906 2 15 4.90937 15 8.5M8.5 13c.59095 0 1.17611-.1164 1.7221-.3425.5459-.2262 1.042-.5577 1.4599-.9755.4178-.4179.7493-.914.9755-1.4599C12.8836 9.67611 13 9.09095 13 8.5s-.1164-1.17611-.3425-1.72208c-.2262-.54596-.5577-1.04204-.9755-1.4599-.4179-.41786-.914-.74933-1.4599-.97548C9.67611 4.1164 9.09095 4 8.5 4s-1.17611.1164-1.72208.34254c-.54596.22615-1.04204.55762-1.4599.97548s-.74933.91394-.97548 1.4599C4.1164 7.32389 4 7.90905 4 8.5s.1164 1.17611.34254 1.7221c.22615.5459.55762 1.042.97548 1.4599.41786.4178.91394.7493 1.4599.9755C7.32389 12.8836 7.90905 13 8.5 13"
+                            fill="currentColor"
+                        />
+                        <path
+                            d="M9.58755 6.40533c.29289-.29289.76775-.29289 1.06065 0s.2929.76777 0 1.06066L7.46623 10.648c-.2929.2929-.76777.2929-1.06066 0-.2929-.2929-.2929-.7678 0-1.06069z"
+                            fill="currentColor"
+                        />
+                        <path
+                            d="M6.40533 7.46609c-.29289-.2929-.29289-.76777 0-1.06066.29289-.2929.76777-.2929 1.06066 0l3.18241 3.18244c.2929.2929.2929.76773 0 1.06063s-.76773.2929-1.06062 0z"
+                            fill="currentColor"
+                        />
+                    </svg>
+                    <span>${this.searchDialog?.dataset.labelNone}</span>
+                `,
+            };
 
-    const performSearch = async (query: string) => {
-        if (!searchList || !searchStatus) {
-            return;
+            await this.loadPagefind();
+
+            this.setupListeners();
+
+            document.addEventListener("keydown", this.handleGlobalKeyDown);
         }
 
-        if (!query || !pagefind) {
-            searchStatus.innerHTML = "";
-            searchList.innerHTML = "";
+        disconnectedCallback() {
+            document.removeEventListener("keydown", this.handleGlobalKeyDown);
 
-            return;
+            clearTimeout(this.debounceTimer);
         }
 
-        if (searchStatus) {
-            searchStatus.innerHTML = labelSearching.replace("{{query}}", query);
-        }
+        private setupListeners() {
+            this.searchInput?.addEventListener("input", (event) => {
+                const value = (event.target as HTMLInputElement).value;
 
-        currentSearchTerm = query;
+                this.performSearch(value);
+            });
 
-        clearTimeout(debounceTimer);
-
-        debounceTimer = window.setTimeout(async () => {
-            const search = await pagefind.search(query);
-
-            if (!search) {
-                return;
-            }
-
-            if (query !== currentSearchTerm) {
-                return;
-            }
-
-            const count = search.results.length;
-
-            let message = "";
-
-            if (count === 0) {
-                message = labelNoResults.replace("{{query}}", query);
-            } else if (count === 1) {
-                message = labelResult.replace("{{query}}", query);
-            } else {
-                message = labelResults
-                    .replace("{{count}}", count.toString())
-                    .replace("{{query}}", query);
-            }
-
-            searchStatus.innerHTML = message;
-
-            const results = await Promise.all(
-                search.results.slice(0, 8).map((result) => result.data()),
-            );
-
-            searchList!.innerHTML = `
-                ${results
-                    .map((item) => {
-                        const subResults: PagefindSubResult[] = (
-                            item.sub_results ?? []
-                        )
-                            .filter(
-                                (subResult) =>
-                                    subResult.title !== item.meta.title,
-                            )
-                            .slice(0, 3);
-
-                        return `
-                            <li class="result-group" role="listitem">
-                                <a href="${item.url}" class="result-page-header">
-                                    <div class="page-icon" aria-hidden="true"></div>
-                                    <h2 class="result-title">${item.meta.title}</h2>
-                                </a>
-
-                                ${
-                                    subResults.length > 0
-                                        ? `
-                                            <ul class="sub-results-container" role="list">
-                                                ${subResults
-                                                    .map(
-                                                        (
-                                                            subResult: any,
-                                                            index: number,
-                                                        ) => `
-                                                            <li
-                                                                class="sub-result-item ${index === subResults.length - 1 ? "sub-result-item-last" : ""}"
-                                                                role="listitem"
-                                                            >
-                                                                <a href="${subResult.url}" class="sub-result-link">
-                                                                    <div class="sub-result-tree-line" aria-hidden="true"></div>
-                                                                    <div class="sub-result-content">
-                                                                        <h3 class="sub-result-heading">${subResult.title}</h3>
-                                                                        <p class="sub-result-excerpt">${subResult.excerpt}</p>
-                                                                    </div>
-                                                                </a>
-                                                            </li>
-                                                        `,
-                                                    )
-                                                    .join("")}
-                                            </ul>
-                                        `
-                                        : ""
-                                }
-                            </li>
-                        `;
-                    })
-                    .join("")}
-            `;
-        }, 120);
-    };
-
-    searchInput?.addEventListener("input", (event) => {
-        const target = event.target as HTMLInputElement;
-
-        performSearch(target.value);
-    });
-
-    searchInput?.addEventListener("pc-clear", () => {
-        if (searchStatus) {
-            searchStatus.textContent = "";
-        }
-
-        if (searchList) {
-            searchList.innerHTML = "";
-        }
-    });
-
-    searchDialog?.addEventListener("pc-show", async () => {
-        const nativeInput = searchInput?.shadowRoot?.querySelector("input");
-
-        if (nativeInput) {
-            nativeInput.setAttribute("aria-controls", "search-results-list");
-        }
-
-        if (pagefind) {
-            await pagefind.init();
-        }
-    });
-
-    document.addEventListener("keydown", (event) => {
-        const isSearchShortcut =
-            (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
-            event.key === "/";
-        const isTyping = event
-            .composedPath()
-            .some((element) =>
-                ["input", "textarea"].includes(
-                    (element as HTMLElement)?.tagName?.toLowerCase(),
-                ),
-            );
-
-        if (isSearchShortcut && !isTyping) {
-            event.preventDefault();
-
-            if (searchDialog) {
-                searchDialog.open = true;
-            }
-        }
-
-        if (
-            searchDialog?.open &&
-            (event.key === "ArrowDown" || event.key === "ArrowUp")
-        ) {
-            const focusable = Array.from(
-                searchList?.querySelectorAll(
-                    "a.result-page-header, a.sub-result-link",
-                ) || [],
-            ) as HTMLAnchorElement[];
-
-            if (focusable.length === 0) {
-                return;
-            }
-
-            event.preventDefault();
-
-            const currentIndex = focusable.indexOf(
-                document.activeElement as HTMLAnchorElement,
-            );
-
-            let nextIndex;
-
-            if (event.key === "ArrowDown") {
-                nextIndex = currentIndex + 1;
-
-                if (nextIndex >= focusable.length) {
-                    nextIndex = 0;
+            this.searchInput?.addEventListener("pc-clear", () => {
+                if (this.searchStatus) {
+                    this.searchStatus.textContent = "";
                 }
-            } else {
-                nextIndex = currentIndex - 1;
 
-                if (nextIndex < 0) {
-                    searchInput?.focus();
+                if (this.searchList) {
+                    this.searchList.innerHTML = "";
+                }
+            });
 
+            this.searchDialog?.addEventListener("pc-show", async () => {
+                if (this.pagefind) {
+                    await this.pagefind.init();
+                }
+            });
+        }
+
+        private handleGlobalKeyDown = (event: KeyboardEvent) => {
+            const isSearchShortcut =
+                (event.key === "k" && (event.metaKey || event.ctrlKey)) ||
+                event.key === "/";
+            const isTyping = event
+                .composedPath()
+                .some((element) =>
+                    ["input", "textarea"].includes(
+                        (element as HTMLElement)?.tagName?.toLowerCase(),
+                    ),
+                );
+
+            if (isSearchShortcut && !isTyping) {
+                event.preventDefault();
+
+                if (this.searchDialog) {
+                    this.searchDialog.open = true;
+                }
+            }
+
+            if (
+                this.searchDialog?.open &&
+                (event.key === "ArrowDown" || event.key === "ArrowUp")
+            ) {
+                const focusable = Array.from(
+                    this.searchList?.querySelectorAll(
+                        "a.result-page-header, a.sub-result-link",
+                    ) || [],
+                ) as HTMLAnchorElement[];
+
+                if (focusable.length === 0) {
                     return;
                 }
+
+                event.preventDefault();
+
+                const currentIndex = focusable.indexOf(
+                    document.activeElement as HTMLAnchorElement,
+                );
+
+                let nextIndex;
+
+                if (event.key === "ArrowDown") {
+                    nextIndex = currentIndex + 1;
+
+                    if (nextIndex >= focusable.length) {
+                        nextIndex = 0;
+                    }
+                } else {
+                    nextIndex = currentIndex - 1;
+
+                    if (nextIndex < 0) {
+                        this.searchInput?.focus();
+
+                        return;
+                    }
+                }
+
+                focusable[nextIndex]?.focus();
+            }
+        };
+
+        private async loadPagefind() {
+            if (import.meta.env.MODE === "production" && !this.pagefind) {
+                try {
+                    const path = "/pagefind/pagefind.js";
+
+                    this.pagefind = (await import(
+                        /* @vite-ignore */ path
+                    )) as PagefindModule;
+                } catch (error) {
+                    console.error(
+                        `Pagefind failed to load. Search functionality will therefore be impacted. Error: ${error}`,
+                    );
+                }
+            }
+        }
+
+        private async performSearch(query: string) {
+            if (!this.searchList || !this.searchStatus) {
+                return;
             }
 
-            focusable[nextIndex]?.focus();
+            if (!query || !this.pagefind) {
+                this.searchStatus.innerHTML = "";
+                this.searchList.innerHTML = "";
+
+                return;
+            }
+
+            if (this.searchStatus) {
+                this.searchStatus.innerHTML = this.labels.searching.replace(
+                    "{{query}}",
+                    this.escapeHTML(query),
+                );
+            }
+
+            this.currentSearchTerm = query;
+
+            clearTimeout(this.debounceTimer);
+
+            this.debounceTimer = window.setTimeout(async () => {
+                const search = await this.pagefind?.search(query);
+
+                if (!search || query !== this.currentSearchTerm) {
+                    return;
+                }
+
+                this.renderResults(search.results, query);
+            }, 120);
         }
-    });
+
+        private async renderResults(
+            results: PagefindSearchResult[],
+            query: string,
+        ) {
+            const count = results.length;
+
+            let message =
+                count === 0
+                    ? this.labels.none
+                    : count === 1
+                      ? this.labels.one
+                      : this.labels.multiple;
+
+            if (this.searchStatus) {
+                this.searchStatus.innerHTML = message
+                    .replace("{{count}}", count.toString())
+                    .replace("{{query}}", this.escapeHTML(query));
+            }
+
+            if (this.searchList) {
+                const data = await Promise.all(
+                    results.slice(0, 15).map((result) => result.data()),
+                );
+
+                this.searchList.innerHTML = data
+                    .map((item: PagefindData) => this.resultGroupTemplate(item))
+                    .join("");
+            }
+        }
+
+        private resultGroupTemplate(item: PagefindData) {
+            const subResults = (item.sub_results ?? [])
+                .filter((subResult) => subResult.title !== item.meta.title)
+                .slice(0, 3);
+
+            return `
+                <li class="result-group" role="listitem">
+                    <a href="${item.url}" class="result-page-header">
+                        <div class="page-icon"></div>
+                        <h2 class="result-title">${this.escapeHTML(item.meta.title)}</h2>
+                    </a>
+                    ${subResults.length > 0 ? this.subResultsListTemplate(subResults) : ""}
+                </li>
+            `;
+        }
+
+        private subResultsListTemplate(subResults: PagefindSubResult[]) {
+            return `
+                <ul class="sub-results-container" role="list">
+                    ${subResults.map((subResult, index) => this.subResultItemTemplate(subResult, index, subResults.length)).join("")}
+                </ul>
+            `;
+        }
+
+        private subResultItemTemplate(
+            subResult: PagefindSubResult,
+            index: number,
+            total: number,
+        ) {
+            const isLast = index === total - 1;
+
+            return `
+                <li class="sub-result-item ${isLast ? "sub-result-item-last" : ""}" role="listitem">
+                    <a href="${subResult.url}" class="sub-result-link">
+                        <div class="sub-result-tree-line"></div>
+                        <div class="sub-result-content">
+                            <h3 class="sub-result-heading">${this.escapeHTML(subResult.title)}</h3>
+                            <p class="sub-result-excerpt">${subResult.excerpt}</p>
+                        </div>
+                    </a>
+                </li>
+            `;
+        }
+
+        private escapeHTML(string: string) {
+            return string
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+    }
+
+    customElements.define("search-controller", SearchController);
 </script>
 
 <style is:global>
     /* #region — Dialog layout + dev warning */
-    .search-dialog {
-        --body-spacing: var(--pc-spacing-xl);
-    }
-
     .search-dialog::part(dialog) {
         position: fixed;
         inset-block: 0;
         margin-block-start: 2%;
         inline-size: 40rem;
         max-inline-size: calc(100% - var(--pc-spacing-xxl));
-        min-block-size: 15rem;
         block-size: max-content;
         max-block-size: calc(100% - (var(--pc-spacing-xxl) * 2));
+    }
+
+    .search-dialog:has(> .dev-warning)::part(dialog) {
+        min-block-size: 15rem;
     }
 
     .search-dialog:has(> .dev-warning)::part(body) {
@@ -443,9 +511,25 @@ const translation = useTranslations(language);
         transition: transform 0.2s cubic-bezier(0.32, 0, 0.67, 0);
     }
 
+    .search-dialog .search-header:active::after {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-focus),
+            var(--pc-color-mix-active)
+        );
+    }
+
     .search-dialog .search-header:focus-within::after {
         transform: scaleX(1);
         transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .search-dialog .search-header pc-icon[slot="prefix"] {
+        transition: color var(--pc-transition-fast) ease-in-out;
+    }
+
+    .search-dialog .search-header:focus-within pc-icon[slot="prefix"] {
+        color: var(--pc-color-primary-on-quiet);
     }
 
     .search-dialog .search-header .search-input::part(label) {
@@ -466,6 +550,7 @@ const translation = useTranslations(language);
         background-color: transparent;
         border: none;
         border-radius: 0;
+        box-shadow: none;
     }
 
     .search-dialog .search-header .search-input::part(input):focus-within {
@@ -499,10 +584,39 @@ const translation = useTranslations(language);
         text-decoration: none;
     }
 
+    .search-dialog .search-footer .pagefind-attribution a span {
+        text-wrap: nowrap;
+    }
+
     .search-dialog .search-footer .pagefind-attribution a img {
         inline-size: auto;
         block-size: 1rem;
         border-radius: 0;
+    }
+    /* #endregion */
+
+    /* #region — Empty state of search dialog */
+    .search-dialog:has(> search .search-results-list-root:empty):has(
+            > search .search-status:empty
+        )::part(body) {
+        padding: 0;
+    }
+
+    .search-dialog:has(> search .search-results-list-root:empty):has(
+            > search .search-status:empty
+        )
+        .search-header {
+        margin-block-start: 0;
+        margin-inline: 0;
+        border-block-end: var(--pc-border-width-m) var(--pc-border-style)
+            transparent;
+    }
+
+    .search-dialog
+        .search-results:has(
+            > .search-results-list .search-results-list-root:empty
+        ):has(> .search-status:empty) {
+        display: none;
     }
     /* #endregion */
 
@@ -526,6 +640,29 @@ const translation = useTranslations(language);
 
     .search-results .search-status {
         font-size: var(--pc-font-size-smaller);
+    }
+
+    .search-results .search-status:has(> svg) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: var(--pc-spacing-s);
+        font-weight: var(--pc-font-weight-semibold);
+        font-size: inherit;
+    }
+
+    .search-results .search-status mark {
+        padding: 0;
+        background-color: transparent;
+        color: inherit;
+        font-weight: var(--pc-font-weight-bold);
+    }
+
+    .search-results .search-status svg {
+        inline-size: 4em;
+        block-size: 4em;
+        color: var(--pc-color-primary-on-normal);
     }
     /* #endregion */
 
@@ -773,6 +910,7 @@ const translation = useTranslations(language);
         .sub-result-link
         .sub-result-content
         .sub-result-excerpt {
+        font-weight: var(--pc-font-weight-normal);
         font-size: var(--pc-font-size-smaller);
     }
     /* #endregion */

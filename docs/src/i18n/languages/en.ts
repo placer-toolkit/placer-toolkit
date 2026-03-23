@@ -2,7 +2,7 @@ export default {
     // UI and tools
     "ui.toc.onThisPage": "On this page",
     "ui.toc.overview": "Overview",
-    "ui.keyboard.ctrl": "Ctrl",
+
     "ui.content.contentNotAvailableInYourLanguage":
         "This content is not available in your language yet.",
     "ui.content.englishOnly": "(English‐only)",
@@ -13,15 +13,30 @@ export default {
     "ui.content.component.experimental": "Experimental",
     "ui.content.heading.anchorLabel": "Section titled “{{title}}”",
 
+    // Keyboard
+    "ui.keyboard.ctrl": "Ctrl",
+    "ui.keyboard.ctrl.label": "Control",
+    "ui.keyboard.shift": "Shift",
+    "ui.keyboard.shift.label": "Shift",
+    "ui.keyboard.enter": "Enter",
+    "ui.keyboard.enter.label": "Enter",
+    "ui.keyboard.delete": "Del",
+    "ui.keyboard.delete.label": "Delete",
+    "ui.keyboard.mac.ctrl.label": "Control",
+    "ui.keyboard.mac.option.label": "Option",
+    "ui.keyboard.mac.command.label": "Command",
+    "ui.keyboard.mac.enter": "Return",
+    "ui.keyboard.mac.enter.label": "Return",
+
     // Search
     "ui.search.label": "Search",
     "ui.search.label.descriptive": "Search the Placer Toolkit documentation",
     "ui.search.searchNotAvailableInDevBuilds":
         "Search is only available in production builds.<br />Try building and previewing the site to test it out locally.",
-    "ui.search.searchingFor": "Searching for <b>{{query}}</b>…",
-    "ui.search.resultFor": "One result for <b>{{query}}</b>",
-    "ui.search.resultsFor": "{{count}} results for <b>{{query}}</b>",
-    "ui.search.noResultsFor": "No results for <b>{{query}}</b>",
+    "ui.search.searchingFor": "Searching for <mark>{{query}}</mark>…",
+    "ui.search.resultFor": "One result for <mark>{{query}}</mark>",
+    "ui.search.resultsFor": "{{count}} results for <mark>{{query}}</mark>",
+    "ui.search.noResults": "No results found",
     "ui.search.navigation.up": "Up",
     "ui.search.navigation.down": "Down",
     "ui.search.navigation.navigate": "Navigate",
@@ -46,6 +61,15 @@ export default {
     "sidebar.section.layout": "Layout",
     "sidebar.section.styleUtilities": "Style utilities",
     "sidebar.section.resources": "Resources",
+
+    // Component catalogue
+    "catalog.components.actions": "Actions",
+    "catalog.components.feedbackAndStatus": "Feedback & Status",
+    "catalog.components.imagery": "Imagery",
+    "catalog.components.formControls": "Form controls",
+    "catalog.components.navigation": "Navigation",
+    "catalog.components.organisation": "Organisation",
+    "catalog.components.utilities": "Utilities",
 
     // Labels
     "button.getStarted": "Get started",
@@ -134,11 +158,37 @@ export default {
     "apiTable.tabs.cdnImport": "CDN (import)",
     "apiTable.tabs.npmImport": "npm (import)",
 
+    "apiTable.readOnlyPromise":
+        'A read‐only promise that resolves when the component has <a href="/docs/get-started/usage/#component-rendering-and-updating">finished updating</a>.',
+
+    "apiTable.learnMore.attributesAndProperties":
+        'Learn more about <a href="/docs/get-started/usage/#attributes-and-properties">attributes and properties</a>.',
+    "apiTable.learnMore.slots":
+        'Learn more about <a href="/docs/get-started/usage/#slots">using slots</a>.',
+    "apiTable.learnMore.methods":
+        'Learn more about <a href="/docs/get-started/usage/#methods">methods</a>.',
+    "apiTable.learnMore.events":
+        'Learn more about <a href="/docs/get-started/usage/#events">events</a>.',
+    "apiTable.learnMore.cssCustomProperties":
+        'Learn more about <a href="/docs/get-started/customisation/#custom-properties">customising custom properties</a>.',
+    "apiTable.learnMore.cssParts":
+        'Learn more about <a href="/docs/get-started/customisation/#css-parts">customising CSS parts</a>.',
+    "apiTable.learnMore.animations":
+        'Learn more about <a href="/docs/get-started/customisation/#animations">customising animations</a>.',
+
+    "apiTable.importing.note":
+        "If you’re using the autoloader or the standard loader, you can skip this section. But if you’re cherry picking, you can use any of the following snippets to import this component.",
+    "apiTable.importing.cdnScript":
+        "To manually import this component from the CDN, copy this code snippet and paste it in your HTML.",
+    "apiTable.importing.cdnImport":
+        "To manually import this component from the CDN, copy this code snippet and paste it in your JavaScript file.",
+    "apiTable.importing.npmImport":
+        "To manually import this component from npm, copy this code snippet and paste it in your JavaScript file.",
+
+    "apiTable.dependencies.note":
+        "This component automatically imports these components:",
+
     // Code comparison
-    "codeComparison.logo": "Placer Toolkit logo",
-    "codeComparison.dropdown.addUser": "Add user",
-    "codeComparison.dropdown.deleteAccount": "Delete account",
-    "codeComparison.report": "Report",
     "codeComparison.signIn": "Sign in",
     "codeComparison.email": "E‐mail",
     "codeComparison.email.example": "example@email.com",

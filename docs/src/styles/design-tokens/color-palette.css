@@ -3,21 +3,21 @@
     grid-template-columns: 200px repeat(11, 1fr);
     gap: 1rem var(--pc-spacing-xs);
     margin: 2rem 0;
-}
 
-.color-palette-name {
-    font-size: var(--pc-font-size-m);
-    font-weight: var(--pc-font-weight-semibold);
-    grid-template-columns: repeat(11, 1fr);
-}
+    .color-palette-name {
+        font-size: var(--pc-font-size-m);
+        font-weight: var(--pc-font-weight-semibold);
+        grid-template-columns: repeat(11, 1fr);
 
-.color-palette-name code {
-    font-size: var(--pc-font-size-xs);
-}
+        code {
+            font-size: var(--pc-font-size-xs);
+        }
+    }
 
-.color-palette-swatch-container {
-    font-size: var(--pc-font-size-xs);
-    text-align: center;
+    .color-palette-swatch-container {
+        font-size: var(--pc-font-size-xs);
+        text-align: center;
+    }
 }
 
 .color-palette-swatch {
@@ -47,9 +47,9 @@
 @media screen and (max-width: 768px) {
     .color-palette {
         grid-template-columns: repeat(6, 1fr);
-    }
 
-    .color-palette-name {
-        grid-column-start: span 6;
+        .color-palette-name {
+            grid-column-start: span 6;
+        }
     }
 }

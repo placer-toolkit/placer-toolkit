@@ -5,6 +5,8 @@ import {
     useTranslatedPath,
 } from "../i18n/utilities.js";
 
+import { ClientRouter } from "astro:transitions";
+
 import MobileSidebar from "./MobileSidebar.astro";
 import MobileTableOfContents from "./docs/MobileTableOfContents.astro";
 import NavigationBar from "./NavigationBar.astro";
@@ -54,10 +56,11 @@ const {
     lang={language}
     class:list={{
         "pc-theme-default": true,
-        "pc-light": true,
         "no-sidebar": noSidebar,
         "hero": hero,
     }}
+    transition:name="root"
+    transition:animate="none"
     data-pagefind-ignore={pagefindIgnore ? "all" : undefined}
 >
     <head>
@@ -66,13 +69,49 @@ const {
             name="viewport"
             content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-visual"
         />
+        <script is:inline>
+            function getSavedCustomizations() {
+                const savedColorScheme =
+                    localStorage.getItem("saved-color-scheme");
+                const colorScheme =
+                    savedColorScheme === "light" || savedColorScheme === "dark"
+                        ? savedColorScheme
+                        : window.matchMedia("(prefers-color-scheme: light)")
+                                .matches
+                          ? "light"
+                          : "dark";
+
+                document.documentElement.classList.add(`pc-${colorScheme}`);
+
+                const theme = localStorage.getItem("saved-theme");
+
+                if (theme === "utility") {
+                    document.documentElement.classList.add(
+                        "pc-theme-utility",
+                        "pc-palette-vibrant",
+                    );
+                } else if (theme === "serene") {
+                    document.documentElement.classList.add(
+                        "pc-theme-serene",
+                        "pc-palette-muted",
+                    );
+                }
+            }
+
+            document.addEventListener(
+                "astro:after-swap",
+                getSavedCustomizations,
+            );
+
+            (() => getSavedCustomizations())();
+        </script>
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={description} />
         <meta
             name="keywords"
             content="lit, placer, toolkit, litelement, components, placer-toolkit, web-components, custom-elements"
         />
-        <meta name="author" content="Placer (maintainer: @randomguy-2650)" />
+        <meta name="author" content="Placer" />
         <meta name="robots" content="index, follow" />
         <!-- Google Search Console verification -->
         <meta
@@ -114,7 +153,9 @@ const {
         <link rel="canonical" href={canonicalURL} />
         <link rel="alternate" hreflang="en" href={enURL} />
         <link rel="alternate" hreflang="de" href={deURL} />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link rel="preconnect" href="https://fonts.bunny.net" />
+        <link rel="sitemap" href="/sitemap-index.xml" />
         <link
             rel="preload"
             href="/fonts/nunito/Nunito-Variable.woff2"
@@ -156,33 +197,38 @@ const {
         <script>
             // We’re using the CDN builds here as the Placer Toolkit translations don’t work for some reason.
             import "placer-toolkit/cdn/placer.js";
+            import "placer-toolkit/cdn/components/video-player/video-player.js";
             import "placer-toolkit/cdn/translations/de.js";
         </script>
-        <script is:inline>
-            (() => {
-                const prefersDark = window.matchMedia(
-                    "(prefers-color-scheme: dark)",
-                ).matches;
-                const theme = prefersDark ? "pc-dark" : "pc-light";
-
-                document.documentElement.classList.add(theme);
-                document.documentElement.classList.remove(
-                    theme === "pc-dark" ? "pc-light" : "pc-dark",
-                );
-            })();
+        <script>
+            if (
+                import.meta.env.MODE === "production" &&
+                "serviceWorker" in navigator
+            ) {
+                navigator.serviceWorker.register("/cache-icons.js");
+            }
         </script>
-        <!-- Cabin Analytics -->
-        <script src="https://scripts.withcabin.com/hello.js" async is:inline
-        ></script>
+        <!-- Simple Analytics -->
+        {
+            import.meta.env.MODE === "production" && (
+                <script
+                    src="https://scripts.simpleanalyticscdn.com/latest.js"
+                    async
+                    is:inline
+                />
+            )
+        }
+        <!-- Client router for SPA‐like navigation -->
+        <ClientRouter />
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
     <body>
         <div class="layout-container">
             <pc-button
+                class="skip-to-main-content pc-visually-hidden"
                 href="#_top"
                 appearance="neutral"
                 variant="filled outlined"
-                class="skip-to-main-content pc-visually-hidden"
             >
                 {translation("button.skipToMainContent")}
             </pc-button>
@@ -201,85 +247,91 @@ const {
                 {translation("js.noscript")}
             </noscript>
 
-            <main
-                lang={isFallback ? "en" : undefined}
-                dir={isFallback ? "ltr" : undefined}
-                class:list={[{ hero: hero }]}
-                id="main-content"
-                tabindex="-1"
-            >
-                {
-                    !hero ? (
-                        <div class="content-layout">
-                            <TableOfContents />
+            <div class="content-layout-container">
+                <div class="content-layout">
+                    {!hero && <TableOfContents />}
 
-                            <article data-pagefind-body>
-                                <header id="_top">
-                                    <h1>{title}</h1>
-
-                                    {component ? (
-                                        <ComponentInfo
-                                            componentName={component}
-                                        />
-                                    ) : (
-                                        ""
-                                    )}
-
-                                    <FallbackContentWarning
-                                        isFallback={isFallback}
-                                    />
-                                </header>
-
-                                <slot />
-                            </article>
-                        </div>
-                    ) : (
-                        <>
-                            {!noBanner && (
-                                <pc-callout
-                                    class="hero-callout"
-                                    appearance="primary"
-                                    size="small"
-                                    data-pagefind-ignore="all"
+                    <main
+                        lang={isFallback ? "en" : undefined}
+                        dir={isFallback ? "ltr" : undefined}
+                        class:list={[{ hero: hero }]}
+                        id="main-content"
+                    >
+                        {
+                            !hero ? (
+                                <article
+                                    data-pagefind-body
+                                    transition:animate="fade"
                                 >
-                                    <span
-                                        slot="icon"
-                                        style="user-select: none; -webkit-user-select: none"
-                                        aria-hidden="true"
-                                    >
-                                        🚀
-                                    </span>
-                                    <div class="pc-split">
-                                        <b style="flex: 1">
-                                            {translation(
-                                                "getStartedBanner.readyToStart",
-                                            )}
-                                        </b>
-                                        <pc-button
+                                    <header id="_top">
+                                        <h1>{title}</h1>
+
+                                        {component ? (
+                                            <ComponentInfo
+                                                componentName={component}
+                                            />
+                                        ) : (
+                                            ""
+                                        )}
+
+                                        <FallbackContentWarning
+                                            isFallback={isFallback}
+                                        />
+                                    </header>
+
+                                    <slot />
+                                </article>
+                            ) : (
+                                <>
+                                    {!noBanner && (
+                                        <pc-callout
+                                            class="hero-callout"
                                             appearance="primary"
                                             size="small"
-                                            href={translatePath(
-                                                "/docs/get-started/installation",
-                                            )}
+                                            data-pagefind-ignore="all"
                                         >
-                                            {translation("button.getStarted")}
-                                            <pc-icon
-                                                class="arrow-right-move"
-                                                library="default"
-                                                icon-style="solid"
-                                                name="chevron-right"
-                                                slot="suffix"
-                                            />
-                                        </pc-button>
-                                    </div>
-                                </pc-callout>
-                            )}
+                                            <span
+                                                slot="icon"
+                                                style="user-select: none; -webkit-user-select: none"
+                                                aria-hidden="true"
+                                            >
+                                                🚀
+                                            </span>
+                                            <div class="pc-split">
+                                                <b style="flex: 1">
+                                                    {translation(
+                                                        "getStartedBanner.readyToStart",
+                                                    )}
+                                                </b>
+                                                <pc-button
+                                                    appearance="primary"
+                                                    size="small"
+                                                    href={translatePath(
+                                                        "/docs/get-started/installation",
+                                                    )}
+                                                >
+                                                    {translation(
+                                                        "button.getStarted",
+                                                    )}
+                                                    <pc-icon
+                                                        class="arrow-right-move"
+                                                        library="default"
+                                                        icon-style="solid"
+                                                        name="chevron-right"
+                                                        slot="suffix"
+                                                    />
+                                                </pc-button>
+                                            </div>
+                                        </pc-callout>
+                                    )}
 
-                            <slot />
-                        </>
-                    )
-                }
-            </main>
+                                    <slot />
+                                </>
+                            )
+                        }
+                    </main>
+                </div>
+            </div>
 
             {showFooter ? <Footer /> : undefined}
         </div>
@@ -307,7 +359,6 @@ const {
                     icon-style="solid"
                     name="phone"
                     slot="prefix"></pc-icon>
-
                 {translation("button.gotIt")}
             </pc-button>
         </pc-dialog>
@@ -379,23 +430,8 @@ const {
                     icon-style="solid"
                     name="shield-halved"
                     slot="prefix"></pc-icon>
-
                 {translation("button.gotIt")}
             </pc-button>
         </pc-dialog>
-
-        <script>
-            // Mobile sidebar
-            import type { PcDrawer } from "placer-toolkit/dist/components/drawer/drawer.js";
-
-            const mobileSidebar =
-                document.querySelector<PcDrawer>(".mobile-sidebar");
-            const sidebarToggle = document.querySelector(".sidebar-toggle");
-
-            sidebarToggle?.addEventListener(
-                "click",
-                () => (mobileSidebar!.open = true),
-            );
-        </script>
     </body>
 </html>

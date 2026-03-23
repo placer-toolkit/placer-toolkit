@@ -5,15 +5,17 @@ description: This utility makes content accessible to assistive devices without 
 
 This utility makes content accessible to assistive devices without displaying it on the screen.
 
-<blockquote>
-    “There are real world situations where visually hiding content may be
-    appropriate, while to content should remain available to assistive
-    technologies, such as screen readers. For instance, hiding a search field’s
-    `label` as a common magnifying glass icon is used in its stead.”
-    <footer>
+<figure class="pc-cite-block">
+    <blockquote>
+        “There are real world situations where visually hiding content may be
+        appropriate, while the content should remain available to assistive
+        technologies, such as screen readers. For instance, hiding a search field’s
+        `label` as a common magnifying glass icon is used in its stead.”
+    </blockquote>
+    <figcaption>
         — <cite>The A11Y Project, How‐to: Hide content</cite>
-    </footer>
-</blockquote>
+    </figcaption>
+</figure>
 
 Since visually hidden content can receive focus when tabbing, the element will become visible when something inside receives focus. This behaviour is intentional, as otherwise sighted keyboard users wouldn’t be able to determine where the focus indicator is.
 
@@ -62,7 +64,7 @@ Adding a label may seem redundant at times, but they’re very helpful for unsig
 There are cases where you want to _always_ visually hide certain content, even when it’s focused. For example when hiding a native checkbox to render a custom one:
 
 ```demo
-<label>
+<label class="checkbox-container">
     <span class="checkbox">
         <input type="checkbox" class="pc-visually-hidden-force" />
         <span class="checkbox-tick">
@@ -73,7 +75,7 @@ There are cases where you want to _always_ visually hide certain content, even w
 </label>
 
 <style>
-    label {
+    .checkbox-container {
         display: inline-flex;
         align-items: flex-start;
         position: relative;
@@ -85,12 +87,12 @@ There are cases where you want to _always_ visually hide certain content, even w
         cursor: pointer;
     }
 
-    .checkbox {
+    .checkbox-container .checkbox {
         display: inline-flex;
+        position: relative;
         align-items: center;
         justify-content: center;
         flex: 0 0 auto;
-        position: relative;
         inline-size: var(--pc-form-control-toggle-size);
         block-size: var(--pc-form-control-toggle-size);
         background-color: transparent;
@@ -102,7 +104,7 @@ There are cases where you want to _always_ visually hide certain content, even w
         transition: all var(--pc-transition-fast) ease-in-out;
     }
 
-    .checkbox-tick {
+    .checkbox-container .checkbox-tick {
         display: inline-flex;
         font-size: inherit;
         scale: 0.8;
@@ -110,7 +112,7 @@ There are cases where you want to _always_ visually hide certain content, even w
     }
 
     @media (hover: hover) {
-        .checkbox:hover {
+        .checkbox-container .checkbox:hover {
             border-color: color-mix(
                 in oklab,
                 var(--pc-form-control-border-color),
@@ -119,7 +121,7 @@ There are cases where you want to _always_ visually hide certain content, even w
         }
     }
 
-    .checkbox:active {
+    .checkbox-container .checkbox:active {
         border-color: color-mix(
             in oklab,
             var(--pc-form-control-border-color),
@@ -127,24 +129,24 @@ There are cases where you want to _always_ visually hide certain content, even w
         );
     }
 
-    .checkbox:focus-within {
+    .checkbox-container .checkbox:focus-within {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
         animation: focus-ring-animation var(--pc-transition-medium)
             cubic-bezier(0.33, 1, 0.68, 1);
     }
 
-    .checkbox:has(:checked) {
+    .checkbox-container .checkbox:has(:checked) {
         background-color: var(--pc-form-control-activated-color);
         border-color: var(--pc-form-control-activated-color);
     }
 
-    .checkbox:not(:has(:checked)) .checkbox-tick {
+    .checkbox-container .checkbox:not(:has(:checked)) .checkbox-tick {
         opacity: 0;
     }
 
     @media (hover: hover) {
-        .checkbox:has(:checked):hover {
+        .checkbox-container .checkbox:has(:checked):hover {
             background-color: color-mix(
                 in oklab,
                 var(--pc-form-control-activated-color),
@@ -158,7 +160,7 @@ There are cases where you want to _always_ visually hide certain content, even w
         }
     }
 
-    .checkbox:has(:checked):active {
+    .checkbox-container .checkbox:has(:checked):active {
         background-color: color-mix(
             in oklab,
             var(--pc-form-control-activated-color),
@@ -171,7 +173,7 @@ There are cases where you want to _always_ visually hide certain content, even w
         );
     }
 
-    .label {
+    .checkbox-container .label {
         margin-inline-start: 0.5em;
     }
 

@@ -8,26 +8,19 @@ const translation = useTranslations(language);
 ---
 
 <aside class="toc" id="table-of-contents">
-    <pc-button
-        class="skip-to-main-from-toc pc-desktop-only pc-visually-hidden"
-        href="#_top"
-        appearance="neutral"
-        variant="filled outlined"
-        size="small"
-    >
-        {translation("button.skipToMainContent")}
-    </pc-button>
-
     <DynamicTableOfContents />
 </aside>
 
 <style>
     .toc {
-        grid-row: 1;
-        grid-column: 2;
-        position: sticky;
-        inset-block-start: calc(3.5rem + var(--pc-spacing-xxxl));
+        order: 2;
         line-height: var(--pc-line-height-dense);
+    }
+
+    .toc :global(.toc-container) {
+        position: fixed;
+        inset-block-start: var(--navigation-bar-height);
+        inline-size: var(--toc-width);
     }
 
     @media screen and (max-width: 1440px) {

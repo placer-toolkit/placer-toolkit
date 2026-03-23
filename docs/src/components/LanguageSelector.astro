@@ -37,9 +37,6 @@ const translation = useTranslations(language);
         size="small"
         variant="plain"
         slot="anchor"
-        aria-haspopup="true"
-        aria-expanded="false"
-        aria-controls="language-menu"
     >
         <pc-icon
             class="icon-expand"
@@ -49,9 +46,15 @@ const translation = useTranslations(language);
             label={translation("language.selector") as string}></pc-icon>
     </pc-button>
 
-    <div class="menu" id="language-menu" role="region">
-        <a href={enPath} hreflang="en">English</a>
-        <a href={dePath} hreflang="de">Deutsch</a>
+    <div class="menu" id="language-menu">
+        <ul>
+            <li>
+                <a href={enPath} hreflang="en">English</a>
+            </li>
+            <li>
+                <a href={dePath} hreflang="de">Deutsch</a>
+            </li>
+        </ul>
     </div>
 </pc-popup>
 
@@ -137,7 +140,7 @@ const translation = useTranslations(language);
         },
     });
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
         const popup = document.querySelector<PcPopup>(".language-selector");
 
         if (!popup) {
@@ -145,11 +148,16 @@ const translation = useTranslations(language);
         }
 
         const trigger = popup.querySelector<PcButton>(".trigger-button");
+        const internalTrigger = trigger.shadowRoot.querySelector("button");
         const menu = popup.querySelector(".menu");
 
         if (!trigger || !menu) {
             return;
         }
+
+        internalTrigger.setAttribute("aria-haspopup", "true");
+        internalTrigger.setAttribute("aria-expanded", "false");
+        internalTrigger.setAttribute("aria-controls", "language-menu");
 
         const links = Array.from(menu.querySelectorAll("a"));
 
@@ -158,7 +166,7 @@ const translation = useTranslations(language);
                 return;
             }
 
-            document.addEventListener("click", handleOutsideClick);
+            document.addEventListener("pointerdown", handleDocumentPointerDown);
 
             const menu = popup.querySelector<HTMLElement>(".menu");
 
@@ -168,7 +176,7 @@ const translation = useTranslations(language);
 
             popup.active = true;
 
-            trigger.setAttribute("aria-expanded", "true");
+            internalTrigger.setAttribute("aria-expanded", "true");
 
             const { keyframes, options } = getAnimation(menu, "dropdown.show", {
                 dir: "ltr",
@@ -179,11 +187,11 @@ const translation = useTranslations(language);
 
             links[0]?.focus();
 
-            document.addEventListener("keydown", handleKeyDown);
+            document.addEventListener("keydown", handleDocumentKeyDown);
         }
 
         async function hideMenu() {
-            if (!popup || !trigger) {
+            if (!popup || !trigger || !popup.active) {
                 return;
             }
 
@@ -202,12 +210,15 @@ const translation = useTranslations(language);
 
             popup.active = false;
 
-            trigger.setAttribute("aria-expanded", "false");
+            internalTrigger.setAttribute("aria-expanded", "false");
 
             trigger.focus();
 
-            document.removeEventListener("click", handleOutsideClick);
-            document.removeEventListener("keydown", handleKeyDown);
+            document.removeEventListener(
+                "pointerdown",
+                handleDocumentPointerDown,
+            );
+            document.removeEventListener("keydown", handleDocumentKeyDown);
         }
 
         function toggleMenu() {
@@ -222,19 +233,17 @@ const translation = useTranslations(language);
             }
         }
 
-        function handleKeyDown(event: KeyboardEvent) {
+        function handleDocumentKeyDown(event: KeyboardEvent) {
             if (event.key === "Escape") {
                 event.preventDefault();
                 hideMenu();
             }
         }
 
-        function handleOutsideClick(event: MouseEvent) {
-            if (!popup) {
-                return;
-            }
+        function handleDocumentPointerDown(event: PointerEvent) {
+            const isClickInside = popup.contains(event.target as Node);
 
-            if (!popup.contains(event.target as Node)) {
+            if (!isClickInside) {
                 hideMenu();
             }
         }
@@ -299,6 +308,11 @@ const translation = useTranslations(language);
         user-select: none;
         overflow: auto;
         box-shadow: var(--pc-shadow-m);
+    }
+
+    .language-selector .menu ul {
+        list-style-type: none;
+        margin-inline-start: 0;
     }
 
     .language-selector .menu a {

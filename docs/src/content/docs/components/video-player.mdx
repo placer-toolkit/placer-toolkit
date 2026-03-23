@@ -1,0 +1,29 @@
+---
+title: Video Player
+---
+
+```demo
+<pc-video-player src="/videos/elephants-dream.webm" playsinline data-title="Elephants Dream">
+    <track
+        src="/subtitles/elephants-dream/captions-en.vtt"
+        kind="captions"
+        srclang="en"
+        label="English (CC)"
+    />
+    <track
+        src="/subtitles/elephants-dream/test-caption.vtt"
+        kind="subtitles"
+        srclang="en"
+        label="English (Test)"
+        default
+    />
+</pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```

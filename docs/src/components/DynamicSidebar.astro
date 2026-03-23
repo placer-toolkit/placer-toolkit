@@ -49,7 +49,7 @@ const categoriesConfiguration: SidebarCategoryConfiguration[] = [
     {
         id: "design-tokens",
         title: translation("sidebar.section.designTokens") as string,
-        sortType: "manual",
+        sortType: "alphabetical",
         href: translatePath("/docs/design-tokens"),
         icon: "coins",
     },
@@ -220,19 +220,30 @@ function buildSidebarData(
         let mutableLinks = [...links];
 
         if (category.sortType === "alphabetical") {
-            let parentLinks = mutableLinks.filter(
-                (link) => !link.isChildOf,
-            ) as SidebarLink[];
-            let childLinks = mutableLinks.filter(
-                (link) => link.isChildOf,
-            ) as SidebarLink[];
+            let parentLinks = mutableLinks.filter((link) => !link.isChildOf) as SidebarLink[];
+            let childLinks = mutableLinks.filter((link) => link.isChildOf) as SidebarLink[];
 
-            parentLinks.sort((a, b) => a.title.localeCompare(b.title));
+            const forcedOrderLinks = parentLinks
+                .filter(link => link.order !== 10000)
+                .sort((a, b) => a.order - b.order);
+
+            const alphabeticallySortedLinks = parentLinks
+                .filter(link => link.order === 10000)
+                .sort((a, b) => a.title.localeCompare(b.title));
+
+            let finalParentLinks = [...alphabeticallySortedLinks];
+
+            forcedOrderLinks.forEach((link) => {
+                const targetIndex = link.order - 1;
+
+                finalParentLinks.splice(targetIndex, 0, link);
+            });
 
             const parentMap = new Map<string, SidebarLink>();
 
-            parentLinks.forEach((link) => {
+            finalParentLinks.forEach((link) => {
                 link.children = [];
+
                 parentMap.set(link.title, link);
             });
 
@@ -242,19 +253,17 @@ function buildSidebarData(
                 if (parent) {
                     parent.children!.push(child);
                 } else {
-                    parentLinks.push(child);
+                    finalParentLinks.push(child);
                 }
             });
 
-            parentLinks.forEach((parent) => {
+            finalParentLinks.forEach((parent) => {
                 if (parent.children && parent.children.length > 0) {
-                    parent.children.sort((a, b) =>
-                        a.title.localeCompare(b.title),
-                    );
+                    parent.children.sort((a, b) => a.title.localeCompare(b.title));
                 }
             });
 
-            mutableLinks = parentLinks;
+            mutableLinks = finalParentLinks;
         } else if (category.sortType === "manual") {
             mutableLinks.sort((a, b) => a.order - b.order);
         }
@@ -462,21 +471,19 @@ const { isMobile = false } = Astro.props;
         }
 
         function updateSidebarState() {
-            setTimeout(() => {
-                const currentlyOpen = Array.from(detailsElements)
-                    .filter(
-                        (detail) =>
-                            detail.hasAttribute("open") &&
-                            detail.getAttribute("data-id"),
-                    )
-                    .map((detail) => detail.getAttribute("data-id"))
-                    .filter((id): id is string => id !== null);
+            const currentlyOpen = Array.from(detailsElements)
+                .filter(
+                    (detail) =>
+                        detail.hasAttribute("open") &&
+                        detail.getAttribute("data-id"),
+                )
+                .map((detail) => detail.getAttribute("data-id"))
+                .filter((id): id is string => id !== null);
 
-                localStorage.setItem(
-                    "open-sidebar-sections",
-                    JSON.stringify(currentlyOpen),
-                );
-            }, 0);
+            localStorage.setItem(
+                "open-sidebar-sections",
+                JSON.stringify(currentlyOpen),
+            );
         }
 
         let isInitializing = true;
@@ -534,12 +541,10 @@ const { isMobile = false } = Astro.props;
             });
         }
 
-        setTimeout(() => {
-            isInitializing = false;
-        }, 100);
+        isInitializing = false;
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("astro:page-load", () => {
         const allMobileContainers =
             document.querySelectorAll(".mobile-sidebar");
         const allDesktopContainers = document.querySelectorAll(".sidebar");

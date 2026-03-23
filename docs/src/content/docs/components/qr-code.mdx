@@ -1,6 +1,7 @@
 ---
 title: QR Code
 description: Generate a QR code and render it using the Canvas API.
+category: actions
 ---
 
 Generate a [QR code](https://www.qrcode.com) and render it using the [Canvas API](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API).
@@ -26,7 +27,8 @@ QR codes are useful for providing small pieces of information to users who can q
 
     customElements.whenDefined("pc-qr-code").then(() => {
         input.value = qrCode.value;
-        input.addEventListener("pc-input", () => {
+
+        input.addEventListener("input", () => {
             qrCode.value = input.value;
         });
     });

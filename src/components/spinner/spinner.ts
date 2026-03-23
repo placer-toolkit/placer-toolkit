@@ -25,8 +25,8 @@ export class PcSpinner extends PlacerElement {
     render() {
         return html`
             <svg
-                class="spinner"
                 part="base"
+                class="spinner"
                 role="progressbar"
                 aria-label=${this.localize.term("loading")}
             >

@@ -4,6 +4,7 @@ import {
     useTranslations,
     useTranslatedPath,
 } from "../i18n/utilities.js";
+
 import { Image } from "astro:assets";
 
 import LanguageSelector from "../components/LanguageSelector.astro";
@@ -39,6 +40,7 @@ const translatePath = useTranslatedPath(language);
                 }}
                 size="small"
                 variant="plain"
+                data-drawer="open mobile-sidebar"
             >
                 <pc-icon
                     class="rest-only"
@@ -91,11 +93,10 @@ const translatePath = useTranslatedPath(language);
             ></pc-divider>
             <pc-button
                 class="search-desktop"
+                size="small"
                 appearance="neutral"
                 variant="plain"
-                size="small"
                 data-dialog="open search-dialog"
-                aria-keyshortcuts="Control+K"
             >
                 <pc-icon
                     library="default"
@@ -104,6 +105,7 @@ const translatePath = useTranslatedPath(language);
                     slot="prefix"></pc-icon>
                 <span class="label">{translation("ui.search.label")}</span>
                 <span slot="suffix">
+                    {/* prettier-ignore */}
                     <kbd class="search-key"
                         >{translation("ui.keyboard.ctrl")}</kbd
                     >
@@ -134,15 +136,16 @@ const translatePath = useTranslatedPath(language);
     const searchButton = document.querySelector(
         'pc-button[data-dialog="open search-dialog"]',
     );
+    const innerButton = searchButton?.shadowRoot?.querySelector("button");
     const switchKey = searchButton?.querySelector("kbd:first-child");
 
-    if (
-        searchButton &&
-        switchKey &&
-        /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)
-    ) {
-        switchKey.textContent = "⌘";
-        searchButton.setAttribute("aria-keyshortcuts", "Meta+K");
+    if (searchButton && switchKey && innerButton) {
+        if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+            switchKey.textContent = "⌘";
+            searchButton.setAttribute("aria-keyshortcuts", "Meta+K");
+        } else {
+            innerButton.setAttribute("aria-keyshortcuts", "Control+K");
+        }
     }
 </script>
 
@@ -163,15 +166,14 @@ const translatePath = useTranslatedPath(language);
     }
 
     .navbar {
-        grid-area: navbar;
-        position: sticky;
+        position: fixed;
         inset-block-start: 0;
         inset-block: 0;
         background-color: var(--pc-color-surface-default);
         border-block-end: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
         inline-size: 100vw;
-        block-size: 3.5rem;
+        block-size: var(--navigation-bar-height);
         z-index: 2;
         pointer-events: auto;
     }
