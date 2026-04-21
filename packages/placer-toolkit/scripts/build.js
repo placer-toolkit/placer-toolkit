@@ -54,10 +54,10 @@ async function runBuild() {
         console.log("🛠️ Updating CEM manifests…");
 
         await Promise.all([
-            execPromise(`npx cem analyze --litelement --outdir cdn`, {
+            execPromise(`pnpm exec cem analyze --litelement --outdir cdn`, {
                 cwd: projectRoot,
             }),
-            execPromise(`npx cem analyze --litelement --outdir dist`, {
+            execPromise(`pnpm exec cem analyze --litelement --outdir dist`, {
                 cwd: projectRoot,
             }),
         ]);
@@ -165,9 +165,12 @@ async function runBuild() {
                     const tscStart = Date.now();
 
                     try {
-                        await execPromise(`npx tsc --emitDeclarationOnly`, {
-                            cwd: projectRoot,
-                        });
+                        await execPromise(
+                            `pnpm exec tsc --emitDeclarationOnly`,
+                            {
+                                cwd: projectRoot,
+                            },
+                        );
                     } catch (error) {
                         if (logs.length) {
                             console.log(logs.join("\n"));
@@ -191,13 +194,13 @@ async function runBuild() {
                 (async () => {
                     const logs = [];
                     await execPromise(
-                        `npx cem analyze --litelement --outdir cdn`,
+                        `pnpm exec cem analyze --litelement --outdir cdn`,
                         {
                             cwd: projectRoot,
                         },
                     );
                     await execPromise(
-                        `npx cem analyze --litelement --outdir dist`,
+                        `pnpm exec cem analyze --litelement --outdir dist`,
                         { cwd: projectRoot },
                     );
                     logs.push("⏱️ CEM manifest creation done.\n");
