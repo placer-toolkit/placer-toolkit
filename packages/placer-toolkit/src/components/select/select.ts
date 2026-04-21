@@ -871,7 +871,12 @@ export class PcSelect extends PlacerFormAssociatedElement {
         });
     }
 
-    protected get tags() {
+    protected get tags(): (
+        | TemplateResult
+        | ReturnType<typeof unsafeHTML>
+        | HTMLElement
+        | null
+    )[] {
         return this.selectedOptions.map((option, index) => {
             if (index < this.maxOptionsVisible || this.maxOptionsVisible <= 0) {
                 const tag = this.getTag(option, index);
