@@ -244,7 +244,7 @@ It’s important to remember that, although accessibility starts with foundation
 
 Most code formatting is handled by [Prettier](https://prettier.io) via commit hooks. However, for the best experience, you should [install it in your editor](https://prettier.io/docs/editors) and enable **Format on Save**.
 
-Please do not make any changes to `.prettierrc` without consulting the maintainers.
+Please do not make any changes to `prettier.config.mjs` without consulting the maintainers.
 
 ### Language
 
@@ -385,10 +385,6 @@ export class PcExample extends PlacerElement {
     // …
 }
 ```
-
-### Focusing on disabled items
-
-When an item focusable with keyboard navigation is disabled (e.g., tabs, trees, menu items, etc.), the disabled item _should not_ receive focus via keyboard, clicks or taps. It should be skipped just like in operating system menus and in native HTML form controls. There is no exception to this. If a particular item requires focus for assistive devices to provide a good user experience, the item should not be disabled and, upon activation, it should inform the user why the respective action cannot be completed.
 
 ### Properties vs CSS custom properties
 

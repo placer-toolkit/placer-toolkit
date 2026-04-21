@@ -755,7 +755,7 @@ export class PcVideoPlayer extends PlacerElement {
                 .join("");
 
             const tagRegEx =
-                /&lt;(\/)?([a-z0-9]+)((?:\.[^\s&>]+)*)(?:\s+([^&>]+))?&gt;/gi;
+                /&lt;(\/)?([a-z0-9][a-z0-9.]*)(?:\s+([^&>]+))?&gt;/gi;
 
             line = line.replace(
                 tagRegEx,
