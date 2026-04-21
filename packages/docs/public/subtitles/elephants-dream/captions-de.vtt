@@ -1,0 +1,571 @@
+WEBVTT
+
+STYLE
+::cue(v[voice="Proog"]) {
+    color: oklch(85% 0.18 90);
+}
+::cue(v[voice="Emo"]) {
+    color: oklch(75% 0.12 240);
+}
+::cue(.ambience) {
+    color: oklch(100% 0 0 / 40%);
+    font-style: italic;
+}
+::cue(.music) {
+    color: oklch(100% 0 0 / 40%);
+}
+
+00:00:04.022 --> 00:00:05.291
+<c.ambience>(Wassertropfen plätschern)</c.ambience>
+
+00:00:09.751 --> 00:00:11.751
+<c.ambience>(Hohles, eisiges Rauschen)</c.ambience>
+
+00:00:14.763 --> 00:00:17.099
+<v Proog>(stotternd) <i>Auf der linken Seite sehen wir—</i></v>
+
+00:00:17.124 --> 00:00:18.240
+<v Proog><i>aber wir sehen—</i></v>
+
+00:00:18.560 --> 00:00:20.490
+<v Proog><i>auf der rechten Seite sehen wir die …</i></v>
+
+00:00:20.515 --> 00:00:21.777
+<v Proog><i>… die Enthaupter.</i></v>
+
+00:00:21.802 --> 00:00:24.495
+<v Proog>Und alles ist sicher … vollkommen sicher.
+
+00:00:24.521 --> 00:00:26.052
+<v Proog>(keucht) Emo?</v>
+
+00:00:26.077 --> 00:00:27.242
+<v Proog>Emo!</v>
+<c.music>♪ (Spannungsgeladene Musik)</c.music>
+
+00:00:27.267 --> 00:00:28.797
+<c.ambience>(Hoher Rückkopplungston)</c.ambience>
+
+00:00:28.822 --> 00:00:30.822
+<v Proog>Pass auf!</v>
+<v Emo>(dumpfer Aufprall) Aua!</v>
+
+00:00:31.146 --> 00:00:32.378
+<c.ambience>(Funken sprühen, Kabel scheppern)</c.ambience>
+
+00:00:32.414 --> 00:00:34.125
+<c.ambience>(Hoher Rückkopplungston)</c.ambience>
+
+00:00:34.150 --> 00:00:35.150
+<c.ambience>(Funkenflug)</c.ambience>
+
+00:00:36.497 --> 00:00:38.497
+<c.ambience>(Leises, undeutliches Gemurmel)</c.ambience>
+
+00:00:46.830 --> 00:00:47.838
+<v Proog>Bist du verletzt?</v>
+
+00:00:47.871 --> 00:00:50.414
+<c.ambience>(Windrauschen)</c.ambience>
+
+00:00:52.086 --> 00:00:54.037
+<v Emo>Ich glaube nicht. Und du?</v>
+
+00:00:55.682 --> 00:00:56.721
+<v Proog>Geht schon.</v>
+
+00:00:57.631 --> 00:01:01.083
+<v Proog>Steh auf! Emo, hier ist’s gefährlich.</v>
+
+00:01:01.966 --> 00:01:03.146
+<v Proog>Weiter!</v>
+
+00:01:03.591 --> 00:01:04.591
+<v Emo>Was jetzt?</v>
+
+00:01:05.577 --> 00:01:06.906
+<v Proog>Du wirst’s sehen!</v>
+
+00:01:07.687 --> 00:01:08.960
+<v Emo>Du wirst’s sehen …</v>
+
+00:01:09.753 --> 00:01:11.753
+<c.ambience>(Leises, eisiges Wehen)</c.ambience>
+
+00:01:15.994 --> 00:01:18.021
+<v Proog>Emo, hier lang.</v>
+
+00:01:23.807 --> 00:01:27.940
+<c.music>♪ (Unheimliche, hohe Töne)</c.music>
+
+00:01:27.965 --> 00:01:28.965
+<c.ambience>(Funkenflug)</c.ambience>
+
+00:01:29.693 --> 00:01:31.347
+<c.ambience>(Schwere Schritte)</c.ambience>
+
+00:01:31.372 --> 00:01:32.446
+<c.ambience>(Funkenflug)</c.ambience>
+
+00:01:32.471 --> 00:01:34.536
+<c.ambience>(Unheilvolles statisches Rauschen)</c.ambience>
+
+00:01:34.561 --> 00:01:35.605
+<v Proog>Folg mir!</v>
+
+00:01:35.630 --> 00:01:37.644
+<c.ambience>(Nachhallender Glockenton)</c.ambience>
+
+00:01:38.236 --> 00:01:40.203
+<c.music>♪ (Schnelle, intensive Musik)</c.music>
+
+00:01:41.218 --> 00:01:42.781
+<c.ambience>(Funkenflug)</c.ambience>
+
+00:01:42.806 --> 00:01:45.473
+<c.ambience>(Schneller Flügelschlag)</c.ambience>
+
+00:01:50.557 --> 00:01:51.557
+<c.music>♪ (Musik wird intensiver)</c.music>
+
+00:01:53.903 --> 00:01:55.458
+<c.ambience>(Flügelschlagen, Vogel keucht)</c.ambience>
+
+00:02:11.245 --> 00:02:12.245
+<v Proog>Schneller, Emo!</v>
+
+00:02:14.698 --> 00:02:16.147
+<c.music>♪ (Musik schwillt an)</c.music>
+
+00:02:17.043 --> 00:02:20.303
+<c.ambience>(Gemurmel in fremder Sprache)</c.ambience>
+
+00:02:23.087 --> 00:02:24.678
+<c.ambience>(Vogel zwitschert hektisch)</c.ambience>
+
+00:02:24.703 --> 00:02:26.049
+<c.ambience>(Flügelschlagen)</c.ambience>
+
+00:02:26.309 --> 00:02:28.568
+<c.ambience>(Robotisches Gluckern)</c.ambience>
+
+00:02:32.697 --> 00:02:34.280
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:34.971 --> 00:02:36.554
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:37.259 --> 00:02:38.842
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:39.543 --> 00:02:41.126
+<c.ambience>(Telefonklingeln wird lauter)</c.ambience>
+
+00:02:41.843 --> 00:02:43.426
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:44.102 --> 00:02:45.685
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:46.416 --> 00:02:47.999
+<c.ambience>(Telefonklingeln)</c.ambience>
+
+00:02:48.205 --> 00:02:50.477
+<c.ambience>(Telefonklingeln)</c.ambience>
+<v Proog>Du passt nicht auf!</v>
+
+00:02:50.502 --> 00:02:54.319
+<v Emo>(schnaubt) Ich—ich wollte
+doch nur ans Telefon gehen.</v>
+
+00:02:54.685 --> 00:02:57.114
+<v Proog>Emo, schau— ich meine, hör zu.</v>
+
+00:02:58.075 --> 00:02:59.896
+<c.ambience>(Schleimiges Wabern)</c.ambience>
+
+00:02:59.921 --> 00:03:01.819
+<v Proog>Du musst lernen zuzuhören.</v>
+
+00:03:03.289 --> 00:03:05.187
+<v Proog>Das ist kein Spiel.</v>
+
+00:03:05.212 --> 00:03:09.242
+<v Proog>Du, ich meine wir—
+wir können hier leicht sterben.</v>
+
+00:03:09.267 --> 00:03:11.075
+<v Proog>(seufzt) Hör zu.</v>
+
+00:03:11.616 --> 00:03:13.881
+<v Proog>Hör dir das Mahlen der Maschine an.</v>
+
+00:03:14.573 --> 00:03:15.573
+<c.ambience>(Langsames Uhrticken)</c.ambience>
+
+00:03:18.201 --> 00:03:19.646
+<v Proog>Hör dir deine Atemzüge an.</v>
+
+00:03:23.050 --> 00:03:25.150
+<c.ambience>(Dumpfes Aufschlagen, leises Summen,
+Uhr tickt weiter)</c.ambience>
+
+00:03:30.196 --> 00:03:32.939
+<c.ambience>(Summen wird lauter)</c.ambience>
+
+00:03:34.635 --> 00:03:37.135
+<v Emo>(lacht)</v>
+
+00:03:37.160 --> 00:03:38.482
+<c.ambience>(Tastenklicken)</c.ambience>
+
+00:03:41.333 --> 00:03:43.966
+<c.ambience>(Langsame, schwere Schritte)</c.ambience>
+
+00:03:43.991 --> 00:03:46.104
+<c.ambience>(Heller, metallischer Schlag)</c.ambience>
+
+00:03:46.129 --> 00:03:47.971
+<c.music>♪ (Fröhliche, neugierige Musik)</c.music>
+
+00:03:49.451 --> 00:03:51.356
+<c.ambience>(Schleimiges Abprallen)</c.ambience>
+
+00:03:53.240 --> 00:03:55.287
+<c.music>♪ (Musik wird intensiver)</c.music>
+
+00:03:58.648 --> 00:04:00.945
+<c.music>♪ (Unheilvolle Musik schwillt an)</c.music>
+
+00:04:05.742 --> 00:04:07.813
+<c.ambience>(Lauter Metallschlag)</c.ambience>
+
+00:04:09.180 --> 00:04:10.429
+<c.ambience>(Metall rastet ein)</c.ambience>
+
+00:04:10.454 --> 00:04:12.328
+<c.music>♪ (Abenteuerliche, tribale Orchestrierung)</c.music>
+
+00:04:12.353 --> 00:04:13.651
+<c.ambience>(Metallisches Klappern)</c.ambience>
+
+00:04:20.594 --> 00:04:21.594
+<c.ambience>(Lautes metallisches Klappern)</c.ambience>
+
+00:04:26.960 --> 00:04:29.069
+<v Emo>Sag mal, wirst du
+davon nie müde?</v>
+
+00:04:29.343 --> 00:04:31.177
+<v Proog>Müde?!</v>
+<v Emo>Ja.</v>
+
+00:04:31.407 --> 00:04:35.004
+<v Proog>Emo, die Maschine läuft
+wie ein Uhrwerk!</v>
+
+00:04:35.361 --> 00:04:39.190
+<v Proog>Eine falsche Bewegung und
+du wirst zu Brei gemahlen.</v>
+
+00:04:39.331 --> 00:04:40.331
+<c.ambience>(Lauter Metallschlag)</c.ambience>
+
+00:04:40.880 --> 00:04:42.606
+<c.ambience>(Gewaltige Explosion)</c.ambience>
+<v Emo>Aber gibt es da nicht … wie—</v>
+
+00:04:42.631 --> 00:04:45.950
+<v Proog>Brei, Emo! Ist
+das was du willst? Brei?</v>
+
+00:04:47.575 --> 00:04:49.957
+<v Proog>Emo, dein Lebensziel…</v>
+
+00:04:50.732 --> 00:04:52.169
+<v Proog>… Brei?!</v>
+
+00:05:03.296 --> 00:05:05.851
+<c.ambience>(Aufzugstüren quietschen zu)</c.ambience>
+
+00:05:06.769 --> 00:05:07.769
+<c.ambience>(Knopfklicken)</c.ambience>
+
+00:05:07.794 --> 00:05:09.074
+<c.ambience>(Metallisches Scheppern und Surren)</c.ambience>
+
+00:05:09.099 --> 00:05:10.099
+<c.ambience>(Fahrstuhl sackt ein)</c.ambience>
+
+00:05:10.124 --> 00:05:11.262
+<c.ambience>(Rostiges Surren)</c.ambience>
+
+00:05:12.200 --> 00:05:13.525
+<c.ambience>(Metalltüren verriegeln)</c.ambience>
+
+00:05:18.130 --> 00:05:20.075
+<c.ambience>(Aufzugrollen)</c.ambience>
+
+00:05:21.542 --> 00:05:23.575
+<c.ambience>(Metallisches Scharren)</c.ambience>
+
+00:05:23.600 --> 00:05:25.200
+<c.ambience>(Rauschen wird stärker)</c.ambience>
+
+00:05:25.225 --> 00:05:26.650
+<c.ambience>(Boden kracht herab)</c.ambience>
+
+00:05:26.675 --> 00:05:27.835
+<c.ambience>(Metallisches Scheppern und Surren)</c.ambience>
+
+00:05:27.860 --> 00:05:29.000
+<c.ambience>(Aufzugrollen)</c.ambience>
+
+00:05:29.594 --> 00:05:31.875
+<c.ambience>(Mechanisches Surren und Zischen)</c.ambience>
+
+00:05:32.430 --> 00:05:33.586
+<c.ambience>(Mechanische Beschleunigung)</c.ambience>
+
+00:05:33.719 --> 00:05:35.030
+<c.ambience>(Metalltüren verriegeln)</c.ambience>
+
+00:05:41.492 --> 00:05:43.742
+<v Proog>Emo, schließ deine Augen.</v>
+
+00:05:44.624 --> 00:05:45.824
+<v Emo>Warum?</v>
+<v Proog>Jetzt!</v>
+
+00:05:51.405 --> 00:05:52.467
+<v Emo>Okay …</v>
+
+00:05:53.653 --> 00:05:54.653
+<v Proog>Gut.</v>
+
+00:05:59.552 --> 00:06:01.851
+<v Proog>Was siehst du links von dir, Emo?</v>
+
+00:06:01.876 --> 00:06:02.876
+<v Emo>Na ja …</v>
+
+00:06:03.796 --> 00:06:05.686
+<v Emo>… nichts.</v>
+<v Proog>Wirklich?</v>
+
+00:06:06.499 --> 00:06:08.835
+<v Emo>Nein, gar nichts.</v>
+<v Proog>(leise) Wirklich?</v>
+
+00:06:08.861 --> 00:06:12.077
+<v Proog>Und rechts, was siehst
+du rechts von dir, Emo?</v>
+
+00:06:13.015 --> 00:06:15.492
+<v Emo>(schnauft) Genau dasselbe, Proog.</v>
+
+00:06:15.517 --> 00:06:17.351
+<v Emo>Genau dasselbe: nichts!</v>
+
+00:06:17.376 --> 00:06:18.476
+<c.ambience>(Plattform sackt herab)</c.ambience>
+
+00:06:18.501 --> 00:06:19.501
+<v Proog>Großartig.</v>
+
+00:06:22.117 --> 00:06:23.849
+<c.ambience>(Plattform beschleunigt)</c.ambience>
+
+00:06:23.874 --> 00:06:25.023
+<c.ambience>(Harter Metallschlag)</c.ambience>
+
+00:06:25.048 --> 00:06:26.048
+<c.ambience>(Kameraklicken)</c.ambience>
+
+00:06:27.320 --> 00:06:28.929
+<c.ambience>(Leises Kameraklicken)</c.ambience>
+
+00:06:36.531 --> 00:06:38.101
+<c.ambience>(Kameraklicken wird lauter)</c.ambience>
+
+00:06:38.585 --> 00:06:40.512
+<c.ambience>(Portalwabern, Tür schlägt zu)</c.ambience>
+
+00:06:40.537 --> 00:06:42.920
+<v Emo>Hör zu, Proog! Hörst du das?</v>
+
+00:06:43.498 --> 00:06:44.693
+<v Emo>Können wir da lang?</v>
+
+00:06:45.396 --> 00:06:46.600
+<v Proog>Dorthin?</v>
+<v Emo>Ja.</v>
+
+00:06:46.625 --> 00:06:47.804
+<v Proog>Es ist nicht sicher, Emo.</v>
+
+00:06:48.646 --> 00:06:49.770
+<v Proog>(Gerät klappt auf)</v>
+
+00:06:49.795 --> 00:06:52.301
+<v Emo>Aber …</v>
+<v Proog>Vertrau mir, ist es nicht.</v>
+
+00:06:53.219 --> 00:06:54.523
+<v Emo>Oder vielleicht könnte ich—</v>
+
+00:06:54.548 --> 00:06:56.398
+<v Proog>Nein.</v>
+<c.ambience>(Statisches Knistern)</c.ambience>
+
+00:06:56.423 --> 00:06:58.078
+<c.ambience>(Kameraklicken)</c.ambience>
+<v Emo>Aber—</v>
+
+00:06:58.102 --> 00:07:00.561
+<v Proog>Nein! Nein!</v>
+
+00:07:01.195 --> 00:07:03.530
+<v Proog>Noch irgendwelche Fragen, Emo?</v>
+
+00:07:04.359 --> 00:07:05.359
+<v Emo>(leise) Nein …</v>
+
+00:07:07.819 --> 00:07:08.819
+<c.ambience>(Dumpfes Aufschlagen)</c.ambience>
+
+00:07:09.765 --> 00:07:11.390
+<v Proog>Emo …</v>
+<v Emo>Ja?</v>
+
+00:07:11.648 --> 00:07:13.273
+<v Proog>Emo, warum?</v>
+
+00:07:13.562 --> 00:07:18.327
+<v Proog>Emo, warum erkennst du
+die Schönheit dieses Ortes nicht?</v>
+
+00:07:18.984 --> 00:07:23.757
+<v Proog>Wie alles zusammenläuft,
+wie perfekt es ist.</v>
+
+00:07:24.211 --> 00:07:27.074
+<v Emo>Nein, Proog. Ich sehe es nicht.</v>
+
+00:07:27.098 --> 00:07:29.911
+<v Emo>Ich sehe es nicht,
+weil da gar nichts ist.</v>
+
+00:07:31.351 --> 00:07:34.835
+<v Emo>Und warum sollte ich mein Leben etwas
+anvertrauen, das gar nicht existiert?</v>
+
+00:07:35.538 --> 00:07:36.913
+<v Emo>Kannst du mir das sagen?</v>
+
+00:07:36.938 --> 00:07:38.273
+<v Proog>Emo …</v>
+<v Emo>Antworte mir.</v>
+
+00:07:40.819 --> 00:07:42.069
+<v Proog>(Harter Schlag)</v>
+
+00:07:43.679 --> 00:07:44.870
+<v Emo>Proog …</v>
+
+00:07:44.894 --> 00:07:46.633
+<v Emo>… du bist krank!</v>
+
+00:07:46.658 --> 00:07:48.484 position:100% line:0%
+<c.music>♪ (Hektische Verfolgungsmusik)</c.music>
+
+00:07:46.658 --> 00:07:48.484
+<v Proog>Emo …</v>
+<v Emo>Bleib weg von mir!</v>
+
+00:07:48.509 --> 00:07:49.509
+<v Proog>Emo …</v>
+
+00:07:50.414 --> 00:07:51.718
+<c.ambience>(Uhrticken)</c.ambience>
+
+00:07:52.390 --> 00:07:54.804
+<v Proog>Nein! Emo, es ist eine Falle!</v>
+
+00:07:55.612 --> 00:07:57.354
+<v Emo>Ha, „es ist eine Falle“!</v>
+
+00:07:57.379 --> 00:08:01.603
+<v Emo>Auf der linken Seite sehen wir
+die Hängenden Gärten von Babylon!</v>
+
+00:08:01.628 --> 00:08:04.112
+<c.ambience>(Starkes Rauschen)</c.ambience>
+<v Emo>Was sagst du zu dieser Falle?</v>
+
+00:08:04.137 --> 00:08:05.764
+<c.ambience>(Mauerwerk bricht ein)</c.ambience>
+
+00:08:05.789 --> 00:08:06.789
+<v Proog>Nein, Emo!</v>
+
+00:08:06.814 --> 00:08:09.338
+<c.ambience>(Einsturz, lautes Scheppern)</c.ambience>
+
+00:08:09.363 --> 00:08:12.793
+<v Emo>Und auf der rechten Seite
+sehen wir— na, rate mal …</v>
+
+00:08:12.818 --> 00:08:15.052
+<v Emo>… den Koloss von Rhodos!</v>
+
+00:08:15.489 --> 00:08:16.489
+<v Proog>Nein!</v>
+
+00:08:16.514 --> 00:08:17.766
+<v Emo>Der Koloss von Rhodos…</v>
+
+00:08:17.790 --> 00:08:20.023
+<v Emo>… und er ist nur für dich da, Proog.</v>
+
+00:08:20.062 --> 00:08:21.497
+<v Emo>(lacht) „Nur für dich“.</v>
+
+00:08:23.584 --> 00:08:24.884
+<c.ambience>(Anhaltender hoher Ton)</c.ambience>
+
+00:08:25.633 --> 00:08:27.405
+<c.ambience>(Mechanisches Dröhnen)</c.ambience>
+
+00:08:29.040 --> 00:08:30.407
+<c.ambience>(Tiefer Groll)</c.ambience>
+
+00:08:32.026 --> 00:08:33.026
+<v Proog>(Dumpfer Aufschlag)</v>
+
+00:08:41.843 --> 00:08:42.843
+<v Proog>(Harter Aufschlag)</v>
+
+00:08:45.570 --> 00:08:46.640
+<v Emo>(Dumpfer Aufschlag)</v>
+
+00:08:51.163 --> 00:08:52.819
+<v Proog>Es ist da.</v>
+
+00:08:53.754 --> 00:08:56.316
+<v Proog>Ich sag dir, Emo.</v>
+
+00:08:56.440 --> 00:08:59.439
+<v Proog>(bebend) Es—es ist da. Es ist da.</v>
+
+00:09:02.333 --> 00:09:04.356
+<c.ambience>(Hohles, eisiges Rauschen)</c.ambience>
+
+00:09:05.785 --> 00:09:07.285
+<c.ambience>(Leises, eisiges Wehen)</c.ambience>
+
+00:09:26.031 --> 00:09:28.101
+<c.ambience>(Hohles, mechanisches Rauschen)</c.ambience>
+
+00:09:28.126 --> 00:09:29.694
+<c.music>♪ (Melancholische Orchestermusik schwillt an)</c.music>
