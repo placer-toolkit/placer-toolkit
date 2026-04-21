@@ -1,0 +1,152 @@
+:host {
+    display: inline-block;
+}
+
+:host(:focus-visible) {
+    outline: 0;
+}
+
+.radio {
+    display: inline-flex;
+    align-items: flex-start;
+    position: relative;
+    font-family: var(--pc-font-sans);
+    font-size: inherit;
+    font-weight: var(--pc-form-control-value-font-weight);
+    line-height: var(--pc-form-control-value-line-height);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.control {
+    display: inline-flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    inline-size: var(--pc-form-control-toggle-size);
+    block-size: var(--pc-form-control-toggle-size);
+    background-color: transparent;
+    color: var(--pc-color-surface-default);
+    border: var(--pc-form-control-border-width) var(--pc-border-style)
+        var(--pc-form-control-border-color);
+    border-radius: var(--pc-border-radius-circle);
+    font-size: inherit;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+.control svg {
+    display: inline-flex;
+    inline-size: var(--pc-form-control-toggle-size);
+    block-size: var(--pc-form-control-toggle-size);
+    font-size: inherit;
+    scale: 0.8;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+.checked .control svg {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (hover: hover) {
+    .radio:not(.checked):not(.disabled) .control:hover {
+        border-color: color-mix(
+            in oklab,
+            var(--pc-form-control-border-color),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.radio:not(.checked):not(.disabled) .control:focus-visible {
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-border-color),
+        var(--pc-color-mix-hover)
+    );
+}
+
+.radio:not(.checked):not(.disabled) .control:active {
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-border-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+:host(:focus-visible) .control {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.checked .control {
+    background-color: var(--pc-form-control-activated-color);
+    border-color: var(--pc-form-control-activated-color);
+}
+
+@media (hover: hover) {
+    .radio.checked:not(.disabled) .control:hover {
+        background-color: var(--pc-form-control-activated-color);
+        border-color: var(--pc-form-control-activated-color);
+    }
+}
+
+.radio.checked:not(.disabled) .control:focus-visible {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-hover)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-hover)
+    );
+}
+
+.radio.checked:not(.disabled) .control:active {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+    border-color: color-mix(
+        in oklab,
+        var(--pc-form-control-activated-color),
+        var(--pc-color-mix-active)
+    );
+}
+
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+[part~="label"] {
+    display: inline-block;
+    margin-inline-start: 0.5em !important;
+}
+
+/* If the radio isn’t checked, hide the circle icon in High Contrast mode on Windows */
+.radio:not(.checked) svg {
+    opacity: 0;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

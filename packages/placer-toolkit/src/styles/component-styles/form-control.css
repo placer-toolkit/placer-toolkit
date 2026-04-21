@@ -1,0 +1,33 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+[part~="label"]:has(*:not(:empty)) {
+    display: inline-flex;
+    color: var(--pc-form-control-label-color);
+    font-weight: var(--pc-form-control-label-font-weight);
+    line-height: var(--pc-form-control-label-line-height);
+    margin-block-end: 0.5em;
+}
+
+:host([required]) [part="label"]::after {
+    content: var(--pc-form-control-required-content);
+    margin-inline-start: var(--pc-form-control-required-content-offset);
+    color: var(--pc-form-control-required-content-color);
+}
+
+/* Hints */
+[part~="hint"] {
+    display: block;
+    color: var(--pc-form-control-hint-color);
+    font-size: var(--pc-font-size-smaller);
+    font-weight: var(--pc-form-control-hint-font-weight);
+    line-height: var(--pc-form-control-hint-line-height);
+    margin-block-start: 0.5em;
+}
+
+[part~="hint"]:not(.has-hint) {
+    display: none;
+}

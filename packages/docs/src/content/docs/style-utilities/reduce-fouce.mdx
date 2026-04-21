@@ -1,0 +1,48 @@
+---
+title: Reduce FOUCE
+description: This utility hides undefined custom elements until they are registered.
+---
+
+This utility hides undefined custom elements until they are registered.
+
+Often, components are shown before their logic and styles have had a chance to load, also known as a Flash of Undefined Custom Elements (FOUCE).
+
+The Reduce FOUCE style utility (which is automatically applied if you import `placer.css`) automatically takes care of hiding custom elements until **both they and their contents** have been registered, up to a maximum of two seconds.
+
+In many cases, this is not enough, and you may wish to hide a broader wrapper element or even the entire page until all Placer Toolkit elements within it have loaded. To do that, you can add the `pc-cloak` class to any element on the page or even apply it to the whole page by placing the class on the HTML element.
+
+```html
+<!DOCTYPE html>
+<html class="pc-cloak">
+    <head>
+        <!-- … -->
+    </head>
+    <body>
+        <!-- … -->
+    </body>
+</html>
+```
+
+## Importing
+
+If you imported `placer.css`, you can skip this section. But if you cherry picked from all the CSS files, you can use these snippets to import this utility.
+
+<pc-tab-group>
+    <pc-tab slot="navigation" panel="in-html">In HTML</pc-tab>
+    <pc-tab slot="navigation" panel="in-css">In CSS</pc-tab>
+
+    <pc-tab-panel name="in-html">
+        To import this utility from the CDN with a link tag, copy this snippet and paste it in your HTML:
+
+        ```html
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/utilities/fouce.css" />
+        ```
+    </pc-tab-panel>
+    <pc-tab-panel name="in-css">
+        To import this utility with an `@import` at‐rule, copy this snippet and paste it in your global CSS file:
+
+        ```css
+        @import url("https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/styles/utilities/fouce.css");
+        ```
+    </pc-tab-panel>
+</pc-tab-group>

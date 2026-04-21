@@ -1,0 +1,17 @@
+/* Lora (Normal) */
+@font-face {
+    font-family: "Lora";
+    src: url("/fonts/lora/Lora-Variable.woff2") format("woff2");
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Lora (Italic) */
+@font-face {
+    font-family: "Lora";
+    src: url("/fonts/lora/Lora-VariableItalic.woff2") format("woff2");
+    font-weight: 400 700;
+    font-style: italic;
+    font-display: swap;
+}

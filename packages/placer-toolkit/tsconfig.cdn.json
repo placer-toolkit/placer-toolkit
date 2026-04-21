@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        // Output
+        "outDir": "cdn",
+
+        // Declarations
+        "declaration": false,
+        "emitDeclarationOnly": false,
+
+        // Helpers
+        "importHelpers": false,
+        "noEmitHelpers": false
+    }
+}

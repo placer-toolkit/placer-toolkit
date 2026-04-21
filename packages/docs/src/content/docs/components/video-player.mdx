@@ -1,0 +1,111 @@
+---
+title: Video Player
+description: Video players present visual media and provide controls for playback.
+category: media
+---
+
+Video players present visual media and provide controls for playback.
+
+```demo
+<pc-video-player
+    src="/videos/elephants-dream.webm"
+    poster="/images/poster/elephants-dream.webp"
+    data-title="Elephants Dream"
+>
+    <track
+        src="/subtitles/elephants-dream/captions-en.vtt"
+        kind="captions"
+        srclang="en"
+        label="English (CC)"
+    />
+    <track
+        src="/subtitles/elephants-dream/captions-pos.vtt"
+        kind="subtitles"
+        srclang="en"
+        label="English (Positioning Test)"
+    />
+    <track
+        src="/subtitles/elephants-dream/captions-de.vtt"
+        kind="captions"
+        srclang="de"
+        label="Deutsch (CC)"
+    />
+</pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```
+
+## Demos
+
+### Poster
+
+Use the `poster` attribute to add a poster (thumbnail) to the video, which shows before the video is played.
+
+```demo
+<pc-video-player
+    src="/videos/elephants-dream.webm"
+    poster="/images/poster/elephants-dream.webp"
+></pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```
+
+### Autoplay
+
+Use the `autoplay` attribute to start the video automatically.
+
+```demo
+<!--<pc-video-player src="/videos/elephants-dream.webm" autoplay muted></pc-video-player>-->
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```
+
+### Muted
+
+Use the `muted` attribute to silence the video by default.
+
+```demo
+<pc-video-player src="/videos/elephants-dream.webm" muted></pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```
+
+### Loop
+
+Use the `loop` attribute to make the video loop to the start again once it reaches the end.
+
+```demo
+<pc-video-player src="/videos/elephants-dream.webm" loop></pc-video-player>
+
+<p class="pc-caption-m pc-line-height-normal" style="margin-block-start: var(--pc-spacing-m)">
+    <strong>Elephants Dream</strong> by Bassam Kurdali
+    and the Blender Foundation. Licensed under
+    <a href="https://creativecommons.org/licenses/by/2.5">
+        CC BY 2.5</a>; transformed to WebM format
+    and captions added by Placer.
+</p>
+```

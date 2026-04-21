@@ -1,0 +1,36 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const { isFallback } = Astro.props;
+
+if (!isFallback) {
+    return null;
+}
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<pc-callout
+    lang={language}
+    class="fallback-content-warning"
+    appearance="warning"
+    size="small"
+>
+    <pc-icon
+        library="default"
+        icon-style="solid"
+        name="triangle-exclamation"
+        slot="icon"></pc-icon>
+
+    <p set:html={translation("ui.content.contentNotAvailableInYourLanguage")} />
+</pc-callout>
+
+<style>
+    .fallback-content-warning::part(base) {
+        display: inline-flex;
+        padding-block: 0.5em;
+        padding-inline: 0.75em;
+        border-radius: var(--pc-border-radius-m);
+    }
+</style>

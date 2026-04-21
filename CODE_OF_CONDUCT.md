@@ -22,7 +22,7 @@ With these considerations in mind, we agree to behave mindfully toward each othe
 
 ## Restricted behaviours
 
-We agree to restrict the following behaviors in our community. Instances, threats, and promotion of these behaviors are violations of this Code of Conduct.
+We agree to restrict the following behaviors in our community. Instances, threats and promotion of these behaviors are violations of this Code of Conduct.
 
 1. **Harassment.** Violating explicitly expressed boundaries or engaging in unnecessary personal attention after any clear request to stop.
 2. **Character attacks.** Making insulting, demeaning or pejorative comments directed at a community member or group of people.

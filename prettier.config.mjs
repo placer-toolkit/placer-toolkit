@@ -2,7 +2,7 @@
 export default {
     arrowParens: "always",
     bracketSpacing: true,
-    htmlWhitespaceSensitivity: "css",
+    htmlWhitespaceSensitivity: "ignore",
     insertPragma: false,
     bracketSameLine: false,
     jsxSingleQuote: false,

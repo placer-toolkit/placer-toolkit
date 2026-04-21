@@ -1,0 +1,234 @@
+---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+---
+
+<div class="showcase">
+    <pc-comparer>
+        <iframe
+            id="before-frame"
+            src={translatePath("/showcase")}
+            tabindex="-1"
+            aria-hidden="true"
+            slot="before"></iframe>
+        <iframe
+            id="after-frame"
+            src={translatePath("/showcase/?color-scheme=dark")}
+            tabindex="-1"
+            aria-hidden="true"
+            slot="after"></iframe>
+    </pc-comparer>
+
+    <div class="showcase-controls">
+        <pc-tab-group>
+            <pc-tab slot="navigation" panel="before">
+                {translation("showcase.tab.before")}
+            </pc-tab>
+            <pc-tab slot="navigation" panel="after">
+                {translation("showcase.tab.after")}
+            </pc-tab>
+
+            <pc-tab-panel name="before">
+                <div class="pc-stack">
+                    <pc-select
+                        name="theme"
+                        label={translation("theme.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
+                        <pc-option value="utility">Utility</pc-option>
+                        <pc-option value="serene">Serene</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="palette"
+                        label={translation("theme.palette.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
+                        <pc-option value="vibrant">Vibrant</pc-option>
+                        <pc-option value="muted">Muted</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="color-scheme"
+                        label={translation("theme.colorScheme.select")}
+                        value="light"
+                    >
+                        <pc-option value="light">
+                            {translation("theme.colorScheme.light.simple")}
+                        </pc-option>
+                        <pc-option value="dark">
+                            {translation("theme.colorScheme.dark.simple")}
+                        </pc-option>
+                    </pc-select>
+                </div>
+            </pc-tab-panel>
+            <pc-tab-panel name="after">
+                <div class="pc-stack">
+                    <pc-select
+                        name="theme"
+                        label={translation("theme.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
+                        <pc-option value="utility">Utility</pc-option>
+                        <pc-option value="serene">Serene</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="palette"
+                        label={translation("theme.palette.select")}
+                        value="default"
+                    >
+                        <pc-option value="default">
+                            {translation("theme.default")}
+                        </pc-option>
+                        <pc-option value="vibrant">Vibrant</pc-option>
+                        <pc-option value="muted">Muted</pc-option>
+                    </pc-select>
+
+                    <pc-select
+                        name="color-scheme"
+                        label={translation("theme.colorScheme.select")}
+                        value="dark"
+                    >
+                        <pc-option value="light">
+                            {translation("theme.colorScheme.light.simple")}
+                        </pc-option>
+                        <pc-option value="dark">
+                            {translation("theme.colorScheme.dark.simple")}
+                        </pc-option>
+                    </pc-select>
+                </div>
+            </pc-tab-panel>
+        </pc-tab-group>
+    </div>
+</div>
+
+<script>
+    import type { PcSelect } from "placer-toolkit/dist/components/select/select.js";
+
+    const beforeFrame = document.getElementById(
+        "before-frame",
+    ) as HTMLIFrameElement | null;
+    const afterFrame = document.getElementById(
+        "after-frame",
+    ) as HTMLIFrameElement | null;
+
+    function updateIframeSettings(
+        iframe: HTMLIFrameElement | null,
+        tabPanel: Element,
+    ) {
+        if (!iframe || !tabPanel || !iframe.contentWindow) {
+            return;
+        }
+
+        const selects = tabPanel.querySelectorAll("pc-select");
+        const settings: Record<string, string> = {};
+
+        selects.forEach((select: PcSelect) => {
+            const parameterName = select.getAttribute("name");
+            const parameterValue = select.value;
+
+            if (parameterName && parameterValue) {
+                settings[parameterName] = Array.isArray(parameterValue)
+                    ? parameterValue.join(",")
+                    : parameterValue;
+            }
+        });
+
+        iframe.contentWindow.postMessage(
+            { source: "showcase-settings", settings },
+            "*",
+        );
+    }
+
+    const beforePanel = document.querySelector('pc-tab-panel[name="before"]');
+
+    beforePanel?.querySelectorAll("pc-select").forEach((select) => {
+        select.addEventListener("change", () => {
+            updateIframeSettings(beforeFrame, beforePanel);
+        });
+    });
+
+    const afterPanel = document.querySelector('pc-tab-panel[name="after"]');
+
+    afterPanel?.querySelectorAll("pc-select").forEach((select) => {
+        select.addEventListener("change", () => {
+            updateIframeSettings(afterFrame, afterPanel);
+        });
+    });
+</script>
+
+<style>
+    .showcase {
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: var(--pc-spacing-xl);
+        margin-block-end: var(--pc-spacing-xxl);
+    }
+
+    pc-comparer {
+        --divider-width: 0.0625rem;
+
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        overflow: hidden;
+    }
+
+    pc-comparer::part(divider),
+    pc-comparer::part(handle) {
+        background-color: var(--pc-color-surface-border);
+        translate: unset;
+    }
+
+    pc-comparer,
+    pc-comparer > iframe {
+        inline-size: 100%;
+        block-size: 100%;
+        border-radius: var(--pc-border-radius-xl);
+    }
+
+    pc-comparer > iframe {
+        pointer-events: none;
+    }
+
+    .showcase-controls {
+        padding: var(--pc-spacing-l);
+        min-inline-size: 18rem;
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-xl);
+        transition: box-shadow var(--pc-transition-slow) ease-in-out;
+    }
+
+    @media screen and (max-width: 992px) {
+        .showcase {
+            flex-direction: column-reverse;
+        }
+
+        pc-comparer {
+            min-block-size: 25rem;
+        }
+
+        .showcase-controls {
+            min-inline-size: auto;
+        }
+    }
+</style>

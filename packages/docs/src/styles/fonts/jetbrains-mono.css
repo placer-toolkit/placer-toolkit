@@ -1,0 +1,19 @@
+/* JetBrains Mono (Normal) */
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2")
+        format("woff2");
+    font-weight: 100 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* JetBrains Mono (Italic) */
+@font-face {
+    font-family: "JetBrains Mono";
+    src: url("/fonts/jetbrains-mono/JetBrainsMono-VariableItalic.woff2")
+        format("woff2");
+    font-weight: 100 800;
+    font-style: italic;
+    font-display: swap;
+}

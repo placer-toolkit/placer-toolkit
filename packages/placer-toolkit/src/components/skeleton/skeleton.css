@@ -1,0 +1,73 @@
+:host {
+    --color: var(--pc-color-neutral-fill-normal);
+    --sheen-color: color-mix(
+        in oklab,
+        var(--color),
+        var(--pc-color-surface-raised) 40%
+    );
+
+    display: flex;
+    position: relative;
+    inline-size: 100%;
+    min-block-size: 1rem;
+    block-size: 100%;
+}
+
+.indicator {
+    flex: 1 1 auto;
+    background-color: var(--color);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+:host([effect="sheen"]) .indicator {
+    background: linear-gradient(
+        270deg,
+        var(--sheen-color),
+        var(--color),
+        var(--color),
+        var(--sheen-color)
+    );
+    background-size: 400% 100%;
+    animation: sheen 8s ease-in-out infinite;
+}
+
+:host([effect="pulse"]) .indicator {
+    animation: pulse 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+@keyframes sheen {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .indicator {
+        animation: none !important;
+    }
+}
+
+@media (forced-colors: active) {
+    :host {
+        --color: GrayText;
+    }
+}

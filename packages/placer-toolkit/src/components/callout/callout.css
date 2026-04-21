@@ -1,0 +1,63 @@
+.callout {
+    display: flex;
+    position: relative;
+    align-items: stretch;
+    background-color: var(--pc-color-fill-quiet);
+    color: var(--pc-color-text-normal);
+    border: var(--pc-panel-border-width) var(--pc-panel-border-style)
+        var(--pc-color-border-quiet);
+    border-radius: var(--pc-panel-border-radius);
+    padding: 1em;
+}
+
+/* This is a fallback for Markdown and MDX */
+.callout ::slotted(p) {
+    margin: 0;
+}
+
+:host([variant~="accent"]) .callout {
+    background-color: var(--pc-color-fill-loud);
+    color: var(--pc-color-on-loud);
+    border-color: transparent;
+
+    [part~="icon"] {
+        color: currentColor;
+    }
+}
+
+:host([variant~="outlined"]) .callout {
+    background-color: transparent;
+    border-color: var(--pc-color-border-loud);
+}
+
+:host([variant~="filled"]) .callout {
+    background-color: var(--pc-color-fill-quiet);
+    border-color: transparent;
+}
+
+:host([variant~="filled"][variant~="outlined"]) .callout {
+    border-color: var(--pc-color-border-quiet);
+}
+
+:host([variant~="plain"]) .callout {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.callout [part~="icon"] {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    color: var(--pc-color-on-quiet);
+    font-size: 1.25em;
+}
+
+.callout ::slotted([slot="icon"]) {
+    margin-inline-end: var(--pc-form-control-padding-inline);
+}
+
+.callout [part~="message"] {
+    display: block;
+    flex: 1 1 auto;
+    overflow: hidden;
+}

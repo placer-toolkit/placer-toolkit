@@ -1,7 +1,0 @@
-.shadow-demo {
-    background-color: transparent;
-    inline-size: 4rem;
-    block-size: 4rem;
-    margin-inline: auto;
-    border-radius: var(--pc-border-radius-m);
-}

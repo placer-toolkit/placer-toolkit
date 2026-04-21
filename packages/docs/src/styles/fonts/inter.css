@@ -1,0 +1,27 @@
+/* Inter (Normal) */
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter/Inter-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+    font-feature-settings:
+        "cv03" on,
+        "cv02" on,
+        "cv04" on,
+        "cv11" on;
+}
+
+/* Inter (Italic) */
+@font-face {
+    font-family: "Inter";
+    src: url("/fonts/inter/Inter-VariableItalic.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+    font-feature-settings:
+        "cv03" on,
+        "cv02" on,
+        "cv04" on,
+        "cv11" on;
+}

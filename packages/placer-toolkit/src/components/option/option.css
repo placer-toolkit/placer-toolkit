@@ -1,0 +1,95 @@
+:host {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding-inline-start: 0.5em;
+    padding-inline-end: 1.75em;
+    padding-block: 0.5em;
+    color: var(--pc-color-text-normal);
+    border-radius: var(--pc-border-radius-m);
+    font: inherit;
+    line-height: var(--pc-line-height-dense);
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+    transition: all var(--pc-transition-fast) ease-in-out;
+}
+
+:host(:focus) {
+    outline: none;
+}
+
+@media (hover: hover) {
+    :host(:hover:not([disabled], :state(current)):is(:state(hover), :hover)) {
+        background-color: var(--pc-color-neutral-fill-normal);
+        color: var(--pc-color-neutral-on-normal);
+    }
+}
+
+:host(:active:not([disabled], :state(current)):state(hover)),
+:host(:active:not([disabled], :state(current))) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-fill-normal),
+        var(--pc-color-mix-active)
+    );
+    color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-on-normal),
+        var(--pc-color-mix-active)
+    );
+}
+
+:host(:state(current)),
+:host([disabled]:state(current)) {
+    background-color: var(--pc-color-neutral-fill-normal);
+    color: var(--pc-color-neutral-on-normal);
+    opacity: 1;
+}
+
+:host([disabled]) {
+    outline: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.label {
+    display: inline-block;
+    flex: 1 1 auto;
+}
+
+.check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    visibility: hidden;
+    font-size: var(--pc-font-size-smaller);
+    padding-inline-end: 0.5em;
+}
+
+:host(:state(selected)) .check {
+    visibility: visible;
+}
+
+.prefix,
+.suffix {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.prefix::slotted(*) {
+    margin-inline-end: 0.5em;
+}
+
+.suffix::slotted(*) {
+    margin-inline-start: 0.5em;
+}
+
+@media (forced-colors: active) {
+    :host(:hover:not([aria-disabled="true"])) {
+        outline: 1px dashed SelectedItem;
+        outline-offset: -1px;
+    }
+}

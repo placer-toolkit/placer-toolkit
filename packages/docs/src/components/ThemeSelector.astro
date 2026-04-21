@@ -1,0 +1,277 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<pc-dropdown class="theme-selector pc-cloak" value="default">
+    <pc-button size="small" variant="plain" slot="trigger">
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="solid"
+            name="paintbrush"
+            label={translation("theme.selector") as string}></pc-icon>
+    </pc-button>
+
+    <pc-dropdown-item type="radio" value="default">
+        {translation("theme.default")}
+    </pc-dropdown-item>
+    <pc-dropdown-item type="radio" value="utility">Utility</pc-dropdown-item>
+    <pc-dropdown-item type="radio" value="serene">Serene</pc-dropdown-item>
+</pc-dropdown>
+
+<pc-button class="color-scheme-toggle" variant="plain" size="small">
+    <pc-icon
+        class="color-scheme-icon icon-expand"
+        library="default"
+        icon-style="solid"
+        name="circle-half-stroke"
+        label={translation("theme.colorScheme.system") as string}
+        data-light={translation("theme.colorScheme.light")}
+        data-dark={translation("theme.colorScheme.dark")}
+        data-system={translation("theme.colorScheme.system")}></pc-icon>
+</pc-button>
+
+<script>
+    import type { PcDropdownItem } from "placer-toolkit/dist/components/dropdown-item/dropdown-item.js";
+    import type { PcIcon } from "placer-toolkit/dist/components/icon/icon.js";
+
+    let currentColorScheme: "light" | "dark" | null = getStoredColorScheme();
+    let initialPageLoadComplete = document.readyState === "complete";
+
+    if (!initialPageLoadComplete) {
+        window.addEventListener("load", () => {
+            initialPageLoadComplete = true;
+        });
+    }
+
+    function isEditableInPath(path: EventTarget[]) {
+        return path.some((element) => {
+            const tag = (element as HTMLElement)?.tagName?.toLowerCase();
+
+            return (
+                tag === "textarea" ||
+                (tag === "input" &&
+                    !["checkbox", "radio"].includes(
+                        (element as HTMLInputElement).type,
+                    )) ||
+                (element as HTMLElement)?.isContentEditable
+            );
+        });
+    }
+
+    async function withViewTransition(
+        callback: ViewTransitionUpdateCallback | undefined,
+        { ignoreInitialLoad = true } = {},
+    ) {
+        if (!initialPageLoadComplete && ignoreInitialLoad) {
+            callback?.();
+            return;
+        }
+
+        const canUseViewTransitions =
+            typeof document.startViewTransition === "function" &&
+            !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        if (canUseViewTransitions) {
+            await document.startViewTransition(callback).finished;
+        } else {
+            callback?.();
+        }
+    }
+
+    function parseTheme(value: string | null): "light" | "dark" | null {
+        if (value === "light" || value === "dark") {
+            return value;
+        }
+
+        return null;
+    }
+
+    function parseStyleTheme(value: string) {
+        return ["default", "utility", "serene"].includes(value)
+            ? value
+            : "default";
+    }
+
+    function getStoredColorScheme(): "light" | "dark" | null {
+        const storedColorScheme = localStorage.getItem("saved-color-scheme");
+
+        return storedColorScheme ? parseTheme(storedColorScheme) : null;
+    }
+
+    function updateIcon(theme: "light" | "dark" | null) {
+        const icon = document.querySelector(".color-scheme-icon") as PcIcon;
+
+        if (!icon) {
+            return;
+        }
+
+        if (theme === "light") {
+            icon.name = "sun";
+            icon.label = icon.dataset.light ?? "";
+        } else if (theme === "dark") {
+            icon.name = "moon";
+            icon.label = icon.dataset.dark ?? "";
+        } else {
+            icon.name = "circle-half-stroke";
+            icon.label = icon.dataset.system ?? "";
+        }
+    }
+
+    async function applyColorTheme(theme: "light" | "dark" | null) {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+        const effectiveTheme =
+            theme ?? (prefersLight.matches ? "light" : "dark");
+
+        await withViewTransition(() => {
+            document.documentElement.classList.remove("pc-light", "pc-dark");
+            document.documentElement.classList.add(`pc-${effectiveTheme}`);
+
+            currentColorScheme = theme;
+
+            updateIcon(theme);
+        });
+
+        if (theme === null) {
+            localStorage.removeItem("saved-color-scheme");
+        } else {
+            localStorage.setItem("saved-color-scheme", theme);
+        }
+    }
+
+    function cycleTheme(
+        current: "light" | "dark" | null,
+    ): "light" | "dark" | null {
+        if (current === "light") {
+            return "dark";
+        } else if (current === "dark") {
+            return null;
+        } else {
+            return "light";
+        }
+    }
+
+    function getStoredTheme() {
+        const storedTheme = localStorage.getItem("saved-theme") ?? "default";
+        const dropdown = document.querySelector(".theme-selector");
+
+        if (dropdown) {
+            [
+                ...dropdown.querySelectorAll<PcDropdownItem>(
+                    'pc-dropdown-item[type="radio"]',
+                ),
+            ].forEach((item) => {
+                item.checked = item.value === storedTheme;
+            });
+        }
+
+        return parseStyleTheme(storedTheme);
+    }
+
+    async function applyTheme(theme: string) {
+        await withViewTransition(() => {
+            const root = document.documentElement;
+
+            root.classList.remove(
+                "pc-theme-utility",
+                "pc-theme-serene",
+                "pc-palette-vibrant",
+                "pc-palette-muted",
+            );
+
+            if (theme === "utility") {
+                root.classList.add("pc-theme-utility", "pc-palette-vibrant");
+            } else if (theme === "serene") {
+                root.classList.add("pc-theme-serene", "pc-palette-muted");
+            }
+
+            localStorage.setItem("saved-theme", theme);
+        });
+    }
+
+    function applyCustomizations() {
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)");
+
+        const button = document.querySelector(".color-scheme-toggle");
+        const themeSelector = document.querySelector(".theme-selector");
+
+        currentColorScheme = getStoredColorScheme();
+
+        let currentTheme: string = getStoredTheme() ?? "default";
+
+        updateIcon(currentColorScheme);
+
+        button?.addEventListener("click", () => {
+            const nextTheme = cycleTheme(currentColorScheme);
+
+            applyColorTheme(nextTheme);
+        });
+
+        themeSelector?.addEventListener("pc-select", (event) => {
+            const customEvent = event as CustomEvent;
+            const selectedItem = customEvent.detail.item as PcDropdownItem;
+            const newStyleTheme = selectedItem.value;
+
+            if (typeof newStyleTheme === "string") {
+                const finalTheme = parseStyleTheme(newStyleTheme);
+
+                if (finalTheme !== currentTheme) {
+                    currentTheme = finalTheme;
+
+                    applyTheme(currentTheme);
+
+                    const items =
+                        themeSelector.querySelectorAll<PcDropdownItem>(
+                            'pc-dropdown-item[type="radio"]',
+                        );
+
+                    items.forEach((item) => {
+                        item.checked = item === selectedItem;
+                    });
+                }
+            }
+        });
+
+        prefersLight.addEventListener("change", () => {
+            if (currentColorScheme === null) {
+                applyColorTheme(null);
+            }
+        });
+    }
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+            const isBackslash =
+                event.key === "\\" || event.code === "Backslash";
+
+            if (!isBackslash) {
+                return;
+            }
+
+            const path = (
+                event.composedPath
+                    ? event.composedPath()
+                    : [document.activeElement]
+            ).filter((element): element is EventTarget => element !== null);
+
+            if (isEditableInPath(path)) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const nextTheme = cycleTheme(currentColorScheme);
+
+            applyColorTheme(nextTheme);
+        },
+        { capture: true, passive: false },
+    );
+
+    document.addEventListener("astro:after-swap", () => applyCustomizations());
+
+    (() => applyCustomizations())();
+</script>

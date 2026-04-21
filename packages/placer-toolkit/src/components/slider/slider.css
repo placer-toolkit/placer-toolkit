@@ -1,0 +1,224 @@
+:host {
+    --track-size: 0.5em;
+    --thumb-width: 1.4em;
+    --thumb-height: 1.4em;
+    --marker-width: 0.1875em;
+    --marker-height: 0.1875em;
+}
+
+:host([orientation="vertical"]) {
+    inline-size: auto;
+}
+
+.label:has(~ .vertical) {
+    display: block;
+    order: 2;
+    max-inline-size: none;
+    text-align: center;
+}
+
+.description:has(~ .vertical) {
+    order: 3;
+    text-align: center;
+}
+
+.label:has(*:not(:empty)) ~ .slider {
+    &.horizontal {
+        margin-block-start: 0.5em;
+    }
+
+    &.vertical {
+        margin-block-end: 0.5em;
+    }
+}
+
+.slider {
+    touch-action: none;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible:not(.disabled) .thumb,
+    &:focus-visible:not(.disabled) .thumb-min,
+    &:focus-visible:not(.disabled) .thumb-max {
+        outline: var(--pc-focus-ring);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+}
+
+.track {
+    position: relative;
+    background-color: var(--pc-color-neutral-border-normal);
+    border-radius: var(--pc-border-radius-pill);
+    isolation: isolate;
+}
+
+.horizontal .track {
+    block-size: var(--track-size);
+}
+
+.vertical .track {
+    order: 1;
+    inline-size: var(--track-size);
+    block-size: 200px;
+}
+
+.disabled .track {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.indicator {
+    position: absolute;
+    inset-inline-start: min(var(--start), var(--end));
+    inset-inline-end: calc(100% - max(var(--start), var(--end)));
+    background-color: var(--pc-form-control-activated-color);
+    border-radius: inherit;
+}
+
+.horizontal .indicator {
+    inset-block-start: 0;
+    block-size: 100%;
+}
+
+.vertical .indicator {
+    inset-block-start: calc(100% - var(--end));
+    inset-block-end: var(--start);
+    inset-inline: 0;
+    inline-size: 100%;
+}
+
+.thumb,
+.thumb-min,
+.thumb-max {
+    position: absolute;
+    inline-size: var(--thumb-width);
+    block-size: var(--thumb-height);
+    border: var(--pc-border-width-m) var(--pc-border-style)
+        var(--pc-color-surface-default);
+    background-color: var(--pc-form-control-activated-color);
+    border-radius: var(--pc-border-radius-circle);
+    z-index: 3;
+    cursor: pointer;
+}
+
+.disabled .thumb,
+.disabled .thumb-min,
+.disabled .thumb-max {
+    cursor: inherit;
+}
+
+.horizontal .thumb,
+.horizontal .thumb-min,
+.horizontal .thumb-max {
+    inset-block-start: calc(50% - var(--thumb-height) / 2);
+    inset-inline-start: calc(var(--position) - var(--thumb-width) / 2);
+    inset-inline-end: auto;
+}
+
+.vertical .thumb,
+.vertical .thumb-min,
+.vertical .thumb-max {
+    inset-block-end: calc(var(--position) - var(--thumb-height) / 2);
+    inset-inline-start: calc(50% - var(--thumb-width) / 2);
+}
+
+:host([range]) {
+    .thumb-min:focus-visible,
+    .thumb-max:focus-visible {
+        outline: var(--pc-focus-ring);
+        z-index: 4;
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+}
+
+.markers {
+    pointer-events: none;
+}
+
+.marker {
+    position: absolute;
+    inline-size: var(--marker-width);
+    block-size: var(--marker-height);
+    background-color: var(--pc-color-surface-default);
+    border-radius: var(--pc-border-radius-circle);
+    z-index: 2;
+}
+
+.marker:first-of-type,
+.marker:last-of-type {
+    display: none;
+}
+
+.horizontal .marker {
+    top: calc(50% - var(--marker-height) / 2);
+    left: calc(var(--position) - var(--marker-width) / 2);
+}
+
+.vertical .marker {
+    top: calc(var(--position) - var(--marker-height) / 2);
+    left: calc(50% - var(--marker-width) / 2);
+}
+
+/* Marker labels */
+.references {
+    position: relative;
+
+    slot {
+        display: flex;
+        justify-content: space-between;
+        block-size: 100%;
+    }
+
+    ::slotted(*) {
+        color: var(--pc-color-text-quiet);
+        font-size: var(--pc-font-size-smaller);
+        line-height: 1;
+    }
+}
+
+.horizontal {
+    .references {
+        margin-block-start: 0.5em;
+    }
+}
+
+.vertical {
+    display: flex;
+    margin-inline: auto;
+
+    .track {
+        order: 1;
+    }
+
+    .references {
+        order: 2;
+        margin-inline-start: 0.75em;
+        inline-size: min-content;
+
+        slot {
+            flex-direction: column;
+        }
+    }
+}
+
+.vertical .references slot {
+    flex-direction: column;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}

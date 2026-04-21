@@ -1,0 +1,11 @@
+@layer pc-utilities {
+    .pc-cloak:has(:not(:defined)) {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .pc-cloak {
+        opacity: 1;
+        transition: opacity var(--pc-transition-fast) ease-out;
+    }
+}

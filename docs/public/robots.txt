@@ -1,7 +1,0 @@
-# For robots only. Human eyes beyond this point will be punished with nonstop cat videos.
-# © 2025–present Placer and its contributors
-
-User-agent: *
-Allow: /
-
-Sitemap: https://placer-toolkit.vercel.app/sitemap-index.xml
