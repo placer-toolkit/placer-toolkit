@@ -12,38 +12,43 @@ export const placerEclipse: ThemeRegistration = {
     },
     tokenColors: [
         {
-            scope: [
-                "keyword",
-                "storage",
-                "storage.type",
-                "variable.language",
-                "meta.keyword",
-            ],
+            scope: ["keyword.control", "storage.type", "storage.modifier"],
             settings: {
-                foreground: "var(--pc-color-danger-on-normal)",
+                foreground: "var(--pc-color-danger-on-quiet)",
             },
         },
         {
             scope: [
                 "entity.name.function",
+                "meta.property.object",
+                "support.function",
+                "variable.other.property",
+                "variable.other.object.property",
+            ],
+            settings: {
+                foreground: "var(--pc-color-cyan-50)",
+            },
+        },
+        {
+            scope: ["variable.other.constant", "variable.readonly"],
+            settings: {
+                foreground: "var(--pc-color-primary-on-quiet)",
+            },
+        },
+        {
+            scope: [
                 "entity.name.class",
                 "entity.name.type",
-                "entity.name.tag",
-                "entity.name.selector",
-                "entity.other.attribute-name.class",
-                "entity.other.attribute-name.id",
+                "support.class",
+                "support.variable.dom",
+                "variable.other.object",
             ],
             settings: {
                 foreground: "var(--pc-color-success-on-quiet)",
             },
         },
         {
-            scope: [
-                "variable",
-                "entity.other.attribute-name",
-                "support.type.property-name.css",
-                "meta.object-literal.key",
-            ],
+            scope: ["entity.other.attribute-name", "meta.object-literal.key"],
             settings: {
                 foreground: "var(--pc-color-primary-on-quiet)",
             },
@@ -51,13 +56,25 @@ export const placerEclipse: ThemeRegistration = {
         {
             scope: [
                 "constant.numeric",
-                "constant.language.boolean",
-                "constant.language.null",
-                "constant.language.undefined",
-                "support.constant.property-value.css",
+                "keyword.other.unit",
+                "constant.language",
             ],
             settings: {
-                foreground: "var(--pc-color-warning-on-quiet)",
+                foreground: "var(--pc-color-purple-60)",
+            },
+        },
+        {
+            scope: ["string", "string.regexp"],
+            settings: {
+                foreground: "var(--pc-color-primary-on-normal)",
+            },
+        },
+        {
+            scope: ["comment", "punctuation.definition.comment"],
+            settings: {
+                foreground:
+                    "color-mix(in oklab, var(--pc-color-neutral-on-normal), var(--pc-color-text-normal-inverse) var(--pc-color-mix-syntax))",
+                fontStyle: "italic",
             },
         },
         {
@@ -73,42 +90,39 @@ export const placerEclipse: ThemeRegistration = {
             },
         },
         {
-            scope: ["string", "string.regexp"],
-            settings: {
-                foreground:
-                    "color-mix(in oklab, var(--pc-color-primary-on-normal), var(--pc-color-text-normal) var(--pc-color-mix-syntax))",
-            },
-        },
-        {
-            scope: ["comment"],
-            settings: {
-                foreground: "var(--pc-color-neutral-on-quiet)",
-            },
-        },
-        {
-            scope: [
-                "entity.name.tag",
-                "entity.name.selector",
-                "entity.other.attribute-name.class",
-                "entity.other.attribute-name.id",
-                "entity.other.attribute-name.pseudo-class",
-            ],
+            scope: ["entity.name.selector", "entity.name.tag"],
             settings: {
                 foreground: "var(--pc-color-success-on-quiet)",
             },
         },
         {
+            scope: ["support.type.property-name.css"],
+            settings: {
+                foreground: "var(--pc-color-primary-on-quiet)",
+            },
+        },
+        {
+            scope: ["support.constant.property-value.css"],
+            settings: {
+                foreground: "var(--pc-color-neutral-on-normal)",
+            },
+        },
+        {
+            scope: ["support.constant.color.w3c-standard-color-name.css"],
+            settings: {
+                foreground: "var(--pc-color-purple-60)",
+            },
+        },
+        {
             scope: ["meta.template.expression"],
             settings: {
-                foreground:
-                    "color-mix(in oklab, var(--pc-color-text-normal), var(--pc-color-text-normal-inverse) var(--pc-color-mix-syntax))",
+                foreground: "var(--pc-color-neutral-on-quiet)",
             },
         },
         {
             scope: ["markup.heading"],
             settings: {
-                foreground:
-                    "color-mix(in oklab, var(--pc-color-primary-on-normal), var(--pc-color-text-normal) 10%)",
+                foreground: "var(--pc-color-primary-on-quiet)",
                 fontStyle: "bold",
             },
         },

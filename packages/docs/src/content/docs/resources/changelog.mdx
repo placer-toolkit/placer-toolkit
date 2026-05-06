@@ -55,6 +55,8 @@ This rating flags minor changes that impact consistency or adherence to future A
 - Standardised the Punjabi (pa) locales to align with CLDR standards. [pull:84]<br />**⚠️ Breaking change:** `pa` is now the Gurmukhi script (LTR) and `pa-Arab` is now the Shahmukhi script (RTL). If you were using `pa` to get the Shahmukhi variant, you must now use `pa-Arab`. If you were using `pa-Guru` to get the Gurmukhi variant, you must now use `pa-Guru`.
 - Added radio dropdown items in the [Dropdown](/docs/components/dropdown) and the [Dropdown Item](/docs/components/dropdown-item) component.
 - Added the `.pc-cite-block` class for the `<figure>` element to cite blockquotes. [pull:84]
+- Implemented the `sync-key` attribute in the [Tab Group](/docs/components/tab-group) component to sync and save tab selection across the page.
+- Resolved the accessibility and DX issues in the [Tab Group](/docs/components/tab-group), [Tab](/docs/components/tab) and [Tab Panel](/docs/components/tab-panel) components.<br />**⚠️ Breaking change:** If you are using the `closable` attribute on the [Tab](/docs/components/tab) component, remove the `<script>` tag or related scripts to the closable tab feature, as the closable feature is now handled automatically in the component itself. You may retain the `pc-close` event for other uses though, as it is still being emitted.
 - Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch). [pull:84]
 - Improved the tab indicator animation in the [Tab Group](/docs/components/tab-group) component to be more lively. [pull:84]
 
@@ -69,7 +71,7 @@ This rating flags minor changes that impact consistency or adherence to future A
 ### Milestones
 
 - Switched to `PlacerFormAssociatedElement` which uses the `ElementInternals` API for the [Button](/docs/components/button), [Checkbox](/docs/components/checkbox), [Color Picker](/docs/components/color-picker), [Input](/docs/components/input), [Radio Group](/docs/components/radio-group), [Radio](/docs/components/radio), [Select](/docs/components/select), [Option](/docs/components/option), [Switch](/docs/components/switch) and [Textarea](/docs/components/textarea) components. [pull:78]<br />**⚠️ Breaking change:** This change may break your old forms if you rely on the `[data-*]` attributes. Since we now use the `ElementInternals` API, we now use custom states. Change your CSS to use `:state()` instead of `[data-*]`.
-    ```diff
+    ```css
     -pc-select[data-required] { /* … */ }
     -pc-select[data-optional] { /* … */ }
     -pc-select[data-invalid] { /* … */ }
@@ -107,7 +109,7 @@ This rating flags minor changes that impact consistency or adherence to future A
     - `[data-pc-button-group-button-inner]` → `.pc-button-group-button-inner`
     - `[data-pc-button-group-button-last]` → `.pc-button-group-button-last`
 - Replaced the old usage of the `value` attribute/property in the [Select](/docs/components/select) component for initial option selection to use the `selected` attribute/property in the [Option](/docs/components/option) component. [pull:78]<br />**⚠️ Breaking change:** You have to switch to the new one, otherwise, initial option selection will no longer work.
-    ```diff
+    ```html
     -<pc-select value="option-1">
     -    <pc-option value="option-1">Option 1</pc-option>
     +<pc-select>
@@ -183,7 +185,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - Rebuilt the entire Placer Toolkit homepage with a theming playground and other stuff.
 - Removed the Menu, Menu Item and Menu Label components, as they are replaced with the already existing [Dropdown](/docs/components/dropdown) component and the new [Dropdown Item](/docs/components/dropdown-item) component. The Menu Label component is replaced with a slotted `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>` and `<h6>` element.<br />**🚨 Major breaking change:** If you use any of these components, they must be removed and be replaced with the new equivalent.
 - Replaced the Icon Button component with the [Button](/docs/components/button) component with icon button support.<br />**🚨 Major breaking change:** If you use the Icon Button component, you must replace it with the [Button](/docs/components/button) and [Icon](/docs/components/icon) components as well as a few attributes to match it up as close as possible.
-    ```diff
+    ```html
     -<pc-icon-button
     -    library="default"
     -    icon-style="solid"
@@ -218,12 +220,12 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 
 ### Enhancements
 
-- Refactored the paths of where CSS files are placed.<br />**🚨 Major breaking change:** You’ll immediately notice that your CSS wouldn’t load after updating to v1.0.0-alpha.1. Update your CSS paths accordingly with the help of this diff. This diff was made for the CDN, but we assume that you know how to do the same for the npm imports (use `dist` instead of `cdn`).
-    ```diff
+- Refactored the paths of where CSS files are placed.<br />**🚨 Major breaking change:** You’ll immediately notice that your CSS wouldn’t load after updating to v1.0.0-alpha.1. Update your CSS paths accordingly with the help of this diff. This diff was made for the CDN, but we assume that you know how to do the same for the npm imports (use `dist/` instead of `cdn/`).
+    ```html
     -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/default.css" />
     -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/native-styles.css" />
-    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/docs/style-utilities/docs/style-utilities.css" />
-    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/docs/style-utilities/visually-hidden.css" />
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/style-utilities.css" />
+    -<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@0.5.1/dist/style-utilities/visually-hidden.css" />
     +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/default.css" />
     +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/native.css" />
     +<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/placer-toolkit@1.0.0-alpha.1/cdn/styles/utilities.css" />
@@ -231,7 +233,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
     ```
 
     We instead recommend loading `placer.css`; if you want to do so, check out the [Installation](/docs/get-started/installation) docs.
-- Removed [Rollup](https://rollupjs.org) from our build pipeline and replaced it with our custom build script powered by [esbuild](https://esbuild.github.io). With this change, we separated CDN and npm builds: `cdn` for CDN users, `dist` for npm users.<br />**⚠️ Breaking change:** If you use the CDN, refactor all links to `/cdn/`, as it improves performance. You may need to reclone this repository to apply this change correctly if you have your own custom Placer Toolkit build.
+- Removed [Rollup](https://rollupjs.org) from our build pipeline and replaced it with our custom build script powered by [esbuild](https://esbuild.github.io). With this change, we separated CDN and npm builds: `cdn/` for CDN users, `dist/` for npm users.<br />**⚠️ Breaking change:** If you use the CDN, refactor all links to `cdn/`, as it improves performance. You may need to reclone this repository to apply this change correctly if you have your own custom Placer Toolkit build.
 - Bumped the Font Awesome version in the [Icon](/docs/components/icon) component from 6.7.2 to 7.1.0.<br />**⚠️ Breaking change:** Some refactoring must be done on our end to fit the breaking changes in Font Awesome 7. If you’re using the `fixed-width` attribute, that can now be safely removed, as FA icons now are fixed width by default. A new attribute has been introduced instead called `auto-width`. That reverts to the old style of only taking up as much horizontal space as the icon needs.
 - Updated all CSS directional properties to use logical properties for better internationalisation support (e.g., `margin-right` → `margin-inline-end`, `width` → `inline-size`).
 - Replaced all units and numbers that are used in English with the ones used in <abbr title="International System of Units">SI</abbr> in the Placer Toolkit docs.
@@ -348,13 +350,12 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - Added 14 new components: [Callout](/docs/components/callout), [Comparer](/docs/components/comparer), [Copy Button](/docs/components/copy-button), [Details](/docs/components/details), [Dialog](/docs/components/dialog), [Divider](/docs/components/divider), [Drawer](/docs/components/drawer), [Dropdown](/docs/components/dropdown), Menu, Menu Item, Menu Label, [Option](/docs/components/option), [Select](/docs/components/select) and [Tag](/docs/components/tag).
 - Moved style utilities to the `style-utilities/` folder from `utilities/`.<br />**⚠️ Breaking change:** If you’re using a style utility, please refactor paths from `utilities/` to `style-utilities/`.
 - Removed the `<pc-visually-hidden>` component in favour of the [Visually Hidden](/docs/style-utilities/visually-hidden) style utility.<br />**⚠️ Breaking change:** If you’re using `<pc-visually-hidden>`, please refactor your code.
-    ```diff
+    ```html
     -<pc-visually-hidden>Lorem ipsum dolor sit amet…</pc-visually-hidden>
     +<span class="pc-visually-hidden">Lorem ipsum dolor sit amet…</span>
     ```
 
-    You may need to import `visually-hidden.css` from the `style-utilities/`
-    folder.
+    You may need to import `visually-hidden.css` from the `style-utilities/` folder.
 - Reworked some native styles and adjusted tables slightly.
 - Renamed all `--pc-input-hint-text-*` custom properties to `--pc-input-hint-*`.<br />**⚠️ Breaking change:** If you’re using any of these custom properties in your code, please refactor them to the new name.
 - Changed colours to use OKLCH instead of HSL and the new [CSS Color Module Level 4](https://www.w3.org/TR/css-color-4) syntax.

@@ -9,8 +9,10 @@ import {
 import { PlacerElement } from "../../internal/placer-element.js";
 import { classMap } from "lit/directives/class-map.js";
 import { LocalizeController } from "../../utilities/localize.js";
+import { PcSyncEvent } from "../../events/pc-sync.js";
 import { PcTabHideEvent } from "../../events/pc-tab-hide.js";
 import { PcTabShowEvent } from "../../events/pc-tab-show.js";
+import type { PcCloseEvent } from "../../events/pc-close.js";
 import { scrollIntoView } from "../../internal/scroll.js";
 import { watch } from "../../internal/watch.js";
 import "../../internal/scrollend-polyfill.js";
@@ -31,6 +33,7 @@ import styles from "./tab-group.css";
  * @slot - Used for grouping tab panels in the tab group. It must only contain `<pc-tab-panel>` elements.
  * @slot navigation - Used for grouping tabs in the tab group. It must only contain `<pc-tab>` elements.
  *
+ * @event pc-sync - Emitted when the tab group’s active tab is persisted and synced.
  * @event {{ name: String }} pc-tab-show - Emitted when a tab is shown.
  * @event {{ name: String }} pc-tab-hide - Emitted when a tab is hidden.
  *
@@ -76,6 +79,9 @@ export class PcTabGroup extends PlacerElement {
     /** When this is set to `auto`, navigating the tabs with the arrow keys will instantly show the corresponding tab panel. If this is set to `manual`, the tab will receive focus but will not show the corresponding tab panel until the user presses <kbd>Space</kbd> or <kbd>Enter</kbd>/<kbd>Return</kbd>. */
     @property() activation: "auto" | "manual" = "auto";
 
+    /** When set, the active tab will be persisted in [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) and synced with other tab groups using the same key. */
+    @property({ attribute: "sync-key" }) syncKey?: string;
+
     /** Hides the scroll buttons when tabs overflow. */
     @property({ attribute: "no-scroll-controls", type: Boolean })
     noScrollControls = false;
@@ -84,7 +90,18 @@ export class PcTabGroup extends PlacerElement {
     @property({ attribute: "fixed-scroll-controls", type: Boolean })
     fixedScrollControls = false;
 
+    private get storageKey() {
+        return `pc-tab-sync:${this.syncKey}`;
+    }
+
     connectedCallback() {
+        if (this.syncKey) {
+            window.addEventListener(
+                "pc-sync",
+                this.handleTabSync as EventListener,
+            );
+        }
+
         const whenAllDefined = Promise.all([
             customElements.whenDefined("pc-tab"),
             customElements.whenDefined("pc-tab-panel"),
@@ -108,6 +125,7 @@ export class PcTabGroup extends PlacerElement {
                 }
 
                 const tagName = (target as HTMLElement).tagName.toLowerCase();
+
                 return tagName === "pc-tab" || tagName === "pc-tab-panel";
             });
 
@@ -123,7 +141,7 @@ export class PcTabGroup extends PlacerElement {
                         ),
                 )
             ) {
-                setTimeout(() => this.setAriaLabels());
+                setTimeout(() => this.setARIALabels());
             }
 
             if (
@@ -170,11 +188,29 @@ export class PcTabGroup extends PlacerElement {
                 const intersectionObserver = new IntersectionObserver(
                     (entries, observer) => {
                         if (entries[0].intersectionRatio > 0) {
-                            this.setAriaLabels();
-                            this.setActiveTab(
-                                this.getActiveTab() ?? this.tabs[0],
-                                { emitEvents: false },
-                            );
+                            this.setARIALabels();
+
+                            let initialTab = this.getActiveTab();
+
+                            if (this.syncKey) {
+                                const savedPanel = localStorage.getItem(
+                                    `pc-tab-sync:${this.syncKey}`,
+                                );
+
+                                if (savedPanel) {
+                                    const tabByValue = this.tabs.find(
+                                        (tab) => tab.panel === savedPanel,
+                                    );
+
+                                    if (tabByValue) {
+                                        initialTab = tabByValue;
+                                    }
+                                }
+                            }
+
+                            this.setActiveTab(initialTab ?? this.tabs[0], {
+                                emitEvents: false,
+                            });
                             observer.unobserve(entries[0].target);
                         }
                     },
@@ -187,6 +223,13 @@ export class PcTabGroup extends PlacerElement {
     disconnectedCallback() {
         super.disconnectedCallback();
         this.mutationObserver?.disconnect();
+
+        if (this.syncKey) {
+            window.removeEventListener(
+                "pc-sync",
+                this.handleTabSync as EventListener,
+            );
+        }
 
         if (this.navigation) {
             this.resizeObserver?.unobserve(this.navigation);
@@ -255,6 +298,7 @@ export class PcTabGroup extends PlacerElement {
                 tab.matches(":focus"),
             );
             const isRTL = this.localize.dir() === "rtl";
+
             let nextTab: null | PcTab = null;
 
             if (activeElement?.tagName.toLowerCase() === "pc-tab") {
@@ -294,10 +338,12 @@ export class PcTabGroup extends PlacerElement {
                     return;
                 }
 
+                this.tabs.forEach((tab) => (tab.tabIndex = -1));
+
                 nextTab.tabIndex = 0;
                 nextTab.focus({ preventScroll: true });
 
-                if (this.activation === "auto") {
+                if (this.activation === "auto" && !nextTab.disabled) {
                     this.setActiveTab(nextTab, { scrollBehavior: "smooth" });
                 } else {
                     this.tabs.forEach((tabElement) => {
@@ -312,6 +358,18 @@ export class PcTabGroup extends PlacerElement {
                 event.preventDefault();
             }
         }
+    }
+
+    private handleFocusOut(event: FocusEvent) {
+        const target = event.relatedTarget as HTMLElement;
+
+        if (target && target.closest("pc-tab-group") === this) {
+            return;
+        }
+
+        this.tabs.forEach((tab) => {
+            tab.tabIndex = tab === this.activeTab ? 0 : -1;
+        });
     }
 
     private handleScrollToStart() {
@@ -334,6 +392,44 @@ export class PcTabGroup extends PlacerElement {
         });
     }
 
+    private async handleTabClose(event: PcCloseEvent) {
+        const tab = event.target as PcTab;
+        const panel = this.panels.find((panel) => panel.name === tab.panel);
+        const index = this.tabs.indexOf(tab);
+
+        if (index === -1) {
+            return;
+        }
+
+        const successor = this.tabs[index + 1] || this.tabs[index - 1];
+
+        tab.remove();
+        panel?.remove();
+
+        await this.updateComplete;
+
+        this.syncTabsAndPanels();
+
+        if (successor) {
+            if (tab.active) {
+                this.setActiveTab(successor, { scrollBehavior: "smooth" });
+
+                successor.focus();
+            }
+        } else {
+            this.tabGroup.focus();
+        }
+    }
+
+    private handleTabSync(event: PcSyncEvent) {
+        if (
+            event.detail.syncKey === this.syncKey &&
+            event.detail.emitter !== this
+        ) {
+            this.show(event.detail.panel);
+        }
+    }
+
     private setActiveTab(
         tab: PcTab,
         options?: { emitEvents?: boolean; scrollBehavior?: "auto" | "smooth" },
@@ -346,6 +442,7 @@ export class PcTabGroup extends PlacerElement {
 
         if (tab !== this.activeTab && !tab.disabled) {
             const previousTab = this.activeTab;
+
             this.activeTab = tab;
 
             this.tabs.forEach((element) => {
@@ -379,9 +476,21 @@ export class PcTabGroup extends PlacerElement {
                 );
             }
         }
+
+        if (this.syncKey && options.emitEvents) {
+            localStorage.setItem(this.storageKey, tab.panel);
+
+            this.dispatchEvent(
+                new PcSyncEvent({
+                    syncKey: this.syncKey!,
+                    panel: tab.panel,
+                    emitter: this,
+                }),
+            );
+        }
     }
 
-    private setAriaLabels() {
+    private setARIALabels() {
         this.tabs.forEach((tab) => {
             const panel = this.panels.find(
                 (element) => element.name === tab.panel,
@@ -435,7 +544,7 @@ export class PcTabGroup extends PlacerElement {
 
     private syncTabsAndPanels() {
         this.tabs = this.getAllTabs();
-        this.focusableTabs = this.tabs.filter((el) => !el.disabled);
+        this.focusableTabs = this.tabs.filter((element) => !element.disabled);
 
         this.panels = this.getAllPanels();
         this.syncIndicator();
@@ -453,23 +562,12 @@ export class PcTabGroup extends PlacerElement {
 
         let nextIndex = currentIndex + iterator;
 
-        while (currentIndex < this.tabs.length) {
-            nextTab = this.tabs[nextIndex] || null;
-
-            if (nextTab === null) {
-                if (direction === "forward") {
-                    nextTab = this.focusableTabs[0];
-                } else {
-                    nextTab = this.focusableTabs[this.focusableTabs.length - 1];
-                }
-                break;
-            }
-
-            if (!nextTab.disabled) {
-                break;
-            }
-
-            nextIndex += iterator;
+        if (nextIndex >= this.tabs.length) {
+            nextTab = this.tabs[0];
+        } else if (nextIndex < 0) {
+            nextTab = this.tabs[this.tabs.length - 1];
+        } else {
+            nextTab = this.tabs[nextIndex];
         }
 
         return nextTab;
@@ -550,6 +648,8 @@ export class PcTabGroup extends PlacerElement {
                 })}
                 @click=${this.handleClick}
                 @keydown=${this.handleKeyDown}
+                @focusout=${this.handleFocusOut}
+                @pc-close=${this.handleTabClose}
             >
                 <div class="navigation-container" part="navigation">
                     ${this.hasScrollControls
@@ -585,6 +685,7 @@ export class PcTabGroup extends PlacerElement {
 
                     <div
                         class="navigation"
+                        tabindex="-1"
                         @scrollend=${this.updateScrollButtons}
                     >
                         <div part="tabs" class="tabs" role="tablist">

@@ -98,13 +98,13 @@ export class PlacerFormAssociatedElement
 
     validators: Validator[] = [];
 
-    @property({ state: true, attribute: false }) valueHasChanged: boolean =
-        false;
-    @property({ state: true, attribute: false }) hasInteracted: boolean = false;
+    @property({ state: true, attribute: false })
+    valueHasChanged: boolean = false;
+    @property({ state: true, attribute: false })
+    hasInteracted: boolean = false;
 
-    @property({ attribute: "custom-error", reflect: true }) customError:
-        | string
-        | null = null;
+    @property({ attribute: "custom-error", reflect: true })
+    customError: string | null = null;
 
     private emittedEvents: string[] = [];
 

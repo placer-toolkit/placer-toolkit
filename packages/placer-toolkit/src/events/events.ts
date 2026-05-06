@@ -30,5 +30,6 @@ export type { PcShowEvent } from "./pc-show.js";
 // export type { PcSlideChangeEvent } from "./pc-slide-change.js";
 export type { PcStartEvent } from "./pc-start.js";
 export type { PcSubmenuOpeningEvent } from "./pc-submenu-opening.js";
+export type { PcSyncEvent } from "./pc-sync.js";
 export type { PcTabHideEvent } from "./pc-tab-hide.js";
 export type { PcTabShowEvent } from "./pc-tab-show.js";

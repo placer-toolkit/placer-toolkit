@@ -101,8 +101,7 @@ export function update() {
  */
 export class LocalizeController<
     UserTranslation extends Translation = DefaultTranslation,
-> implements ReactiveController
-{
+> implements ReactiveController {
     host: ReactiveControllerHost & HTMLElement;
 
     constructor(host: ReactiveControllerHost & HTMLElement) {

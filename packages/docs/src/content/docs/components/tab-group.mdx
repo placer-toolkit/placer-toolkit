@@ -122,7 +122,7 @@ Tabs can be shown on the ending side by setting the `placement` attribute to `en
 
 ### Closable tabs
 
-Add the `closable` attribute to a tab to show a close button. This example shows how you can dynamically remove tabs from the DOM when the close button is pressed.
+Add the `closable` attribute to a tab to add a close button.
 
 ```demo
 <pc-tab-group class="tabs-closable">
@@ -150,22 +150,6 @@ Add the `closable` attribute to a tab to show a close button. This example shows
         This is the third closable tab panel.
     </pc-tab-panel>
 </pc-tab-group>
-
-<script>
-    const closableTabGroup = document.querySelector(".tabs-closable");
-
-    closableTabGroup.addEventListener("pc-close", async (event) => {
-        const tab = event.target;
-        const panel = closableTabGroup.querySelector(`pc-tab-panel[name="${tab.panel}"]`);
-
-        if (tab.active) {
-            closableTabGroup.show(tab.previousElementSibling.panel);
-        }
-
-        tab.remove();
-        panel.remove();
-    });
-</script>
 ```
 
 ### Scrolling tabs

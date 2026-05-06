@@ -82,7 +82,7 @@ Der Auto‐Loader ist der einfachste Weg, Placer Toolkit zu nutzen, aber untersc
 
 ### Komponenten‐Cherry‐Picking über das CDN
 
-Cherry Picking lädt nur die benötigten Komponenten direkt beim Aufruf der Seite, während die Anzahl der zu ladenden Dateien minimiert wird. Der Nachteil ist, dass du jede einzelne Komponente auf jeder Seite importieren musst, auf der sie genutzt wird. Zusätzlich musst du `placer.css` oder andere CSS‐Dateien einbinden, um importierte Komponenten zu stylen.
+Beim Cherry‐Picking lädst du nur die Komponenten, die du für die jeweilige Seite wirklich benötigst. Das minimiert die Dateigröße und optimiert die Ladezeit. Der Nachteil ist, dass du jede einzelne Komponente auf jeder Seite importieren musst, auf der sie genutzt wird. Zusätzlich musst du `placer.css` oder andere CSS‐Dateien einbinden, um importierte Komponenten zu stylen.
 
 Hier ist ein Beispiel, das nur die Button‐Komponente lädt:
 
@@ -120,7 +120,7 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
     <pc-tab-panel name="npm-registry">
         Wenn du die npm‐Registry nutzen willst, kannst du dieses Befehl verwenden:
 
-        <pc-tab-group>
+        <pc-tab-group sync-key="package-manager">
             <pc-tab slot="navigation" panel="npm">npm</pc-tab>
             <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
             <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
@@ -179,10 +179,11 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
         Wenn du die Tarball‐Datei nutzen willst, lade sie zuerst in das Projekt‐Root herunter:
 
         <pc-button
-            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.3/placer-toolkit-1.0.0-alpha.3.tgz"
+            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.4/placer-toolkit-1.0.0-alpha.4.tgz"
             appearance="primary"
             pill
             download
+            style="margin-block-end: var(--pc-content-spacing)"
         >
             <pc-icon
                 library="default"
@@ -193,11 +194,9 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
             <span>.tgz‐Datei herunterladen</span>
         </pc-button>
 
-        <br /><br />
-
         Dann installierst du sie mit diesem Befehl:
 
-        <pc-tab-group>
+        <pc-tab-group sync-key="package-manager">
             <pc-tab slot="navigation" panel="npm">npm</pc-tab>
             <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
             <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>

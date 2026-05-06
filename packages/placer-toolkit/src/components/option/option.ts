@@ -50,7 +50,8 @@ export class PcOption extends PlacerElement {
     @property({ type: Boolean, attribute: false }) selected = false;
 
     /** Selects an option initially. */
-    @property({ type: Boolean, attribute: "selected" }) defaultSelected = false;
+    @property({ type: Boolean, attribute: "selected" })
+    defaultSelected = false;
 
     _label: string = "";
 

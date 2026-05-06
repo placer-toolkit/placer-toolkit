@@ -119,6 +119,8 @@ export class PcMutationObserver extends PlacerElement {
     }
 
     render() {
-        return html`<slot></slot>`;
+        return html`
+            <slot></slot>
+        `;
     }
 }

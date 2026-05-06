@@ -1,7 +1,7 @@
 ---
 import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
 
-import DynamicTableOfContents from "../../components/DynamicTableOfContents.astro";
+import DynamicTableOfContents from "./DynamicTableOfContents.astro";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
@@ -29,33 +29,56 @@ const translation = useTranslations(language);
 <script>
     import type { PcDetails } from "placer-toolkit/dist/components/details/details.js";
 
-    const mobileTOC = document.querySelector<HTMLDivElement>(".mobile-toc");
-    const mobileDetails = mobileTOC?.querySelector<PcDetails>(
-        ".mobile-toc pc-details",
-    );
+    function initializeMobileTOC() {
+        const mobileTOC = document.querySelector<HTMLDivElement>(".mobile-toc");
+        const mobileDetails = mobileTOC?.querySelector<PcDetails>(
+            ".mobile-toc pc-details",
+        );
 
-    mobileDetails?.addEventListener("click", (event) => {
-        if ((event.target as HTMLElement).closest("a")) {
-            mobileDetails.open = false;
+        if (!mobileDetails || !mobileTOC) {
+            return;
         }
-    });
 
-    document.addEventListener("pointerdown", (event) => {
-        const target = event.target as HTMLElement;
+        mobileDetails.addEventListener("click", (event) => {
+            if ((event.target as HTMLElement).closest("a")) {
+                mobileDetails.open = false;
+            }
+        });
 
-        if (mobileDetails?.open && !mobileTOC?.contains(target)) {
-            mobileDetails.open = false;
+        function handleDocumentKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape" && mobileDetails?.open) {
+                event.preventDefault();
+
+                mobileDetails.open = false;
+                mobileDetails.focus();
+            }
         }
-    });
 
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && mobileDetails?.open) {
-            event.preventDefault();
+        function handleDocumentPointerDown(event: PointerEvent) {
+            const target = event.target as HTMLElement;
 
-            mobileDetails.open = false;
-            mobileDetails.focus();
+            if (mobileDetails?.open && !mobileTOC?.contains(target)) {
+                mobileDetails.open = false;
+            }
         }
-    });
+
+        document.addEventListener("keydown", handleDocumentKeyDown);
+        document.addEventListener("pointerdown", handleDocumentPointerDown);
+
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                document.removeEventListener("keydown", handleDocumentKeyDown);
+                document.removeEventListener(
+                    "pointerdown",
+                    handleDocumentPointerDown,
+                );
+            },
+            { once: true },
+        );
+    }
+
+    document.addEventListener("astro:page-load", initializeMobileTOC);
 </script>
 
 <style>
@@ -63,10 +86,17 @@ const translation = useTranslations(language);
         position: fixed;
         inset-block-start: var(--navigation-bar-height);
         inset-inline-start: var(--sidebar-width);
-        inline-size: 100%;
+        inline-size: calc(100dvw - var(--sidebar-width));
         block-size: auto;
         background-color: var(--pc-color-surface-default);
         z-index: 2;
+        view-transition-name: mobile-toc;
+    }
+
+    ::view-transition-old(mobile-toc),
+    ::view-transition-new(mobile-toc) {
+        mix-blend-mode: normal;
+        animation: none;
     }
 
     .mobile-toc pc-details {
@@ -79,7 +109,7 @@ const translation = useTranslations(language);
         border-block-end: var(--pc-border-width-s) var(--pc-border-style)
             transparent;
         border-radius: 0;
-        transition: border-color 0s ease-in-out;
+        transition: none;
     }
 
     .mobile-toc pc-details:not([open])::part(base) {
@@ -215,6 +245,7 @@ const translation = useTranslations(language);
     @media screen and (max-width: 992px) {
         .mobile-toc {
             inset-inline-start: 0;
+            inline-size: 100%;
         }
 
         .mobile-toc .toc-dropdown {

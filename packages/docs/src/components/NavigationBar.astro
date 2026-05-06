@@ -106,9 +106,7 @@ const translatePath = useTranslatedPath(language);
                 <span class="label">{translation("ui.search.label")}</span>
                 <span slot="suffix">
                     {/* prettier-ignore */}
-                    <kbd class="search-key"
-                        >{translation("ui.keyboard.ctrl")}</kbd
-                    >
+                    <kbd class="search-key">{translation("ui.keyboard.ctrl")}</kbd>
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>
@@ -142,7 +140,7 @@ const translatePath = useTranslatedPath(language);
     if (searchButton && switchKey && innerButton) {
         if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
             switchKey.textContent = "⌘";
-            searchButton.setAttribute("aria-keyshortcuts", "Meta+K");
+            innerButton.setAttribute("aria-keyshortcuts", "Meta+K");
         } else {
             innerButton.setAttribute("aria-keyshortcuts", "Control+K");
         }

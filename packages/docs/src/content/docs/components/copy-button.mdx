@@ -7,7 +7,7 @@ category: actions
 Copies text data to the clipboard when the user clicks the trigger.
 
 ```demo:open
-<pc-copy-button value="Placer Toolkit rocks!"></pc-copy-button>
+<pc-copy-button value="Hello World!"></pc-copy-button>
 ```
 
 <pc-callout appearance="warning">
@@ -123,7 +123,7 @@ A success indicator is briefly shown after copying. You can customise the length
 
 ```demo
 <pc-copy-button
-    value="Placer Toolkit rocks!"
+    value="Hello World!"
     feedback-duration="250"
 ></pc-copy-button>
 ```
@@ -156,6 +156,7 @@ You can customise the button to your liking with CSS.
 
 <style>
     pc-copy-button.awesome-copy-button::part(button) {
+        margin-block-end: 0.25rem;
         background-color: var(--pc-color-warning-fill-normal);
         color: var(--pc-color-warning-on-normal);
         border: var(--pc-border-width-m) var(--pc-border-style)

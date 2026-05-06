@@ -143,6 +143,11 @@ var {
 .hero-callout {
     inline-size: auto;
 }
+
+.hero-callout b {
+    flex: 1;
+    text-wrap: pretty;
+}
 /* #endregion */
 
 /* #region — Responsive design */

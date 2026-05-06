@@ -39,7 +39,9 @@ export class PcBadge extends PlacerElement {
     @property({ type: Boolean, reflect: true }) pulse = false;
 
     render() {
-        return html`<slot part="base" role="status"></slot>`;
+        return html`
+            <slot part="base" role="status"></slot>
+        `;
     }
 }
 

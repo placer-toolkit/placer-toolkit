@@ -21,6 +21,8 @@ export class PcSkeleton extends PlacerElement {
     @property({ reflect: true }) effect: "pulse" | "sheen" | "none" = "none";
 
     render() {
-        return html`<div part="indicator" class="indicator"></div>`;
+        return html`
+            <div part="indicator" class="indicator"></div>
+        `;
     }
 }

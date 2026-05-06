@@ -3,7 +3,7 @@ import {
     getLanguageFromURL,
     useTranslations,
     useTranslatedPath,
-} from "../i18n/utilities.js";
+} from "../../i18n/utilities.js";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 interface Props {
@@ -220,15 +220,19 @@ function buildSidebarData(
         let mutableLinks = [...links];
 
         if (category.sortType === "alphabetical") {
-            let parentLinks = mutableLinks.filter((link) => !link.isChildOf) as SidebarLink[];
-            let childLinks = mutableLinks.filter((link) => link.isChildOf) as SidebarLink[];
+            let parentLinks = mutableLinks.filter(
+                (link) => !link.isChildOf,
+            ) as SidebarLink[];
+            let childLinks = mutableLinks.filter(
+                (link) => link.isChildOf,
+            ) as SidebarLink[];
 
             const forcedOrderLinks = parentLinks
-                .filter(link => link.order !== 10000)
+                .filter((link) => link.order !== 10000)
                 .sort((a, b) => a.order - b.order);
 
             const alphabeticallySortedLinks = parentLinks
-                .filter(link => link.order === 10000)
+                .filter((link) => link.order === 10000)
                 .sort((a, b) => a.title.localeCompare(b.title));
 
             let finalParentLinks = [...alphabeticallySortedLinks];
@@ -259,7 +263,9 @@ function buildSidebarData(
 
             finalParentLinks.forEach((parent) => {
                 if (parent.children && parent.children.length > 0) {
-                    parent.children.sort((a, b) => a.title.localeCompare(b.title));
+                    parent.children.sort((a, b) =>
+                        a.title.localeCompare(b.title),
+                    );
                 }
             });
 

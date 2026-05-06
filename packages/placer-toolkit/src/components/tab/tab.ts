@@ -11,7 +11,7 @@ import styles from "./tab.css";
 let id = 0;
 
 /**
- * @summary Tabs are used inside [tab groups](/components/tab-group) to represent and activate [tab panels](/components/tab-panel).
+ * @summary Tabs are used inside tab groups to represent and activate tab panels.
  * @status experimental
  * @since 0.1.0
  *
@@ -22,8 +22,9 @@ let id = 0;
  * @event pc-close - Emitted when the tab is closable and the close button is pressed.
  *
  * @csspart base - The component’s base wrapper.
- * @csspart close-button - The close button, a `<pc-icon-button>`.
+ * @csspart close-button - The close button, a `<pc-button>`.
  * @csspart close-button-base - The close button’s `base` part.
+ * @csspart close-button-label - The close button’s `label` part.
  */
 @customElement("pc-tab")
 export class PcTab extends PlacerElement {
@@ -49,18 +50,33 @@ export class PcTab extends PlacerElement {
     /** Disables the tab. */
     @property({ type: Boolean }) disabled = false;
 
-    /** @internal This needs to be wrapped in a `@property` decorator, otherwise, `CustomElement` throws a runtime error: `The result must not have attributes.` */
+    /** @internal This needs to be wrapped in a `@property` decorator, otherwise, `CustomElement` throws a runtime error: The result must not have attributes. */
     @property({ type: Number, reflect: true }) tabIndex = 0;
 
     connectedCallback() {
         super.connectedCallback();
+
         this.setAttribute("role", "tab");
+
+        this.addEventListener("keydown", this.handleKeyDown);
     }
 
     private handleCloseClick(event: Event) {
         event.stopPropagation();
 
         this.dispatchEvent(new PcCloseEvent());
+    }
+
+    private handleKeyDown(event: KeyboardEvent) {
+        if (event.repeat) {
+            return;
+        }
+
+        if (this.closable && !this.disabled && event.key === "Delete") {
+            event.preventDefault();
+
+            this.dispatchEvent(new PcCloseEvent());
+        }
     }
 
     @watch("active")
@@ -71,10 +87,6 @@ export class PcTab extends PlacerElement {
     @watch("disabled")
     handleDisabledChange() {
         this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
-
-        if (this.disabled && !this.active) {
-            this.tabIndex = -1;
-        }
     }
 
     render() {
@@ -100,7 +112,10 @@ export class PcTab extends PlacerElement {
                               variant="plain"
                               tabindex="-1"
                               @click=${this.handleCloseClick}
-                              exportparts="base:close-button-base"
+                              exportparts="
+                                  base:close-button-base,
+                                  label:close-button-label
+                              "
                           >
                               <pc-icon
                                   library="system"

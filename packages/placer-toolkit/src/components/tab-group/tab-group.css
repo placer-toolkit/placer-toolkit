@@ -24,7 +24,9 @@
 
 .has-scroll-controls .navigation-container {
     position: relative;
-    padding-inline: calc(var(--pc-spacing-xxxl) + var(--pc-spacing-xs));
+    padding-inline: calc(var(--pc-form-control-height) + var(--pc-spacing-xs));
+    /* Mimics the form control height (width) properly for small buttons. */
+    font-size: var(--pc-font-size-s);
 }
 
 .has-scroll-controls .scroll-button-start-hidden,
@@ -63,16 +65,6 @@
 
 .scroll-button-end {
     inset-inline-end: 0;
-}
-
-.is-rtl .scroll-button-start {
-    inset-inline-start: auto;
-    inset-inline-end: 0;
-}
-
-.is-rtl .scroll-button-end {
-    inset-inline-start: 0;
-    inset-inline-end: auto;
 }
 
 .top {
@@ -164,7 +156,7 @@
 }
 
 .start .indicator {
-    inset-inline-end: calc(-1 * var(--track-width));
+    inset-inline-end: 0;
     min-inline-size: var(--track-width);
     background-color: var(--indicator-color);
     border-radius: var(--pc-border-radius-pill);
@@ -176,7 +168,9 @@
 }
 
 .start ::slotted(pc-tab-panel) {
-    padding: 0 var(--pc-spacing-m);
+    padding-block: 0;
+    padding-inline: var(--pc-spacing-m);
+    block-size: 100%;
 }
 
 .end {
@@ -193,7 +187,7 @@
 }
 
 .end .indicator {
-    inset-inline-start: calc(-1 * var(--track-width));
+    inset-inline-start: 0;
     min-inline-size: var(--track-width);
     background-color: var(--indicator-color);
     border-radius: var(--pc-border-radius-pill);
@@ -210,5 +204,7 @@
 }
 
 .end ::slotted(pc-tab-panel) {
+    padding-block: 0;
     padding-inline: var(--pc-spacing-m);
+    block-size: 100%;
 }

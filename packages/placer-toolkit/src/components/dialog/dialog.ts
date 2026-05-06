@@ -347,7 +347,7 @@ export class PcDialog extends PlacerElement {
                       `
                     : ""}
 
-                <div part="body" class="body" tabindex="-1">
+                <div part="body" class="body">
                     <slot></slot>
                 </div>
 

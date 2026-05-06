@@ -12,6 +12,7 @@ export default {
     "ui.content.component.experimental": "Experimentell",
     "ui.content.englishOnly": "(nur Englisch)",
     "ui.content.heading.anchorLabel": "Abschnitt betitelt „{{title}}“",
+    "ui.content.code.scroll.horizontal": "Horizontal scrollbarer Code‐Block",
 
     // Keyboard
     "ui.keyboard.ctrl": "Strg",
@@ -178,7 +179,7 @@ export default {
         'Erfahre mehr über <a href="/de/docs/get-started/customisation/#animationen">das Anpassen von Animationen</a>.',
 
     "apiTable.importing.note":
-        "Wenn du den Autoloader oder den Standard‐Loader nutzt, kannst du diesen Abschnitt überspringen. Falls du „Cherry Picking“ betreibst, kannst du die folgenden Snippets verwenden, um diese Komponente zu importieren.",
+        "Wenn du den Auto‐Loader oder den Standard‐Loader nutzt, kannst du diesen Abschnitt überspringen. Falls du dich für „Cherry‐Picking“ entschieden hast, kannst du die folgenden Snippets verwenden, um diese Komponente zu importieren.",
     "apiTable.importing.cdnScript":
         "Um diese Komponente manuell vom CDN zu importieren, kannst du dieses Code‐Snippet kopieren und es in dein HTML einfügen.",
     "apiTable.importing.cdnImport":

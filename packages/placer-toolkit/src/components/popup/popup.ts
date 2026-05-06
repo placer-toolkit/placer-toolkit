@@ -108,7 +108,8 @@ export class PcPopup extends PlacerElement {
         | "anchor" = "anchor";
 
     /** The amount of padding between the arrow and the popup’s edges. */
-    @property({ attribute: "arrow-padding", type: Number }) arrowPadding = 10;
+    @property({ attribute: "arrow-padding", type: Number })
+    arrowPadding = 10;
 
     /** If the popup doesn’t fit in the boundary with the placement anymore, the popup will flip to the opposite side to keep it in view. You can also use the `flip-fallback-placements` attribute to further configure  how the fallback placement is determined. */
     @property({ type: Boolean }) flip = false;
@@ -131,15 +132,15 @@ export class PcPopup extends PlacerElement {
     flipFallbackPlacements = "";
 
     /** When neither the preferred placement nor the fallback placements fit, this value will be use to determine whether the popup should be positioned using the best available fit based on available space or as it was initially preferred. */
-    @property({ attribute: "flip-fallback-strategy" }) flipFallbackStrategy:
-        | "best-fit"
-        | "initial" = "best-fit";
+    @property({ attribute: "flip-fallback-strategy" })
+    flipFallbackStrategy: "best-fit" | "initial" = "best-fit";
 
     /** The flip boundary describes one or more clipping elements where overflow will be checked relative to when flipping. By default, the boundary includes overflow ancestors that will cause the element to be clipped. If needed, you can change the boundary by passing a reference to one or more elements to this property.  */
     @property({ type: Object }) flipBoundary?: Element | Element[];
 
     /** The amount of padding in pixels to exceed before the flip behaviour will occur. */
-    @property({ attribute: "flip-padding", type: Number }) flipPadding = 0;
+    @property({ attribute: "flip-padding", type: Number })
+    flipPadding = 0;
 
     /** Moves the popup along the axis to keep it in view when clipped. */
     @property({ type: Boolean }) shift = false;
@@ -148,7 +149,8 @@ export class PcPopup extends PlacerElement {
     @property({ type: Object }) shiftBoundary?: Element | Element[];
 
     /** The amount of padding in pixels to exceed before the shift behaviour will occur. */
-    @property({ attribute: "shift-padding", type: Number }) shiftPadding = 0;
+    @property({ attribute: "shift-padding", type: Number })
+    shiftPadding = 0;
 
     /** If set, the popup will automatically resize itself to prevent it from overflowing. */
     @property({ attribute: "auto-size" }) autoSize?:
@@ -167,7 +169,8 @@ export class PcPopup extends PlacerElement {
     autoSizePadding = 0;
 
     /** When a gap exists between the anchor and the popup element, this option will add a “hover bridge” that fills the gap using an invisible element. This makes listening for events such as `mouseenter` and `mouseleave` more sane because the cursor technically never leaves the element. The hover bridge is only drawn if the popup is active. */
-    @property({ attribute: "hover-bridge", type: Boolean }) hoverBridge = false;
+    @property({ attribute: "hover-bridge", type: Boolean })
+    hoverBridge = false;
 
     async connectedCallback() {
         super.connectedCallback();

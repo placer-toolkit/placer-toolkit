@@ -23,33 +23,53 @@ export default function remarkCodeBlockToComponent() {
                 packageVersion,
             );
 
-            const rawLang = node.language || node.lang || "";
-            const [language, ...modifiers] = rawLang.split(":");
+            const rawLanguage = node.language || node.lang || "";
+            const [language, ...modifiers] = rawLanguage.split(":");
+
+            const meta = node.meta || "";
 
             let astroTag = "CodeBlock";
-            const attrs = [];
+
+            const attributes = [];
 
             if (language === "demo") {
                 astroTag = "CodeDemo";
 
                 for (const modifier of modifiers) {
                     if (modifier === "no-codepen") {
-                        attrs.push("noCodepen");
+                        attributes.push("noCodepen");
                     }
 
                     if (modifier === "open") {
-                        attrs.push("open");
+                        attributes.push("open");
                     }
                 }
             } else if (language) {
-                attrs.push(`language="${language}"`);
+                attributes.push(`language="${language}"`);
+            }
+
+            const isShell = ["bash", "shell", "sh"].includes(language);
+
+            if (!isShell && meta) {
+                const matches = meta.matchAll(
+                    /(?<key>\w+)=["'](?<value>[^"']+)["']/g,
+                );
+
+                for (const match of matches) {
+                    const { key, value } = match.groups;
+
+                    if (key === "fileName" || key === "title") {
+                        attributes.push(`fileName="${value}"`);
+                    }
+                }
             }
 
             const newElement = {
                 type: "mdxJsxFlowElement",
                 name: astroTag,
-                attributes: attrs.map((attr) => {
-                    const [key, value] = attr.split("=");
+                attributes: attributes.map((attribute) => {
+                    const [key, value] = attribute.split("=");
+
                     return value
                         ? {
                               type: "mdxJsxAttribute",

@@ -43,7 +43,7 @@ This will spin up the dev server on `localhost:4321`.
 
 Placer Toolkit was built with the help of these fantastic libraries:
 
-- [Lit](https://lit.dev)
+- [Lit](https://lit.dev)w
 - [Astro](https://astro.build)
 - [Floating UI](https://floating-ui.com)
 - [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)

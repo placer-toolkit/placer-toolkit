@@ -69,7 +69,7 @@ This event has a payload with `phase` and `value` properties. The `phase` proper
 ```demo
 <div class="rating-detect-hover">
     <pc-rating label="Rating"></pc-rating>
-    <span></span>
+    <span aria-live="polite">No rating</span>
 </div>
 
 <script>
@@ -77,7 +77,7 @@ This event has a payload with `phase` and `value` properties. The `phase` proper
     const span = rating.nextElementSibling;
     const terms = ["No rating", "Terrible", "Bad", "Meh", "Good", "Excellent"];
 
-    rating.addEventListener("pc-hover", event => {
+    rating.addEventListener("pc-hover", (event) => {
         span.textContent = terms[event.detail.value];
     });
 </script>

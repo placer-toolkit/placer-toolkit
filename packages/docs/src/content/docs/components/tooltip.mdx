@@ -22,128 +22,177 @@ Use the `placement` attribute to set the preferred placement of the tooltip.
 
 ```demo
 <div class="tooltip-placement">
-    <div class="tooltip-placement-row">
-        <pc-tooltip content="top-start" placement="top-start">
-            <pc-button></pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="top-start" placement="top-start" style="grid-area: top-start">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-up"
+                label="Top start"
+                style="rotate: -45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="top" placement="top">
-            <pc-button>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="arrow-up"
-                ></pc-icon>
-            </pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="top" placement="top" style="grid-area: top">
+        <pc-button>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="arrow-up"
+                label="Top"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="top-end" placement="top-end">
-            <pc-button></pc-button>
-        </pc-tooltip>
-    </div>
+    <pc-tooltip content="top-end" placement="top-end" style="grid-area: top-end">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-up"
+                label="Top end"
+                style="rotate: 45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-    <div class="tooltip-placement-row">
-        <pc-tooltip content="left-start" placement="left-start">
-            <pc-button></pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="left-start" placement="left-start" style="grid-area: left-start">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-left"
+                label="Left start"
+                style="rotate: 45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="right-start" placement="right-start">
-            <pc-button></pc-button>
-        </pc-tooltip>
-    </div>
+    <pc-tooltip content="left" placement="left" style="grid-area: left">
+        <pc-button>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="arrow-left"
+                label="Left"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-    <div class="tooltip-placement-row">
-        <pc-tooltip content="left" placement="left">
-            <pc-button>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="arrow-left"
-                ></pc-icon>
-            </pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="left-end" placement="left-end" style="grid-area: left-end">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-left"
+                label="Left end"
+                style="rotate: -45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="right" placement="right">
-            <pc-button>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="arrow-right"
-                ></pc-icon>
-            </pc-button>
-        </pc-tooltip>
-    </div>
+    <pc-tooltip content="right-start" placement="right-start" style="grid-area: right-start">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-right"
+                label="Right start"
+                style="rotate: -45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-    <div class="tooltip-placement-row">
-        <pc-tooltip content="left-end" placement="left-end">
-            <pc-button></pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="right" placement="right" style="grid-area: right">
+        <pc-button>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="arrow-right"
+                label="Right"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="right-end" placement="right-end">
-            <pc-button></pc-button>
-        </pc-tooltip>
-    </div>
+    <pc-tooltip content="right-end" placement="right-end" style="grid-area: right-end">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-right"
+                label="Right end"
+                style="rotate: 45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-    <div class="tooltip-placement-row">
-        <pc-tooltip content="bottom-start" placement="bottom-start">
-            <pc-button></pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="bottom-start" placement="bottom-start" style="grid-area: bottom-start">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-down"
+                label="Bottom start"
+                style="rotate: 45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="bottom" placement="bottom">
-            <pc-button>
-                <pc-icon
-                    library="default"
-                    icon-style="solid"
-                    name="arrow-down"
-                ></pc-icon>
-            </pc-button>
-        </pc-tooltip>
+    <pc-tooltip content="bottom" placement="bottom" style="grid-area: bottom">
+        <pc-button>
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="arrow-down"
+                label="Bottom"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 
-        <pc-tooltip content="bottom-end" placement="bottom-end">
-            <pc-button></pc-button>
-        </pc-tooltip>
-    </div>
-
+    <pc-tooltip content="bottom-end" placement="bottom-end" style="grid-area: bottom-end">
+        <pc-button>
+            <pc-icon
+                class="pc-visually-hidden"
+                library="default"
+                icon-style="solid"
+                name="arrow-down"
+                label="Bottom end"
+                style="rotate: -45deg"
+            ></pc-icon>
+        </pc-button>
+    </pc-tooltip>
 </div>
 
 <style>
     .tooltip-placement {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(5, auto);
+        grid-template-areas:
+            ".          top-start    top    top-end    .          "
+            "left-start .            .      .          right-start"
+            "left       .            .      .          right      "
+            "left-end   .            .      .          right-end  "
+            ".          bottom-start bottom bottom-end .          ";
+        gap: var(--pc-spacing-xxs);
         margin: 1rem;
-        inline-size: 250px;
+        inline-size: fit-content;
     }
 
-    .tooltip-placement-row::after {
-        content: "";
-        display: table;
-        clear: both;
+    .tooltip-placement pc-tooltip {
+        display: block;
     }
 
-    .tooltip-placement pc-button {
-        float: left;
-        margin-inline-end: 0.25rem;
-        margin-block-end: 0.25rem;
-        inline-size: 2.5rem;
-    }
-
-    .tooltip-placement-row:nth-child(1)
-        pc-tooltip:first-child
-        pc-button,
-    .tooltip-placement-row:nth-child(5)
-        pc-tooltip:first-child
-        pc-button {
-        margin-inline-start: calc(40px + 0.25rem);
-    }
-
-    .tooltip-placement-row:nth-child(2)
-        pc-tooltip:nth-child(2)
-        pc-button,
-    .tooltip-placement-row:nth-child(3)
-        pc-tooltip:nth-child(2)
-        pc-button,
-    .tooltip-placement-row:nth-child(4)
-        pc-tooltip:nth-child(2)
-        pc-button {
-        margin-inline-start: calc((40px * 3) + (0.25rem * 3));
+    .tooltip-placement pc-tooltip pc-button::part(base) {
+        aspect-ratio: 1 / 1;
     }
 </style>
 ```

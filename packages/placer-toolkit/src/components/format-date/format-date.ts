@@ -76,7 +76,9 @@ export class PcFormatDate extends PlacerElement {
             hour12: hour12,
         });
 
-        return html`<time datetime=${date.toISOString()}>${displayDate}</time>`;
+        return html`
+            <time datetime=${date.toISOString()}>${displayDate}</time>
+        `;
     }
 }
 

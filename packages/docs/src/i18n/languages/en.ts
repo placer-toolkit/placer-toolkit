@@ -12,6 +12,7 @@ export default {
     "ui.content.component.stable": "Stable",
     "ui.content.component.experimental": "Experimental",
     "ui.content.heading.anchorLabel": "Section titled “{{title}}”",
+    "ui.content.code.scroll.horizontal": "Horizontally scrollable code block",
 
     // Keyboard
     "ui.keyboard.ctrl": "Ctrl",

@@ -1,19 +1,19 @@
 ---
-import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
 
-import DynamicSidebar from "../components/DynamicSidebar.astro";
+import DynamicSidebar from "./DynamicSidebar.astro";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<aside
+<div
     class="sidebar pc-cloak"
     role="complementary"
     aria-label={translation("sidebar.aria") as string}
 >
     <DynamicSidebar isMobile={false} />
-</aside>
+</div>
 
 <style>
     .sidebar {
@@ -27,8 +27,8 @@ const translation = useTranslations(language);
         background-color: var(--pc-color-surface-default);
         border-inline-end: var(--pc-panel-border-width)
             var(--pc-panel-border-style) var(--pc-color-surface-border);
-        z-index: 2;
         overflow-y: auto;
+        z-index: 2;
     }
 
     .sidebar:focus-visible {

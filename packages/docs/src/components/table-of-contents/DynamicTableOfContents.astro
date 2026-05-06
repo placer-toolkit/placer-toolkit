@@ -1,5 +1,5 @@
 ---
-import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
@@ -171,19 +171,37 @@ const { isMobile = false } = Astro.props;
                     return;
                 }
 
+                isScrollingManual = true;
+
                 const unlock = () => {
                     isScrollingManual = false;
 
-                    window.removeEventListener("scroll", checkScrollEnd);
+                    window.removeEventListener("scrollend", unlock);
+
+                    (window as Window).removeEventListener(
+                        "scroll",
+                        checkScrollEnd,
+                    );
                 };
 
                 const checkScrollEnd = () => {
                     clearTimeout(scrollTimeout);
 
-                    scrollTimeout = window.setTimeout(unlock, 100);
+                    scrollTimeout = window.setTimeout(unlock, 150);
                 };
 
-                isScrollingManual = true;
+                if ("onscrollend" in window) {
+                    window.addEventListener("scrollend", unlock, {
+                        once: true,
+                    });
+                } else {
+                    (window as Window).addEventListener(
+                        "scroll",
+                        checkScrollEnd,
+                        { passive: true },
+                    );
+                    checkScrollEnd();
+                }
 
                 const headingTop =
                     targetHeading.getBoundingClientRect().top + window.scrollY;
@@ -217,22 +235,18 @@ const { isMobile = false } = Astro.props;
                     setActiveID(id, true);
                 }
 
-                if ("onscrollend" in window) {
-                    window.addEventListener("scrollend", unlock, {
-                        once: true,
-                    });
-                } else {
-                    (window as Window).addEventListener(
-                        "scroll",
-                        checkScrollEnd,
-                        {
-                            passive: true,
-                        },
-                    );
+                location.hash = id;
 
-                    checkScrollEnd();
-                }
+                window.setTimeout(() => {
+                    if (isScrollingManual) {
+                        unlock();
+                    }
+                }, 1000);
             });
+
+            const currentHash = location.hash.replace("#", "");
+
+            setActiveID(currentHash || articleHeader?.id || "_top");
         }
 
         const getScannerMargin = () => {
@@ -251,7 +265,14 @@ const { isMobile = false } = Astro.props;
         };
 
         const elementsToWatch = article.querySelectorAll(
-            ":scope > *, :scope > section > *",
+            [
+                'header[id="_top"]',
+                "h2[id], h3[id]",
+                ".heading-wrapper",
+                "h2[id] ~ *:not(h2, h3)",
+                "h3[id] ~ *:not(h2, h3)",
+                ".heading-wrapper ~ *:not(.heading-wrapper)",
+            ].join(", "),
         );
 
         const initializeObserver = () => {
@@ -277,31 +298,42 @@ const { isMobile = false } = Astro.props;
                     let headingID = "";
 
                     while (currentEntry && !headingID) {
-                        if (currentEntry.matches("h2[id], h3[id]")) {
-                            headingID = currentEntry.id;
-                        } else {
-                            currentEntry =
-                                currentEntry.previousElementSibling ||
-                                currentEntry.parentElement
-                                    ?.previousElementSibling ||
-                                null;
-                        }
-
-                        const nested = currentEntry?.querySelector(
-                            ":scope > h2[id], :scope > h3[id]",
-                        );
-
-                        if (nested) {
-                            headingID = nested.id;
+                        if (currentEntry === article) {
+                            headingID = articleHeader?.id || "_top";
 
                             break;
                         }
 
-                        currentEntry =
-                            currentEntry?.previousElementSibling ?? null;
+                        if (currentEntry.matches("h2[id], h3[id]")) {
+                            headingID = currentEntry.id;
+                        } else {
+                            const nestedEntry =
+                                currentEntry.querySelector("h2[id], h3[id]");
+
+                            if (nestedEntry) {
+                                headingID = nestedEntry.id;
+                            }
+                        }
+
+                        if (headingID) {
+                            break;
+                        }
+
+                        let previousSibling: Element | null =
+                            currentEntry.previousElementSibling;
+
+                        while (previousSibling?.lastElementChild) {
+                            previousSibling = previousSibling.lastElementChild;
+                        }
+
+                        if (previousSibling) {
+                            currentEntry = previousSibling;
+                        } else {
+                            currentEntry = currentEntry.parentElement;
+                        }
                     }
 
-                    setActiveID(headingID || "_top");
+                    setActiveID(headingID || articleHeader?.id || "_top");
                 },
                 {
                     rootMargin: getScannerMargin(),

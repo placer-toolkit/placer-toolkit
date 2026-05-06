@@ -1,6 +1,6 @@
 import { build, context } from "esbuild";
 import { globSync } from "glob";
-import { exec } from "child_process";
+import { exec, spawn } from "child_process";
 import { promisify } from "util";
 import fsExtra from "fs-extra";
 import path from "path";
@@ -71,6 +71,24 @@ async function runBuild() {
         runCEM().catch((error) =>
             console.error(`CEM generation error: ${error}`),
         );
+
+        const typeWatcher = spawn(
+            "pnpm",
+            ["exec", "tsc", "--emitDeclarationOnly", "--watch"],
+            {
+                cwd: projectRoot,
+                shell: true,
+            },
+        );
+
+        typeWatcher.stdout.on("data", (data) => {
+            const output = data.toString().trim();
+            if (output.includes("error")) {
+                console.error(`\n❌ Type error detected:\n${output}`);
+            } else if (output.includes("Found 0 errors")) {
+                console.log("✨ Types updated successfully.");
+            }
+        });
 
         const watchPlugin = {
             name: "watch-plugin",

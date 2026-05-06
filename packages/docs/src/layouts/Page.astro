@@ -7,11 +7,11 @@ import {
 
 import { ClientRouter } from "astro:transitions";
 
-import MobileSidebar from "./MobileSidebar.astro";
-import MobileTableOfContents from "./docs/MobileTableOfContents.astro";
-import NavigationBar from "./NavigationBar.astro";
-import Sidebar from "./Sidebar.astro";
-import TableOfContents from "./docs/TableOfContents.astro";
+import MobileSidebar from "../components/sidebar/MobileSidebar.astro";
+import MobileTableOfContents from "../components/table-of-contents/MobileTableOfContents.astro";
+import NavigationBar from "../components/NavigationBar.astro";
+import Sidebar from "../components/sidebar/Sidebar.astro";
+import TableOfContents from "../components/table-of-contents/TableOfContents.astro";
 
 import ComponentInfo from "../components/ComponentInfo.astro";
 import FallbackContentWarning from "../components/FallbackContentWarning.astro";
@@ -215,13 +215,14 @@ const {
         </script>
         <!-- Simple Analytics -->
         {
-            import.meta.env.MODE === "production" && (
-                <script
-                    src="https://scripts.simpleanalyticscdn.com/latest.js"
-                    async
-                    is:inline
-                />
-            )
+            import.meta.env.MODE === "production" &&
+                import.meta.env.SITE_DOMAIN === "placer-toolkit.vercel.app" && (
+                    <script
+                        src="https://scripts.simpleanalyticscdn.com/latest.js"
+                        async
+                        is:inline
+                    />
+                )
         }
         <!-- Client router for SPA‐like navigation -->
         <ClientRouter />
@@ -272,9 +273,10 @@ const {
                                 <article
                                     data-pagefind-body
                                     transition:animate="fade"
+                                    aria-labelledby="page-title"
                                 >
                                     <header id="_top">
-                                        <h1>{title}</h1>
+                                        <h1 id="page-title">{title}</h1>
 
                                         {component ? (
                                             <ComponentInfo
@@ -308,7 +310,7 @@ const {
                                                 🚀
                                             </span>
                                             <div class="pc-split">
-                                                <b style="flex: 1">
+                                                <b>
                                                     {translation(
                                                         "getStartedBanner.readyToStart",
                                                     )}

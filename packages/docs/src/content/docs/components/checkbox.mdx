@@ -114,11 +114,11 @@ Use the `disabled` attribute to disable the checkbox.
 Use the `size` attribute to change the checkbox’s size.
 
 ```demo
-<pc-checkbox size="small">Small</pc-checkbox>
-<br />
-<pc-checkbox size="medium">Medium</pc-checkbox>
-<br />
-<pc-checkbox size="large">Large</pc-checkbox>
+<div class="pc-stack pc-gap-xs">
+    <pc-checkbox size="small">Small</pc-checkbox>
+    <pc-checkbox size="medium">Medium</pc-checkbox>
+    <pc-checkbox size="large">Large</pc-checkbox>
+</div>
 ```
 
 ### Hint
@@ -136,9 +136,8 @@ Add a hint to a checkbox with the `hint` attribute. For hints that contain HTML,
 Use the `setCustomValidity()` method to set a custom validation message. This will prevent the form from submitting and make the browser display the error message you provide. To clear the error, call this function with an empty string.
 
 ```demo
-<form class="custom-validity">
+<form class="custom-validity pc-stack">
     <pc-checkbox>Check me</pc-checkbox>
-    <br /><br />
     <pc-button appearance="primary" type="submit">Submit</pc-button>
 </form>
 
@@ -161,4 +160,10 @@ Use the `setCustomValidity()` method to set a custom validation message. This wi
         alert("All fields are valid!");
     });
 </script>
+
+<style>
+    .custom-validity pc-button {
+        inline-size: fit-content;
+    }
+</style>
 ```

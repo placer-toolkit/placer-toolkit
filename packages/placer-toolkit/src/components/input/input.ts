@@ -143,16 +143,16 @@ export class PcInput extends PlacerFormAssociatedElement {
     @property({ type: Boolean, reflect: true }) readonly = false;
 
     /** Adds a button to toggle the password’s visibility. Only applies when the input’s `type` is set to `password`. */
-    @property({ attribute: "password-toggle", type: Boolean }) passwordToggle =
-        false;
+    @property({ attribute: "password-toggle", type: Boolean })
+    passwordToggle = false;
 
     /** Determines whether or not the password is visible by default. Only applies when the input’s `type` is set to `password`. */
     @property({ attribute: "password-visible", type: Boolean })
     passwordVisible = false;
 
     /** Hides the browser’s built‐in increment and decrement spin buttons. Only applies when the input’s `type` is set to `number`. */
-    @property({ attribute: "no-spin-buttons", type: Boolean }) noSpinButtons =
-        false;
+    @property({ attribute: "no-spin-buttons", type: Boolean })
+    noSpinButtons = false;
 
     /** Indicates if the input must be filled in or not. */
     @property({ type: Boolean, reflect: true }) required = false;

@@ -1,6 +1,12 @@
 import { html } from "lit";
 import type { PropertyValues } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import {
+    customElement,
+    property,
+    query,
+    queryAssignedElements,
+    state,
+} from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { LocalizeController } from "../../utilities/localize.js";
@@ -150,7 +156,8 @@ export class PcVideoPlayer extends PlacerElement {
     @query('[part~="caption-options"]') captionOptions!: PcDialog;
     @query('[part~="frame"]') frame!: HTMLDivElement;
     @query('[part~="video"]') video!: HTMLVideoElement;
-    @query('[part~="progress-wrapper"]') progressWrapper!: HTMLDivElement;
+    @query('[part~="progress-wrapper"]')
+    progressWrapper!: HTMLDivElement;
     @query('[part~="progress-slider"]') progress!: PcSlider;
     @query('[part~="captions"]') captions!: PcButton;
     @query('[part~="settings-menu"]') settingsMenu!: PcDropdown;
@@ -166,13 +173,19 @@ export class PcVideoPlayer extends PlacerElement {
     @state() private bufferedEnd = 0;
     @state() private hasStarted = false;
     @state() private hideTimeoutID: number | null = null;
-    @state() private lastMousePosition: { x: number; y: number } | null = null;
+    @state() private lastMousePosition: {
+        x: number;
+        y: number;
+    } | null = null;
     @state() private animationFrameID: number | null = null;
     @state() private isScrubbing = false;
     @state() private scrubTime: number | null = null;
     @state() private lastActiveCaptionTrackIndex = 0;
     @state() private activeCues: VTTCue[] = [];
     @state() private overrideVideoCaptionStyles = false;
+
+    @queryAssignedElements({ slot: "tracks", selector: "track" })
+    tracks!: Array<HTMLTrackElement>;
 
     /** The source of the video. */
     @property() src = "";
@@ -936,6 +949,21 @@ export class PcVideoPlayer extends PlacerElement {
                   ? "high"
                   : "low";
 
+        const captionOptionsSelectExportParts = `
+            form-control:caption-options-select-form-control,
+            label:caption-options-select-label,
+            input:caption-options-select-input,
+            combobox:caption-options-select-combobox,
+            display-input:caption-options-select-display-input,
+            listbox:caption-options-select-listbox,
+            expand-icon:caption-options-select-expand-icon
+        `;
+        const captionOptionsSelectOptionExportParts = `
+            checked-icon:caption-options-select-option-checked-icon,
+            base:caption-options-select-option-base,
+            label:caption-options-select-option-label
+        `;
+
         const captionOptions = html`
             <pc-drawer
                 class="caption-options"
@@ -948,46 +976,26 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Font family"
                         data-setting="--caption-font-family"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         <pc-option
                             part="caption-options-select-option"
                             value='"Courier New", Courier, serif'
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Monospaced serif
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="var(--pc-font-serif)"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Proportional serif
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="var(--pc-font-mono)"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Monospaced sans‐serif
                         </pc-option>
@@ -995,44 +1003,28 @@ export class PcVideoPlayer extends PlacerElement {
                             part="caption-options-select-option"
                             value="var(--pc-font-sans)"
                             selected
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Proportional sans‐serif
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value='"Comic Sans MS", Impact, Handlee, fantasy'
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Casual
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value='"Monotype Corsiva", "URW Chancery L", "Apple Chancery", "Dancing Script", cursive'
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Cursive
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value='Arial, Helvetica, Verdana, "Marcellus SC", sans-serif'
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Small capitals
                         </pc-option>
@@ -1042,102 +1034,62 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Font colour"
                         data-setting="--caption-font-color"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         <pc-option
                             part="caption-options-select-option"
                             value="white"
                             selected
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             White
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="yellow"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Yellow
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="green"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Green
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="cyan"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Cyan
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="blue"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Blue
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="magenta"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Magenta
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="red"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Red
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="#080808"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Black
                         </pc-option>
@@ -1147,15 +1099,7 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Font size"
                         data-setting="--caption-font-size"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         ${[25, 50, 75, 100, 125, 150, 175, 200, 300].map(
                             (size) => html`
@@ -1163,11 +1107,7 @@ export class PcVideoPlayer extends PlacerElement {
                                     part="caption-options-select-option"
                                     value=${size / 100}
                                     ?selected=${size === 100}
-                                    exportparts="
-                                        checked-icon:caption-options-select-option-checked-icon,
-                                        base:caption-options-select-option-base,
-                                        label:caption-options-select-option-label
-                                    "
+                                    exportparts=${captionOptionsSelectOptionExportParts}
                                 >
                                     ${size} %
                                 </pc-option>
@@ -1179,90 +1119,54 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Background colour"
                         data-setting="--caption-background-color"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         <pc-option
                             part="caption-options-select-option"
                             value="white"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             White
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="yellow"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Yellow
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="green"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Green
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="cyan"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Cyan
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="blue"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Blue
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="magenta"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Magenta
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="red"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Red
                         </pc-option>
@@ -1270,11 +1174,7 @@ export class PcVideoPlayer extends PlacerElement {
                             part="caption-options-select-option"
                             value="#080808"
                             selected
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Black
                         </pc-option>
@@ -1284,15 +1184,7 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Background opacity"
                         data-setting="--caption-background-opacity"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         ${[0, 25, 50, 75, 100].map(
                             (opacity) => html`
@@ -1300,11 +1192,7 @@ export class PcVideoPlayer extends PlacerElement {
                                     part="caption-options-select-option"
                                     value="${opacity}%"
                                     ?selected=${opacity === 75}
-                                    exportparts="
-                                        checked-icon:caption-options-select-option-checked-icon,
-                                        base:caption-options-select-option-base,
-                                        label:caption-options-select-option-label
-                                    "
+                                    exportparts=${captionOptionsSelectOptionExportParts}
                                 >
                                     ${opacity} %
                                 </pc-option>
@@ -1316,90 +1204,54 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Window colour"
                         data-setting="--caption-window-color"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         <pc-option
                             part="caption-options-select-option"
                             value="white"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             White
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="yellow"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Yellow
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="green"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Green
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="cyan"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Cyan
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="blue"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Blue
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="magenta"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Magenta
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="red"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Red
                         </pc-option>
@@ -1407,11 +1259,7 @@ export class PcVideoPlayer extends PlacerElement {
                             part="caption-options-select-option"
                             value="#080808"
                             selected
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Black
                         </pc-option>
@@ -1421,15 +1269,7 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Window opacity"
                         data-setting="--caption-window-opacity"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         ${[0, 25, 50, 75, 100].map(
                             (opacity) => html`
@@ -1437,11 +1277,7 @@ export class PcVideoPlayer extends PlacerElement {
                                     part="caption-options-select-option"
                                     value="${opacity}%"
                                     ?selected=${opacity === 0}
-                                    exportparts="
-                                        checked-icon:caption-options-select-option-checked-icon,
-                                        base:caption-options-select-option-base,
-                                        label:caption-options-select-option-label
-                                    "
+                                    exportparts=${captionOptionsSelectOptionExportParts}
                                 >
                                     ${opacity} %
                                 </pc-option>
@@ -1453,69 +1289,41 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Character edge style"
                         data-setting="--caption-character-edge-style"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         <pc-option
                             value="none"
                             selected
                             part="caption-options-select-option"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             None
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="#222 1px 1px 1.4px, #222 1px 1px 1.86667px, #222 1px 1px 2.33333px"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Drop shadow
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="#222 1px 1px"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Raised
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="#ccc 1px 1px, #222 -1px -1px"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Depressed
                         </pc-option>
                         <pc-option
                             part="caption-options-select-option"
                             value="#222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px"
-                            exportparts="
-                                checked-icon:caption-options-select-option-checked-icon,
-                                base:caption-options-select-option-base,
-                                label:caption-options-select-option-label
-                            "
+                            exportparts=${captionOptionsSelectOptionExportParts}
                         >
                             Outline
                         </pc-option>
@@ -1525,15 +1333,7 @@ export class PcVideoPlayer extends PlacerElement {
                         part="caption-options-select"
                         label="Font opacity"
                         data-setting="--caption-font-opacity"
-                        exportparts="
-                            form-control:caption-options-select-form-control,
-                            label:caption-options-select-label,
-                            input:caption-options-select-input,
-                            combobox:caption-options-select-combobox,
-                            display-input:caption-options-select-display-input,
-                            listbox:caption-options-select-listbox,
-                            expand-icon:caption-options-select-expand-icon
-                        "
+                        exportparts=${captionOptionsSelectExportParts}
                     >
                         ${[0, 25, 50, 75, 100].map(
                             (opacity) => html`
@@ -1541,11 +1341,7 @@ export class PcVideoPlayer extends PlacerElement {
                                     part="caption-options-select-option"
                                     value="${opacity}%"
                                     ?selected=${opacity === 100}
-                                    exportparts="
-                                        checked-icon:caption-options-select-option-checked-icon,
-                                        base:caption-options-select-option-base,
-                                        label:caption-options-select-option-label
-                                    "
+                                    exportparts=${captionOptionsSelectOptionExportParts}
                                 >
                                     ${opacity} %
                                 </pc-option>
@@ -1673,7 +1469,7 @@ export class PcVideoPlayer extends PlacerElement {
                     tabindex="-1"
                     @loadeddata=${this.updateCaptionsState}
                 >
-                    ${Array.from(this.querySelectorAll("track")).map(
+                    ${this.tracks?.map(
                         (track) => html`
                             <track
                                 kind="${track.getAttribute("kind") ||
@@ -1742,6 +1538,11 @@ export class PcVideoPlayer extends PlacerElement {
                                           style="
                                               display: flex;
                                               position: absolute;
+                                              align-items: ${align === "start"
+                                              ? "flex-start"
+                                              : align === "end"
+                                                ? "flex-end"
+                                                : "center"};
                                               flex-direction: column;
                                               writing-mode: ${cue.vertical ===
                                           "rl"
@@ -1758,11 +1559,6 @@ export class PcVideoPlayer extends PlacerElement {
                                               : `translateX(${anchor})`};
                                               inline-size: ${size};
                                               text-align: ${align};
-                                              align-items: ${align === "start"
-                                              ? "flex-start"
-                                              : align === "end"
-                                                ? "flex-end"
-                                                : "center"};
                                           "
                                       >
                                           ${lines.map(

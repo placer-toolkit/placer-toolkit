@@ -80,8 +80,8 @@ export class PcTextarea extends PlacerFormAssociatedElement {
     }
 
     /** The default value of the textarea. Primarily used for resetting the textarea. */
-    @property({ attribute: "value", reflect: true }) defaultValue: string =
-        this.getAttribute("value") ?? "";
+    @property({ attribute: "value", reflect: true })
+    defaultValue: string = this.getAttribute("value") ?? "";
 
     /** The textarea’s size. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";

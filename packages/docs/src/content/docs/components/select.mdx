@@ -176,27 +176,25 @@ Use the [Divider](/docs/components/divider) component to group listbox items vis
 Use the `size` attribute to change the select’s size.
 
 ```demo
-<pc-select size="small" placeholder="Small">
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
+<div class="pc-stack">
+    <pc-select size="small" placeholder="Small">
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
 
-<br />
+    <pc-select size="medium" placeholder="Medium">
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
 
-<pc-select size="medium" placeholder="Medium">
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
-
-<br />
-
-<pc-select size="large" placeholder="Large">
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
+    <pc-select size="large" placeholder="Large">
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
+</div>
 ```
 
 ### Placement
@@ -216,51 +214,49 @@ The preferred placement of the select’s listbox can be set with the `placement
 Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid slotting in interactive elements, such as buttons and links.
 
 ```demo
-<pc-select size="small" placeholder="Small" clearable>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-badge slot="suffix">New</pc-badge>
+<div class="pc-stack">
+    <pc-select size="small" placeholder="Small" clearable>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-badge slot="suffix">New</pc-badge>
 
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
 
-<br />
+    <pc-select size="medium" placeholder="Medium" clearable>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-badge slot="suffix">New</pc-badge>
 
-<pc-select size="medium" placeholder="Medium" clearable>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-badge slot="suffix">New</pc-badge>
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
 
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
+    <pc-select size="large" placeholder="Large" clearable>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-badge slot="suffix">New</pc-badge>
 
-<br />
-
-<pc-select size="large" placeholder="Large" clearable>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-badge slot="suffix">New</pc-badge>
-
-    <pc-option value="option-1">Option 1</pc-option>
-    <pc-option value="option-2">Option 2</pc-option>
-    <pc-option value="option-3">Option 3</pc-option>
-</pc-select>
+        <pc-option value="option-1">Option 1</pc-option>
+        <pc-option value="option-2">Option 2</pc-option>
+        <pc-option value="option-3">Option 3</pc-option>
+    </pc-select>
+</div>
 ```
 
 ### Custom tags
@@ -342,62 +338,40 @@ For example, `<pc-select value="foo">` will have a value of `""` until `<pc-opti
 This can be hard to conceptualise, so here’s a fairly large example showing how lazy‐loaded options work with `<pc-select>` and `<pc-select multiple>` when given initial value attributes. Feel free to play around with it in this code demo.
 
 ```demo
-<form id="lazy-options-example">
-    <div>
-        <pc-select name="select-1" label="Single select (with existing options)">
-            <pc-option value="bar">Bar</pc-option>
-            <pc-option value="baz">Baz</pc-option>
-        </pc-select>
-        <br />
-        <pc-button type="button">Add “foo” option</pc-button>
-    </div>
+<form class="lazy-loading-options pc-stack" id="lazy-options-example">
+    <pc-select name="select-1" label="Single select (with existing options)">
+        <pc-option value="bar">Bar</pc-option>
+        <pc-option value="baz">Baz</pc-option>
+    </pc-select>
+    <pc-button type="button">Add “foo” option</pc-button>
 
-    <br />
+    <pc-select
+        label="Single select (with no existing options)"
+        name="select-2"
+    ></pc-select>
+    <pc-button type="button">Add “foo” option</pc-button>
 
-    <div>
-        <pc-select
-            label="Single select (with no existing options)"
-            name="select-2"
-        ></pc-select>
-        <br />
-        <pc-button type="button">Add “foo” option</pc-button>
-    </div>
+    <pc-select
+        label="Multiple select (with existing options)"
+        name="select-3"
+        multiple
+    >
+        <pc-option value="bar" selected>Bar</pc-option>
+        <pc-option value="baz" selected>Baz</pc-option>
+    </pc-select>
+    <pc-button type="button">Add “foo” option</pc-button>
 
-    <br />
+    <pc-select
+        label="Multiple select (with no existing options)"
+        name="select-4"
+        multiple
+    ></pc-select>
+    <pc-button type="button">Add “foo” option</pc-button>
 
-    <div>
-        <pc-select
-            label="Multiple select (with existing options)"
-            name="select-3"
-            multiple
-        >
-            <pc-option value="bar" selected>Bar</pc-option>
-            <pc-option value="baz" selected>Baz</pc-option>
-        </pc-select>
-        <br />
-        <pc-button type="button">Add “foo” option</pc-button>
-    </div>
-
-    <br />
-
-    <div>
-        <pc-select
-            label="Multiple select (with no existing options)"
-            name="select-4"
-            multiple
-        ></pc-select>
-        <br />
-        <pc-button type="button">Add “foo” option</pc-button>
-    </div>
-
-    <br />
-
-    <div style="display: flex; gap: var(--pc-spacing-s)">
+    <div class="pc-cluster pc-gap-s">
         <pc-button appearance="primary" type="submit">Show FormData</pc-button>
         <pc-button type="reset">Reset</pc-button>
     </div>
-
-    <br />
 
     <pre hidden><code id="lazy-options-example-form-data"></code></pre>
 </form>
@@ -435,12 +409,16 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
         const obj = {};
 
         for (const key of formData.keys()) {
-            const value = formData.getAll(key).length > 1 ? formData.getAll(key) : formData.get(key);
+            const value = formData.getAll(key).length > 1
+                ? formData.getAll(key) : formData.get(key);
+
             obj[key] = value;
         }
 
         codeElement.textContent = JSON.stringify(obj, null, 4);
+
         const preElement = codeElement.parentElement;
+
         preElement.removeAttribute("hidden");
     }
 
@@ -449,6 +427,16 @@ This can be hard to conceptualise, so here’s a fairly large example showing ho
     container.addEventListener("click", addFooOption);
     container.addEventListener("submit", handleLazySubmit);
 </script>
+
+<style>
+    .lazy-loading-options {
+        align-items: flex-start;
+    }
+
+    .lazy-loading-options pc-select {
+        inline-size: 100%;
+    }
+</style>
 ```
 
 <pc-callout appearance="warning">

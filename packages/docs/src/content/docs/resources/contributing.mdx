@@ -101,14 +101,14 @@ The first step is to create the component files. Inside the `packages/placer-too
 
 Once the files are created, you must add the component export to the codebase. Open `packages/placer-toolkit/src/placer.ts` and add an export for the new component under the **Components** section. It is essential to ensure that the new entry is alphabetically sorted to maintain order.
 
-```diff
- export { default as PcCheckbox } from "./components/checkbox/checkbox.js";
- export { default as PcColorPicker } from "./components/color-picker/color-picker.js";
- export { default as PcComparer } from "./components/comparer/comparer.js";
+```typescript fileName="packages/placer-toolkit/src/placer.ts"
+ export { default as PcCheckbox } from "./components/checkbox/checkbox.js";
+ export { default as PcColorPicker } from "./components/color-picker/color-picker.js";
+ export { default as PcComparer } from "./components/comparer/comparer.js";
 +export { default as PcComponentName } from "./components/component-name/component-name.js";
  export { default as PcCopyButton } from "./components/copy-button/copy-button.js";
- export { default as PcDetails } from "./components/details/details.js";
- export { default as PcDialog } from "./components/dialog/dialog.js";
+ export { default as PcDetails } from "./components/details/details.js";
+ export { default as PcDialog } from "./components/dialog/dialog.js";
 ```
 
 Finally, you can proceed with documenting the component. Create a new MDX file for your component in `packages/docs/src/content/docs/components`, following the structure of documentation files for other components.
@@ -141,7 +141,7 @@ For code blocks, use the fenced code block syntax. Do not use the indented code 
 
 Code demos are used to show demonstrations of different states of a component. To add one, use the fenced code block syntax with the language set to `demo`. All code demos must use HTML, no other language is accepted. CSS and JavaScript can be embedded in the code demo with `<style>` and `<script>` tags.
 
-````mdx
+````markdown
 ```demo
 <!-- insert your HTML code here… -->
 ```
@@ -149,7 +149,7 @@ Code demos are used to show demonstrations of different states of a component. T
 
 You can also append attributes to expand the code by default or remove the CodePen button. The order of these attributes doesn’t matter.
 
-````mdx
+````markdown
 ```demo:no-codepen:open
 <!-- insert your HTML code here… -->
 ```
@@ -173,14 +173,14 @@ To provide additional details that can be expanded or collapsed, use the [Detail
 
 To switch from <kbd aria-label="Control">Ctrl</kbd> and <kbd aria-label="Command">⌘</kbd> depending on which operating system you’re on, import the Astro component from the MDX file.
 
-```mdx
+```jsx
 {/* The import path may be different depending on where the MDX file is located. */}
 import AutoKeyboardSwitch from "../../docs/components/AutoKeyboardSwitch.astro";
 ```
 
 Then, insert the component in your MDX file like this.
 
-```mdx
+```jsx
 <AutoKeyboardSwitch keyName="ctrl" />
 ```
 

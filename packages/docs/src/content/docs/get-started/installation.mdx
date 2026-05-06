@@ -118,7 +118,7 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
     <pc-tab-panel name="npm-registry">
         If you want to use the npm registry, you can use this command to install the package.
 
-        <pc-tab-group>
+        <pc-tab-group sync-key="package-manager">
             <pc-tab slot="navigation" panel="npm">npm</pc-tab>
             <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
             <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
@@ -180,6 +180,7 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
             appearance="primary"
             pill
             download
+            style="margin-block-end: var(--pc-content-spacing)"
         >
             <pc-icon
                 library="default"
@@ -190,11 +191,9 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
             <span>Download .tgz file</span>
         </pc-button>
 
-        <br /><br />
-
         Then, install it from the tarball file with this command.
 
-        <pc-tab-group>
+        <pc-tab-group sync-key="package-manager">
             <pc-tab slot="navigation" panel="npm">npm</pc-tab>
             <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
             <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>

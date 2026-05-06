@@ -275,13 +275,11 @@ This limitation exists because there isn’t an efficient way to determine the c
 
 ## Creating your own translations
 
-You can provide your own translations if you have specific needs or if you don’t want to wait for a translation to land upstream. The easiest way to do this is to copy `src/translations/en.ts` into your own project and translate the terms inside. When your translation is done, you can import it and use it just like a built‐in translation.
+You can provide your own translations if you have specific needs or if you don’t want to wait for a translation to land upstream. The easiest way to do this is to copy `packages/placer-toolkit/src/translations/en.ts` into your own project and translate the terms inside. When your translation is done, you can import it and use it just like a built‐in translation.
 
 Let’s create a Spanish translation as an example. The following example assumes that you’re using TypeScript, but you can also create translations with regular JavaScript.
 
-{/* cSpell:disable */}
-
-```typescript
+```typescript fileName="es.ts"
 import { registerTranslation } from "placer-toolkit/dist/translations/index.js";
 import type { Translation } from "placer-toolkit/dist/utilities/localize.js";
 
@@ -290,47 +288,16 @@ const translation: Translation = {
     $name: "Español",
     $dir: "ltr",
 
-    carousel: "Carrusel",
-    clearEntry: "Borrar entrada",
-    close: "Cerrar",
-    copied: "¡Copiado!",
-    copy: "Copiar",
-    currentValue: "Valor actual",
-    error: "Error",
-    goToSlide: (slide, count) => `Ir a la diapositiva ${slide} de ${count}`,
-    hidePassword: "Ocultar contraseña",
-    hue: "Tono",
-    loading: "Cargando…",
-    nextSlide: "Siguiente diapositiva",
-    numOptionsSelected: (number) => {
-        if (number === 0) {
-            return "No hay opciones seleccionadas";
-        } else if (number === 1) {
-            return "Una opción seleccionada";
-        } else {
-            return `${number} opciones seleccionadas`;
-        }
-    },
-    opacity: "Opacidad",
-    pickAColorFromTheScreen: "Seleccione un color de la pantalla",
-    previousSlide: "Diapositiva anterior",
-    progress: "Progreso",
-    remove: "Eliminar",
-    resize: "Cambiar tamaño",
-    scrollableRegion: "Región desplazable",
-    scrollToEnd: "Desplácese hasta el final",
-    scrollToStart: "Desplácese al inicio",
-    showPassword: "Mostrar contraseña",
-    slideNum: (slide) => `Diapositiva ${slide}`,
-    toggleColorFormat: "Alternar formato de color",
+    keyOne: "Key 1",
+    keyTwo: "Key 2",
+    keyThree: "Key 3",
+    // …
 };
 
 registerTranslation(translation);
 
 export default translation;
 ```
-
-{/* cSpell:enable */}
 
 Once your translation has been compiled to JavaScript, import and activate it like this.
 

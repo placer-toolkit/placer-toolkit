@@ -182,15 +182,16 @@ export class PcSlider extends PlacerFormAssociatedElement {
     @property({ type: Boolean }) autofocus!: boolean;
 
     /** The distance of the tooltip from the slider’s thumb. */
-    @property({ attribute: "tooltip-distance", type: Number }) tooltipDistance =
-        8;
+    @property({ attribute: "tooltip-distance", type: Number })
+    tooltipDistance = 8;
 
     /** The placement of the tooltip in reference to the slider’s thumb. */
     @property({ attribute: "tooltip-placement", reflect: true })
     tooltipPlacement: "top" | "right" | "bottom" | "left" = "top";
 
     /** Adds markers at each step along the slider. */
-    @property({ attribute: "with-markers", type: Boolean }) withMarkers = false;
+    @property({ attribute: "with-markers", type: Boolean })
+    withMarkers = false;
 
     /** Adds a tooltip above the thumb when the control has focus or is dragged. */
     @property({ attribute: "has-tooltip", type: Boolean }) hasTooltip = false;

@@ -1245,9 +1245,7 @@ export class PcColorPicker extends PlacerFormAssociatedElement {
             >
                 ${this.inline
                     ? html`
-                          <slot class="label" name="label">
-                              ${this.label}
-                          </slot>
+                          <slot class="label" name="label">${this.label}</slot>
                       `
                     : null}
 

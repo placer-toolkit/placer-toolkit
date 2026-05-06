@@ -275,13 +275,11 @@ Diese Einschränkung besteht, weil es keinen effizienten Weg gibt, die aktuelle 
 
 ## Eigene Übersetzungen erstellen
 
-Du kannst eigene Übersetzungen bereitstellen, wenn du spezielle Bedürfnisse hast oder nicht auf eine Upstream‐Übersetzung warten möchtest. Die einfachste Methode besteht darin, `src/translations/en.ts` in dein Projekt zu kopieren und die Begriffe darin zu übersetzen. Nach Abschluss der Übersetzung kannst du sie importieren und wie eine eingebaute Übersetzung verwenden.
+Du kannst eigene Übersetzungen bereitstellen, wenn du spezielle Bedürfnisse hast oder nicht auf eine Upstream‐Übersetzung warten möchtest. Die einfachste Methode besteht darin, `packages/placer-toolkit/src/translations/en.ts` in dein Projekt zu kopieren und die Begriffe darin zu übersetzen. Nach Abschluss der Übersetzung kannst du sie importieren und wie eine eingebaute Übersetzung verwenden.
 
-Hier ein Beispiel für eine spanische Übersetzung. Das Beispiel geht von TypeScript aus, funktioniert aber auch mit normalem JavaScript.
+Hier ist ein Beispiel für eine spanische Übersetzung. Das Beispiel geht von TypeScript aus, funktioniert aber auch mit normalem JavaScript.
 
-{/* cSpell:disable */}
-
-```typescript
+```typescript fileName="es.ts"
 import { registerTranslation } from "placer-toolkit/dist/translations/index.js";
 import type { Translation } from "placer-toolkit/dist/utilities/localize.js";
 
@@ -290,47 +288,16 @@ const translation: Translation = {
     $name: "Español",
     $dir: "ltr",
 
-    carousel: "Carrusel",
-    clearEntry: "Borrar entrada",
-    close: "Cerrar",
-    copied: "¡Copiado!",
-    copy: "Copiar",
-    currentValue: "Valor actual",
-    error: "Error",
-    goToSlide: (slide, count) => `Ir a la diapositiva ${slide} de ${count}`,
-    hidePassword: "Ocultar contraseña",
-    hue: "Tono",
-    loading: "Cargando…",
-    nextSlide: "Siguiente diapositiva",
-    numOptionsSelected: (number) => {
-        if (number === 0) {
-            return "No hay opciones seleccionadas";
-        } else if (number === 1) {
-            return "Una opción seleccionada";
-        } else {
-            return `${number} opciones seleccionadas`;
-        }
-    },
-    opacity: "Opacidad",
-    pickAColorFromTheScreen: "Seleccione un color de la pantalla",
-    previousSlide: "Diapositiva anterior",
-    progress: "Progreso",
-    remove: "Eliminar",
-    resize: "Cambiar tamaño",
-    scrollableRegion: "Región desplazable",
-    scrollToEnd: "Desplácese hasta el final",
-    scrollToStart: "Desplácese al inicio",
-    showPassword: "Mostrar contraseña",
-    slideNum: (slide) => `Diapositiva ${slide}`,
-    toggleColorFormat: "Alternar formato de color",
+    keyOne: "Schlüssel 1",
+    keyTwo: "Schlüssel 2",
+    keyThree: "Schlüssel 3",
+    // …
 };
 
 registerTranslation(translation);
 
 export default translation;
 ```
-
-{/* cSpell:enable */}
 
 Nach der Kompilierung der Übersetzung in JavaScript kannst du sie importieren und aktivieren:
 

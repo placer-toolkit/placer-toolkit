@@ -125,6 +125,7 @@ export class PcCopyButton extends PlacerElement {
             const isProperty = this.from.includes(".");
             const isAttribute =
                 this.from.includes("[") && this.from.includes("]");
+
             let id = this.from;
             let field = "";
 
@@ -158,6 +159,7 @@ export class PcCopyButton extends PlacerElement {
         } else {
             try {
                 await navigator.clipboard.writeText(valueToCopy);
+
                 this.showStatus("success");
                 this.dispatchEvent(new PcCopyEvent({ value: valueToCopy }));
             } catch {
@@ -184,6 +186,7 @@ export class PcCopyButton extends PlacerElement {
         ).finished;
 
         this.copyIcon.hidden = true;
+        this.customStates.set(status, true);
         this.status = status;
 
         iconToShow.hidden = false;
@@ -198,6 +201,7 @@ export class PcCopyButton extends PlacerElement {
             ).finished;
 
             iconToShow.hidden = true;
+            this.customStates.set(status, false);
             this.status = "rest";
             this.copyIcon.hidden = false;
 

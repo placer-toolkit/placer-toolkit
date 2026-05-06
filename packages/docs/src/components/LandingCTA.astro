@@ -93,7 +93,7 @@ const translatePath = useTranslatedPath(language);
         </div>
         <div>
             <div class="splash-buttons">
-                <pc-tab-group class="pc-cloak">
+                <pc-tab-group class="pc-cloak" sync-key="package-manager">
                     <pc-tab slot="navigation" panel="npm">npm</pc-tab>
                     <pc-tab slot="navigation" panel="yarn">Yarn</pc-tab>
                     <pc-tab slot="navigation" panel="pnpm">pnpm</pc-tab>
@@ -209,17 +209,20 @@ const translatePath = useTranslatedPath(language);
         pill
         aria-hidden="true"
     >
+        {
+            /* This label isn’t localised yet because it won’t be accessible to
+            screen readers anyways. This could be used in the future though. */
+        }
         <pc-icon
             library="default"
             icon-style="solid"
             name="pause"
-            {/* This label isn’t localised yet because it won’t be accessible to
-                screen readers anyways. This could be used in the future though. */}
             label="Pause animation"></pc-icon>
     </pc-button>
 </div>
 
 <script>
+    import type { PcAvatar } from "placer-toolkit/dist/components/avatar/avatar.js";
     import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
 
     const animation = document.querySelector<HTMLDivElement>(
@@ -232,8 +235,7 @@ const translatePath = useTranslatedPath(language);
 
     if (pauseButton && animation) {
         pauseButton.addEventListener("click", () => {
-            const avatars =
-                animation.querySelectorAll<HTMLDivElement>("pc-avatar");
+            const avatars = animation.querySelectorAll<PcAvatar>("pc-avatar");
 
             const currentState =
                 avatars[0]?.style.animationPlayState ||
@@ -340,15 +342,22 @@ const translatePath = useTranslatedPath(language);
         > .content
         .splash-buttons
         :global(.code-block-container .shiki) {
-        padding: var(--pc-spacing-m) !important;
+        padding-block: var(--pc-spacing-m) !important;
+    }
+
+    .landing-cta
+        > .content
+        .splash-buttons
+        :global(.code-block-container .shiki code .line .code) {
+        padding-inline: var(--pc-spacing-m) !important;
     }
 
     .landing-cta
         > .content
         .splash-buttons
         :global(.code-block-container pc-copy-button) {
-        inset-block-start: calc(var(--pc-spacing-s) - 0.0625em);
-        inset-inline-end: calc(var(--pc-spacing-s) - 0.0625em);
+        inset-block-start: calc(var(--pc-spacing-s));
+        inset-inline-end: calc(var(--pc-spacing-s));
     }
 
     .landing-cta > .content .splash-buttons pc-button::part(base) {

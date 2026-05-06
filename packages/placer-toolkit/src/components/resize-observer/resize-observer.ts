@@ -83,7 +83,9 @@ export class PcResizeObserver extends PlacerElement {
     }
 
     render() {
-        return html`<slot @slotchange=${this.handleSlotChange}></slot>`;
+        return html`
+            <slot @slotchange=${this.handleSlotChange}></slot>
+        `;
     }
 }
 
