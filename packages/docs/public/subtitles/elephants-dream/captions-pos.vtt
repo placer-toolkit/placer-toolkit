@@ -1,0 +1,44 @@
+WEBVTT
+
+NOTE
+POSITIONING GAUNTLET: FOCUS ON LAYOUT & COORDINATES
+
+00:00:00.000 --> 00:00:03.000 position:0% align:start line:0
+TL: Top Left Edge
+Horizontal: 0% | Vertical: Line 0
+
+00:00:03.000 --> 00:00:06.000 position:100% align:end line:-1
+BR: Bottom Right Edge
+Horizontal: 100% | Vertical: Line -1
+
+00:00:06.000 --> 00:00:09.000 line:10% position:10% size:20% align:start
+ML: Middle Left Pillar
+Horizontal: 10% | Vertical: 10%
+
+00:00:09.000 --> 00:00:12.000 align:center position:50% line:50%
+MM: Dead Center Screen
+Horizontal: 50% | Vertical: 50%
+
+00:00:12.000 --> 00:00:15.000 position:80% align:center line:15
+BR: Bottom Right Integer
+Horizontal: 80% | Vertical: Line 15
+
+00:00:15.000 --> 00:00:18.000 vertical:rl position:90% line:0
+ＴＲ：　Ｔｏｐ　Ｒｉｇｈｔ　Ｖｅｒｔｉｃａｌ
+Ｖｅｒｔｉｃａｌ：　９０％　｜　Ｈｏｒｉｚｏｎｔａｌ：　Ｌｉｎｅ　０
+
+00:00:18.000 --> 00:00:21.000 vertical:lr position:10% line:0
+ＴＬ：　Ｔｏｐ　Ｌｅｆｔ　Ｖｅｒｔｉｃａｌ
+Ｖｅｒｔｉｃａｌ：　１０％　｜　Ｈｏｒｉｚｏｎｔａｌ：　Ｌｉｎｅ　０
+
+00:00:21.000 --> 00:00:24.000 position:50% align:start line:80% size:100%
+MB: Middle Bottom Overflow
+Horizontal: 50% | Vertical: 80%
+
+00:00:24.000 --> 00:00:27.000 position:20%,line-left align:start
+ML: Middle Left Legacy
+Horizontal: 20% | Vertical: Auto
+
+00:00:27.000 --> 00:00:30.000 position:50% line:0
+TM: Top Middle Default
+Horizontal: 50% | Vertical: Line 0

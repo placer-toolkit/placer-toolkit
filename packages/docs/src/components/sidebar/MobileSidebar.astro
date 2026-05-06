@@ -1,0 +1,43 @@
+---
+import { getLanguageFromURL, useTranslations } from "../../i18n/utilities.js";
+
+import DynamicSidebar from "./DynamicSidebar.astro";
+import SocialIcons from "../SocialIcons.astro";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<pc-drawer
+    class="mobile-sidebar pc-cloak"
+    id="mobile-sidebar"
+    placement="start"
+>
+    <span class="pc-visually-hidden" slot="label">
+        {translation("sidebar.aria")}
+    </span>
+
+    <SocialIcons slotName="header-actions" variant="plain" is992Size={true} />
+
+    <DynamicSidebar isMobile={true} />
+</pc-drawer>
+
+<style>
+    .mobile-sidebar {
+        view-transition-name: mobile-sidebar;
+    }
+
+    ::view-transition-old(mobile-sidebar),
+    ::view-transition-new(mobile-sidebar) {
+        mix-blend-mode: normal;
+        animation: none;
+    }
+
+    .mobile-sidebar::part(drawer) {
+        background-color: var(--pc-color-surface-default);
+    }
+
+    .mobile-sidebar::part(title) {
+        font-weight: var(--pc-font-weight-normal);
+    }
+</style>

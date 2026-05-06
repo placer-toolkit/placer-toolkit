@@ -1,0 +1,677 @@
+:host {
+    --caption-font-family: var(--pc-font-sans);
+    --caption-font-color: white;
+    --caption-font-size: 1;
+    --caption-background-color: black;
+    --caption-background-opacity: 75%;
+    --caption-window-color: black;
+    --caption-window-opacity: 0%;
+    --caption-character-edge-style: none;
+    --caption-font-opacity: 100%;
+
+    --control-offset: 0;
+
+    display: block;
+    max-inline-size: 100%;
+    container-type: inline-size;
+    container-name: video-player;
+}
+
+.caption-options .caption-options-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--pc-spacing-l);
+}
+
+.caption-options .caption-options-grid pc-select {
+    display: grid;
+    gap: var(--pc-spacing-l);
+    grid-template-columns: auto 1fr;
+}
+
+.caption-options .caption-options-grid pc-select::part(form-control) {
+    display: grid;
+    align-items: center;
+    grid-column: span 2;
+    grid-template-columns: subgrid;
+    gap: var(--pc-spacing-xl);
+}
+
+.caption-options .caption-options-grid pc-select::part(label) {
+    margin-block-end: 0;
+}
+
+.caption-options pc-checkbox {
+    display: block;
+    margin-block-start: var(--pc-spacing-l);
+}
+
+.caption-options .sample {
+    margin-block-start: var(--pc-spacing-l);
+}
+
+.caption-options .sample .sample-text {
+    margin-block-end: var(--pc-spacing-xs);
+    color: var(--pc-color-neutral-on-quiet);
+    line-height: var(--pc-line-height-dense);
+}
+
+.caption-options .sample .sample-container {
+    padding-block: var(--pc-spacing-l);
+    padding-inline: var(--pc-spacing-xl);
+    background: linear-gradient(
+        135deg,
+        var(--pc-color-danger-40) 0%,
+        var(--pc-color-indigo-10) 50%,
+        var(--pc-color-primary-30) 100%
+    );
+    border-radius: var(--pc-border-radius-l);
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.caption-options .sample .sample-container .sample-caption-cue {
+    background-color: color-mix(
+        in oklab,
+        var(--caption-window-color),
+        transparent calc(100% - var(--caption-window-opacity))
+    );
+    line-height: normal;
+}
+
+.caption-options
+    .sample
+    .sample-container
+    .sample-caption-cue
+    .caption-line-container {
+    display: block;
+}
+
+.caption-options
+    .sample
+    .sample-container
+    .sample-caption-cue
+    .sample-caption-line-container
+    .sample-caption-line {
+    display: inline-block;
+    padding-block: var(--pc-spacing-xxs);
+    padding-inline: var(--pc-spacing-xs);
+    background-color: color-mix(
+        in oklab,
+        var(--caption-background-color),
+        transparent calc(100% - var(--caption-background-opacity))
+    );
+    color: color-mix(
+        in oklab,
+        var(--caption-font-color),
+        transparent calc(100% - var(--caption-font-opacity))
+    );
+    font-family: var(--caption-font-family);
+    font-size: calc(
+        clamp(var(--pc-font-size-s), 3cqw, var(--pc-font-size-l)) *
+            var(--caption-font-size)
+    );
+    line-height: normal;
+    text-align: center;
+    text-shadow: var(--caption-character-edge-style);
+    overflow-wrap: anywhere;
+}
+
+.caption-options
+    .sample
+    .sample-container
+    .sample-caption-cue
+    .sample-caption-line-container
+    .sample-caption-line
+    .ambience {
+    color: oklch(100% 0 0 / 40%);
+    font-style: italic;
+}
+
+.caption-options
+    .sample
+    .sample-container
+    .sample-caption-cue
+    .sample-caption-line-container
+    .sample-caption-line
+    .voice {
+    color: oklch(75% 0.12 240);
+}
+
+.frame {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+}
+
+:host(:fullscreen) .frame {
+    block-size: 100%;
+}
+
+:host(:fullscreen:not(.controls-visible)) .frame {
+    cursor: none;
+}
+
+.frame .initial-overlay {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+    cursor: pointer;
+}
+
+.frame .initial-overlay .initial-play::part(base) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-10),
+        transparent 40%
+    );
+    color: var(--pc-color-neutral-90);
+    border: none;
+    border-radius: var(--pc-border-radius-circle);
+}
+
+@media (hover: hover) {
+    .frame .initial-overlay .initial-play::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-10), transparent 40%),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.frame .initial-overlay .initial-play::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        color-mix(in oklab, var(--pc-color-neutral-10), transparent 40%),
+        var(--pc-color-mix-active)
+    );
+}
+
+.frame .title {
+    position: absolute;
+    inset-block-start: var(--pc-spacing-s);
+    inset-inline-start: var(--pc-spacing-s);
+    padding-block: var(--pc-spacing-xs);
+    padding-inline: var(--pc-spacing-s);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-m);
+    font-size: var(--pc-font-size-s);
+    opacity: 0;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .title,
+.frame:has(:focus-visible) .title {
+    opacity: 1;
+}
+
+.frame video {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: var(--pc-border-radius-l);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+:host(:fullscreen) .frame video {
+    border-radius: 0;
+}
+
+/* iOS native video player styles */
+.frame video::cue {
+    padding-block: var(--pc-spacing-xxs);
+    padding-inline: var(--pc-spacing-xs);
+    background-color: color-mix(
+        in oklab,
+        var(--caption-background-color),
+        transparent calc(100% - var(--caption-background-opacity))
+    );
+    color: color-mix(
+        in oklab,
+        var(--caption-font-color),
+        transparent calc(100% - var(--caption-font-opacity))
+    );
+    font-family: var(--caption-font-family);
+    font-size: calc(
+        clamp(var(--pc-font-size-s), 3cqw, var(--pc-font-size-l)) *
+            var(--caption-font-size)
+    );
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    line-height: normal;
+    text-align: center;
+    text-shadow: var(--caption-character-edge-style);
+}
+
+.frame .captions-container {
+    position: absolute;
+    inset: 12px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+:host(.controls-visible) .frame .captions-container .caption-cue {
+    --control-offset: calc((var(--pc-spacing-m) * 3) + 2.25rem);
+
+    background-color: color-mix(
+        in oklab,
+        var(--caption-window-color),
+        transparent calc(100% - var(--caption-window-opacity))
+    );
+    line-height: normal;
+}
+
+.frame .captions-container .caption-cue .caption-line-container {
+    display: block;
+}
+
+.frame .captions-container .caption-cue .caption-line-container .caption-line {
+    display: inline-block;
+    padding-block: var(--pc-spacing-xxs);
+    padding-inline: var(--pc-spacing-xs);
+    background-color: color-mix(
+        in oklab,
+        var(--caption-background-color),
+        transparent calc(100% - var(--caption-background-opacity))
+    );
+    color: color-mix(
+        in oklab,
+        var(--caption-font-color),
+        transparent calc(100% - var(--caption-font-opacity))
+    );
+    font-family: var(--caption-font-family);
+    font-size: calc(
+        clamp(var(--pc-font-size-s), 3cqw, var(--pc-font-size-l)) *
+            var(--caption-font-size)
+    );
+    line-height: normal;
+    text-align: center;
+    text-shadow: var(--caption-character-edge-style);
+    overflow-wrap: anywhere;
+}
+
+.frame
+    .captions-container
+    .caption-cue
+    .caption-line-container
+    .caption-line
+    ruby
+    rt {
+    font-size: 0.5em;
+    line-height: var(--pc-line-height-densest);
+}
+
+.frame .bar {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    inset-block-end: calc(2.25rem + var(--pc-spacing-m) * 2);
+    inset-inline: 0;
+    padding-inline: var(--pc-spacing-m);
+    block-size: 0.5em;
+    opacity: 0;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .bar,
+.frame:has(:focus-visible) .bar {
+    opacity: 1;
+}
+
+.frame .bar .progress-wrapper {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: var(--pc-color-neutral-30);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.frame .bar .progress-wrapper .buffered {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 0;
+    background-color: var(--pc-color-neutral-50);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.frame .bar .progress-wrapper .progress {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    margin: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: transparent;
+    border-radius: inherit;
+    outline: none;
+    touch-action: none;
+    cursor: pointer;
+}
+
+.frame .bar .progress-wrapper .progress::part(slider) {
+    margin-block-start: 0;
+}
+
+.frame .bar .progress-wrapper .progress::part(label) {
+    position: absolute !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    width: 1px !important;
+    height: 1px !important;
+    clip-path: inset(50%) !important;
+    border: none !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}
+
+.frame .bar .progress-wrapper .progress::part(track) {
+    background-color: transparent;
+}
+
+.frame .bar .progress-wrapper .progress::part(thumb) {
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-primary-border-loud);
+}
+
+.frame .controls {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    inset-block-end: var(--pc-spacing-m);
+    inset-inline: var(--pc-spacing-m);
+    gap: var(--pc-spacing-s);
+    block-size: 2.25rem;
+    opacity: 0;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .controls,
+.frame:has(:focus-visible) .controls {
+    opacity: 1;
+}
+
+:host(:fullscreen:not(.controls-visible)) .frame:not(:has(:focus-visible)) .bar,
+:host(:fullscreen:not(.controls-visible))
+    .frame:not(:has(:focus-visible))
+    .controls {
+    opacity: 0;
+}
+
+.frame .controls pc-button-group::part(base) {
+    gap: 0;
+    margin-inline-end: var(--pc-spacing-xs);
+}
+
+.frame .controls pc-button-group::part(base)::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--pc-spacing-xs) * -1);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.frame .controls pc-button::part(base) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+@media (hover: hover) {
+    .frame .controls pc-button::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-20), transparent 30%),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.frame .controls pc-button:not(.mute)::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        color-mix(in oklab, var(--pc-color-neutral-20), transparent 30%),
+        var(--pc-color-mix-active)
+    );
+}
+
+.frame .controls pc-button-group pc-button::part(base) {
+    aspect-ratio: 3 / 2;
+    inline-size: auto;
+    block-size: calc(
+        var(--pc-form-control-height) - (var(--pc-spacing-xs) * 2)
+    );
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+@media (hover: hover) {
+    .frame .controls pc-button-group pc-button::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            transparent,
+            var(--pc-color-neutral-95) 8%
+        ) !important;
+    }
+}
+
+.frame .controls pc-button-group pc-button::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        transparent,
+        var(--pc-color-neutral-95) 16%
+    ) !important;
+}
+
+.frame .controls pc-button-group pc-button.pressed::part(base) {
+    color: var(--pc-color-primary-70);
+}
+
+.frame .controls pc-button-group pc-button pc-icon {
+    scale: 1.1;
+}
+
+.frame .controls .mute {
+    display: inline-flex;
+    align-items: center;
+    inline-size: var(--pc-form-control-height);
+    transition: inline-size var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .frame .controls .mute:hover,
+    .frame .controls .mute:focus-within,
+    .frame .controls .mute:has(> .volume:active) {
+        inline-size: calc(
+            var(--pc-form-control-height) + 4.375rem + var(--pc-spacing-l) +
+                var(--pc-spacing-s)
+        );
+    }
+}
+
+@media (hover: none) {
+    .frame .controls .mute {
+        display: none;
+    }
+}
+
+.frame .controls .mute::part(base) {
+    aspect-ratio: auto;
+    inline-size: 100%;
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.frame .controls .mute svg {
+    display: inline-flex;
+    justify-content: center;
+    box-sizing: content-box !important;
+    align-self: center;
+    inline-size: auto;
+    block-size: 1em;
+    scale: 1.75;
+    overflow: visible;
+}
+
+.frame .controls .mute svg path {
+    transform-origin: left;
+    transition: transform var(--pc-transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:dir(rtl) .frame .controls .mute svg {
+    transform: scaleX(-1);
+}
+
+:dir(rtl) .frame .controls .mute svg path {
+    transform-origin: right;
+}
+
+.frame .controls .mute svg[data-state="mute"] .wave-1,
+.frame .controls .mute svg[data-state="mute"] .wave-2 {
+    transform: scale(0);
+}
+
+.frame .controls .mute svg[data-state="mute"] .mute-x {
+    transform: scale(1);
+}
+
+.frame .controls .mute svg[data-state="low"] .mute-x,
+.frame .controls .mute svg[data-state="low"] .wave-2 {
+    transform: scale(0);
+}
+
+.frame .controls .mute svg[data-state="low"] .wave-1 {
+    transform: scale(1);
+}
+
+.frame .controls .mute svg[data-state="high"] .mute-x {
+    transform: scale(0);
+}
+
+.frame .controls .mute svg[data-state="high"] .wave-1,
+.frame .controls .mute svg[data-state="high"] .wave-2 {
+    transform: scale(1);
+}
+
+.frame .controls .mute .volume {
+    --track-size: 0.3125em;
+    --thumb-width: 1.2em;
+    --thumb-height: 1.2em;
+
+    display: block;
+    margin: 0;
+    inline-size: 0;
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 -0.188rem;
+    transition:
+        margin var(--pc-transition-fast) ease-in-out,
+        inline-size var(--pc-transition-fast) ease-in-out,
+        opacity var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .frame .controls .mute:hover .volume,
+    .frame .controls .mute:focus-within .volume {
+        margin-inline-start: var(--pc-spacing-l);
+        margin-inline-end: var(--pc-spacing-s);
+        inline-size: 4.375rem;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.frame .controls .mute .volume::part(label) {
+    position: absolute !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    width: 1px !important;
+    height: 1px !important;
+    clip-path: inset(50%) !important;
+    border: none !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}
+
+.frame .controls .mute .volume::part(track) {
+    background-color: var(--pc-color-neutral-40);
+}
+
+.frame .controls .mute .volume::part(indicator) {
+    background-color: var(--pc-color-neutral-90);
+}
+
+.frame .controls .mute .volume::part(thumb) {
+    background-color: var(--pc-color-neutral-90);
+    border: none;
+}
+
+.frame .controls .time-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--pc-form-control-padding-inline);
+    block-size: var(--pc-form-control-height);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+    font-size: var(--pc-font-size-s);
+    font-variant-numeric: tabular-nums;
+    line-height: calc(var(--pc-form-control-height) * 2);
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+}
+
+.frame .controls .spacer {
+    flex: 1;
+}
+
+@container video-player (max-width: 550px) {
+    .frame .controls .mute,
+    .frame .controls .time-container {
+        display: none;
+    }
+}

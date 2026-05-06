@@ -1,0 +1,500 @@
+---
+import { getShiki } from "../scripts/shiki-process.ts";
+import { placerEclipse } from "../styles/syntax/placer-eclipse.ts";
+
+const { language = "text", showLineNumbers, fileName } = Astro.props;
+
+let rawCode = await Astro.slots.render("default");
+
+if (typeof rawCode !== "string") {
+    rawCode = "";
+}
+
+function unescapeHTML(string: string) {
+    let previousLayer;
+
+    do {
+        previousLayer = string;
+        string = string
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&amp;/g, "&");
+    } while (string !== previousLayer);
+
+    return string;
+}
+
+rawCode = unescapeHTML(rawCode || "");
+
+let diffLines = new Map();
+
+const processedLines = rawCode.split("\n").map((line, index) => {
+    if (language === "diff") {
+        return line;
+}
+
+    const firstCharacter = line[0];
+
+    const markerMap: Record<string, string> = {
+        "+": "addition",
+        "-": "deletion",
+        "|": "",
+    };
+
+    if (firstCharacter in markerMap) {
+        diffLines.set(index, `highlighted ${markerMap[firstCharacter]}`.trim());
+
+        return line.slice(1);
+    }
+
+    if (firstCharacter === " " || firstCharacter === "\u00A0") {
+        return line.slice(1);
+    }
+
+    return line;
+});
+
+const highlighter = await getShiki();
+
+const result = highlighter.codeToTokens(processedLines.join("\n"), {
+    lang: language === "js" ? "javascript" : language,
+    theme: placerEclipse,
+});
+
+const lines = result.tokens;
+
+const uniqueID = Math.random().toString(36).slice(2, 11);
+
+const isTerminal = ["bash", "shell", "sh"].includes(language);
+---
+
+<figure
+    class:list={{
+        "code-block-container": true,
+        "show-line-numbers": showLineNumbers,
+    }}
+    data-pagefind-ignore="all"
+>
+    {
+        isTerminal && !fileName && (
+            <figcaption class="terminal-bar">
+                <div class="circle circle-red" />
+                <div class="circle circle-yellow" />
+                <div class="circle circle-green" />
+            </figcaption>
+        )
+    }
+
+    {
+        fileName && !isTerminal && (
+            <figcaption class="code-block-header">
+                <span class="file-name" id={`${uniqueID}-file-name`}>
+                    {fileName}
+                </span>
+            </figcaption>
+        )
+    }
+
+    <div class="code-block">
+        <pre
+            class="shiki"
+            aria-label={fileName
+                ? undefined
+                : "Horizontally scrollable code block"}
+            aria-labelledby={fileName
+                ? `${uniqueID}-file-name`
+                : undefined}><code id={uniqueID} data-raw-code={processedLines.join("\n")}>{
+        lines.map((line, index) => {
+            const diffType = diffLines.get(index);
+            const isEmpty = line.length === 0;
+
+            return (
+                <span class:list={["line", diffType]}><span class="line-number" aria-hidden="true" /><span class="code">{
+                    isEmpty ? "\n" : line.map((token) => (
+                        <span style={`color: ${token.color}`}>{token.content}</span>
+                    ))
+                }</span></span>
+            );
+        })}</code></pre>
+        <pc-copy-button from=`${uniqueID}[data-raw-code]`></pc-copy-button>
+    </div>
+</figure>
+
+<script>
+    import { debounceObserver } from "../helpers/debounce-observer.ts";
+
+    function updateTabIndex(element: HTMLPreElement | HTMLElement) {
+        if (!element) {
+            return;
+        }
+
+        const isScrollable = element.scrollWidth > element.clientWidth;
+
+        if (isScrollable) {
+            element.setAttribute("tabindex", "0");
+        } else {
+            element.removeAttribute("tabindex");
+        }
+    }
+
+    const observer = debounceObserver((element: Element) => {
+        updateTabIndex(element as HTMLPreElement);
+    });
+
+    document.querySelectorAll(".shiki").forEach((pre) => {
+        observer.observe(pre);
+    });
+</script>
+
+<style>
+    .code-block-container {
+        margin-block-end: var(--pc-content-spacing);
+    }
+
+    .code-block-container,
+    .pc-light.code-block-container,
+    :global(.pc-light) .code-block-container {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-20);
+        --pc-color-text-normal-inverse: oklch(100% 0 0);
+
+        --pc-color-mix-syntax: 10%;
+    }
+
+    .pc-dark.code-block-container,
+    :global(.pc-dark) .code-block-container {
+        --pc-color-syntax-entity-name: var(--pc-color-purple-70);
+        --pc-color-text-normal-inverse: oklch(0% 0 0);
+
+        --pc-color-mix-syntax: 20%;
+    }
+
+    .terminal-bar {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.375rem;
+        padding-inline: var(--pc-spacing-l);
+        inline-size: 100%;
+        block-size: 2rem;
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-block-end: 0;
+        border-start-start-radius: var(--pc-border-radius-l);
+        border-start-end-radius: var(--pc-border-radius-l);
+    }
+
+    .terminal-bar .circle {
+        inline-size: 0.625rem;
+        block-size: 0.625rem;
+        opacity: 0.6;
+        border-radius: var(--pc-border-radius-circle);
+    }
+
+    .terminal-bar .circle-red {
+        background-color: var(--pc-color-red-60);
+    }
+
+    .terminal-bar .circle-yellow {
+        background-color: var(--pc-color-yellow-60);
+    }
+
+    .terminal-bar .circle-green {
+        background-color: var(--pc-color-green-60);
+    }
+
+    .code-block-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        inline-size: 100%;
+        block-size: 2.25rem;
+        background:
+            linear-gradient(
+                to top,
+                var(--pc-color-surface-border) var(--pc-border-width-s),
+                transparent var(--pc-border-width-s)
+            ),
+            linear-gradient(
+                var(--pc-color-surface-default),
+                var(--pc-color-surface-default)
+            );
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-block-end: 0;
+        border-start-start-radius: var(--pc-border-radius-l);
+        border-start-end-radius: var(--pc-border-radius-l);
+    }
+
+    .code-block-header .file-name {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        padding-inline: var(--pc-spacing-l);
+        block-size: 100%;
+        background-color: var(--pc-color-surface-raised);
+        border-start-start-radius: var(--pc-border-radius-l);
+        border-start-end-radius: var(--pc-border-radius-m);
+        font-size: var(--pc-font-size-smaller);
+    }
+
+    .code-block-header .file-name::before {
+        content: "";
+        position: absolute;
+        inset-block-end: 0;
+        inline-size: 100%;
+        block-size: var(--pc-border-width-m);
+        background-color: var(--pc-color-primary-border-loud);
+    }
+
+    .code-block {
+        position: relative;
+        inline-size: 100%;
+        max-block-size: max-content;
+        background-color: var(--pc-color-surface-raised);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-l);
+        overflow: visible;
+    }
+
+    .terminal-bar + .code-block,
+    .code-block-header + .code-block {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
+    }
+
+    .code-block-header + .code-block {
+        border-block-start: none;
+    }
+
+    .code-block :is(pre, code) {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: transparent;
+        border-radius: 0;
+        font-size: var(--pc-font-size-s);
+        line-height: var(--pc-line-height-normal);
+    }
+
+    .code-block .shiki {
+        counter-reset: line;
+        display: flex;
+        padding-block: var(--pc-spacing-l) !important;
+        background-color: transparent;
+        border-radius: var(--pc-border-radius-l);
+        overflow-x: auto;
+    }
+
+    .code-block .shiki:focus-visible {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .code-block-container .code-block-header + .code-block .shiki {
+        padding-block-start: var(--pc-spacing-m) !important;
+    }
+
+    .code-block .shiki code {
+        display: block;
+        flex: 1 0 100%;
+        inline-size: max-content;
+    }
+
+    .code-block .shiki code .line {
+        display: grid;
+        position: relative;
+        grid-template-areas: "line-number code";
+        grid-template-columns: auto 1fr;
+        direction: ltr;
+        unicode-bidi: isolate;
+    }
+
+    .code-block-container.show-line-numbers
+        .code-block
+        .shiki
+        code
+        .line
+        .line-number {
+        grid-area: line-number;
+        display: block;
+        margin-inline-end: var(--pc-spacing-s);
+        padding-inline-end: var(--pc-spacing-m);
+        min-inline-size: 3em;
+        color: var(--pc-color-text-quiet);
+        border-inline-end: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        font-variant-numeric: tabular-nums;
+        text-align: end;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .code-block-container.show-line-numbers
+        .code-block
+        .shiki
+        code
+        .line
+        .line-number::before {
+        content: counter(line);
+        display: block;
+        counter-increment: line;
+    }
+
+    .code-block .shiki code .line .code {
+        grid-area: code;
+        position: relative;
+        display: block;
+        padding-inline-start: calc(
+            var(--pc-spacing-l) - var(--pc-border-width-m)
+        );
+        padding-inline-end: var(--pc-spacing-l);
+        border-inline-start: var(--pc-border-width-m) var(--pc-border-style)
+            transparent;
+    }
+
+    .code-block .shiki code .line.highlighted .code {
+        padding-inline-start: 0;
+    }
+
+    .code-block .shiki code .line.highlighted .code::before {
+        display: inline-block;
+        padding-inline-start: var(--pc-spacing-xs);
+        inline-size: calc(var(--pc-spacing-l) - var(--pc-border-width-m));
+    }
+
+    .code-block .shiki code .line.highlighted .code {
+        background-color: var(--pc-color-neutral-fill-normal);
+        border-color: var(--pc-color-neutral-border-loud);
+    }
+
+    .code-block .shiki code .line.highlighted .code::before {
+        content: "";
+    }
+
+    .code-block .shiki code .line.highlighted.addition .code {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-success-fill-quiet),
+            transparent 25%
+        );
+        border-color: var(--pc-color-success-border-loud);
+    }
+
+    .code-block .shiki code .line.highlighted.addition .code::before {
+        content: "+";
+        color: var(--pc-color-success-on-quiet);
+    }
+
+    .code-block .shiki code .line.highlighted.deletion .code {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-danger-fill-quiet),
+            transparent 25%
+        );
+        border-color: var(--pc-color-danger-border-loud);
+    }
+
+    .code-block .shiki code .line.highlighted.deletion .code::before {
+        content: "-";
+        color: var(--pc-color-danger-on-quiet);
+    }
+
+    .code-block pc-copy-button {
+        position: absolute;
+        inset-block-start: var(--pc-spacing-s);
+        inset-inline-end: var(--pc-spacing-s);
+        z-index: 1;
+    }
+
+    .code-block pc-copy-button::part(button) {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-raised),
+            transparent 35%
+        );
+        opacity: 0;
+        transition: all var(--pc-transition-fast) ease-in-out;
+    }
+
+    @media (hover: hover) {
+        .code-block pc-copy-button::part(button):hover {
+            background-color: color-mix(
+                in oklab,
+                color-mix(
+                    in oklab,
+                    var(--pc-color-surface-raised),
+                    transparent 10%
+                ),
+                var(--pc-color-mix-hover)
+            );
+        }
+    }
+
+    .code-block pc-copy-button::part(button):focus-visible {
+        background-color: color-mix(
+            in oklab,
+            color-mix(
+                in oklab,
+                var(--pc-color-surface-raised),
+                transparent 10%
+            ),
+            var(--pc-color-mix-hover)
+        );
+    }
+
+    .code-block pc-copy-button::part(button):active {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-surface-raised), transparent 5%),
+            var(--pc-color-mix-active)
+        );
+    }
+
+    @media (hover: hover) {
+        .code-block-container:hover .code-block pc-copy-button::part(button),
+        .code-block-container .code-block pc-copy-button::part(button):active,
+        .code-block-container
+            .code-block
+            pc-copy-button:state(success)::part(button),
+        .code-block-container
+            .code-block
+            pc-copy-button:state(error)::part(button) {
+            opacity: 1;
+        }
+    }
+
+    .code-block-container
+        .code-block:has(> :focus-visible)
+        pc-copy-button::part(button),
+    .code-block-container
+        .code-block
+        pc-copy-button::part(button):focus-visible {
+        opacity: 1;
+    }
+
+    @media (hover: none) {
+        .code-block-container .code-block pc-copy-button::part(button) {
+            opacity: 1;
+        }
+    }
+
+    @keyframes focus-ring-animation {
+        0% {
+            outline-width: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
+        }
+    }
+</style>

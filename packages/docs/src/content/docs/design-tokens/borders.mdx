@@ -1,0 +1,50 @@
+---
+title: Borders
+description: Placer Toolkit’s border system is defined by CSS custom properties, helping you apply consistent and predictable strokes, outlines and separators throughout your project.
+---
+
+Placer Toolkit’s border system is defined by CSS custom properties, helping you apply consistent and predictable strokes, outlines and separators throughout your project.
+
+## Border style
+
+Border style controls the standard line shape of borders throughout Placer Toolkit.
+
+| Custom property     | Default value | Preview                                                                                                                                        |
+| ------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-border-style` | `solid`       | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal)"></div> |
+
+## Border width
+
+Border widths use `rem` units to scale proportionately with the root font size.
+
+| Custom property        | Default value      | Preview                                                                                                                                         |
+| ---------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-border-width-s`  | `0.0625rem` (1 px) | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal)"></div>  |
+| `--pc-border-width-m`  | `0.125rem` (2 px)  | <div class="color-palette-swatch" style="border: var(--pc-border-width-m) var(--pc-border-style) var(--pc-color-neutral-border-normal)"></div>  |
+| `--pc-border-width-l`  | `0.1875rem` (3 px) | <div class="color-palette-swatch" style="border: var(--pc-border-width-l) var(--pc-border-style) var(--pc-color-neutral-border-normal)"></div>  |
+| `--pc-border-width-xl` | `0.25rem` (4 px)   | <div class="color-palette-swatch" style="border: var(--pc-border-width-xl) var(--pc-border-style) var(--pc-color-neutral-border-normal)"></div> |
+
+To scale all borders at once, you can use the `--pc-border-width-scale` property which specifies a multiplier on `border-width`. Values under 1 make all borders uniformly thinner, while values over 1 make them thicker.
+
+## Border radius
+
+Border radius controls the corners of Placer Toolkit components.
+
+Common border radius properties allow you to achieve shapes beyond your theme’s preferred corner styles.
+
+| Custom property             | Default value | Preview                                                                                                                                                                                                            |
+| --------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--pc-border-radius-square` | `0px`         | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-square)"></div>                      |
+| `--pc-border-radius-pill`   | `9999px`      | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-pill)"></div>                        |
+| `--pc-border-radius-circle` | `50%`         | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-circle); aspect-ratio: 1 / 1"></div> |
+
+Size‐based border radius properties allow you to customise the overall roundness of Placer Toolkit components. They use `rem` units in order to scale proportionately with the root font size.
+
+| Custom property         | Default value     | Preview                                                                                                                                                                                   |
+| ----------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--pc-border-radius-s`  | `0.25rem` (4 px)  | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-s)"></div>  |
+| `--pc-border-radius-m`  | `0.5rem` (8 px)   | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-m)"></div>  |
+| `--pc-border-radius-l`  | `0.75rem` (12 px) | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-l)"></div>  |
+| `--pc-border-radius-xl` | `1rem` (16 px)    | <div class="color-palette-swatch" style="border: var(--pc-border-width-s) var(--pc-border-style) var(--pc-color-neutral-border-normal); border-radius: var(--pc-border-radius-xl)"></div> |
+
+To scale all border radii at once, you can use the `--pc-border-radius-scale` property, which specifies a multiplier on `border-radius`. Values under 1 make corners sharper, while values over 1 make them more rounded.

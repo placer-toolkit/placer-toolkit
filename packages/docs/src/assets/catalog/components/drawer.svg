@@ -1,0 +1,74 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="82"
+    height="64"
+    viewBox="0 0 84 114"
+>
+    <rect
+        x="1"
+        y="1"
+        width="82"
+        height="112"
+        rx="12"
+        ry="12"
+        fill="var(--pc-color-surface-default)"
+        stroke="var(--pc-color-surface-border)"
+        stroke-width="2"
+    />
+    <rect
+        x="15"
+        y="15"
+        width="36"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-loud)"
+    />
+    <path
+        d="M70.7566 14.3666L68.1357 16.9875L70.7566 19.6334C71.0811 19.9329 71.0811 20.4571 70.7566 20.7566C70.4571 21.0811 69.9329 21.0811 69.6334 20.7566L67.0125 18.1357L64.3666 20.7566C64.0671 21.0811 63.5429 21.0811 63.2434 20.7566C62.9189 20.4571 62.9189 19.9329 63.2434 19.6334L65.8643 16.9875L63.2434 14.3666C62.9189 14.0671 62.9189 13.5429 63.2434 13.2434C63.5429 12.9189 64.0671 12.9189 64.3666 13.2434L67.0125 15.8643L69.6334 13.2434C69.9329 12.9189 70.4571 12.9189 70.7566 13.2434C71.0811 13.5429 71.0811 14.0671 70.7566 14.3666Z"
+        fill="var(--pc-color-neutral-on-quiet)"
+    />
+    <rect
+        x="15"
+        y="29"
+        width="56"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <rect
+        x="15"
+        y="41"
+        width="56"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <rect
+        x="15"
+        y="53"
+        width="56"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <rect
+        x="15"
+        y="65"
+        width="56"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <rect
+        x="15"
+        y="77"
+        width="56"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <path
+        d="M47 92C47 90.3431 48.3431 89 50 89H68C69.6569 89 71 90.3431 71 92V98C71 99.6569 69.6569 101 68 101H50C48.3431 101 47 99.6569 47 98V92Z"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+</svg>

@@ -1,0 +1,58 @@
+import { registerTranslation } from "./index.js";
+import type { Translation } from "../utilities/localize.js";
+
+const translation: Translation = {
+    $code: "lo",
+    $name: "ລາວ",
+    $dir: "ltr",
+
+    captions: "ຄຳບັນຍາຍ",
+    carousel: "ພາບສະໄລ້",
+    clearEntry: "ລຶບລາຍການ",
+    close: "ປິດ",
+    controls: "ການຄວບຄຸມ",
+    copied: "ສຳເນົາແລ້ວ!",
+    copy: "ສຳເນົາ",
+    currentValue: "ຄ່າປະຈຸບັນ",
+    enterFullScreen: "ເຕັມຈໍ",
+    error: "ຜິດພາດ",
+    exitFullScreen: "ອອກຈາກເຕັມຈໍ",
+    goToSlide: (slide, count) => `ໄປທີ່ສະໄລ້ທີ ${slide} ຈາກ ${count}`,
+    hidePassword: "ເຊື່ອງລະຫັດຜ່ານ",
+    hue: "ໂທນສີ",
+    loading: "ກຳລັງໂຫຼດ…",
+    maximumValue: "ສູງ",
+    maximumValueDescriptive: (label) => `${label} (สูงสุด)`,
+    minimumValue: "ຕ່ຳ",
+    minimumValueDescriptive: (label) => `${label} (ต่ำ)`,
+    mute: "ປິດສຽງ",
+    nextSlide: "ສະໄລ້ຕໍ່ໄປ",
+    numOptionsSelected: (number) => `ໄດ້ເລືອກ ${number} ຕົວເລືອກ`,
+    off: "ປິດ",
+    opacity: "ຄວາມທຶບ",
+    pause: "ຢຸດຊົ່ວຄາວ",
+    pickAColorFromTheScreen: "ເລືອກສີຈາກໜ້າຈໍ",
+    pictureInPicture: "ຮູບໃນຮູບ",
+    play: "ຫຼິ້ນ",
+    playbackSpeed: "ຄວາມໄວການຫຼິ້ນ",
+    previousSlide: "ສະໄລ້ກ່ອນໜ້າ",
+    progress: "ຄວາມຄືບໜ້າ",
+    remove: "ລຶບອອກ",
+    resize: "ປັບຂະໜາດ",
+    scrollableRegion: "ສ່ວນທີ່ສາມາດເລື່ອນໄດ້",
+    scrollToEnd: "ເລື່ອນໄປຈຸດສິ້ນສຸດ",
+    scrollToStart: "ເລື່ອນໄປຈຸດເລີ່ມຕົ້ນ",
+    seek: "ຄົ້ນຫາ",
+    settings: "ການຕັ້ງຄ່າ",
+    showPassword: "ສະແດງລະຫັດຜ່ານ",
+    slideNum: (slide) => `ສະໄລ້ ${slide}`,
+    toggleColorFormat: "ປ່ຽນຮູບແບບສີ",
+    track: (track) => `ແທຣັກ ${track}`,
+    unmute: "ເປີດສຽງ",
+    videoPlayer: "ເຄື່ອງຫຼິ້ນວິດີໂອ",
+    volume: "ລະດັບສຽງ",
+};
+
+registerTranslation(translation);
+
+export default translation;
