@@ -18,7 +18,7 @@
   "types": "./dist/placer.d.ts",
   "author": "Placer (maintainer: @randomguy-2650)",
   "license": "MIT",
-  "customElements": "cdn/custom-elements.json",
+  "customElements": "dist/custom-elements.json",
   "exports": {
     ".": {
       "types": "./dist/placer.d.ts",

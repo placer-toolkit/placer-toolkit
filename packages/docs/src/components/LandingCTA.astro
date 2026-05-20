@@ -202,22 +202,14 @@ const translatePath = useTranslatedPath(language);
         </div>
     </div>
 
-    <pc-button
-        class="pause-button"
-        appearance="primary"
-        variant="filled"
-        pill
-        aria-hidden="true"
-    >
-        {
-            /* This label isn’t localised yet because it won’t be accessible to
-            screen readers anyways. This could be used in the future though. */
-        }
+    <pc-button class="pause-button" appearance="primary" variant="filled" pill>
         <pc-icon
             library="default"
             icon-style="solid"
             name="pause"
-            label="Pause animation"></pc-icon>
+            label={translation("ui.media.state.pauseAnimation")}
+            data-pause={translation("ui.media.state.pauseAnimation")}
+            data-play={translation("ui.media.state.playAnimation")}></pc-icon>
     </pc-button>
 </div>
 
@@ -257,7 +249,9 @@ const translatePath = useTranslatedPath(language);
                 icon.setAttribute("name", isPaused ? "pause" : "play");
                 icon.setAttribute(
                     "label",
-                    isPaused ? "Pause animation" : "Play animation",
+                    isPaused
+                        ? (pauseButton.dataset.pause ?? "Pause animation")
+                        : (pauseButton.dataset.play ?? "Play animation"),
                 );
             }
         });
@@ -274,9 +268,12 @@ const translatePath = useTranslatedPath(language);
         position: relative;
         align-items: flex-start;
         justify-content: center;
-        margin-inline: calc(-1 * var(--pc-spacing-xxxxl));
+        margin-inline: calc(-1 * 6rem);
         margin-block-end: var(--pc-spacing-xxxl);
-        inline-size: calc(100% + (var(--pc-spacing-xxxxl) * 2));
+        inline-size: calc(100% + (6rem * 2));
+        block-size: calc(
+            34.375rem + var(--pc-spacing-xxxl) + var(--pc-spacing-xxxl)
+        );
         border-block-end: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
     }
@@ -287,11 +284,9 @@ const translatePath = useTranslatedPath(language);
         align-items: flex-start;
         justify-content: space-evenly;
         flex-direction: column;
-        padding-inline: var(--pc-spacing-xxxxl);
+        padding-inline: 6rem;
         inline-size: 100%;
         block-size: 100%;
-        border-inline-end: var(--pc-border-width-s) var(--pc-border-style)
-            var(--pc-color-surface-border);
     }
 
     .landing-cta > .content > div {
@@ -406,9 +401,12 @@ const translatePath = useTranslatedPath(language);
     }
 
     .landing-cta > .animation {
+        display: flex;
         position: relative;
-        inline-size: 600px;
-        block-size: 600px;
+        align-items: center;
+        margin-inline-end: 6rem;
+        inline-size: 34.375rem;
+        block-size: 100%;
     }
 
     .landing-cta > .animation .box {
@@ -460,8 +458,8 @@ const translatePath = useTranslatedPath(language);
         position: relative;
         align-items: center;
         justify-content: center;
-        inline-size: 600px;
-        block-size: 600px;
+        inline-size: 34.375rem;
+        block-size: 34.375rem;
         z-index: 0;
     }
 
@@ -649,10 +647,11 @@ const translatePath = useTranslatedPath(language);
         }
     }
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 1300px) {
         .landing-cta {
             align-items: center;
             flex-direction: column;
+            block-size: auto;
         }
 
         .landing-cta > .content {
@@ -673,6 +672,10 @@ const translatePath = useTranslatedPath(language);
 
         .landing-cta > .content .splash-buttons {
             inline-size: 30vmax;
+        }
+
+        .landing-cta > .animation {
+            margin-inline-end: 0;
         }
     }
 

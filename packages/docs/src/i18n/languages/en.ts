@@ -29,6 +29,10 @@ export default {
     "ui.keyboard.mac.enter": "Return",
     "ui.keyboard.mac.enter.label": "Return",
 
+    // Media controls
+    "ui.media.state.pauseAnimation": "Pause animation",
+    "ui.media.state.playAnimation": "Play animation",
+
     // Search
     "ui.search.label": "Search",
     "ui.search.label.descriptive": "Search the Placer Toolkit documentation",

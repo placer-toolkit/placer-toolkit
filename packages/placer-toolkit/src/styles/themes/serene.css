@@ -37,8 +37,8 @@
 
         --pc-color-focus: var(--pc-color-primary-60);
 
-        --pc-color-mix-hover: oklch(0% 0 0) 10%;
-        --pc-color-mix-active: oklch(0% 0 0) 15%;
+        --pc-color-mix-hover: oklch(from currentColor 0.2 c h) 10%;
+        --pc-color-mix-active: oklch(from currentColor 0.2 c h) 15%;
 
         --pc-color-neutral-fill-quiet: var(--pc-color-neutral-95);
         --pc-color-neutral-fill-normal: var(--pc-color-neutral-90);
@@ -130,8 +130,8 @@
 
         --pc-color-focus: var(--pc-color-primary-60);
 
-        --pc-color-mix-hover: oklch(100% 0 0) 8%;
-        --pc-color-mix-active: oklch(0% 0 0) 10%;
+        --pc-color-mix-hover: oklch(from currentColor 0.8 c h) 8%;
+        --pc-color-mix-active: oklch(from currentColor 0.2 c h) 10%;
 
         --pc-color-neutral-fill-quiet: var(--pc-color-neutral-10);
         --pc-color-neutral-fill-normal: var(--pc-color-neutral-20);

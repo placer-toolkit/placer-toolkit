@@ -1,33 +1,19 @@
 import { html } from "lit";
 import type { PropertyValues } from "lit";
-import {
-    customElement,
-    property,
-    query,
-    queryAssignedElements,
-    state,
-} from "lit/decorators.js";
+import { customElement, property, query, state } from "lit/decorators.js";
 import { PlacerElement } from "../../internal/placer-element.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { LocalizeController } from "../../utilities/localize.js";
 import { PcPauseEvent } from "../../events/pc-pause.js";
 import { PcPlayEvent } from "../../events/pc-play.js";
 import type { PcButton } from "../button/button.js";
-import type { PcCheckbox } from "../checkbox/checkbox.js";
-import type { PcDialog } from "../dialog/dialog.js";
 import type { PcDropdown } from "../dropdown/dropdown.js";
-import type { PcSelect } from "../select/select.js";
 import type { PcSlider } from "../slider/slider.js";
 import "../button/button.js";
 import "../button-group/button-group.js";
-import "../checkbox/checkbox.js";
-import "../divider/divider.js";
-import "../drawer/drawer.js";
 import "../dropdown/dropdown.js";
 import "../dropdown-item/dropdown-item.js";
 import "../icon/icon.js";
-import "../option/option.js";
-import "../select/select.js";
 import "../slider/slider.js";
 import styles from "./video-player.css";
 
@@ -38,35 +24,16 @@ import styles from "./video-player.css";
  *
  * @dependency pc-button
  * @dependency pc-button-group
- * @dependency pc-checkbox
- * @dependency pc-divider
- * @dependency pc-drawer
  * @dependency pc-dropdown
  * @dependency pc-dropdown-item
  * @dependency pc-icon
- * @dependency pc-option
- * @dependency pc-select
  * @dependency pc-slider
  *
- * @slot - The video player’s sources and tracks.
+ * @slot - The video player’s media sources and subtitle/caption tracks.
  *
  * @event pc-play - Emitted when the video is played.
  * @event pc-pause - Emitted when the video is paused.
  *
- * @csspart caption-options - The caption options drawer.
- * @csspart caption-options-grid - The caption option selects’ grid container.
- * @csspart caption-options-select - The caption options’ selects.
- * @csspart caption-options-select-form-control - The caption option selects’ `form-control` part.
- * @csspart caption-options-select-label - The caption option selects’ `label` part.
- * @csspart caption-options-select-input - The caption option selects’ `input` part.
- * @csspart caption-options-select-combobox - The caption option selects’ `combobox` part.
- * @csspart caption-options-select-display-input - The caption option selects’ `display-input` part.
- * @csspart caption-options-select-listbox - The caption option selects’ `listbox` part.
- * @csspart caption-options-select-expand-icon - The caption option selects’ `expand-icon` part.
- * @csspart caption-options-select-option - The caption option select’s options.
- * @csspart caption-options-select-option-checked-icon - The caption select option’s `checked-icon` part.
- * @csspart caption-options-select-option-base - The caption select option’s `base` part.
- * @csspart caption-options-select-option-label - The caption select option’s `label` part.
  * @csspart frame - The video player’s frame.
  * @csspart initial-overlay - The video player’s initial overlay before the video starts.
  * @csspart initial-play - The initial overlay’s play button.
@@ -98,6 +65,7 @@ import styles from "./video-player.css";
  * @csspart play-label - The play button’s `label` part.
  * @csspart play-icon - The play button’s `<pc-icon>` element.
  * @csspart play-icon-svg - The `<pc-icon>` element’s `svg` part of the play button.
+ * @csspart mute-container - The container for the video player’s mute button and volume slider.
  * @csspart mute - The video player’s mute button.
  * @csspart mute-base - The mute button’s `base` part.
  * @csspart mute-label - The mute button’s `label` part.
@@ -153,11 +121,9 @@ export class PcVideoPlayer extends PlacerElement {
 
     private readonly localize = new LocalizeController(this);
 
-    @query('[part~="caption-options"]') captionOptions!: PcDialog;
     @query('[part~="frame"]') frame!: HTMLDivElement;
     @query('[part~="video"]') video!: HTMLVideoElement;
-    @query('[part~="progress-wrapper"]')
-    progressWrapper!: HTMLDivElement;
+    @query('[part~="progress-wrapper"]') progressWrapper!: HTMLDivElement;
     @query('[part~="progress-slider"]') progress!: PcSlider;
     @query('[part~="captions"]') captions!: PcButton;
     @query('[part~="settings-menu"]') settingsMenu!: PcDropdown;
@@ -178,14 +144,13 @@ export class PcVideoPlayer extends PlacerElement {
         y: number;
     } | null = null;
     @state() private animationFrameID: number | null = null;
+    @state() private isHovered = false;
     @state() private isScrubbing = false;
     @state() private scrubTime: number | null = null;
+    @state() private shouldRestoreFocusAfterStart = false;
     @state() private lastActiveCaptionTrackIndex = 0;
     @state() private activeCues: VTTCue[] = [];
     @state() private overrideVideoCaptionStyles = false;
-
-    @queryAssignedElements({ slot: "tracks", selector: "track" })
-    tracks!: Array<HTMLTrackElement>;
 
     /** The source of the video. */
     @property() src = "";
@@ -205,8 +170,9 @@ export class PcVideoPlayer extends PlacerElement {
     /** Determines how much of the video is loaded before the user interacts with it. */
     @property() preload: "none" | "metadata" | "auto" = "metadata";
 
-    /** Allows the video to play inline within the page instead of automatically entering full screen on mobile devices. */
-    @property({ type: Boolean, reflect: true }) playsinline = false;
+    /** Hides the video player controls. */
+    @property({ attribute: "no-controls", type: Boolean, reflect: true })
+    noControls = false;
 
     /** Provides a custom title to the video. */
     @property({ attribute: "data-title" }) dataTitle = "";
@@ -222,9 +188,7 @@ export class PcVideoPlayer extends PlacerElement {
             this.video.autoplay = this.autoplay;
         }
 
-        if (this.playsinline) {
-            this.video.setAttribute("playsinline", "");
-        }
+        this.video.setAttribute("playsinline", "");
 
         this.video.muted = this.muted;
         this.video.loop = this.loop;
@@ -232,6 +196,11 @@ export class PcVideoPlayer extends PlacerElement {
         this.video.playbackRate = this.playbackRate;
 
         const trackElements = Array.from(this.querySelectorAll("track"));
+        const sourceElements = Array.from(this.querySelectorAll("source"));
+
+        [...sourceElements, ...trackElements].forEach((element) => {
+            this.video.appendChild(element);
+        });
 
         for (const track of trackElements) {
             const src = track.getAttribute("src");
@@ -289,18 +258,43 @@ export class PcVideoPlayer extends PlacerElement {
         this.video.addEventListener("progress", () =>
             this.handleVideoProgress(),
         );
-        this.video.addEventListener("play", () => this.handleVideoPlay());
+        this.video.addEventListener("playing", () => this.handleVideoPlay());
         this.video.addEventListener("pause", () => this.handleVideoPause());
+        this.video.addEventListener("waiting", () => {
+            this.isPlaying = false;
+            this.toggleControlVisibility(true);
+        });
         this.video.addEventListener("volumechange", () => {
             this.volume = this.video.volume;
             this.isMuted = this.video.muted || this.video.volume === 0;
         });
+        this.video.addEventListener("ratechange", () => {
+            this.playbackRate = this.video.playbackRate;
+        });
         this.video.addEventListener("webkitbeginfullscreen", () =>
-            this.updateCuePosition(),
+            this.updateCaptionsState(),
         );
-        this.video.addEventListener("webkitendfullscreen", () =>
-            this.updateCuePosition(),
-        );
+        this.video.addEventListener("webkitendfullscreen", () => {
+            this.playbackRate = this.video.playbackRate;
+            this.updateCaptionsState();
+        });
+
+        this.video.textTracks.addEventListener("addtrack", (event) => {
+            const track = event.track as TextTrack;
+
+            track.addEventListener("cuechange", () => this.updateCuePosition());
+
+            const trackIndex = Array.from(
+                this.video.querySelectorAll("track"),
+            ).findIndex((htmlTrack) => htmlTrack.track === track);
+
+            if (
+                trackIndex === this.lastActiveCaptionTrackIndex &&
+                this.captionsOn
+            ) {
+                track.mode = "hidden";
+            }
+        });
 
         this.addEventListener("keydown", (event: KeyboardEvent) =>
             this.handleVideoKeyDown(event),
@@ -309,16 +303,16 @@ export class PcVideoPlayer extends PlacerElement {
             this.onUserInteraction(event),
         );
 
-        this.handleProgressSlider();
-
         this.toggleControlVisibility();
 
-        this.addEventListener("pointerenter", () =>
-            this.toggleControlVisibility(true),
-        );
-        this.addEventListener("pointerleave", () =>
-            this.toggleControlVisibility(),
-        );
+        this.addEventListener("pointerenter", () => {
+            this.isHovered = true;
+            this.toggleControlVisibility(true);
+        });
+        this.addEventListener("pointerleave", () => {
+            this.isHovered = false;
+            this.toggleControlVisibility();
+        });
 
         Array.from(this.renderRoot.querySelectorAll("pc-dropdown")).forEach(
             (dropdown) => {
@@ -354,14 +348,51 @@ export class PcVideoPlayer extends PlacerElement {
         return match ? match[1].trim() : "";
     }
 
-    private transformCueCSS(css: string): string {
-        return css
-            .replace(
-                /::cue\(v\[voice="([^"]+)"\]\)/g,
-                (_, voice) => `.caption-cue .voice[data-voice="${voice}"]`,
-            )
-            .replace(/::cue\(\.([^)]+)\)/g, (_, cls) => `.caption-cue .${cls}`)
-            .replace(/::cue/g, `.caption-cue`);
+    private transformCueCSS(rawCSS: string): string {
+        const transformedRules: string[] = [];
+
+        const rules = rawCSS.split("}");
+
+        for (const rule of rules) {
+            const trimmedRule = rule.trim();
+
+            if (!trimmedRule) {
+                continue;
+            }
+
+            const parts = trimmedRule.split("{");
+
+            if (parts.length !== 2) {
+                transformedRules.push(trimmedRule + "}");
+
+                continue;
+            }
+
+            let selector = parts[0].trim();
+
+            const styleBody = parts[1].trim();
+
+            selector = selector.replace(/(?:video|audio)?::cue/gi, "::cue");
+
+            selector = selector.replace(
+                /::cue\(v\[voice=['"]?([^'"]+?)['"]?\]\)/gi,
+                (_, voice) => {
+                    return `.caption-line [data-voice="${voice.trim()}"]`;
+                },
+            );
+
+            selector = selector.replace(/::cue\(([^)]+)\)/gi, (_, inner) => {
+                const cleanInner = inner.replace(/\\ /g, " ").trim();
+
+                return `.caption-line ${cleanInner}`;
+            });
+
+            selector = selector.replace(/::cue/gi, ".caption-line");
+
+            transformedRules.push(`${selector} { ${styleBody} }`);
+        }
+
+        return transformedRules.join("\n");
     }
 
     private handleSettingsSelect(event: CustomEvent) {
@@ -389,6 +420,7 @@ export class PcVideoPlayer extends PlacerElement {
                 }
 
                 this.setCaptionTrack(index);
+                this.syncARIAAttributes();
 
                 break;
         }
@@ -402,11 +434,15 @@ export class PcVideoPlayer extends PlacerElement {
         }
 
         tracks.forEach((track, idx) => {
-            track.mode = idx === index ? "showing" : "disabled";
+            if (idx === index) {
+                track.mode = "showing";
+                track.mode = "hidden";
+            } else {
+                track.mode = "disabled";
+            }
         });
 
         this.captionsOn = index !== -1;
-
         this.updateCuePosition();
     }
 
@@ -491,13 +527,20 @@ export class PcVideoPlayer extends PlacerElement {
 
         const isNativeFullscreen = !!this.video.webkitDisplayingFullscreen;
         const tracks = Array.from(this.video.textTracks || []);
+        const activeTrackIndex = tracks.findIndex(
+            (track) => track.mode !== "disabled",
+        );
+
+        if (activeTrackIndex !== -1) {
+            this.lastActiveCaptionTrackIndex = activeTrackIndex;
+            this.captionsOn = true;
+        }
 
         let newActiveCues: VTTCue[] = [];
 
-        tracks.forEach((track) => {
+        tracks.forEach((track, idx) => {
             const isTrackActive =
-                this.captionsOn &&
-                tracks.indexOf(track) === this.lastActiveCaptionTrackIndex;
+                this.captionsOn && idx === this.lastActiveCaptionTrackIndex;
 
             if (isTrackActive) {
                 if (isNativeFullscreen) {
@@ -529,13 +572,40 @@ export class PcVideoPlayer extends PlacerElement {
         }
     }
 
+    private getCurrentCaptionTrackLabel() {
+        const tracks = Array.from(this.video?.textTracks || []);
+
+        if (!this.captionsOn) {
+            return this.localize.term("off");
+        }
+
+        const track = tracks[this.lastActiveCaptionTrackIndex];
+
+        if (!track) {
+            return this.localize.term("off");
+        }
+
+        return (
+            track.label ||
+            (track.language
+                ? track.language.toUpperCase()
+                : this.localize.term(
+                      "track",
+                      this.lastActiveCaptionTrackIndex + 1,
+                  ))
+        );
+    }
+
     private toggleControlVisibility(force?: boolean) {
-        const isHovered = this.matches(":hover");
         const anyPopupOpen = Array.from(
             this.renderRoot.querySelectorAll<PcDropdown>("pc-dropdown"),
         ).some((dropdown) => dropdown.open);
 
-        const isHoverable = window.matchMedia("(hover: hover)").matches;
+        const isHoverable = window.matchMedia(
+            "(hover: hover), (hover: on-demand)",
+        ).matches;
+
+        const hasFocusInside = this.hasFocusedItem();
 
         let shouldBeVisible: boolean;
 
@@ -544,12 +614,22 @@ export class PcVideoPlayer extends PlacerElement {
         } else if (!isHoverable) {
             shouldBeVisible = true;
         } else {
-            shouldBeVisible = isHovered || anyPopupOpen || !this.isPlaying;
+            shouldBeVisible = this.isHovered || anyPopupOpen || hasFocusInside;
         }
 
         this.classList.toggle("controls-visible", shouldBeVisible);
 
         this.updateCuePosition();
+    }
+
+    private hasFocusedItem() {
+        const activeElement = document.activeElement;
+
+        if (activeElement === this || this.contains(activeElement)) {
+            return true;
+        }
+
+        return Boolean(this.shadowRoot?.activeElement);
     }
 
     private noTextTracks() {
@@ -571,7 +651,11 @@ export class PcVideoPlayer extends PlacerElement {
 
     private handleDocumentFullscreenChange() {
         const isFullScreen = !!document.fullscreenElement;
-        const icon = this.fullScreen.querySelector("pc-icon")!;
+        const icon = this.fullScreen?.querySelector("pc-icon");
+
+        if (!icon) {
+            return;
+        }
 
         icon.name = isFullScreen ? "compress" : "expand";
         icon.label = this.localize.term(
@@ -581,43 +665,6 @@ export class PcVideoPlayer extends PlacerElement {
         this.settingsMenu.shadowRoot
             ?.querySelector("pc-popup")
             ?.updateStackingContext();
-    }
-
-    private handleCaptionSettingsChange(event: Event) {
-        const target = event.target as HTMLElement;
-        const setting = target.getAttribute("data-setting");
-
-        if (setting === "override") {
-            this.overrideVideoCaptionStyles = (target as PcCheckbox).checked;
-
-            return;
-        }
-
-        const value = (target as PcSelect).value;
-
-        if (setting && typeof value === "string") {
-            this.style.setProperty(setting, value);
-        }
-    }
-
-    private handleCaptionOptionsResetClick() {
-        this.overrideVideoCaptionStyles = false;
-
-        const settings = [
-            "--caption-font-family",
-            "--caption-font-color",
-            "--caption-font-size",
-            "--caption-background-color",
-            "--caption-background-opacity",
-            "--caption-window-color",
-            "--caption-window-opacity",
-            "--caption-character-edge-style",
-            "--caption-font-opacity",
-        ];
-
-        settings.forEach((property) => this.style.removeProperty(property));
-
-        this.requestUpdate();
     }
 
     private handleFrameClick(event: MouseEvent) {
@@ -639,12 +686,15 @@ export class PcVideoPlayer extends PlacerElement {
         if (document.fullscreenElement) {
             this.scheduleHideControls(3000);
         }
+
+        this.requestUpdate();
     }
 
     private handleVideoPause() {
         this.isPlaying = false;
 
-        this.toggleControlVisibility(true);
+        this.toggleControlVisibility();
+        this.requestUpdate();
     }
 
     private handleVideoKeyDown(event: KeyboardEvent) {
@@ -699,16 +749,6 @@ export class PcVideoPlayer extends PlacerElement {
                 this.handlePictureInPictureClick();
                 break;
         }
-    }
-
-    private handleProgressSlider() {
-        if (!this.progress || !this.video) {
-            return;
-        }
-
-        this.progress.valueFormatter = (value: number) => {
-            return this.formatTime(value);
-        };
     }
 
     private async handlePictureInPictureClick() {
@@ -768,12 +808,13 @@ export class PcVideoPlayer extends PlacerElement {
                 .join("");
 
             const tagRegEx =
-                /&lt;(\/)?([a-z0-9][a-z0-9.]*)(?:\s+([^&>]+))?&gt;/gi;
+                /&lt;(\/)?([a-z0-9]+)(?:\.([a-z0-9.]+))?(?:\s+([^&>]+))?&gt;/gi;
 
             line = line.replace(
                 tagRegEx,
                 (_match, isClosing, tagName, classString, annotation) => {
                     const lowerTag = tagName.toLowerCase();
+
                     const classes = classString
                         ? classString.split(".").filter(Boolean).join(" ")
                         : "";
@@ -792,20 +833,22 @@ export class PcVideoPlayer extends PlacerElement {
                             : `</span>`;
                     } else {
                         const isVoice = lowerTag === "v";
-                        const finalClasses = isVoice
-                            ? `voice ${classes}`
-                            : classes;
 
-                        const classAttribute = finalClasses.trim()
-                            ? ` class="${finalClasses.trim()}"`
+                        const voiceName = isVoice
+                            ? (annotation || "").trim()
                             : "";
-                        const voiceAttribute =
-                            isVoice && annotation
-                                ? ` data-voice="${annotation}"`
-                                : "";
+
+                        const classAttribute = classes.trim()
+                            ? ` class="${classes.trim()}"`
+                            : "";
+
+                        const voiceAttribute = voiceName
+                            ? ` data-voice="${voiceName}"`
+                            : "";
+
                         const langAttribute =
                             lowerTag === "lang" && annotation
-                                ? ` lang="${annotation}"`
+                                ? ` lang="${annotation.trim()}"`
                                 : "";
 
                         const htmlTag = ["b", "i", "u", "ruby", "rt"].includes(
@@ -843,6 +886,45 @@ export class PcVideoPlayer extends PlacerElement {
         return result;
     }
 
+    /**
+     * Returns a CSS translate fragment for the block axis to implement lineAlignment.
+     * The inline-axis translate (for positionAlign) is handled separately and
+     * concatenated onto the same transform property.
+     *
+     * lineAlignment spec values: "start" | "center" | "end"
+     *   start  → top (horizontal) or left/right edge (vertical) aligns to the line → no offset
+     *   center → cue box centered on the line → -50% on the block axis
+     *   end    → bottom (horizontal) or opposite edge (vertical) aligns → -100% on the block axis
+     *
+     * @param {string} lineAlignment
+     * @param {boolean} isVertical
+     * @param {boolean} isNegative - whether the line number is negative (from-end)
+     */
+    private getLineAlignTransform(
+        lineAlignment: string,
+        isVertical: boolean,
+        isNegative: boolean,
+    ) {
+        const alignment = lineAlignment || "start";
+        let blockOffset;
+
+        if (alignment === "center") {
+            blockOffset = "-50%";
+        } else if (alignment === "end") {
+            // "end" means the far edge of the box touches the line.
+            // For negative lines (measured from the end edge), end-alignment
+            // means the box grows further inward, so we flip to 0%.
+            blockOffset = isNegative ? "0%" : "-100%";
+        } else {
+            // "start": near edge of the box touches the line (default)
+            blockOffset = isNegative ? "-100%" : "0%";
+        }
+
+        return isVertical
+            ? `translateX(${blockOffset})`
+            : `translateY(${blockOffset})`;
+    }
+
     private handleVideoProgress() {
         let end = 0;
 
@@ -868,6 +950,7 @@ export class PcVideoPlayer extends PlacerElement {
     }
 
     private onSeeked() {
+        this.current = this.video.currentTime || 0;
         this.isScrubbing = false;
         this.scrubTime = null;
 
@@ -897,8 +980,6 @@ export class PcVideoPlayer extends PlacerElement {
         super.updated(changedProperties);
 
         if (changedProperties.has("hasStarted") && this.hasStarted) {
-            await this.updateComplete;
-
             this.syncARIAAttributes();
         }
     }
@@ -908,6 +989,16 @@ export class PcVideoPlayer extends PlacerElement {
         this.hasStarted = true;
 
         await this.updateComplete;
+
+        if (this.shouldRestoreFocusAfterStart) {
+            if (!this.noControls) {
+                this.frame?.focus();
+            } else {
+                this.video?.focus();
+            }
+
+            this.shouldRestoreFocusAfterStart = false;
+        }
 
         if (this.video) {
             await this.video.play();
@@ -924,9 +1015,13 @@ export class PcVideoPlayer extends PlacerElement {
     }
 
     /** Toggles the state of the video between play and pause. */
-    toggle() {
+    async toggle() {
+        if (!this.video) {
+            return;
+        }
+
         if (this.video.paused) {
-            this.play();
+            await this.play();
         } else {
             this.pause();
         }
@@ -949,475 +1044,7 @@ export class PcVideoPlayer extends PlacerElement {
                   ? "high"
                   : "low";
 
-        const captionOptionsSelectExportParts = `
-            form-control:caption-options-select-form-control,
-            label:caption-options-select-label,
-            input:caption-options-select-input,
-            combobox:caption-options-select-combobox,
-            display-input:caption-options-select-display-input,
-            listbox:caption-options-select-listbox,
-            expand-icon:caption-options-select-expand-icon
-        `;
-        const captionOptionsSelectOptionExportParts = `
-            checked-icon:caption-options-select-option-checked-icon,
-            base:caption-options-select-option-base,
-            label:caption-options-select-option-label
-        `;
-
-        const captionOptions = html`
-            <pc-drawer
-                class="caption-options"
-                part="caption-options"
-                label="Caption options"
-                @change=${this.handleCaptionSettingsChange}
-            >
-                <div class="caption-options-grid" part="caption-options-grid">
-                    <pc-select
-                        part="caption-options-select"
-                        label="Font family"
-                        data-setting="--caption-font-family"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        <pc-option
-                            part="caption-options-select-option"
-                            value='"Courier New", Courier, serif'
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Monospaced serif
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="var(--pc-font-serif)"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Proportional serif
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="var(--pc-font-mono)"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Monospaced sans‐serif
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="var(--pc-font-sans)"
-                            selected
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Proportional sans‐serif
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value='"Comic Sans MS", Impact, Handlee, fantasy'
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Casual
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value='"Monotype Corsiva", "URW Chancery L", "Apple Chancery", "Dancing Script", cursive'
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Cursive
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value='Arial, Helvetica, Verdana, "Marcellus SC", sans-serif'
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Small capitals
-                        </pc-option>
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Font colour"
-                        data-setting="--caption-font-color"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="white"
-                            selected
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            White
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="yellow"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Yellow
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="green"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Green
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="cyan"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Cyan
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="blue"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Blue
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="magenta"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Magenta
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="red"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Red
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#080808"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Black
-                        </pc-option>
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Font size"
-                        data-setting="--caption-font-size"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        ${[25, 50, 75, 100, 125, 150, 175, 200, 300].map(
-                            (size) => html`
-                                <pc-option
-                                    part="caption-options-select-option"
-                                    value=${size / 100}
-                                    ?selected=${size === 100}
-                                    exportparts=${captionOptionsSelectOptionExportParts}
-                                >
-                                    ${size} %
-                                </pc-option>
-                            `,
-                        )}
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Background colour"
-                        data-setting="--caption-background-color"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="white"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            White
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="yellow"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Yellow
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="green"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Green
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="cyan"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Cyan
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="blue"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Blue
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="magenta"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Magenta
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="red"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Red
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#080808"
-                            selected
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Black
-                        </pc-option>
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Background opacity"
-                        data-setting="--caption-background-opacity"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        ${[0, 25, 50, 75, 100].map(
-                            (opacity) => html`
-                                <pc-option
-                                    part="caption-options-select-option"
-                                    value="${opacity}%"
-                                    ?selected=${opacity === 75}
-                                    exportparts=${captionOptionsSelectOptionExportParts}
-                                >
-                                    ${opacity} %
-                                </pc-option>
-                            `,
-                        )}
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Window colour"
-                        data-setting="--caption-window-color"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="white"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            White
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="yellow"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Yellow
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="green"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Green
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="cyan"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Cyan
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="blue"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Blue
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="magenta"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Magenta
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="red"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Red
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#080808"
-                            selected
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Black
-                        </pc-option>
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Window opacity"
-                        data-setting="--caption-window-opacity"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        ${[0, 25, 50, 75, 100].map(
-                            (opacity) => html`
-                                <pc-option
-                                    part="caption-options-select-option"
-                                    value="${opacity}%"
-                                    ?selected=${opacity === 0}
-                                    exportparts=${captionOptionsSelectOptionExportParts}
-                                >
-                                    ${opacity} %
-                                </pc-option>
-                            `,
-                        )}
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Character edge style"
-                        data-setting="--caption-character-edge-style"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        <pc-option
-                            value="none"
-                            selected
-                            part="caption-options-select-option"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            None
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#222 1px 1px 1.4px, #222 1px 1px 1.86667px, #222 1px 1px 2.33333px"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Drop shadow
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#222 1px 1px"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Raised
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#ccc 1px 1px, #222 -1px -1px"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Depressed
-                        </pc-option>
-                        <pc-option
-                            part="caption-options-select-option"
-                            value="#222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px, #222 0px 0px 1px"
-                            exportparts=${captionOptionsSelectOptionExportParts}
-                        >
-                            Outline
-                        </pc-option>
-                    </pc-select>
-
-                    <pc-select
-                        part="caption-options-select"
-                        label="Font opacity"
-                        data-setting="--caption-font-opacity"
-                        exportparts=${captionOptionsSelectExportParts}
-                    >
-                        ${[0, 25, 50, 75, 100].map(
-                            (opacity) => html`
-                                <pc-option
-                                    part="caption-options-select-option"
-                                    value="${opacity}%"
-                                    ?selected=${opacity === 100}
-                                    exportparts=${captionOptionsSelectOptionExportParts}
-                                >
-                                    ${opacity} %
-                                </pc-option>
-                            `,
-                        )}
-                    </pc-select>
-                </div>
-
-                <pc-checkbox
-                    ?checked=${this.overrideVideoCaptionStyles}
-                    data-setting="override"
-                    @change=${this.handleCaptionSettingsChange}
-                >
-                    Override video styles
-                </pc-checkbox>
-
-                <div class="sample" part="sample">
-                    <span class="sample-text" part="sample-text">Sample:</span>
-                    <div class="sample-container" part="sample-container">
-                        <div
-                            class="sample-caption-cue"
-                            part="sample-caption-cue"
-                            style="
-                                display: flex;
-                                align-items: center;
-                                flex-direction: column;
-                                inline-size: auto;
-                                text-align: center;
-                            "
-                        >
-                            <div
-                                class="sample-caption-line-container"
-                                part="sample-caption-line-container"
-                            >
-                                <span
-                                    class="sample-caption-line"
-                                    part="sample-caption-line"
-                                >
-                                    <span class="ambience">
-                                        (glass shatters)
-                                    </span>
-                                </span>
-                            </div>
-                            <div
-                                class="sample-caption-line-container"
-                                part="sample-caption-line-container"
-                            >
-                                <span
-                                    class="sample-caption-line"
-                                    part="sample-caption-line"
-                                >
-                                    <span class="voice">
-                                        Listen! Do you hear that?
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <pc-button
-                    variant="plain"
-                    slot="footer"
-                    @click=${this.handleCaptionOptionsResetClick}
-                >
-                    Reset
-                </pc-button>
-                <pc-button variant="plain" slot="footer" data-drawer="close">
-                    ${this.localize.term("close")}
-                </pc-button>
-            </pc-drawer>
-        `;
-
         return html`
-            ${captionOptions}
-
             <div
                 class="frame pc-dark"
                 part="frame"
@@ -1430,7 +1057,12 @@ export class PcVideoPlayer extends PlacerElement {
                           <div
                               class="initial-overlay"
                               part="initial-overlay"
-                              @click=${() => this.toggle()}
+                              @click=${(event: PointerEvent) => {
+                                  event.stopPropagation();
+
+                                  this.shouldRestoreFocusAfterStart = true;
+                                  this.toggle();
+                              }}
                           >
                               <pc-button
                                   class="initial-play"
@@ -1466,21 +1098,10 @@ export class PcVideoPlayer extends PlacerElement {
                     part="video"
                     .src=${this.src}
                     crossorigin="anonymous"
-                    tabindex="-1"
+                    tabindex=${this.hasStarted && this.noControls ? "0" : "-1"}
                     @loadeddata=${this.updateCaptionsState}
                 >
-                    ${this.tracks?.map(
-                        (track) => html`
-                            <track
-                                kind="${track.getAttribute("kind") ||
-                                "subtitles"}"
-                                src="${track.getAttribute("src")}"
-                                srclang="${track.getAttribute("srclang")}"
-                                label="${track.getAttribute("label")}"
-                                ?default="${track.hasAttribute("default")}"
-                            />
-                        `,
-                    )}
+                    <slot></slot>
                 </video>
 
                 ${this.hasStarted
@@ -1493,43 +1114,194 @@ export class PcVideoPlayer extends PlacerElement {
                           >
                               ${this.activeCues.map((cue) => {
                                   const lines = this.parseVTT(cue.text);
+                                  const align = cue.align || "center";
+
                                   const isVertical =
                                       cue.vertical === "lr" ||
                                       cue.vertical === "rl";
+                                  const isGrowingLeft = cue.vertical === "rl";
+                                  const isGrowingRight = cue.vertical === "lr";
 
-                                  const position =
+                                  const writingMode = isGrowingLeft
+                                      ? "vertical-rl"
+                                      : isGrowingRight
+                                        ? "vertical-lr"
+                                        : "horizontal-tb";
+
+                                  let positionAlign = cue.positionAlign;
+
+                                  if (
+                                      !positionAlign ||
+                                      positionAlign === "auto"
+                                  ) {
+                                      if (
+                                          align === "start" ||
+                                          align === "left"
+                                      ) {
+                                          positionAlign = "line-left";
+                                      } else if (
+                                          align === "end" ||
+                                          align === "right"
+                                      ) {
+                                          positionAlign = "line-right";
+                                      } else {
+                                          positionAlign = "center";
+                                      }
+                                  }
+
+                                  const rawPosition =
                                       cue.position === "auto"
-                                          ? cue.align === "start"
+                                          ? "auto"
+                                          : String(cue.position).trim();
+                                  const parsedPosition = Number(
+                                      rawPosition.replace("%", ""),
+                                  );
+
+                                  let position =
+                                      rawPosition === "auto" ||
+                                      Number.isNaN(parsedPosition)
+                                          ? positionAlign === "line-left"
                                               ? 0
-                                              : cue.align === "end"
+                                              : positionAlign === "line-right"
                                                 ? 100
                                                 : 50
-                                          : cue.position;
+                                          : Math.min(
+                                                100,
+                                                Math.max(0, parsedPosition),
+                                            );
 
-                                  const align = cue.align || "center";
-                                  const anchor =
-                                      align === "start"
-                                          ? "0%"
-                                          : align === "end"
-                                            ? "-100%"
-                                            : "-50%";
-
-                                  const isLinePercentage = String(
-                                      cue.line,
-                                  ).includes("%");
-                                  const blockPosition =
-                                      cue.line === "auto"
-                                          ? isVertical
-                                              ? "0%"
-                                              : "var(--control-offset)"
-                                          : isLinePercentage
-                                            ? `${cue.line}`
-                                            : `${Number(cue.line) * 1.5}em`;
-
-                                  const size =
+                                  const inlineAxisProperty = isVertical
+                                      ? "top"
+                                      : "left";
+                                  const sizeProperty = isVertical
+                                      ? "height"
+                                      : "width";
+                                  const sizeValue =
                                       cue.size != null
                                           ? `${cue.size}%`
                                           : "100%";
+
+                                  let anchor = "-50%";
+
+                                  if (positionAlign === "line-left") {
+                                      anchor = "0%";
+                                  }
+
+                                  if (positionAlign === "line-right") {
+                                      anchor = "-100%";
+                                  }
+
+                                  const transformProperty = isVertical
+                                      ? `translateY(${anchor})`
+                                      : `translateX(${anchor})`;
+
+                                  const alignItems =
+                                      align === "start" || align === "left"
+                                          ? "flex-start"
+                                          : align === "end" || align === "right"
+                                            ? "flex-end"
+                                            : "center";
+
+                                  const rawLine =
+                                      typeof cue.line === "string"
+                                          ? cue.line.trim()
+                                          : String(cue.line);
+                                  const isLinePercentage =
+                                      rawLine.endsWith("%");
+                                  const lineNumber = Number(
+                                      isLinePercentage
+                                          ? rawLine.slice(0, -1)
+                                          : rawLine,
+                                  );
+
+                                  let blockStyle = "";
+
+                                  if (cue.line === "auto") {
+                                      if (isVertical) {
+                                          blockStyle = isGrowingLeft
+                                              ? "right: var(--control-offset);"
+                                              : "left: var(--control-offset);";
+                                      } else {
+                                          blockStyle =
+                                              "bottom: var(--control-offset);";
+                                      }
+                                  } else if (!cue.snapToLines) {
+                                      const percentage = Number.isNaN(
+                                          lineNumber,
+                                      )
+                                          ? 0
+                                          : `${lineNumber}%`;
+
+                                      if (isVertical) {
+                                          blockStyle = isGrowingLeft
+                                              ? `right: ${percentage};`
+                                              : `left: ${percentage};`;
+                                      } else {
+                                          blockStyle = `top: ${percentage};`;
+                                      }
+                                  } else {
+                                      if (Number.isNaN(lineNumber)) {
+                                          blockStyle =
+                                              "bottom: var(--control-offset);";
+                                      } else if (lineNumber < 0) {
+                                          const distance = Math.abs(lineNumber);
+
+                                          const lineAlignTransform =
+                                              this.getLineAlignTransform(
+                                                  cue.lineAlign,
+                                                  isVertical,
+                                                  true,
+                                              );
+
+                                          if (isVertical) {
+                                              blockStyle = isGrowingLeft
+                                                  ? `
+                                                        right: calc(var(--control-offset) + ${distance} * 1lh);
+                                                        transform: ${transformProperty} ${lineAlignTransform};
+                                                    `
+                                                  : `
+                                                        left: calc(var(--control-offset) + ${distance} * 1lh);
+                                                        transform: ${transformProperty} ${lineAlignTransform};
+                                                    `;
+                                          } else {
+                                              blockStyle = `
+                                                  bottom: calc(var(--control-offset) + ${distance} * 1lh);
+                                                  transform: ${transformProperty} ${lineAlignTransform};
+                                              `;
+                                          }
+                                      } else {
+                                          const distance = lineNumber;
+                                          const lineAlignTransform =
+                                              this.getLineAlignTransform(
+                                                  cue.lineAlign,
+                                                  isVertical,
+                                                  false,
+                                              );
+
+                                          if (isVertical) {
+                                              blockStyle = isGrowingLeft
+                                                  ? `
+                                                        right: calc(${distance} * 1lh);
+                                                        transform: ${transformProperty} ${lineAlignTransform};
+                                                    `
+                                                  : `
+                                                        left: calc(${distance} * 1lh);
+                                                        transform: ${transformProperty} ${lineAlignTransform};
+                                                    `;
+                                          } else {
+                                              blockStyle = `
+                                                  top: calc(${distance} * 1lh);
+                                                  transform: ${transformProperty} ${lineAlignTransform};
+                                              `;
+                                          }
+                                      }
+                                  }
+
+                                  const finalTransform = blockStyle.includes(
+                                      "transform:",
+                                  )
+                                      ? ""
+                                      : `transform: ${transformProperty};`;
 
                                   return html`
                                       <div
@@ -1538,26 +1310,13 @@ export class PcVideoPlayer extends PlacerElement {
                                           style="
                                               display: flex;
                                               position: absolute;
-                                              align-items: ${align === "start"
-                                              ? "flex-start"
-                                              : align === "end"
-                                                ? "flex-end"
-                                                : "center"};
+                                              align-items: ${alignItems};
                                               flex-direction: column;
-                                              writing-mode: ${cue.vertical ===
-                                          "rl"
-                                              ? "vertical-rl"
-                                              : cue.vertical === "lr"
-                                                ? "vertical-lr"
-                                                : "horizontal-tb"};
-                                              inset-inline-start: ${position}%;
-                                              ${cue.line === "auto"
-                                              ? `inset-block-end: var(--control-offset);`
-                                              : `inset-block-start: ${blockPosition};`}
-                                                transform: ${isVertical
-                                              ? `translateY(${anchor})`
-                                              : `translateX(${anchor})`};
-                                              inline-size: ${size};
+                                              writing-mode: ${writingMode};
+                                              ${inlineAxisProperty}: ${position}%;
+                                              ${blockStyle}
+                                              ${sizeProperty}: ${sizeValue};
+                                              ${finalTransform}
                                               text-align: ${align};
                                           "
                                       >
@@ -1589,7 +1348,14 @@ export class PcVideoPlayer extends PlacerElement {
                                   <div
                                       class="buffered"
                                       part="progress-buffer"
+                                      role="progressbar"
                                       style="inline-size: ${bufferedPercentage}%"
+                                      aria-valuemin="0"
+                                      aria-valuenow=${Math.round(
+                                          bufferedPercentage,
+                                      )}
+                                      aria-valuemax="100"
+                                      aria-hidden="true"
                                   ></div>
                                   <pc-slider
                                       class="progress"
@@ -1597,6 +1363,7 @@ export class PcVideoPlayer extends PlacerElement {
                                       min="0"
                                       .max=${this.duration}
                                       .value=${currentPlaybackTime}
+                                      .valueFormatter=${this.formatTime}
                                       label=${this.localize.term("seek")}
                                       has-tooltip
                                       @input=${(event: Event) => {
@@ -1640,85 +1407,73 @@ export class PcVideoPlayer extends PlacerElement {
                                       label:play-label
                                   "
                               >
-                                  ${!this.video.paused && !this.video.ended
-                                      ? html`
-                                            <pc-icon
-                                                part="play-icon"
-                                                library="system"
-                                                icon-style="solid"
-                                                name="pause"
-                                                label=${this.localize.term(
-                                                    "pause",
-                                                )}
-                                                exportparts="svg:play-icon-svg"
-                                            ></pc-icon>
-                                        `
-                                      : html`
-                                            <pc-icon
-                                                part="play-icon"
-                                                library="system"
-                                                icon-style="solid"
-                                                name="play"
-                                                label=${this.localize.term(
-                                                    "play",
-                                                )}
-                                                exportparts="svg:play-icon-svg"
-                                            ></pc-icon>
-                                        `}
+                                  <pc-icon
+                                      part="play-icon"
+                                      library="system"
+                                      icon-style="solid"
+                                      name=${this.isPlaying ? "pause" : "play"}
+                                      label=${this.isPlaying
+                                          ? this.localize.term("pause")
+                                          : this.localize.term("play")}
+                                      exportparts="svg:play-icon-svg"
+                                  ></pc-icon>
                               </pc-button>
 
-                              <pc-button
-                                  class="mute"
-                                  part="mute"
-                                  size="small"
-                                  variant="filled"
-                                  @click=${() =>
-                                      (this.video.muted = !this.video.muted)}
-                                  exportparts="
-                                      base:mute-base,
-                                      label:mute-label
-                                  "
-                              >
-                                  <svg
-                                      part="mute-icon"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20"
-                                      fill="none"
-                                      data-state=${volumeState}
-                                      aria-label=${this.isMuted
-                                          ? this.localize.term("mute")
-                                          : this.localize.term("unmute")}
+                              <div class="mute-container" part="mute-container">
+                                  <pc-button
+                                      class="mute"
+                                      part="mute"
+                                      size="small"
+                                      variant="filled"
+                                      @click=${() =>
+                                          (this.video.muted =
+                                              !this.video.muted)}
+                                      exportparts="
+                                          base:mute-base,
+                                          label:mute-label
+                                      "
                                   >
-                                      <path
-                                          d="M8.72266 3.95215C9.05482 3.73088 9.49974 3.96909 9.5 4.36816V15.2588C9.5 15.6447 9.08137 15.8849 8.74805 15.6904L4.25195 13.0684L4.24414 13.0635L4.2373 13.0596L4.01562 12.9307C1.80255 11.5315 1.87668 8.21153 4.2373 6.94043L4.25781 6.92871L4.27734 6.91602L8.72266 3.95215Z"
-                                          fill="currentColor"
-                                          stroke="currentColor"
-                                      />
-                                      <path
-                                          class="mute-x"
-                                          d="M11.5239 8.71798C11.1695 8.36358 11.1695 7.78898 11.5239 7.43458C11.8783 7.08018 12.4529 7.08018 12.8073 7.43458L16.6606 11.2879C17.015 11.6423 17.015 12.2169 16.6606 12.5713C16.3062 12.9257 15.7316 12.9257 15.3772 12.5713L11.5239 8.71798Z"
-                                          fill="currentColor"
-                                      />
-                                      <path
-                                          class="mute-x"
-                                          d="M15.3772 7.43459C15.7316 7.08018 16.3062 7.08018 16.6606 7.43458C17.015 7.78899 17.015 8.36358 16.6606 8.71798L12.8073 12.5713C12.4529 12.9257 11.8783 12.9257 11.5239 12.5713C11.1695 12.2169 11.1695 11.6423 11.5239 11.2879L15.3772 7.43459Z"
-                                          fill="currentColor"
-                                      />
-                                      <path
-                                          class="wave-1"
-                                          d="M12.5 7L12.7387 7.23866C14.2215 8.72149 14.111 11.1575 12.5 12.5"
-                                          stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                      />
-                                      <path
-                                          class="wave-2"
-                                          d="M14.5 5.5C16.7812 8.06635 16.7812 11.9337 14.5 14.5"
-                                          stroke="currentColor"
-                                          stroke-width="1.5"
-                                          stroke-linecap="round"
-                                      />
-                                  </svg>
+                                      <svg
+                                          part="mute-icon"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          viewBox="0 0 20 20"
+                                          fill="none"
+                                          data-state=${volumeState}
+                                          aria-label=${this.isMuted
+                                              ? this.localize.term("mute")
+                                              : this.localize.term("unmute")}
+                                      >
+                                          <path
+                                              d="M8.72266 3.95215C9.05482 3.73088 9.49974 3.96909 9.5 4.36816V15.2588C9.5 15.6447 9.08137 15.8849 8.74805 15.6904L4.25195 13.0684L4.24414 13.0635L4.2373 13.0596L4.01562 12.9307C1.80255 11.5315 1.87668 8.21153 4.2373 6.94043L4.25781 6.92871L4.27734 6.91602L8.72266 3.95215Z"
+                                              fill="currentColor"
+                                              stroke="currentColor"
+                                          />
+                                          <path
+                                              class="mute-x"
+                                              d="M11.5239 8.71798C11.1695 8.36358 11.1695 7.78898 11.5239 7.43458C11.8783 7.08018 12.4529 7.08018 12.8073 7.43458L16.6606 11.2879C17.015 11.6423 17.015 12.2169 16.6606 12.5713C16.3062 12.9257 15.7316 12.9257 15.3772 12.5713L11.5239 8.71798Z"
+                                              fill="currentColor"
+                                          />
+                                          <path
+                                              class="mute-x"
+                                              d="M15.3772 7.43459C15.7316 7.08018 16.3062 7.08018 16.6606 7.43458C17.015 7.78899 17.015 8.36358 16.6606 8.71798L12.8073 12.5713C12.4529 12.9257 11.8783 12.9257 11.5239 12.5713C11.1695 12.2169 11.1695 11.6423 11.5239 11.2879L15.3772 7.43459Z"
+                                              fill="currentColor"
+                                          />
+                                          <path
+                                              class="wave-1"
+                                              d="M12.5 7L12.7387 7.23866C14.2215 8.72149 14.111 11.1575 12.5 12.5"
+                                              stroke="currentColor"
+                                              stroke-width="1.5"
+                                              stroke-linecap="round"
+                                          />
+                                          <path
+                                              class="wave-2"
+                                              d="M14.5 5.5C16.7812 8.06635 16.7812 11.9337 14.5 14.5"
+                                              stroke="currentColor"
+                                              stroke-width="1.5"
+                                              stroke-linecap="round"
+                                          />
+                                      </svg>
+                                  </pc-button>
 
                                   <pc-slider
                                       class="volume"
@@ -1752,7 +1507,7 @@ export class PcVideoPlayer extends PlacerElement {
                                           tooltip-arrow:volume-slider-tooltip-arrow
                                       "
                                   ></pc-slider>
-                              </pc-button>
+                              </div>
 
                               <div class="time-container" part="time-container">
                                   ${currentTime} / ${duration}
@@ -1861,14 +1616,20 @@ export class PcVideoPlayer extends PlacerElement {
                                               slot="icon"
                                           ></pc-icon>
                                           ${this.localize.term("playbackSpeed")}
-                                          ${[0.25, 0.5, 1, 1.5, 2].map(
+                                          <span slot="details">
+                                              ${this.playbackRate}×
+                                          </span>
+                                          ${[
+                                              0.25, 0.5, 0.75, 1, 1.25, 1.5, 2,
+                                          ].map(
                                               (rate) => html`
                                                   <pc-dropdown-item
                                                       part="settings-menu-item"
                                                       type="radio"
                                                       value="speed:${rate}"
                                                       slot="submenu"
-                                                      ?checked=${rate === 1}
+                                                      ?checked=${rate ===
+                                                      this.playbackRate}
                                                       exportparts="
                                                           checkmark:settings-menu-item-checkmark,
                                                           checkmark-svg:settings-menu-item-checkmark-svg,
@@ -1880,7 +1641,7 @@ export class PcVideoPlayer extends PlacerElement {
                                                           submenu:settings-menu-item-submenu
                                                       "
                                                   >
-                                                      ${rate}
+                                                      ${rate}×
                                                   </pc-dropdown-item>
                                               `,
                                           )}
@@ -1906,64 +1667,15 @@ export class PcVideoPlayer extends PlacerElement {
                                               slot="icon"
                                           ></pc-icon>
                                           ${this.localize.term("captions")}
-                                          <div role="group" slot="submenu">
-                                              <pc-dropdown-item
-                                                  part="settings-menu-item"
-                                                  type="radio"
-                                                  value="caption:-1"
-                                                  ?checked=${!this.captionsOn}
-                                                  exportparts="
-                                                      checkmark:settings-menu-item-checkmark,
-                                                      checkmark-svg:settings-menu-item-checkmark-svg,
-                                                      icon:settings-menu-item-icon,
-                                                      label:settings-menu-item-label,
-                                                      details:settings-menu-item-details,
-                                                      submenu-icon:settings-menu-item-submenu-icon,
-                                                      submenu-icon-svg:settings-menu-item-submenu-icon-svg,
-                                                      submenu:settings-menu-item-submenu
-                                                  "
-                                              >
-                                                  ${this.localize.term("off")}
-                                              </pc-dropdown-item>
-                                              ${Array.from(
-                                                  this.video?.textTracks || [],
-                                              ).map(
-                                                  (track, index) => html`
-                                                      <pc-dropdown-item
-                                                          part="settings-menu-item"
-                                                          type="radio"
-                                                          value="caption:${index}"
-                                                          ?checked=${this
-                                                              .captionsOn &&
-                                                          index ===
-                                                              this
-                                                                  .lastActiveCaptionTrackIndex}
-                                                          exportparts="
-                                                              checkmark:settings-menu-item-checkmark,
-                                                              checkmark-svg:settings-menu-item-checkmark-svg,
-                                                              icon:settings-menu-item-icon,
-                                                              label:settings-menu-item-label,
-                                                              details:settings-menu-item-details,
-                                                              submenu-icon:settings-menu-item-submenu-icon,
-                                                              submenu-icon-svg:settings-menu-item-submenu-icon-svg,
-                                                              submenu:settings-menu-item-submenu
-                                                          "
-                                                      >
-                                                          ${track.label ||
-                                                          this.localize.term(
-                                                              "track",
-                                                              index + 1,
-                                                          )}
-                                                      </pc-dropdown-item>
-                                                  `,
-                                              )}
-                                          </div>
-                                          <pc-divider
-                                              part="settings-menu-divider"
-                                              slot="submenu"
-                                          ></pc-divider>
+                                          <span slot="details">
+                                              ${this.getCurrentCaptionTrackLabel()}
+                                          </span>
+
                                           <pc-dropdown-item
                                               part="settings-menu-item"
+                                              type="radio"
+                                              value="caption:-1"
+                                              ?checked=${!this.captionsOn}
                                               slot="submenu"
                                               exportparts="
                                                   checkmark:settings-menu-item-checkmark,
@@ -1975,23 +1687,42 @@ export class PcVideoPlayer extends PlacerElement {
                                                   submenu-icon-svg:settings-menu-item-submenu-icon-svg,
                                                   submenu:settings-menu-item-submenu
                                               "
-                                              @click=${() =>
-                                                  (this.captionOptions.open = true)}
-                                              @keydown=${(
-                                                  event: KeyboardEvent,
-                                              ) => {
-                                                  if (
-                                                      event.key === "Enter" ||
-                                                      event.key === " "
-                                                  ) {
-                                                      event.preventDefault();
-
-                                                      this.captionOptions.open = true;
-                                                  }
-                                              }}
                                           >
-                                              Options…
+                                              ${this.localize.term("off")}
                                           </pc-dropdown-item>
+                                          ${Array.from(
+                                              this.video?.textTracks || [],
+                                          ).map(
+                                              (track, index) => html`
+                                                  <pc-dropdown-item
+                                                      part="settings-menu-item"
+                                                      type="radio"
+                                                      value="caption:${index}"
+                                                      ?checked=${this
+                                                          .captionsOn &&
+                                                      index ===
+                                                          this
+                                                              .lastActiveCaptionTrackIndex}
+                                                      slot="submenu"
+                                                      exportparts="
+                                                          checkmark:settings-menu-item-checkmark,
+                                                          checkmark-svg:settings-menu-item-checkmark-svg,
+                                                          icon:settings-menu-item-icon,
+                                                          label:settings-menu-item-label,
+                                                          details:settings-menu-item-details,
+                                                          submenu-icon:settings-menu-item-submenu-icon,
+                                                          submenu-icon-svg:settings-menu-item-submenu-icon-svg,
+                                                          submenu:settings-menu-item-submenu
+                                                      "
+                                                  >
+                                                      ${track.label ||
+                                                      this.localize.term(
+                                                          "track",
+                                                          index + 1,
+                                                      )}
+                                                  </pc-dropdown-item>
+                                              `,
+                                          )}
                                       </pc-dropdown-item>
                                   </pc-dropdown>
 

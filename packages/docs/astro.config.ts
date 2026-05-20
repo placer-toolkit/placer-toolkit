@@ -48,10 +48,13 @@ export default defineConfig({
                 filter: /\.(js|mjs|json|css|html|svg)$/i,
             }),
         ],
-        optimizeDeps: {
-            exclude: ["placer-toolkit"],
-        },
+        // optimizeDeps: {
+        //     exclude: ["placer-toolkit"],
+        // },
         server: {
+            fs: {
+                allow: [".."],
+            },
             watch: {
                 usePolling: false,
                 ignored: [
@@ -59,6 +62,7 @@ export default defineConfig({
                     "**/.git/**",
                     "**/.astro/**",
                     "**/dist/**",
+                    // "!**/node_modules/placer-toolkit/dist/**",
                 ],
             },
         },
