@@ -1,6 +1,6 @@
 <!-- SPDX-License-Identifier: MIT -->
 
-# <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-dark.svg"></source><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-light.svg"></source><img src="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/public/logo-wordmark-light.svg" alt="Placer Toolkit" width="50%" /></picture>
+# <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-dark.svg"></source><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-light.svg"></source><img src="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-light.svg" alt="Placer Toolkit" width="50%" /></picture>
 
 ### Flexible. Accessible. Web Components.
 
