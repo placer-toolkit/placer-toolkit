@@ -81,11 +81,6 @@ import styles from "./video-player.css";
  * @csspart volume-slider-tooltip-arrow - The tooltip’s `arrow` part of the volume slider.
  * @csspart time-container - The video player’s time container.
  * @csspart controls-group - The video player’s controls group.
- * @csspart picture-in-picture - The video player’s Picture in Picture button.
- * @csspart picture-in-picture-base - The Picture in Picture button’s `base` part.
- * @csspart picture-in-picture-label - The Picture in Picture button’s `label` part.
- * @csspart picture-in-picture-icon - The Picture in Picture button’s `<pc-icon>` element.
- * @csspart picture-in-picture-icon-svg - The `<pc-icon>` element’s `svg` part of the Picture in Picture button.
  * @csspart captions - The video player’s captions button.
  * @csspart captions-base - The captions button’s `base` part.
  * @csspart captions-label - The captions button’s `label` part.
@@ -109,6 +104,11 @@ import styles from "./video-player.css";
  * @csspart settings-menu-item-submenu-icon-svg - The settings items’ `submenu-icon-svg` part.
  * @csspart settings-menu-item-submenu - The settings items’ `submenu` part.
  * @csspart settings-menu-divider - The settings menu’s divider.
+ * @csspart picture-in-picture - The video player’s Picture in Picture button.
+ * @csspart picture-in-picture-base - The Picture in Picture button’s `base` part.
+ * @csspart picture-in-picture-label - The Picture in Picture button’s `label` part.
+ * @csspart picture-in-picture-icon - The Picture in Picture button’s `<pc-icon>` element.
+ * @csspart picture-in-picture-icon-svg - The `<pc-icon>` element’s `svg` part of the Picture in Picture button.
  * @csspart full-screen - The video player’s full screen button.
  * @csspart full-screen-base - The full screen button’s `base` part.
  * @csspart full-screen-label - The full screen button’s `label` part.
@@ -143,14 +143,12 @@ export class PcVideoPlayer extends PlacerElement {
         x: number;
         y: number;
     } | null = null;
-    @state() private animationFrameID: number | null = null;
     @state() private isHovered = false;
     @state() private isScrubbing = false;
     @state() private scrubTime: number | null = null;
     @state() private shouldRestoreFocusAfterStart = false;
     @state() private lastActiveCaptionTrackIndex = 0;
     @state() private activeCues: VTTCue[] = [];
-    @state() private overrideVideoCaptionStyles = false;
 
     /** The source of the video. */
     @property() src = "";
@@ -176,6 +174,43 @@ export class PcVideoPlayer extends PlacerElement {
 
     /** Provides a custom title to the video. */
     @property({ attribute: "data-title" }) dataTitle = "";
+
+    private boundHandleDocumentFullscreenChange = () =>
+        this.handleDocumentFullscreenChange();
+    private boundHandleVideoKeyDown = (event: KeyboardEvent) =>
+        this.handleVideoKeyDown(event);
+    private boundHandlePointerEnter = () => {
+        this.isHovered = true;
+        this.toggleControlVisibility(true);
+    };
+    private boundHandlePointerLeave = () => {
+        this.isHovered = false;
+        this.toggleControlVisibility();
+    };
+    private boundHandlePointerMove = (event: PointerEvent) =>
+        this.onUserInteraction(event);
+    private boundHandleTextTrackAddTrack = (event: Event) => {
+        const track = (event as any).track as TextTrack;
+
+        track.addEventListener("cuechange", this.boundHandleTrackCueChange);
+
+        const trackIndex = Array.from(
+            this.video.querySelectorAll("track"),
+        ).findIndex((htmlTrack) => htmlTrack.track === track);
+
+        if (
+            trackIndex === this.lastActiveCaptionTrackIndex &&
+            this.captionsOn
+        ) {
+            track.mode = "hidden";
+        }
+    };
+    private boundHandleTrackCueChange = () => this.updateCuePosition();
+
+    private textTracksToCleanup: Array<{
+        track: TextTrack;
+        handler: () => void;
+    }> = [];
 
     async firstUpdated() {
         if (this.poster) {
@@ -215,115 +250,59 @@ export class PcVideoPlayer extends PlacerElement {
             this.applyVTTStyles(text);
         }
 
-        document.addEventListener("fullscreenchange", () =>
-            this.handleDocumentFullscreenChange(),
+        document.addEventListener(
+            "fullscreenchange",
+            this.boundHandleDocumentFullscreenChange,
         );
 
-        this.video.addEventListener("loadedmetadata", () => {
-            this.duration = this.video.duration || 0;
-            this.current = this.video.currentTime || 0;
-            this.volume = this.video.volume;
-
-            this.handleVideoProgress();
-            this.updateCaptionsState();
-
-            Array.from(this.video.textTracks || []).forEach((track) =>
-                track.addEventListener(
-                    "cuechange",
-                    this.updateCuePosition.bind(this),
-                ),
-            );
-
-            this.updateCuePosition();
-        });
-
-        this.video.addEventListener("loadeddata", () => {
-            if (this.duration === 0) {
-                this.duration = this.video.duration || 0;
-            }
-        });
-
-        this.video.addEventListener("timeupdate", () => {
-            if (!this.isScrubbing) {
-                this.current = this.video.currentTime || 0;
-            }
-
-            if (this.duration === 0 && this.video.duration > 0) {
-                this.duration = this.video.duration;
-            }
-
-            this.updateCuePosition();
-        });
-
-        this.video.addEventListener("progress", () =>
-            this.handleVideoProgress(),
+        this.video.textTracks.addEventListener(
+            "addtrack",
+            this.boundHandleTextTrackAddTrack,
         );
-        this.video.addEventListener("playing", () => this.handleVideoPlay());
-        this.video.addEventListener("pause", () => this.handleVideoPause());
-        this.video.addEventListener("waiting", () => {
-            this.isPlaying = false;
-            this.toggleControlVisibility(true);
-        });
-        this.video.addEventListener("volumechange", () => {
-            this.volume = this.video.volume;
-            this.isMuted = this.video.muted || this.video.volume === 0;
-        });
-        this.video.addEventListener("ratechange", () => {
-            this.playbackRate = this.video.playbackRate;
-        });
-        this.video.addEventListener("webkitbeginfullscreen", () =>
-            this.updateCaptionsState(),
-        );
-        this.video.addEventListener("webkitendfullscreen", () => {
-            this.playbackRate = this.video.playbackRate;
-            this.updateCaptionsState();
-        });
 
-        this.video.textTracks.addEventListener("addtrack", (event) => {
-            const track = event.track as TextTrack;
+        this.addEventListener("keydown", this.boundHandleVideoKeyDown);
 
-            track.addEventListener("cuechange", () => this.updateCuePosition());
-
-            const trackIndex = Array.from(
-                this.video.querySelectorAll("track"),
-            ).findIndex((htmlTrack) => htmlTrack.track === track);
-
-            if (
-                trackIndex === this.lastActiveCaptionTrackIndex &&
-                this.captionsOn
-            ) {
-                track.mode = "hidden";
-            }
-        });
-
-        this.addEventListener("keydown", (event: KeyboardEvent) =>
-            this.handleVideoKeyDown(event),
-        );
-        this.addEventListener("pointermove", (event) =>
-            this.onUserInteraction(event),
-        );
+        this.addEventListener("pointerenter", this.boundHandlePointerEnter);
+        this.addEventListener("pointerleave", this.boundHandlePointerLeave);
+        this.addEventListener("pointermove", this.boundHandlePointerMove);
 
         this.toggleControlVisibility();
+    }
 
-        this.addEventListener("pointerenter", () => {
-            this.isHovered = true;
-            this.toggleControlVisibility(true);
-        });
-        this.addEventListener("pointerleave", () => {
-            this.isHovered = false;
-            this.toggleControlVisibility();
-        });
+    disconnectedCallback() {
+        super.disconnectedCallback();
 
-        Array.from(this.renderRoot.querySelectorAll("pc-dropdown")).forEach(
-            (dropdown) => {
-                dropdown.addEventListener("pc-show", () =>
-                    this.toggleControlVisibility(true),
-                );
-                dropdown.addEventListener("pc-hide", () =>
-                    this.toggleControlVisibility(),
-                );
-            },
+        if (this.hideTimeoutID) {
+            clearTimeout(this.hideTimeoutID);
+
+            this.hideTimeoutID = null;
+        }
+
+        document.removeEventListener(
+            "fullscreenchange",
+            this.boundHandleDocumentFullscreenChange,
         );
+
+        if (this.video?.textTracks) {
+            this.video.textTracks.removeEventListener(
+                "addtrack",
+                this.boundHandleTextTrackAddTrack,
+            );
+
+            Array.from(this.video.textTracks).forEach((track) => {
+                track.removeEventListener(
+                    "cuechange",
+                    this.boundHandleTrackCueChange,
+                );
+            });
+        }
+
+        this.removeEventListener("pointermove", this.boundHandlePointerMove);
+        this.removeEventListener("pointerenter", this.boundHandlePointerEnter);
+        this.removeEventListener("pointerleave", this.boundHandlePointerLeave);
+        this.removeEventListener("keydown", this.boundHandleVideoKeyDown);
+
+        this.textTracksToCleanup = [];
     }
 
     private formatTime(second: number) {
@@ -641,9 +620,34 @@ export class PcVideoPlayer extends PlacerElement {
     private updateCaptionsState() {
         const list = this.video?.textTracks;
 
-        this.captionsOn = list
-            ? Array.from(list).some((track) => track.mode === "showing")
-            : false;
+        if (!list) {
+            this.captionsOn = false;
+
+            return;
+        }
+
+        const tracks = Array.from(list);
+        const trackElements = Array.from(this.querySelectorAll("track"));
+
+        const defaultTrackIndex = tracks.findIndex((_track, index) => {
+            const trackElement = trackElements[index];
+
+            return trackElement?.hasAttribute("default");
+        });
+
+        const showingTrackIndex = tracks.findIndex(
+            (track) => track.mode === "showing",
+        );
+
+        const activeTrackIndex =
+            defaultTrackIndex !== -1 ? defaultTrackIndex : showingTrackIndex;
+
+        if (activeTrackIndex !== -1) {
+            this.lastActiveCaptionTrackIndex = activeTrackIndex;
+            this.captionsOn = true;
+        } else {
+            this.captionsOn = false;
+        }
 
         this.updateCuePosition();
         this.syncARIAAttributes();
@@ -679,11 +683,11 @@ export class PcVideoPlayer extends PlacerElement {
         }
     }
 
-    private handleVideoPlay() {
+    private handleVideoPlaying() {
         this.hasStarted = true;
         this.isPlaying = true;
 
-        if (document.fullscreenElement) {
+        if (document.fullscreenElement && this.video.readyState >= 2) {
             this.scheduleHideControls(3000);
         }
 
@@ -695,6 +699,30 @@ export class PcVideoPlayer extends PlacerElement {
 
         this.toggleControlVisibility();
         this.requestUpdate();
+    }
+
+    private handleVideoProgress() {
+        let end = 0;
+
+        for (let i = 0; i < this.video.buffered.length; i++) {
+            end = Math.max(end, this.video.buffered.end(i));
+        }
+
+        this.bufferedEnd = end;
+    }
+
+    private handleVideoWaiting() {
+        this.isPlaying = false;
+        this.toggleControlVisibility(true);
+    }
+
+    private handleVideoVolumeChange() {
+        this.volume = this.video.volume;
+        this.isMuted = this.video.muted || this.video.volume === 0;
+    }
+
+    private handleVideoRateChange() {
+        this.playbackRate = this.video.playbackRate;
     }
 
     private handleVideoKeyDown(event: KeyboardEvent) {
@@ -749,6 +777,50 @@ export class PcVideoPlayer extends PlacerElement {
                 this.handlePictureInPictureClick();
                 break;
         }
+    }
+
+    private handleVideoLoadedData() {
+        if (this.duration === 0) {
+            this.duration = this.video.duration || 0;
+        }
+
+        this.updateCaptionsState();
+    }
+
+    private handleVideoLoadedMetadata() {
+        this.duration = this.video.duration || 0;
+        this.current = this.video.currentTime || 0;
+        this.volume = this.video.volume;
+
+        this.handleVideoProgress();
+        this.updateCaptionsState();
+
+        Array.from(this.video.textTracks || []).forEach((track) => {
+            track.removeEventListener(
+                "cuechange",
+                this.boundHandleTrackCueChange,
+            );
+            track.addEventListener("cuechange", this.boundHandleTrackCueChange);
+        });
+
+        this.updateCuePosition();
+    }
+
+    private handleVideoTimeUpdate() {
+        if (!this.isScrubbing) {
+            this.current = this.video.currentTime || 0;
+        }
+
+        if (this.duration === 0 && this.video.duration > 0) {
+            this.duration = this.video.duration;
+        }
+
+        this.updateCuePosition();
+    }
+
+    private handleVideoWebKitEndFullscreen() {
+        this.playbackRate = this.video.playbackRate;
+        this.updateCaptionsState();
     }
 
     private async handlePictureInPictureClick() {
@@ -887,52 +959,40 @@ export class PcVideoPlayer extends PlacerElement {
     }
 
     /**
-     * Returns a CSS translate fragment for the block axis to implement lineAlignment.
-     * The inline-axis translate (for positionAlign) is handled separately and
-     * concatenated onto the same transform property.
+     * Returns a CSS `translate` fragment for the block axis to implement `lineAlign`.
+     * The inline‐axis `translate` (for `positionAlign`) is handled separately and
+     * concatenated onto the same `transform` property.
      *
-     * lineAlignment spec values: "start" | "center" | "end"
-     *   start  → top (horizontal) or left/right edge (vertical) aligns to the line → no offset
-     *   center → cue box centered on the line → -50% on the block axis
-     *   end    → bottom (horizontal) or opposite edge (vertical) aligns → -100% on the block axis
+     * `lineAlign` spec values: `"start" | "center" | "end"`
      *
-     * @param {string} lineAlignment
+     * - start → `top` (horizontal) or `left`/`right` edge (vertical) aligns to the line: No offset.
+     * - center → Cue box centred on the line: `-50%` on the block axis.
+     * - end → `bottom` (horizontal) or opposite edge (vertical) aligns: `-100%` on the block axis.
+     *
+     * @param {string} lineAlign
      * @param {boolean} isVertical
-     * @param {boolean} isNegative - whether the line number is negative (from-end)
+     * @param {boolean} isNegative - Whether the line number is negative (from end).
      */
     private getLineAlignTransform(
-        lineAlignment: string,
+        lineAlign: string,
         isVertical: boolean,
         isNegative: boolean,
     ) {
-        const alignment = lineAlignment || "start";
+        const align = lineAlign || "start";
+
         let blockOffset;
 
-        if (alignment === "center") {
+        if (align === "center") {
             blockOffset = "-50%";
-        } else if (alignment === "end") {
-            // "end" means the far edge of the box touches the line.
-            // For negative lines (measured from the end edge), end-alignment
-            // means the box grows further inward, so we flip to 0%.
+        } else if (align === "end") {
             blockOffset = isNegative ? "0%" : "-100%";
         } else {
-            // "start": near edge of the box touches the line (default)
             blockOffset = isNegative ? "-100%" : "0%";
         }
 
         return isVertical
             ? `translateX(${blockOffset})`
             : `translateY(${blockOffset})`;
-    }
-
-    private handleVideoProgress() {
-        let end = 0;
-
-        for (let i = 0; i < this.video.buffered.length; i++) {
-            end = Math.max(end, this.video.buffered.end(i));
-        }
-
-        this.bufferedEnd = end;
     }
 
     private onScrubEnd(value: number) {
@@ -955,7 +1015,7 @@ export class PcVideoPlayer extends PlacerElement {
         this.scrubTime = null;
 
         if (this.isPlaying) {
-            this.handleVideoPlay();
+            this.handleVideoPlaying();
         }
     }
 
@@ -1000,10 +1060,16 @@ export class PcVideoPlayer extends PlacerElement {
             this.shouldRestoreFocusAfterStart = false;
         }
 
-        if (this.video) {
-            await this.video.play();
+        try {
+            if (this.video) {
+                await this.video.play();
 
-            this.dispatchEvent(new PcPlayEvent());
+                this.dispatchEvent(new PcPlayEvent());
+            }
+        } catch (error) {
+            if (!(error instanceof Error) || error.name !== "AbortError") {
+                return;
+            }
         }
     }
 
@@ -1099,7 +1165,18 @@ export class PcVideoPlayer extends PlacerElement {
                     .src=${this.src}
                     crossorigin="anonymous"
                     tabindex=${this.hasStarted && this.noControls ? "0" : "-1"}
-                    @loadeddata=${this.updateCaptionsState}
+                    @playing=${this.handleVideoPlaying}
+                    @pause=${this.handleVideoPause}
+                    @progress=${this.handleVideoProgress}
+                    @waiting=${this.handleVideoWaiting}
+                    @volumechange=${this.handleVideoVolumeChange}
+                    @ratechange=${this.handleVideoRateChange}
+                    @keydown=${this.handleVideoKeyDown}
+                    @loadeddata=${this.handleVideoLoadedData}
+                    @loadedmetadata=${this.handleVideoLoadedMetadata}
+                    @timeupdate=${this.handleVideoTimeUpdate}
+                    @webkitbeginfullscreen=${this.updateCaptionsState}
+                    @webkitendfullscreen=${this.handleVideoWebKitEndFullscreen}
                 >
                     <slot></slot>
                 </video>
@@ -1517,30 +1594,6 @@ export class PcVideoPlayer extends PlacerElement {
 
                               <pc-button-group part="controls-group">
                                   <pc-button
-                                      class="picture-in-picture"
-                                      part="picture-in-picture"
-                                      size="small"
-                                      variant="filled"
-                                      ?hidden=${!pipSupported}
-                                      @click=${this.handlePictureInPictureClick}
-                                      exportparts="
-                                          base:picture-in-picture-base,
-                                          label:picture-in-picture-label
-                                      "
-                                  >
-                                      <pc-icon
-                                          part="picture-in-picture-icon"
-                                          library="system"
-                                          icon-style="solid"
-                                          name="picture-in-picture"
-                                          label=${this.localize.term(
-                                              "pictureInPicture",
-                                          )}
-                                          exportparts="svg:picture-in-picture-icon-svg"
-                                      ></pc-icon>
-                                  </pc-button>
-
-                                  <pc-button
                                       class="captions"
                                       part="captions"
                                       size="small"
@@ -1568,6 +1621,9 @@ export class PcVideoPlayer extends PlacerElement {
                                       part="settings-menu"
                                       placement="top-end"
                                       @pc-select=${this.handleSettingsSelect}
+                                      @pc-show=${() =>
+                                          this.toggleControlVisibility(true)}
+                                      @pc-hide=${this.toggleControlVisibility}
                                       exportparts="
                                           base:settings-menu-base,
                                           menu:settings-menu-menu
@@ -1726,6 +1782,29 @@ export class PcVideoPlayer extends PlacerElement {
                                       </pc-dropdown-item>
                                   </pc-dropdown>
 
+                                  <pc-button
+                                      class="picture-in-picture"
+                                      part="picture-in-picture"
+                                      size="small"
+                                      variant="filled"
+                                      ?hidden=${!pipSupported}
+                                      @click=${this.handlePictureInPictureClick}
+                                      exportparts="
+                                          base:picture-in-picture-base,
+                                          label:picture-in-picture-label
+                                      "
+                                  >
+                                      <pc-icon
+                                          part="picture-in-picture-icon"
+                                          library="system"
+                                          icon-style="solid"
+                                          name="picture-in-picture"
+                                          label=${this.localize.term(
+                                              "pictureInPicture",
+                                          )}
+                                          exportparts="svg:picture-in-picture-icon-svg"
+                                      ></pc-icon>
+                                  </pc-button>
                                   <pc-button
                                       class="full-screen"
                                       part="full-screen"

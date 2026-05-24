@@ -5,6 +5,7 @@
     max-inline-size: 100%;
     container-type: inline-size;
     container-name: video-player;
+    will-change: backdrop-filter;
 }
 
 .frame {
@@ -94,7 +95,7 @@
 }
 
 :host(.controls-visible) .frame .title,
-.frame:has(> .bar:focus-within, > .controls:focus-within) .title {
+.frame:has(:focus-visible) .title {
     opacity: 1;
 }
 
@@ -194,7 +195,7 @@
 }
 
 :host(.controls-visible) .frame .bar,
-.frame:has(> .bar:focus-within, > .controls:focus-within) .bar {
+.frame:has(:focus-visible) .bar {
     opacity: 1;
 }
 
@@ -270,7 +271,7 @@
 }
 
 :host(.controls-visible) .frame .controls,
-.frame:has(> .bar:focus-within, > .controls:focus-within) .controls {
+.frame:has(:focus-visible) .controls {
     opacity: 1;
 }
 
@@ -573,6 +574,12 @@
 @container video-player (max-width: 550px) {
     .frame .controls .mute-container,
     .frame .controls .time-container {
+        display: none;
+    }
+}
+
+@container video-player (max-width: 300px) {
+    .frame .controls .captions {
         display: none;
     }
 }

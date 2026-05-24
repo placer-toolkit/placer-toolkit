@@ -7,7 +7,7 @@ category: formControls
 Radio groups are used to group multiple [radios](/docs/components/radio) so they function as a single form control.
 
 ```demo:open
-<pc-radio-group label="Select an option" name="group-1" value="option-1">
+<pc-radio-group label="Select an option" name="group-0" value="option-1">
     <pc-radio value="option-1">Option 1</pc-radio>
     <pc-radio value="option-2">Option 2</pc-radio>
     <pc-radio value="option-3">Option 3</pc-radio>
@@ -16,6 +16,18 @@ Radio groups are used to group multiple [radios](/docs/components/radio) so they
 
 ## Demos
 
+### Checked
+
+Use the `value` attribute on the radio group to set the checked radio.
+
+```demo
+<pc-radio-group label="Select an option" name="group-1" value="option-2">
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2">Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
 ### Hints
 
 Add a descriptive hint to a radio group with the `hint` attribute. For hints that contain HTML, use the `hint` slot instead.
@@ -23,8 +35,8 @@ Add a descriptive hint to a radio group with the `hint` attribute. For hints tha
 ```demo
 <pc-radio-group
     label="Select an option"
-    hint="Select an option that makes you proud."
-    name="group-1"
+    hint="Select your favourite option."
+    name="group-2"
     value="option-1"
 >
     <pc-radio value="option-1">Option 1</pc-radio>
@@ -33,12 +45,53 @@ Add a descriptive hint to a radio group with the `hint` attribute. For hints tha
 </pc-radio-group>
 ```
 
-### Disabling radios
+### Radio buttons
 
-[Radios](/docs/components/radio) can be disabled by adding the `disabled` attribute to the respective options inside the radio group.
+Set the `appearance` attribute to `button` on all radios to turn the radios to radio buttons.
 
 ```demo
-<pc-radio-group label="Select an option" name="group-1" value="option-1">
+<pc-radio-group
+    label="Horizontal options"
+    hint="Select an option that makes you proud."
+    orientation="horizontal"
+    name="group-3"
+    value="option-1"
+>
+    <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
+    <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
+    <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+
+<pc-radio-group
+    label="Vertical options"
+    hint="Select an option that makes you proud."
+    orientation="vertical"
+    name="group-4"
+    value="option-1"
+    style="max-inline-size: 300px"
+>
+    <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
+    <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
+    <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
+### Disabled
+
+To disable the entire radio group, add the `disabled` attribute to the radio group.
+
+```demo
+<pc-radio-group label="Select an option" name="group-5" disabled>
+    <pc-radio value="option-1">Option 1</pc-radio>
+    <pc-radio value="option-2">Option 2</pc-radio>
+    <pc-radio value="option-3">Option 3</pc-radio>
+</pc-radio-group>
+```
+
+To disable individual radios, add the `disabled` attribute to the respective options.
+
+```demo
+<pc-radio-group label="Select an option" name="group-6">
     <pc-radio value="option-1">Option 1</pc-radio>
     <pc-radio value="option-2" disabled>Option 2</pc-radio>
     <pc-radio value="option-3">Option 3</pc-radio>
@@ -70,15 +123,19 @@ The size of [radios](/docs/components/radio) will be determined by the radio gro
 </script>
 ```
 
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="sliders"
-        slot="icon"
-    ></pc-icon>
-    [Radios](/docs/components/radio) also have a `size` attribute. This can be useful in certain situations, but it will be ignored when used inside of a radio group.
-</pc-callout>
+If you need to have radios of different sizes, add the `size` attribute on the individual radios instead.
+
+```demo
+<pc-radio-group
+    size="medium"
+    label="Select a (mixed‐size) option"
+    value="medium"
+>
+    <pc-radio size="small" value="small">Small</pc-radio>
+    <pc-radio size="medium" value="medium">Medium</pc-radio>
+    <pc-radio size="large" value="large">Large</pc-radio>
+</pc-radio-group>
+```
 
 ### Horizontal
 
@@ -87,7 +144,7 @@ Set the `orientation` attribute to `horizontal` to make a horizontal radio group
 ```demo
 <pc-radio-group
     label="Select an option"
-    name="group-1"
+    name="group-7"
     value="option-1"
     orientation="horizontal"
 >
@@ -103,7 +160,7 @@ Set the `required` attribute to make selecting an option mandatory. If a value h
 
 ```demo
 <form class="radio-group-required">
-    <pc-radio-group label="Select an option" name="group-1" required>
+    <pc-radio-group label="Select an option" name="group-8" required>
         <pc-radio value="option-1">Option 1</pc-radio>
         <pc-radio value="option-2">Option 2</pc-radio>
         <pc-radio value="option-3">Option 3</pc-radio>
@@ -118,6 +175,7 @@ Set the `required` attribute to make selecting an option mandatory. If a value h
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+
         alert("All fields are valid!");
     });
 </script>
@@ -128,13 +186,13 @@ Set the `required` attribute to make selecting an option mandatory. If a value h
 Use the `setCustomValidity()` method to set a custom validation message. This will prevent the form from submitting and make the browser display the error message you provide. If you want to restore the default validation message, pass an empty string to the `setCustomValidity()` method.
 
 ```demo
-<form class="radio-group-custom-validity">
-    <pc-radio-group label="Select an option" name="group-1" value="option-1">
+<form class="radio-group-custom-validity pc-stack">
+    <pc-radio-group label="Select an option" name="group-9" value="option-1">
         <pc-radio value="not-me">Not me</pc-radio>
         <pc-radio value="me-neither">Me neither</pc-radio>
         <pc-radio value="select-me">Select me</pc-radio>
     </pc-radio-group>
-    <br />
+
     <pc-button appearance="primary" type="submit">Submit</pc-button>
 </form>
 

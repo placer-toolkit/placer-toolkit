@@ -9,7 +9,6 @@ import { uniqueID } from "../../internal/math.js";
 import type { PcRadio } from "../radio/radio.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
-import visuallyHiddenStyles from "../../styles/utilities/visually-hidden.css";
 import styles from "./radio-group.css";
 
 /**
@@ -36,7 +35,7 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
         ...PlacerFormAssociatedElement.shadowRootOptions,
         delegatesFocus: true,
     };
-    static css = [formControlStyles, sizeStyles, visuallyHiddenStyles, styles];
+    static css = [formControlStyles, sizeStyles, styles];
 
     static get validators() {
         const validators = [
@@ -71,6 +70,13 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
 
     /** The name of the radio group, submitted as a name/value pair with form data. */
     @property() name: string | null = null;
+
+    /** Disables the radio group and all child radios. */
+    @property({ type: Boolean, reflect: true }) disabled = false;
+
+    /** The orientation in which to show radio items. */
+    @property({ reflect: true }) orientation: "horizontal" | "vertical" =
+        "vertical";
 
     private _value: string | null = null;
 
@@ -128,7 +134,8 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
         if (
             changedProperties.has("disabled") ||
             changedProperties.has("size") ||
-            changedProperties.has("value")
+            changedProperties.has("value") ||
+            changedProperties.has("defaultValue")
         ) {
             this.syncRadioElements();
         }
@@ -137,7 +144,7 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
     formResetCallback(
         ...args: Parameters<PlacerFormAssociatedElement["formResetCallback"]>
     ) {
-        this.value = this.defaultValue;
+        this._value = null;
 
         super.formResetCallback(...args);
 
@@ -197,6 +204,32 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
 
     private async syncRadioElements() {
         const radios = this.getAllRadios();
+
+        radios.forEach((radio, index) => {
+            if (this.size) {
+                radio.setAttribute("size", this.size);
+            }
+
+            radio.classList.toggle(
+                "pc-radio-group-horizontal",
+                this.orientation === "horizontal",
+            );
+            radio.classList.toggle(
+                "pc-radio-group-vertical",
+                this.orientation === "vertical",
+            );
+            radio.classList.toggle("pc-radio-group-radio-first", index === 0);
+            radio.classList.toggle(
+                "pc-radio-group-radio-inner",
+                index > 0 && index < radios.length - 1,
+            );
+            radio.classList.toggle(
+                "pc-radio-group-radio-last",
+                index === radios.length - 1,
+            );
+
+            (radio as PcRadio).forceDisabled = this.disabled;
+        });
 
         await Promise.all(
             radios.map(async (radio) => {
@@ -268,7 +301,9 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
 
         let index = radios.indexOf(checkedRadio) + increment;
 
-        if (!index) index = 0;
+        if (!index) {
+            index = 0;
+        }
 
         if (index < 0) {
             index = radios.length - 1;
@@ -352,7 +387,7 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
                 role="radiogroup"
                 aria-labelledby="label"
                 aria-describedby="hint"
-                aria-errormessage="error-message"
+                aria-orientation=${this.orientation}
             >
                 <label
                     class="label"
@@ -368,8 +403,6 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
                     part="input"
                     class="input"
                     @slotchange=${this.syncRadios}
-                    @click=${this.handleRadioClick}
-                    @keydown=${this.handleKeyDown}
                 ></slot>
 
                 <slot

@@ -12,6 +12,12 @@
 .input {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+:host([orientation="horizontal"]) .input {
+    flex-direction: row;
 }
 
 .form-control .label,

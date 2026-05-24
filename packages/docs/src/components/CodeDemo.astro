@@ -1,5 +1,6 @@
 ---
 import { getShiki } from "../scripts/shiki-process.js";
+import { placerEclipse } from "../styles/syntax/placer-eclipse.ts";
 import { version } from "../helpers/version.js";
 
 let rawCode = await Astro.slots.render("default");
@@ -28,18 +29,14 @@ rawCode = unescapeHTML(rawCode || "");
 
 const highlighter = await getShiki();
 
-const html = highlighter.codeToHtml(rawCode, {
+const result = highlighter.codeToTokens(rawCode, {
     lang: "html",
-    theme: "placer-eclipse",
+    theme: placerEclipse,
 });
 
-const uniqueID = Math.random().toString(36).slice(2, 11);
+const lines = result.tokens;
 
-const finalHTML = html
-    .replace(/(<pre[^>]*?)\s+tabindex="[^"]*"/g, "$1")
-    .replace("<pre", '<pre tabindex="-1"')
-    .replace(/(<code[^>]*?)\s+tabindex="[^"]*"/g, "$1")
-    .replace("<code", `<code id="code-content-${uniqueID}" tabindex="-1"`);
+const uniqueID = Math.random().toString(36).slice(2, 11);
 
 const { open, noCodepen = false } = Astro.props;
 
@@ -77,8 +74,20 @@ const isOpen = open !== undefined && open !== false;
         aria-hidden={!isOpen}
         inert={!isOpen || undefined}
     >
-        <pc-copy-button from={`code-content-${uniqueID}`}></pc-copy-button>
-        <Fragment set:html={finalHTML} />
+        <pre
+            class="shiki"
+            aria-label="Horizontally scrollable code block"><code id={`code-content-${uniqueID}`} data-raw-code={rawCode}>{
+        lines.map((line) => {
+            return (
+                <span class="line"><span class="code">{
+                    line.map((token) => (
+                        <span style={`color: ${token.color}`}>{token.content}</span>
+                    ))
+                }</span></span>
+            );
+        })}</code></pre>
+        <pc-copy-button from={`code-content-${uniqueID}[data-raw-code]`}
+        ></pc-copy-button>
     </div>
 
     <div class="toggle-block">
@@ -293,8 +302,12 @@ const isOpen = open !== undefined && open !== false;
                 let startX = 0;
                 let startWidth = 0;
 
-                resizeHandle.addEventListener("mousedown", (event) => {
+                resizeHandle?.addEventListener("pointerdown", (event) => {
                     event.preventDefault();
+
+                    if (!previewBlock) {
+                        return;
+                    }
 
                     isResizing = true;
                     startX = event.clientX;
@@ -304,8 +317,8 @@ const isOpen = open !== undefined && open !== false;
                     document.body.style.userSelect = "none";
                 });
 
-                document.addEventListener("mousemove", (event) => {
-                    if (!isResizing) {
+                document.addEventListener("pointermove", (event) => {
+                    if (!isResizing || !previewBlock) {
                         return;
                     }
 
@@ -315,7 +328,7 @@ const isOpen = open !== undefined && open !== false;
                     previewBlock.style.inlineSize = `${newWidth}px`;
                 });
 
-                document.addEventListener("mouseup", () => {
+                document.addEventListener("pointerup", () => {
                     if (isResizing) {
                         isResizing = false;
 
@@ -330,10 +343,10 @@ const isOpen = open !== undefined && open !== false;
                     const cdnURL = `https://cdn.jsdelivr.net/npm/placer-toolkit@${currentVersion}`;
 
                     const html =
-                        `<link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|quicksand:300,400,500,600,700&display=swap" />\n` +
+                        `<link rel="stylesheet" href="https://fonts.bunny.net/css?family=jetbrains-mono:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i|nunito:200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|playfair-display:400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" />\n` +
                         `<link rel="stylesheet" href="${cdnURL}/cdn/styles/placer.css" />\n` +
                         `<script type="module" src="${cdnURL}/cdn/placer-autoloader.js"><\/script>\n\n` +
-                        `${codeElement.textContent}\n`;
+                        `${codeElement?.textContent}\n`;
                     const css =
                         `body {\n` +
                         `  padding: var(--pc-spacing-xxxl) !important;\n` +
@@ -457,21 +470,19 @@ const isOpen = open !== undefined && open !== false;
     }
 
     .code-block {
+        display: grid;
         position: relative;
-        max-block-size: 0;
+        grid-template-rows: 0fr;
         background-color: var(--pc-color-surface-raised);
         border-block-start: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-quiet);
         overflow: hidden;
-        /* 🧪 interpolate-size is an experimental property (✓ Chrome 129, Edge 129) */
-        interpolate-size: allow-keywords;
-        transition: max-block-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .code-block.open {
-        max-block-size: max-content;
-        overflow-x: auto;
-        transition: max-block-size 0.45s cubic-bezier(0.2, 1, 0.3, 1);
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 0.45s cubic-bezier(0.2, 1, 0.3, 1);
     }
 
     .code-block :is(pre, code) {
@@ -479,16 +490,34 @@ const isOpen = open !== undefined && open !== false;
         padding: 0 !important;
         border-radius: 0;
         background-color: transparent;
+        border-radius: 0;
+        font-size: var(--pc-font-size-s);
+        line-height: var(--pc-line-height-normal);
+        overflow: hidden;
     }
 
-    .code-block :global(.shiki) {
-        padding: var(--pc-spacing-l) !important;
+    .code-block .shiki {
+        padding-block: var(--pc-spacing-l) !important;
         max-inline-size: 100%;
         background-color: transparent;
         font-size: var(--pc-font-size-xs);
         line-height: var(--pc-line-height-normal);
-        white-space: pre;
         overflow-x: auto;
+    }
+
+    .code-block .shiki:focus-visible {
+        outline: var(--pc-focus-ring);
+        outline-offset: var(--pc-focus-ring-offset);
+        animation: focus-ring-animation var(--pc-transition-medium)
+            cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .code-block .shiki code .line {
+        display: block;
+    }
+
+    .code-block .shiki code .line .code {
+        padding-inline: var(--pc-spacing-l);
     }
 
     .code-block pc-copy-button {
@@ -552,6 +581,7 @@ const isOpen = open !== undefined && open !== false;
     .toggle-block .codepen-button {
         min-inline-size: 5rem;
         inline-size: 15%;
+        flex-grow: 1;
         border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-quiet);
     }
@@ -580,22 +610,7 @@ const isOpen = open !== undefined && open !== false;
         transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @media (hover: none) {
-        .preview-block {
-            min-inline-size: 100%;
-            max-inline-size: 100%;
-        }
-
-        .preview-content-container {
-            padding-inline-end: var(--pc-spacing-xxl);
-        }
-
-        .resize-handle {
-            display: none;
-        }
-    }
-
-    @media screen and (max-width: 600px) {
+    @media (hover: none), screen and (max-width: 600px) {
         .preview-block {
             min-inline-size: 100%;
             max-inline-size: 100%;

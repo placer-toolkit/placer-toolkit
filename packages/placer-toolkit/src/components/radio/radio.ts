@@ -17,22 +17,28 @@ import styles from "./radio.css";
  * @event focus - Emitted when the radio gains focus.
  * @event blur - Emitted when the radio loses focus (i.e., is blurred).
  *
- * @csspart base - The component’s base wrapper.
  * @csspart control - The circular container that wraps the radio’s checked state.
- * @csspart control-checked - The circular container that wraps the radio’s checked state only if it’s checked.
  * @csspart checked-icon - The checked icon, an `<svg>` element.
  * @csspart label - The radio’s label.
+ *
+ * @cssproperty --checked-background-color: var(--pc-form-control-activated-color) - The background colour for checked radios. This does not apply for segmented radios.
+ * @cssproperty --checked-icon-scale: 0.8 - The scale of the icon for checked radios. This does not apply for segmented radios.
  */
 @customElement("pc-radio")
 export class PcRadio extends PlacerFormAssociatedElement {
     static css = [formControlStyles, sizeStyles, styles];
 
     @state() checked = false;
-    /** @internal This is used by the Radio Group component to force disable radios while preserving their original disabled state. */
+
+    /** @internal This is used by the radio group to force disable radios while preserving their original disabled state. */
     @state() forceDisabled = false;
 
     /** The radio’s value. When selected, the radio group will receive this value. */
     @property() value?: string;
+
+    /** The radio’s visual appearance. */
+    @property({ reflect: true }) appearance: "default" | "segmented" =
+        "default";
 
     /** The radio’s size. When used inside a radio group, the size will be determined by the radio group’s size so this attribute can typically be omitted. */
     @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
@@ -53,8 +59,11 @@ export class PcRadio extends PlacerFormAssociatedElement {
 
     private setInitialAttributes() {
         this.setAttribute("role", "radio");
-        this.setAttribute("tabindex", "-1");
-        this.setAttribute("aria-disabled", this.disabled ? "true" : "false");
+        this.tabIndex = 0;
+        this.setAttribute(
+            "aria-disabled",
+            this.disabled || this.forceDisabled ? "true" : "false",
+        );
     }
 
     updated(changedProperties: PropertyValues<this>) {
@@ -103,30 +112,18 @@ export class PcRadio extends PlacerFormAssociatedElement {
 
     render() {
         return html`
-            <span
-                part="base"
-                class=${classMap({
-                    radio: true,
-                    checked: this.checked,
-                    disabled: this.disabled,
-                })}
-            >
-                <span
-                    class="control"
-                    part="${`control ${this.checked ? "control-checked" : ""}`}"
+            <span class="control" part="control">
+                <svg
+                    class="checked-icon"
+                    part="checked-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="checked-icon"
-                        part="checked-icon"
-                        viewBox="0 0 16 16"
-                    >
-                        <circle cx="8" cy="8" r="4.5" fill="currentColor" />
-                    </svg>
-                </span>
-
-                <slot class="label" part="label"></slot>
+                    <circle cx="8" cy="8" r="4.5" fill="currentColor" />
+                </svg>
             </span>
+
+            <slot class="label" part="label"></slot>
         `;
     }
 }

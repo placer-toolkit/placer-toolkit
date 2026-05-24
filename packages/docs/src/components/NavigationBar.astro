@@ -166,7 +166,6 @@ const translatePath = useTranslatedPath(language);
     .navbar {
         position: fixed;
         inset-block-start: 0;
-        inset-block: 0;
         background-color: var(--pc-color-surface-default);
         border-block-end: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);
@@ -174,13 +173,6 @@ const translatePath = useTranslatedPath(language);
         block-size: var(--navigation-bar-height);
         z-index: 2;
         pointer-events: auto;
-        view-transition-name: navigation-bar;
-    }
-
-    ::view-transition-old(navigation-bar),
-    ::view-transition-new(navigation-bar) {
-        mix-blend-mode: normal;
-        animation: none;
     }
 
     .navigation-bar {

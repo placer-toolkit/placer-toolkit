@@ -34,5 +34,6 @@ export function debounceObserver(
             });
         }, 250);
     });
+
     return resizeObserver;
 }

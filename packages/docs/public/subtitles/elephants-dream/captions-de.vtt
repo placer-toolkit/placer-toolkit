@@ -2,17 +2,17 @@ WEBVTT
 
 STYLE
 ::cue(v[voice="Proog"]) {
-    color: oklch(85% 0.18 90);
+    color: oklch(95% 0.25 95);
 }
 ::cue(v[voice="Emo"]) {
-    color: oklch(75% 0.12 240);
+    color: oklch(85% 0.18 210);
 }
 ::cue(.ambience) {
-    color: oklch(100% 0 0 / 40%);
+    color: oklch(100% 0 0 / 60%);
     font-style: italic;
 }
 ::cue(.music) {
-    color: oklch(100% 0 0 / 40%);
+    color: oklch(100% 0 0 / 60%);
 }
 
 00:00:04.022 --> 00:00:05.522
@@ -323,8 +323,8 @@ Willst du das wirklich? Brei?</v>
 00:05:32.546 --> 00:05:33.676
 <c.ambience>(Beschleunigung)</c.ambience>
 
-00:05:33.719 --> 00:05:35.030
-<c.ambience>(Metalltüren verriegeln)</c.ambience>
+00:05:33.719 --> 00:05:37.610
+<c.ambience>(Metalltüren verriegeln, Rauschen)</c.ambience>
 
 00:05:41.492 --> 00:05:43.742
 <v Proog>Emo, schließ deine Augen.</v>
@@ -385,7 +385,8 @@ du rechts von dir, Emo?</v>
 <c.ambience>(Kameraklicken wird lauter)</c.ambience>
 
 00:06:38.585 --> 00:06:40.495
-<c.ambience>(Portalwabern, Türknallen)</c.ambience>
+<c.ambience>(Schwerer Maschinenlauf
+metallisches Klirren)</c.ambience>
 
 00:06:40.537 --> 00:06:42.920
 <v Emo>Hör zu, Proog! Hörst du das?</v>

@@ -114,7 +114,6 @@ const icons: { [key: string]: { [key: string]: string } } = {
         `,
         "picture-in-picture": `
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <!--! This is a custom designed icon by @randomguy-2650, it is subject to Placer Toolkit’s licence -->
                 <path
                     d="M16 3C17.1046 3 18 3.89543 18 5V7.5C18 8.05228 17.5523 8.5 17 8.5C16.4477 8.5 16 8.05228 16 7.5V5H4V15H7.5C8.05228 15 8.5 15.4477 8.5 16C8.5 16.5523 8.05228 17 7.5 17H4C2.89543 17 2 16.1046 2 15V5C2 3.89543 2.89543 3 4 3H16ZM16.5 10C17.3284 10 18 10.6716 18 11.5V15.5C18 16.3284 17.3284 17 16.5 17H11.5C10.6716 17 10 16.3284 10 15.5V11.5C10 10.6716 10.6716 10 11.5 10H16.5Z"
                 />

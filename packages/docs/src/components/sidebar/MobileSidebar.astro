@@ -23,16 +23,6 @@ const translation = useTranslations(language);
 </pc-drawer>
 
 <style>
-    .mobile-sidebar {
-        view-transition-name: mobile-sidebar;
-    }
-
-    ::view-transition-old(mobile-sidebar),
-    ::view-transition-new(mobile-sidebar) {
-        mix-blend-mode: normal;
-        animation: none;
-    }
-
     .mobile-sidebar::part(drawer) {
         background-color: var(--pc-color-surface-default);
     }

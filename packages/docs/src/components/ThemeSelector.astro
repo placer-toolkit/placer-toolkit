@@ -62,26 +62,6 @@ const translation = useTranslations(language);
         });
     }
 
-    async function withViewTransition(
-        callback: ViewTransitionUpdateCallback | undefined,
-        { ignoreInitialLoad = true } = {},
-    ) {
-        if (!initialPageLoadComplete && ignoreInitialLoad) {
-            callback?.();
-            return;
-        }
-
-        const canUseViewTransitions =
-            typeof document.startViewTransition === "function" &&
-            !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        if (canUseViewTransitions) {
-            await document.startViewTransition(callback).finished;
-        } else {
-            callback?.();
-        }
-    }
-
     function parseTheme(value: string | null): "light" | "dark" | null {
         if (value === "light" || value === "dark") {
             return value;
@@ -126,14 +106,12 @@ const translation = useTranslations(language);
         const effectiveTheme =
             theme ?? (prefersLight.matches ? "light" : "dark");
 
-        await withViewTransition(() => {
-            document.documentElement.classList.remove("pc-light", "pc-dark");
-            document.documentElement.classList.add(`pc-${effectiveTheme}`);
+        document.documentElement.classList.remove("pc-light", "pc-dark");
+        document.documentElement.classList.add(`pc-${effectiveTheme}`);
 
-            currentColorScheme = theme;
+        currentColorScheme = theme;
 
-            updateIcon(theme);
-        });
+        updateIcon(theme);
 
         if (theme === null) {
             localStorage.removeItem("saved-color-scheme");
@@ -172,24 +150,22 @@ const translation = useTranslations(language);
     }
 
     async function applyTheme(theme: string) {
-        await withViewTransition(() => {
-            const root = document.documentElement;
+        const root = document.documentElement;
 
-            root.classList.remove(
-                "pc-theme-utility",
-                "pc-theme-serene",
-                "pc-palette-vibrant",
-                "pc-palette-muted",
-            );
+        root.classList.remove(
+            "pc-theme-utility",
+            "pc-theme-serene",
+            "pc-palette-vibrant",
+            "pc-palette-muted",
+        );
 
-            if (theme === "utility") {
-                root.classList.add("pc-theme-utility", "pc-palette-vibrant");
-            } else if (theme === "serene") {
-                root.classList.add("pc-theme-serene", "pc-palette-muted");
-            }
+        if (theme === "utility") {
+            root.classList.add("pc-theme-utility", "pc-palette-vibrant");
+        } else if (theme === "serene") {
+            root.classList.add("pc-theme-serene", "pc-palette-muted");
+        }
 
-            localStorage.setItem("saved-theme", theme);
-        });
+        localStorage.setItem("saved-theme", theme);
     }
 
     function applyCustomizations() {

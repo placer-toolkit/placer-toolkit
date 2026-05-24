@@ -72,6 +72,10 @@ label:not(.disabled) .switch:active {
         translate var(--pc-transition-medium) cubic-bezier(0.34, 1.35, 0.64, 1);
 }
 
+.switch .thumb:dir(rtl) {
+    translate: calc((var(--width) - var(--height)) / 2);
+}
+
 .input {
     position: absolute;
     margin: 0;
@@ -123,6 +127,10 @@ label:not(.disabled) .input:focus-visible ~ .switch {
 .checked .switch .thumb {
     background-color: var(--pc-color-surface-default);
     translate: calc((var(--width) - var(--height)) / 2);
+}
+
+.checked .switch .thumb:dir(rtl) {
+    translate: calc((var(--width) - var(--height)) / -2);
 }
 
 label:has(> :disabled) {

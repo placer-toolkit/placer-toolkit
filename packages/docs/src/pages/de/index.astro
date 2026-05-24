@@ -8,6 +8,10 @@ import LandingCTA from "../../components/LandingCTA.astro";
 import Showcase from "../../components/Showcase.astro";
 import SpecialThanksGrid from "../../components/SpecialThanksGrid.astro";
 
+import EntirelyNative from "../../components/animations/EntirelyNative.astro";
+import FullyAccessible from "../../components/animations/FullyAccessible.astro";
+import GloballyReady from "../../components/animations/GloballyReady.astro";
+
 import "../../styles/catalog.css";
 import "../../styles/landing-override.css";
 ---
@@ -34,9 +38,11 @@ import "../../styles/landing-override.css";
                 label="Vollständig nativ"
                 icon="puzzle-piece"
                 href="/de/docs/get-started/usage"
+                orientation="horizontal"
             >
-                Placer Toolkit basiert auf Webstandards und funktioniert in
-                jedem Framework – oder ganz ohne.
+                <EntirelyNative slot="image" />
+                Placer Toolkit basiert auf Webstandards und funktioniert in jedem
+                Framework – oder ganz ohne.
                 <em>Keine Bindung, keine Kompromisse.</em>
             </FeatureTile>
             <FeatureTile
@@ -44,8 +50,8 @@ import "../../styles/landing-override.css";
                 icon="universal-access"
                 href="/de/docs/legal/accessibility"
             >
-                Barrierefreiheit ist bei uns Standard – in allen Komponenten
-                eingebaut.
+                <FullyAccessible slot="image" />
+                Barrierefreiheit ist bei uns Standard – in allen Komponenten eingebaut.
                 <em>Für jeden funktioniert’s, überall.</em>
             </FeatureTile>
             <FeatureTile
@@ -69,7 +75,9 @@ import "../../styles/landing-override.css";
                 label="Global einsatzbereit"
                 icon="globe"
                 href="/de/docs/get-started/localisation"
+                orientation="horizontal"
             >
+                <GloballyReady slot="image" />
                 Mit 75 Locales direkt einsatzbereit und beliebig erweiterbar.
                 <em>Deine Website spricht jede Sprache.</em>
             </FeatureTile>
@@ -127,6 +135,12 @@ import "../../styles/landing-override.css";
         display: flex;
         justify-content: center;
         flex-direction: column;
-        inline-size: calc(100dvw - (var(--pc-spacing-xxxxl) * 2));
+        inline-size: calc(100dvw - (6rem * 2));
+    }
+
+    @media screen and (max-width: 1020px) {
+        .landing-page {
+            inline-size: calc(100dvw - (var(--pc-spacing-xl) * 2));
+        }
     }
 </style>

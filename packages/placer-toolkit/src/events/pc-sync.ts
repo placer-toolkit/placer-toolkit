@@ -2,7 +2,7 @@ export class PcSyncEvent extends Event {
     readonly detail: PcSyncEventDetail;
 
     constructor(detail: PcSyncEventDetail) {
-        super("pc-sync", { bubbles: true, cancelable: false, composed: true });
+        super("pc-sync", { bubbles: false, cancelable: false, composed: true });
         this.detail = detail;
     }
 }

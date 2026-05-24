@@ -455,16 +455,6 @@ const translation = useTranslations(language);
 
 <style is:global>
     /* #region — Dialog layout + dev warning */
-    .search-dialog {
-        view-transition-name: search-dialog;
-    }
-
-    ::view-transition-old(search-dialog),
-    ::view-transition-new(search-dialog) {
-        mix-blend-mode: normal;
-        animation: none;
-    }
-
     .search-dialog::part(dialog) {
         position: fixed;
         inset-block: 0;
