@@ -524,17 +524,28 @@ const isOpen = open !== undefined && open !== false;
         position: absolute;
         inset-block-start: var(--pc-spacing-s);
         inset-inline-end: var(--pc-spacing-s);
+        z-index: 1;
     }
 
     .code-block pc-copy-button::part(button) {
-        background-color: var(--pc-color-surface-raised);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-raised),
+            transparent 35%
+        );
+        opacity: 0;
+        transition: all var(--pc-transition-fast) ease-in-out;
     }
 
     @media (hover: hover) {
         .code-block pc-copy-button::part(button):hover {
             background-color: color-mix(
                 in oklab,
-                var(--pc-color-surface-raised),
+                color-mix(
+                    in oklab,
+                    var(--pc-color-surface-raised),
+                    transparent 10%
+                ),
                 var(--pc-color-mix-hover)
             );
         }
@@ -543,7 +554,11 @@ const isOpen = open !== undefined && open !== false;
     .code-block pc-copy-button::part(button):focus-visible {
         background-color: color-mix(
             in oklab,
-            var(--pc-color-surface-raised),
+            color-mix(
+                in oklab,
+                var(--pc-color-surface-raised),
+                transparent 10%
+            ),
             var(--pc-color-mix-hover)
         );
     }
@@ -551,9 +566,29 @@ const isOpen = open !== undefined && open !== false;
     .code-block pc-copy-button::part(button):active {
         background-color: color-mix(
             in oklab,
-            var(--pc-color-surface-raised),
+            color-mix(in oklab, var(--pc-color-surface-raised), transparent 5%),
             var(--pc-color-mix-active)
         );
+    }
+
+    @media (hover: hover) {
+        .code-block:hover pc-copy-button::part(button),
+        .code-block pc-copy-button::part(button):active,
+        .code-block pc-copy-button:state(success)::part(button),
+        .code-block pc-copy-button:state(error)::part(button) {
+            opacity: 1;
+        }
+    }
+
+    .code-block:has(> :focus-visible) pc-copy-button::part(button),
+    .code-block pc-copy-button::part(button):focus-visible {
+        opacity: 1;
+    }
+
+    @media (hover: none) {
+        .code-block pc-copy-button::part(button) {
+            opacity: 1;
+        }
     }
 
     .code-block.open + .toggle-block {
