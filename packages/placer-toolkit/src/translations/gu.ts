@@ -1,0 +1,66 @@
+import { registerTranslation } from "./index.js";
+import type { Translation } from "../utilities/localize.js";
+
+const translation: Translation = {
+    $code: "gu",
+    $name: "ગુજરાતી",
+    $dir: "ltr",
+
+    captions: "કૅપ્શન",
+    carousel: "કેરોસેલ",
+    clearEntry: "એન્ટ્રી સાફ કરો",
+    close: "બંધ કરો",
+    controls: "નિયંત્રણ",
+    copied: "નકલ કરવામાં આવ્યું!",
+    copy: "નકલ કરો",
+    currentValue: "વર્તમાન મૂલ્ય",
+    enterFullScreen: "આખી સ્ક્રીન",
+    error: "ભૂલ",
+    exitFullScreen: "આખી સ્ક્રીનમાંથી બહાર નીકળો",
+    goToSlide: (slide, count) => `${count} માંથી સ્લાઇડ ${slide} પર જાઓ`,
+    hidePassword: "પાસવર્ડ છુપાવો",
+    hue: "રંગની છટા",
+    loading: "લોડ થઈ રહ્યું છે…",
+    maximumValue: "મહત્તમ",
+    maximumValueDescriptive: (label) => `${label} (મહત્તમ)`,
+    minimumValue: "કન્યુનતમ",
+    minimumValueDescriptive: (label) => `${label} (કન્યુનતમ)`,
+    mute: "મ્યૂટ",
+    nextSlide: "આગલી સ્લાઇડ",
+    numOptionsSelected: (number) => {
+        if (number === 0) {
+            return "કોઈ વિકલ્પ પસંદ કરેલ નથી";
+        } else if (number === 1) {
+            return "એક વિકલ્પ પસંદ કરેલ છે";
+        } else {
+            return `${number} વિકલ્પો પસંદ કરેલ છે`;
+        }
+    },
+    off: "બંધ",
+    opacity: "અસ્પષ્ટતા",
+    pause: "વિરામ",
+    pickAColorFromTheScreen: "સ્ક્રીનમાંથી એક રંગ પસંદ કરો",
+    pictureInPicture: "પિક્ચર ઇન પિક્ચર",
+    play: "ચલાવો",
+    playbackSpeed: "પ્લેબેક ગતિ",
+    previousSlide: "પહેલાની સ્લાઇડ",
+    progress: "પ્રગતિ",
+    remove: "દૂર કરો",
+    resize: "માપ બદલો",
+    scrollableRegion: "સ્ક્રોલ કરી શકાય તેવો વિસ્તાર",
+    scrollToEnd: "અંત સુધી સ્ક્રોલ કરો",
+    scrollToStart: "શરૂઆત સુધી સ્ક્રોલ કરો",
+    seek: "શોધો",
+    settings: "સેટિંગ્સ",
+    showPassword: "પાસવર્ડ બતાવો",
+    slideNum: (slide) => `સ્લાઇડ ${slide}`,
+    toggleColorFormat: "રંગનું ફોર્મેટ બદલો",
+    track: (track) => `ટ્રેક ${track}`,
+    unmute: "અવાજ ચાલુ કરો",
+    videoPlayer: "વિડિયો પ્લેયર",
+    volume: "વોલ્યુમ",
+};
+
+registerTranslation(translation);
+
+export default translation;

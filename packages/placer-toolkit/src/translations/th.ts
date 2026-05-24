@@ -1,0 +1,58 @@
+import { registerTranslation } from "./index.js";
+import type { Translation } from "../utilities/localize.js";
+
+const translation: Translation = {
+    $code: "th",
+    $name: "ไทย",
+    $dir: "ltr",
+
+    captions: "คำบรรยาย",
+    carousel: "ภาพหมุน",
+    clearEntry: "ล้างรายการ",
+    close: "ปิด",
+    controls: "การควบคุม",
+    copied: "คัดลอกแล้ว!",
+    copy: "คัดลอก",
+    currentValue: "ค่าปัจจุบัน",
+    enterFullScreen: "เต็มหน้าจอ",
+    error: "ข้อผิดพลาด",
+    exitFullScreen: "ออกจากหน้าจอเต็ม",
+    goToSlide: (slide, count) => `ไปที่ภาพที่ ${slide} จาก ${count}`,
+    hidePassword: "ซ่อนรหัสผ่าน",
+    hue: "โทนสี",
+    loading: "กำลังโหลด…",
+    maximumValue: "สูงสุด",
+    maximumValueDescriptive: (label) => `${label} (สูงสุด)`,
+    minimumValue: "ต่ำสุด",
+    minimumValueDescriptive: (label) => `${label} (ต่ำสุด)`,
+    mute: "ปิดเสียง",
+    nextSlide: "ภาพถัดไป",
+    numOptionsSelected: (number) => `${number} ตัวเลือกที่เลือก`,
+    off: "ปิด",
+    opacity: "ความทึบแสง",
+    pause: "หยุดชั่วคราว",
+    pickAColorFromTheScreen: "เลือกสีจากหน้าจอ",
+    pictureInPicture: "ภาพซ้อนภาพ",
+    play: "เล่น",
+    playbackSpeed: "ความเร็วในการเล่น",
+    previousSlide: "ภาพก่อนหน้า",
+    progress: "ความคืบหน้า",
+    remove: "ลบ",
+    resize: "ปรับขนาด",
+    scrollableRegion: "ส่วนที่เลื่อนได้",
+    scrollToEnd: "เลื่อนไปท้ายสุด",
+    scrollToStart: "เลื่อนไปต้นสุด",
+    seek: "ค้นหา",
+    settings: "การตั้งค่า",
+    showPassword: "แสดงรหัสผ่าน",
+    slideNum: (slide) => `ภาพที่ ${slide}`,
+    toggleColorFormat: "สลับรูปแบบสี",
+    track: (track) => `แทร็ก ${track}`,
+    unmute: "เปิดเสียง",
+    videoPlayer: "เครื่องเล่นวิดีโอ",
+    volume: "ระดับเสียง",
+};
+
+registerTranslation(translation);
+
+export default translation;

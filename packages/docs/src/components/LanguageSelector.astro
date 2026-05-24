@@ -1,0 +1,42 @@
+---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
+
+import NavigationDropdown from "./composite/NavigationDropdown.astro";
+import NavigationDropdownItem from "./composite/NavigationDropdownItem.astro";
+
+const fullPath = Astro.url.pathname;
+
+// This array does not include English, as English is the default locale
+const knownLocales = ["de"];
+
+const segments = fullPath.split("/").filter(Boolean);
+
+const hasLocale = knownLocales.includes(segments[0]);
+
+const slugSegments = hasLocale ? segments.slice(1) : segments;
+const cleanSlug = `/${slugSegments.join("/")}`;
+
+const enPath = cleanSlug === "" ? "/" : cleanSlug;
+const dePath = `/de${cleanSlug === "/" ? "" : cleanSlug}`;
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+---
+
+<NavigationDropdown>
+    <pc-button size="small" variant="plain" slot="trigger">
+        <pc-icon
+            class="icon-expand"
+            library="default"
+            icon-style="solid"
+            name="language"
+            label={translation("language.selector") as string}></pc-icon>
+    </pc-button>
+
+    <NavigationDropdownItem href={enPath} hreflang="en">
+        English
+    </NavigationDropdownItem>
+    <NavigationDropdownItem href={dePath} hreflang="de">
+        Deutsch
+    </NavigationDropdownItem>
+</NavigationDropdown>

@@ -1,0 +1,310 @@
+---
+const { label, icon, href, orientation } = Astro.props;
+---
+
+<pc-button
+    class:list={{
+        "grid-tile": true,
+        "pc-stack": orientation !== "horizontal",
+        "pc-flank:start": orientation === "horizontal",
+    }}
+    href={href}
+    variant="outlined"
+>
+    <slot name="image" />
+    <div class="pc-stack">
+        <div class="pc-split">
+            <div class="pc-cluster">
+                <pc-avatar shape="rounded">
+                    <pc-icon
+                        library="default"
+                        icon-style="solid"
+                        name={icon}
+                        slot="icon"></pc-icon>
+                </pc-avatar>
+                <h3>{label}</h3>
+            </div>
+            <pc-icon
+                class="arrow-right-move"
+                library="default"
+                icon-style="solid"
+                name="arrow-right"></pc-icon>
+        </div>
+        <p><slot /></p>
+    </div>
+</pc-button>
+
+<script>
+    import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
+
+    document.addEventListener(
+        "astro:page-load",
+        () => {
+            const tiles = document.querySelectorAll<PcButton>(
+                ".grid-tiles .grid-tile",
+            );
+            const mediaQuery = window.matchMedia("(max-width: 550px)");
+
+            let isMouseDown = false;
+
+            window.addEventListener("mousedown", () => (isMouseDown = true));
+            window.addEventListener("mouseup", () => (isMouseDown = false));
+
+            tiles.forEach((tile) => {
+                tile.addEventListener("mousemove", (event) => {
+                    const rect = tile.getBoundingClientRect();
+                    const x = ((event.clientX - rect.left) / rect.width) * 100;
+                    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+                    tile.style.setProperty("--mouse-x", `${x}%`);
+                    tile.style.setProperty("--mouse-y", `${y}%`);
+                });
+
+                function resetPosition() {
+                    tile.style.setProperty("--mouse-x", "70%");
+                    tile.style.setProperty("--mouse-y", "80%");
+                }
+
+                tile.addEventListener("mouseleave", () => {
+                    if (!isMouseDown) {
+                        resetPosition();
+                    }
+                });
+
+                window.addEventListener("mouseup", () => {
+                    if (!tile.matches(":hover")) {
+                        resetPosition();
+                    }
+                });
+
+                function handleMobileChange(
+                    event: MediaQueryListEvent | MediaQueryList,
+                ) {
+                    if (event.matches) {
+                        tile.classList.remove("pc-flank:start");
+                    } else if (
+                        event.matches &&
+                        tile.classList.contains("pc-flank:start")
+                    ) {
+                        tile.classList.add("pc-flank:start");
+                    }
+                }
+
+                mediaQuery.addEventListener("change", handleMobileChange);
+
+                handleMobileChange(mediaQuery);
+            });
+        },
+        { once: false },
+    );
+</script>
+
+<style>
+    .grid-tile {
+        --mouse-x: 70%;
+        --mouse-y: 80%;
+    }
+
+    .grid-tile::part(base) {
+        --mouse-x: inherit;
+        --mouse-y: inherit;
+
+        display: flex;
+        position: relative;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: var(--pc-spacing-xl);
+        inline-size: 100%;
+        block-size: 100%;
+        color: var(--pc-color-text-normal);
+        border-radius: var(--pc-border-radius-l);
+        line-height: var(--pc-line-height-normal);
+        text-align: start;
+        white-space: wrap;
+        overflow: hidden;
+        transition:
+            all var(--pc-transition-fast) ease-in-out,
+            --mouse-x var(--pc-transition-slow) ease-in-out,
+            --mouse-y var(--pc-transition-slow) ease-in-out;
+    }
+
+    .grid-tile::part(base)::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            circle at var(--mouse-x) var(--mouse-y),
+            oklch(from var(--feature-tile-gradient-fill) l c h / 0.18) 0%,
+            transparent 50%
+        );
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .grid-tile.pc-flank\:start {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--pc-spacing-xl);
+    }
+
+    .grid-tile.pc-flank\:start:has(> svg) > .pc-stack {
+        margin-inline-start: var(--pc-spacing-xl);
+    }
+
+    .grid-tile:not(.pc-flank\:start):has(> svg) > .pc-stack {
+        margin-block-start: var(--pc-spacing-xl);
+    }
+
+    .grid-tile.pc-flank\:start::part(base) {
+        align-items: center;
+    }
+
+    .grid-tile.pc-flank\:start::part(label) {
+        display: contents !important;
+    }
+
+    .grid-tile.pc-flank\:start > :global(svg) {
+        display: block;
+        object-fit: cover;
+    }
+
+    .grid-tile:not(.pc-flank\:start) > :global(svg) {
+        margin-inline: auto;
+        inline-size: 60%;
+    }
+
+    .grid-tile:not(.pc-flank\:start):has(> svg) {
+        grid-row: span 2;
+    }
+
+    .grid-tile.pc-flank\:start:has(> svg) {
+        grid-column: span 2;
+    }
+
+    .grid-tile:not(.pc-flank\:start)::part(label) {
+        flex-direction: column;
+        inline-size: 100%;
+    }
+
+    .grid-tile pc-avatar {
+        --size: 1.3lh;
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="puzzle-piece"])::part(base):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="puzzle-piece"])::part(base):active,
+    .grid-tile:has(pc-avatar pc-icon[name="puzzle-piece"])::part(
+            base
+        ):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-green-50);
+        border-color: var(--pc-color-green-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="puzzle-piece"])::part(base) {
+        background-color: var(--pc-color-green-50);
+        color: var(--pc-color-green-90);
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="universal-access"])::part(
+            base
+        ):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="universal-access"])::part(
+            base
+        ):active,
+    .grid-tile:has(pc-avatar pc-icon[name="universal-access"])::part(
+            base
+        ):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-blue-50);
+        border-color: var(--pc-color-blue-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="universal-access"])::part(base) {
+        background-color: var(--pc-color-blue-50);
+        color: var(--pc-color-blue-90);
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="shield-halved"])::part(base):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="shield-halved"])::part(base):active,
+    .grid-tile:has(pc-avatar pc-icon[name="shield-halved"])::part(
+            base
+        ):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-purple-50);
+        border-color: var(--pc-color-purple-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="shield-halved"])::part(base) {
+        background-color: var(--pc-color-purple-50);
+        color: var(--pc-color-purple-90);
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="paintbrush"])::part(base):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="paintbrush"])::part(base):active,
+    .grid-tile:has(pc-avatar pc-icon[name="paintbrush"])::part(
+            base
+        ):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-pink-50);
+        border-color: var(--pc-color-pink-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="paintbrush"])::part(base) {
+        background-color: var(--pc-color-pink-50);
+        color: var(--pc-color-pink-90);
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="globe"])::part(base):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="globe"])::part(base):active,
+    .grid-tile:has(pc-avatar pc-icon[name="globe"])::part(base):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-indigo-50);
+        border-color: var(--pc-color-indigo-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="globe"])::part(base) {
+        background-color: var(--pc-color-indigo-50);
+        color: var(--pc-color-indigo-90);
+    }
+
+    .grid-tile:has(pc-avatar pc-icon[name="feather"])::part(base):hover,
+    .grid-tile:has(pc-avatar pc-icon[name="feather"])::part(base):active,
+    .grid-tile:has(pc-avatar pc-icon[name="feather"])::part(
+            base
+        ):focus-visible {
+        --feature-tile-gradient-fill: var(--pc-color-cyan-50);
+        border-color: var(--pc-color-cyan-50);
+    }
+
+    .grid-tile pc-avatar:has(> pc-icon[name="feather"])::part(base) {
+        background-color: var(--pc-color-cyan-50);
+        color: var(--pc-color-cyan-90);
+    }
+
+    .grid-tile h3 {
+        font-size: var(--pc-font-size-m);
+    }
+
+    .grid-tile p {
+        font-weight: var(--pc-font-weight-normal);
+        font-size: var(--pc-font-size-s);
+    }
+
+    .grid-tile .pc-split pc-icon[name="arrow-right"] {
+        color: var(--pc-color-neutral-on-quiet);
+    }
+
+    @media screen and (max-width: 860px) {
+        .grid-tile:not(.pc-flank\:start):has(> svg) {
+            grid-row: span 1;
+        }
+
+        .grid-tile.pc-flank\:start:has(> svg) {
+            grid-column: span 1;
+        }
+
+        .grid-tile:not(.pc-flank\:start) > :global(svg) {
+            block-size: 200px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        .grid-tile.pc-flank\:start {
+        }
+    }
+</style>

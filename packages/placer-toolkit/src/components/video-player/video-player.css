@@ -1,0 +1,585 @@
+:host {
+    --control-offset: 0;
+
+    display: block;
+    max-inline-size: 100%;
+    container-type: inline-size;
+    container-name: video-player;
+    will-change: backdrop-filter;
+}
+
+.frame {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    border-radius: var(--pc-border-radius-l);
+}
+
+.frame:focus-visible,
+.frame video:focus-visible {
+    outline: var(--pc-focus-ring);
+    outline-offset: var(--pc-focus-ring-offset);
+    animation: focus-ring-animation var(--pc-transition-medium)
+        cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+:host(:fullscreen) .frame {
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 0;
+}
+
+:host(:fullscreen:not(.controls-visible)) .frame {
+    cursor: none;
+}
+
+.frame .initial-overlay {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    inset: 0;
+    cursor: pointer;
+}
+
+.frame .initial-overlay .initial-play::part(base) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-10),
+        transparent 40%
+    );
+    color: var(--pc-color-neutral-90);
+    border: none;
+    border-radius: var(--pc-border-radius-circle);
+}
+
+@media (hover: hover) {
+    .frame .initial-overlay .initial-play::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-10), transparent 40%),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.frame .initial-overlay .initial-play::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        color-mix(in oklab, var(--pc-color-neutral-10), transparent 40%),
+        var(--pc-color-mix-active)
+    );
+}
+
+.frame .title {
+    position: absolute;
+    inset-block-start: var(--pc-spacing-s);
+    inset-inline-start: var(--pc-spacing-s);
+    padding-block: var(--pc-spacing-xs);
+    padding-inline: var(--pc-spacing-s);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-m);
+    font-size: var(--pc-font-size-s);
+    opacity: 0;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .title,
+.frame:has(:focus-visible) .title {
+    opacity: 1;
+}
+
+.frame video {
+    display: block;
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: var(--pc-border-radius-l);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.frame video::-webkit-media-controls-enclosure,
+.frame video::-webkit-media-controls,
+.frame video::-webkit-media-controls-panel,
+.frame video::-webkit-media-controls-play-button,
+.frame video::-webkit-media-controls-start-playback-button {
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    inline-size: 0 !important;
+    block-size: 0 !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+:host(:fullscreen) .frame video {
+    border-radius: 0;
+}
+
+/* iOS native video player styles */
+.frame video::cue {
+    background-color: oklch(13.4% 0 271 / 75%);
+    color: oklch(100% 0 0);
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue",
+        "Helvetica", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+}
+
+.frame .captions-container {
+    position: absolute;
+    inset: 12px;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+:host(.controls-visible) .frame .captions-container .caption-cue {
+    --control-offset: calc((var(--pc-spacing-m) * 3) + 2.25rem);
+
+    background-color: transparent;
+}
+
+.frame .captions-container .caption-cue .caption-line-container {
+    line-height: 0;
+}
+
+.frame .captions-container .caption-cue .caption-line-container .caption-line {
+    display: inline-block;
+    padding-block: 0;
+    padding-inline: 0.25em;
+    background-color: oklch(13.4% 0 271 / 75%);
+    color: oklch(100% 0 0);
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue",
+        "Helvetica", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+        "Segoe UI Symbol";
+    font-size: calc(clamp(var(--pc-font-size-s), 3cqw, var(--pc-font-size-xl)));
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: none;
+    overflow-wrap: anywhere;
+}
+
+.frame
+    .captions-container
+    .caption-cue
+    .caption-line-container
+    .caption-line
+    ruby
+    rt {
+    font-size: 0.5em;
+    line-height: var(--pc-line-height-densest);
+}
+
+.frame .bar {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    inset-block-end: calc(2.25rem + var(--pc-spacing-m) * 2);
+    inset-inline: 0;
+    padding-inline: var(--pc-spacing-m);
+    block-size: 0.5em;
+    opacity: 0;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .bar,
+.frame:has(:focus-visible) .bar {
+    opacity: 1;
+}
+
+.frame .bar .progress-wrapper {
+    position: relative;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: var(--pc-color-neutral-30);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.frame .bar .progress-wrapper .buffered {
+    position: absolute;
+    display: block;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: 0;
+    block-size: 100%;
+    background-color: var(--pc-color-neutral-50);
+    border-radius: var(--pc-border-radius-pill);
+    pointer-events: none;
+}
+
+.frame .bar .progress-wrapper .progress {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    margin: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: transparent;
+    border-radius: inherit;
+    outline: none;
+    touch-action: none;
+}
+
+.frame .bar .progress-wrapper .progress::part(slider) {
+    margin-block-start: 0;
+}
+
+.frame .bar .progress-wrapper .progress::part(label) {
+    position: absolute !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    clip-path: inset(50%) !important;
+    border: none !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}
+
+.frame .bar .progress-wrapper .progress::part(track) {
+    background-color: transparent;
+}
+
+.frame .bar .progress-wrapper .progress::part(thumb) {
+    border: var(--pc-border-width-s) var(--pc-border-style)
+        var(--pc-color-primary-border-loud);
+}
+
+.frame .controls {
+    display: flex;
+    position: absolute;
+    align-items: center;
+    inset-block-end: var(--pc-spacing-m);
+    inset-inline: var(--pc-spacing-m);
+    gap: var(--pc-spacing-s);
+    block-size: 2.25rem;
+    opacity: 0;
+    transition: opacity var(--pc-transition-fast) ease-in-out;
+    z-index: 3;
+}
+
+:host(.controls-visible) .frame .controls,
+.frame:has(:focus-visible) .controls {
+    opacity: 1;
+}
+
+:host(:fullscreen:not(.controls-visible)) .frame:not(:focus-within) .bar,
+:host([no-controls]) .bar,
+:host(:fullscreen:not(.controls-visible)) .frame:not(:focus-within) .controls,
+:host([no-controls]) .controls {
+    opacity: 0;
+}
+
+:host([no-controls]) .bar,
+:host([no-controls]) .controls {
+    display: none;
+}
+
+.frame .controls pc-button-group::part(base) {
+    gap: 0;
+    margin-inline-end: var(--pc-spacing-xs);
+}
+
+.frame .controls pc-button-group::part(base)::before {
+    content: "";
+    position: absolute;
+    inset: calc(var(--pc-spacing-xs) * -1);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+.frame .controls pc-button::part(base) {
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+}
+
+@media (hover: hover) {
+    .frame .controls pc-button::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-20), transparent 30%),
+            var(--pc-color-mix-hover)
+        );
+    }
+}
+
+.frame .controls pc-button:not(.mute)::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        color-mix(in oklab, var(--pc-color-neutral-20), transparent 30%),
+        var(--pc-color-mix-active)
+    );
+}
+
+.frame .controls pc-button-group pc-button::part(base) {
+    aspect-ratio: 3 / 2;
+    inline-size: auto;
+    block-size: calc(
+        var(--pc-form-control-height) - (var(--pc-spacing-xs) * 2)
+    );
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+@media (hover: hover) {
+    .frame .controls pc-button-group pc-button::part(base):hover {
+        background-color: color-mix(
+            in oklab,
+            transparent,
+            var(--pc-color-neutral-95) 8%
+        ) !important;
+    }
+}
+
+.frame .controls pc-button-group pc-button::part(base):active {
+    background-color: color-mix(
+        in oklab,
+        transparent,
+        var(--pc-color-neutral-95) 16%
+    ) !important;
+}
+
+.frame .controls pc-button-group pc-button.pressed::part(base) {
+    color: var(--pc-color-primary-70);
+}
+
+.frame .controls pc-button-group pc-button pc-icon {
+    scale: 1.1;
+}
+
+.frame .controls .mute-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    block-size: var(--pc-form-control-height);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+    font-size: var(--pc-font-size-s);
+    transition:
+        padding var(--pc-transition-fast) ease-in-out,
+        background-color var(--pc-transition-fast) ease-in-out,
+        inline-size var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .frame .controls .mute-container:hover,
+    .frame .controls .mute-container:focus-within,
+    .frame .controls .mute-container:has(> .volume:active) {
+        background-color: color-mix(
+            in oklab,
+            color-mix(in oklab, var(--pc-color-neutral-20), transparent 30%),
+            var(--pc-color-mix-hover)
+        );
+        padding-inline-end: var(--pc-spacing-m);
+    }
+}
+
+@media (hover: none) {
+    .frame .controls .mute-container {
+        display: none;
+    }
+}
+
+.frame .controls .mute-container .mute {
+    aspect-ratio: 1 / 1;
+    inline-size: var(--pc-form-control-height);
+    block-size: var(--pc-form-control-height);
+}
+
+.frame .controls .mute-container .mute::part(base) {
+    aspect-ratio: 1 / 1;
+    background-color: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.frame .controls .mute-container .mute svg {
+    display: inline-flex;
+    justify-content: center;
+    box-sizing: content-box !important;
+    align-self: center;
+    inline-size: auto;
+    block-size: 1em;
+    scale: 1.75;
+    overflow: visible;
+}
+
+.frame .controls .mute-container .mute svg:dir(rtl) {
+    scale: -1.75 1.75;
+}
+
+.frame .controls .mute-container .mute svg path {
+    transform-origin: 6px center;
+    transition: transform var(--pc-transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.frame .controls .mute-container .mute svg .mute-x {
+    transform-origin: center;
+}
+
+.frame .controls .mute-container .mute svg[data-state="mute"] .wave-1,
+.frame .controls .mute-container .mute svg[data-state="mute"] .wave-2 {
+    transform: scale(0);
+}
+
+.frame .controls .mute-container .mute svg[data-state="mute"] .mute-x {
+    transform: scale(1);
+}
+
+.frame .controls .mute-container .mute svg[data-state="low"] .mute-x,
+.frame .controls .mute-container .mute svg[data-state="low"] .wave-2 {
+    transform: scale(0);
+}
+
+.frame .controls .mute-container .mute svg[data-state="low"] .wave-1 {
+    transform: scale(1);
+}
+
+.frame .controls .mute-container .mute svg[data-state="high"] .mute-x {
+    transform: scale(0);
+}
+
+.frame .controls .mute-container .mute svg[data-state="high"] .wave-1,
+.frame .controls .mute-container .mute svg[data-state="high"] .wave-2 {
+    transform: scale(1);
+}
+
+.frame .controls .mute-container .volume {
+    --track-size: 0.3125em;
+    --thumb-width: 1.2em;
+    --thumb-height: 1.2em;
+
+    display: block;
+    margin: 0;
+    inline-size: 0;
+    opacity: 0;
+    pointer-events: none;
+    translate: 0 -0.188rem;
+    transition:
+        margin var(--pc-transition-fast) ease-in-out,
+        inline-size var(--pc-transition-fast) ease-in-out,
+        opacity var(--pc-transition-fast) ease-in-out;
+}
+
+@media (hover: hover) {
+    .frame .controls .mute-container:hover .volume,
+    .frame .controls .mute-container:focus-within .volume {
+        margin-inline-start: 0;
+        margin-inline-end: var(--pc-spacing-s);
+        inline-size: 4.375rem;
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+.frame .controls .mute-container .volume::part(label) {
+    position: absolute !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    clip-path: inset(50%) !important;
+    border: none !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+}
+
+.frame .controls .mute-container .volume::part(track) {
+    background-color: var(--pc-color-neutral-40);
+}
+
+.frame .controls .mute-container .volume::part(indicator) {
+    background-color: var(--pc-color-neutral-90);
+}
+
+.frame .controls .mute-container .volume::part(thumb) {
+    background-color: var(--pc-color-neutral-90);
+    border: none;
+}
+
+.frame .controls .time-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--pc-form-control-padding-inline);
+    block-size: var(--pc-form-control-height);
+    background-color: color-mix(
+        in oklab,
+        var(--pc-color-neutral-20),
+        transparent 30%
+    );
+    color: var(--pc-color-neutral-90);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--pc-border-radius-pill);
+    font-size: var(--pc-font-size-s);
+    font-variant-numeric: tabular-nums;
+    line-height: calc(var(--pc-form-control-height) * 2);
+    user-select: none;
+    -webkit-user-select: none;
+    white-space: nowrap;
+}
+
+.frame .controls .spacer {
+    flex: 1;
+}
+
+@keyframes focus-ring-animation {
+    0% {
+        outline-width: 0;
+    }
+
+    50% {
+        outline-width: calc(var(--pc-focus-ring-width) * 2);
+    }
+
+    100% {
+        outline-width: var(--pc-focus-ring-width);
+    }
+}
+
+@container video-player (max-width: 550px) {
+    .frame .controls .mute-container,
+    .frame .controls .time-container {
+        display: none;
+    }
+}
+
+@container video-player (max-width: 300px) {
+    .frame .controls .captions {
+        display: none;
+    }
+}

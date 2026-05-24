@@ -1,0 +1,58 @@
+import { registerTranslation } from "./index.js";
+import type { Translation } from "../utilities/localize.js";
+
+const translation: Translation = {
+    $code: "ms",
+    $name: "Melayu",
+    $dir: "ltr",
+
+    captions: "Sari kata",
+    carousel: "Karusel",
+    clearEntry: "Kosongkan entri",
+    close: "Tutup",
+    controls: "Kawalan",
+    copied: "Disalin!",
+    copy: "Salin",
+    currentValue: "Nilai semasa",
+    enterFullScreen: "Skrin penuh",
+    error: "Ralat",
+    exitFullScreen: "Keluar skrin penuh",
+    goToSlide: (slide, count) => `Pergi ke slaid ${slide} daripada ${count}`,
+    hidePassword: "Sembunyi kata laluan",
+    hue: "Nada warna",
+    loading: "Memuatkan…",
+    maximumValue: "Maksimum",
+    maximumValueDescriptive: (label) => `${label} (maksimum)`,
+    minimumValue: "Minimum",
+    minimumValueDescriptive: (label) => `${label} (minimum)`,
+    mute: "Senyap",
+    nextSlide: "Slaid seterusnya",
+    numOptionsSelected: (number) => `${number} pilihan telah dipilih`,
+    off: "Mati",
+    opacity: "Kelegapan",
+    pause: "Jeda",
+    pickAColorFromTheScreen: "Pilih warna daripada skrin",
+    pictureInPicture: "Gambar dalam gambar",
+    play: "Main",
+    playbackSpeed: "Kelajuan main balik",
+    previousSlide: "Slaid sebelumnya",
+    progress: "Kemajuan",
+    remove: "Buang",
+    resize: "Saiz semula",
+    scrollableRegion: "Kawasan boleh tatal",
+    scrollToEnd: "Tatal ke hujung",
+    scrollToStart: "Tatal ke permulaan",
+    seek: "Cari",
+    settings: "Tetapan",
+    showPassword: "Tunjuk kata laluan",
+    slideNum: (slide) => `Slaid ${slide}`,
+    toggleColorFormat: "Tukar format warna",
+    track: (track) => `Trek ${track}`,
+    unmute: "Aktifkan suara",
+    videoPlayer: "Pemain video",
+    volume: "Kelantangan",
+};
+
+registerTranslation(translation);
+
+export default translation;

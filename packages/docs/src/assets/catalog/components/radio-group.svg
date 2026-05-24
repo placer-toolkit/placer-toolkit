@@ -1,0 +1,45 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="64"
+    height="64"
+    viewBox="0 0 56 36"
+>
+    <rect
+        x="24"
+        y="6"
+        width="32"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <rect
+        x="24"
+        y="26"
+        width="32"
+        height="4"
+        rx="2"
+        fill="var(--pc-color-neutral-border-normal)"
+    />
+    <circle
+        cx="8"
+        cy="8"
+        r="7"
+        fill="none"
+        stroke="var(--pc-color-neutral-border-normal)"
+        stroke-width="1"
+    />
+    <circle
+        cx="8"
+        cy="28"
+        r="7"
+        fill="var(--pc-color-primary-fill-loud)"
+        stroke="var(--pc-color-primary-fill-loud)"
+        stroke-width="2"
+    />
+    <circle
+        cx="8"
+        cy="28"
+        r="4"
+        fill="var(--pc-color-surface-default)"
+    />
+</svg>

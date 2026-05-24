@@ -1,0 +1,213 @@
+/* #region — Global variables */
+:root {
+    --navigation-bar-height: 3.5rem;
+    --sidebar-width: 18.75rem;
+    --content-width: 45rem; /* Equivalent to 75 ch (720 px) in default theme */
+    --toc-width: 18.75rem;
+}
+/* #endregion */
+
+/* #region — Global styles */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html ::selection,
+html.pc-light ::selection {
+    background-color: var(--pc-color-primary-95);
+    color: var(--pc-color-primary-30);
+}
+
+html.pc-dark ::selection {
+    background-color: var(--pc-color-primary-30);
+    color: var(--pc-color-primary-90);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    scroll-padding-block-start: calc(
+        var(--navigation-bar-height) + var(--pc-content-spacing)
+    );
+}
+
+html.before-page-swap,
+html.before-page-swap * {
+    cursor: wait !important;
+}
+
+.layout-container {
+    overflow-x: clip;
+}
+/* #endregion */
+
+/* #region — Prefers reduced motion styling */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto !important;
+    }
+}
+/* #endregion */
+
+/* #region — Word break optimisations */
+:lang(en),
+:lang(de) {
+    hyphens: auto;
+    overflow-wrap: break-word;
+    hyphenate-limit-chars: 10 4 4;
+}
+
+code,
+pre,
+kbd,
+samp,
+var {
+    hyphens: none;
+    overflow-wrap: normal;
+}
+/* #endregion */
+
+/* #region — Skip links */
+.skip-to-main-content {
+    position: fixed;
+    inset-block-start: var(--pc-spacing-l);
+    inset-inline-start: var(--pc-spacing-l);
+    z-index: 1000;
+}
+/* #endregion */
+
+/* #region — Content layout */
+.content-layout-container {
+    display: flex;
+    justify-content: center;
+    padding-block-start: var(--navigation-bar-height);
+
+    .content-layout {
+        display: grid;
+        position: relative;
+        justify-content: center;
+        grid-template-columns:
+            calc(var(--content-width) + (var(--pc-spacing-xxxxl) * 2))
+            var(--toc-width);
+        gap: var(--pc-spacing-xxxl);
+        padding-inline-start: var(--sidebar-width);
+        inline-size: 100%;
+
+        &:has(> .hero) {
+            grid-template-columns: 1fr;
+            padding-inline-start: 0;
+        }
+
+        #main-content {
+            display: flex;
+            position: relative;
+            align-items: center;
+            flex-direction: column;
+            flex: 1;
+            order: 1;
+            padding-block: var(--pc-spacing-xxl);
+            padding-inline: var(--pc-spacing-xxxxl);
+            min-inline-size: 0;
+            z-index: 1;
+
+            & article > header h1 {
+                margin: 0;
+                margin-block-end: var(--pc-spacing-xl);
+                font-size: 2.5rem;
+            }
+
+            &:not(.hero) {
+                padding-inline-start: 0;
+
+                article > header,
+                article {
+                    inline-size: 100%;
+                    max-inline-size: var(--content-width);
+
+                    pc-callout:not(.code-demo pc-callout) {
+                        display: block;
+                        margin-block-end: var(--pc-spacing-xl);
+                    }
+                }
+            }
+        }
+    }
+}
+/* #endregion */
+
+/* #region — Hero callout */
+.hero-callout {
+    inline-size: auto;
+}
+
+.hero-callout b {
+    flex: 1;
+    text-wrap: pretty;
+}
+/* #endregion */
+
+/* #region — Responsive design */
+@media screen and (max-width: 1440px) {
+    html,
+    body {
+        scroll-padding-block-start: calc(
+            var(--navigation-bar-height) + 3.125rem + var(--pc-content-spacing)
+        );
+    }
+
+    .content-layout {
+        grid-template-columns: 1fr !important;
+
+        #main-content {
+            margin-block-start: 3.125rem;
+            padding: var(--pc-spacing-xl);
+
+            &:not(.hero) {
+                padding-inline: var(--pc-spacing-xl) !important;
+
+                article > header,
+                article {
+                    min-inline-size: 100% !important;
+                    max-inline-size: 100% !important;
+                }
+            }
+
+            &.hero {
+                margin-block-start: 0;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .content-layout {
+        padding-inline-start: 0 !important;
+
+        #main-content {
+            inline-size: 100dvw;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero-callout {
+        inline-size: 100%;
+
+        .pc-split {
+            flex-direction: column;
+
+            p {
+                text-align: center;
+            }
+
+            pc-button {
+                inline-size: 100%;
+            }
+        }
+    }
+}
+/* #endregion */

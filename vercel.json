@@ -1,35 +1,46 @@
 {
     "redirects": [
         {
-            "source": "/components/visually-hidden",
-            "destination": "/style-utilities/visually-hidden",
+            "source": "/(de/)?components/visually-hidden",
+            "destination": "/$1style-utilities/visually-hidden",
             "permanent": true
         },
         {
-            "source": "/docs/design-tokens/border-radius",
-            "destination": "/docs/design-tokens/borders/#border-radius",
+            "source": "/(de/)?docs/design-tokens/border-radius",
+            "destination": "/$1docs/design-tokens/borders/#border-radius",
             "permanent": true
         },
         {
-            "source": "/docs/design-tokens/other-tokens",
-            "destination": "/docs/design-tokens/component-groups",
+            "source": "/(de/)?docs/design-tokens/other-tokens",
+            "destination": "/$1docs/design-tokens/component-groups",
             "permanent": true
         },
         {
-            "source": "/docs/legal/privacy/appendix-a",
-            "destination": "/docs/legal/privacy",
+            "source": "/(de/)?docs/legal/privacy/appendix-a",
+            "destination": "/$1docs/legal/privacy",
             "permanent": true
         },
 
         {
-            "source": "/de/:path((?!docs|404|showcase|cdn|dist|assets|favicon|.*\\..*).+)",
+            "source": "/de/:path((?!docs|404|showcase|cdn|dist|assets|brand|favicon|fonts|images|placeholder|.*\\..*).+)",
             "destination": "/de/docs/:path",
             "permanent": true
         },
         {
-            "source": "/:path((?!docs|de|showcase|404|cdn|dist|assets|favicon|.*\\..*).+)",
+            "source": "/:path((?!docs|de|showcase|404|cdn|dist|assets|brand|favicon|fonts|images|placeholder|.*\\..*).+)",
             "destination": "/docs/:path",
             "permanent": true
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Alt-Svc",
+                    "value": "h3=\":443\"; ma=15552000; persist=1"
+                }
+            ]
         }
     ]
 }

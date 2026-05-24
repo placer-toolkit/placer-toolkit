@@ -1,0 +1,54 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="96"
+    height="64"
+    viewBox="0 0 96 64"
+    fill="none"
+>
+    <path
+        d="M12 1H84C90.0751 1 95 5.92487 95 12V52C95 58.0751 90.0751 63 84 63H12C5.92487 63 1 58.0751 1 52V12C1 5.92487 5.92487 1 12 1Z"
+        fill="url(#video-fill)"
+    />
+    <path
+        d="M12 2H84C89.5228 2 94 6.47716 94 12V52C94 57.5228 89.5228 62 84 62H12C6.47716 62 2 57.5228 2 52V12C2 6.47715 6.47715 2 12 2Z"
+        stroke="url(#video-border)"
+        stroke-opacity="0.75"
+        stroke-width="2"
+    />
+    <path
+        d="M48 44C54.6274 44 60 38.6274 60 32C60 25.3726 54.6274 20 48 20C41.3726 20 36 25.3726 36 32C36 38.6274 41.3726 44 48 44Z"
+        fill="var(--pc-color-neutral-20)"
+        fill-opacity="0.5"
+    />
+    <path
+        d="M45.0572 26.865C44.7703 26.7056 44.4233 26.7127 44.141 26.8814C43.8587 27.0501 43.6875 27.3572 43.6875 27.6876V36.3124C43.6875 36.6428 43.861 36.9499 44.141 37.1186C44.4209 37.2873 44.7703 37.2944 45.0572 37.135L52.8313 32.8226C53.1274 32.6586 53.3125 32.3422 53.3125 32C53.3125 31.6578 53.1274 31.3414 52.8313 31.1774L45.0572 26.865Z"
+        fill="var(--pc-color-neutral-90)"
+        fill-opacity="0.75"
+    />
+    <defs>
+        <linearGradient
+            id="video-fill"
+            x1="17"
+            y1="1"
+            x2="79"
+            y2="63"
+            gradientUnits="userSpaceOnUse"
+        >
+            <stop stop-color="var(--pc-color-danger-40)" />
+            <stop offset="0.5" stop-color="var(--pc-color-indigo-10)" />
+            <stop offset="1" stop-color="var(--pc-color-primary-30)" />
+        </linearGradient>
+        <linearGradient
+            id="video-border"
+            x1="17"
+            y1="1"
+            x2="79"
+            y2="63"
+            gradientUnits="userSpaceOnUse"
+        >
+            <stop stop-color="var(--pc-color-danger-20)" />
+            <stop offset="0.5" stop-color="var(--pc-color-indigo-20)" />
+            <stop offset="1" stop-color="var(--pc-color-neutral-10)" />
+        </linearGradient>
+    </defs>
+</svg>
