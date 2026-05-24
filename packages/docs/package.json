@@ -12,7 +12,7 @@
     "dependencies": {
         "@astrojs/mdx": "^5.0.3",
         "@astrojs/sitemap": "^3.7.2",
-        "astro": "^6.1.8",
+        "astro": "^6.1.10",
         "hastscript": "^9.0.1",
         "node-fetch": "^3.3.2",
         "placer-toolkit": "workspace:*",
