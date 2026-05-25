@@ -214,16 +214,7 @@ const {
             }
         </script>
         <!-- Simple Analytics -->
-        {
-            import.meta.env.MODE === "production" &&
-                import.meta.env.SITE_DOMAIN === "placer-toolkit.vercel.app" && (
-                    <script
-                        src="https://scripts.simpleanalyticscdn.com/latest.js"
-                        async
-                        is:inline
-                    />
-                )
-        }
+        <script src="https://scripts.simpleanalyticscdn.com/latest.js" async is:inline></script>
         <!-- Client router for SPA‐like navigation -->
         <ClientRouter />
         <script is:inline>
