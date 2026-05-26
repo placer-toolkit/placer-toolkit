@@ -1,5 +1,3 @@
-<!-- SPDX-License-Identifier: MIT -->
-
 # <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-dark.svg"></source><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-light.svg"></source><img src="https://raw.githubusercontent.com/placer-toolkit/placer-toolkit/refs/heads/main/packages/placer-toolkit/public/logo-wordmark-light.svg" alt="Placer Toolkit" width="50%" /></picture>
 
 ### Flexible. Accessible. Web Components.
@@ -39,22 +37,6 @@ pnpm dev --host # If you want to expose the dev server on your network
 
 This will spin up the dev server on `localhost:4321`.
 
-## 💖 Special thanks
-
-Placer Toolkit was built with the help of these fantastic libraries:
-
-- [Lit](https://lit.dev)
-- [Astro](https://astro.build)
-- [Floating UI](https://floating-ui.com)
-- [Custom Elements Manifest](https://custom-elements-manifest.open-wc.org)
-- [Pagefind](https://pagefind.app)
-
-Additionally, Placer Toolkit is heavily inspired by [Web Awesome](https://webawesome.com)—a meticulously designed and highly customisable web component library. Web Awesome is licensed under the [MIT License](./licenses/@awesome.me/webawesome/LICENSE.md).
-
-The default icon set is [Font Awesome](https://fontawesome.com) which is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0).
-
-For the entire list of open‐source libraries and frameworks, see [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) for more information.
-
 ## 📄 Licence
 
 This project uses a modular licensing system and different parts of the codebase are licensed under different licences.
@@ -65,5 +47,13 @@ This project uses a modular licensing system and different parts of the codebase
 - **Branding and marketing assets:** All rights reserved with a contributor licence grant
 
 See the [licence page](https://placer-toolkit.vercel.app/docs/legal/licence) for more information.
+
+### 📦 Dependencies
+
+Substantial portions of this project are from [Web Awesome](https://webawesome.com), the code is licensed under the [MIT License](./licenses/@awesome.me/webawesome/LICENSE.md).
+
+See [THIRD-PARTY-NOTICES.txt](./THIRD-PARTY-NOTICES.txt) for the licence notices of all direct and transitive dependencies of this project.
+
+---
 
 © 2025–present Placer and its contributors

@@ -1,4 +1,5 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 import { getShiki } from "../scripts/shiki-process.ts";
 import { placerEclipse } from "../styles/syntax/placer-eclipse.ts";
 
@@ -67,6 +68,9 @@ const lines = result.tokens;
 
 const uniqueID = Math.random().toString(36).slice(2, 11);
 
+const currentLanguage = getLanguageFromURL(Astro.url);
+const translation = useTranslations(currentLanguage);
+
 const isTerminal = ["bash", "shell", "sh"].includes(language);
 ---
 
@@ -102,7 +106,7 @@ const isTerminal = ["bash", "shell", "sh"].includes(language);
             class="shiki"
             aria-label={fileName
                 ? undefined
-                : "Horizontally scrollable code block"}
+                : (translation("ui.content.code.scroll.horizontal") as string)}
             aria-labelledby={fileName
                 ? `${uniqueID}-file-name`
                 : undefined}><code id={uniqueID} data-raw-code={processedLines.join("\n")}>{

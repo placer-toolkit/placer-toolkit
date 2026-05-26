@@ -4,7 +4,7 @@ description: Du kannst Placer Toolkit über das CDN laden oder lokal installiere
 order: 1
 ---
 
-import Version from "../../../../components/Version.astro";
+import { tarballDownloadURL } from "../../../../helpers/version.ts";
 
 Du kannst Placer Toolkit über das CDN laden oder lokal installieren. Wir haben viele Optionen, Placer Toolkit zu installieren, abhängig von deinem Setup.
 
@@ -179,7 +179,7 @@ Wenn du das CDN nicht nutzen willst oder kannst, kannst du Placer Toolkit über 
         Wenn du die Tarball‐Datei nutzen willst, lade sie zuerst in das Projekt‐Root herunter:
 
         <pc-button
-            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.4/placer-toolkit-1.0.0-alpha.4.tgz"
+            href={tarballDownloadURL}
             appearance="primary"
             pill
             download

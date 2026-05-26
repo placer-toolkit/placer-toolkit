@@ -15,34 +15,8 @@ Wenn du keine clientseitige Validierung verwenden möchtest, kannst du dieses Ve
         name="clock"
         slot="icon"
     ></pc-icon>
-    Placer Toolkit verwendet Event‐Listener, um die `formdata`‐ und `submit`‐Events des Formulars abzufangen. Dies ermöglicht das Einfügen von Daten und die Auslösung der Validierung nach Bedarf. Wenn du ebenfalls einen Event‐Listener an das Formular anhängst, _musst du diesen erst anhängen, nachdem die Placer‐Formularsteuerelemente mit dem DOM verbunden sind_, sonst läuft deine Logik, bevor Placer Toolkit die Möglichkeit hat, Formulardaten einzufügen und Formularsteuerelemente zu validieren.
+    Da Placer Toolkit Formular‐Events abfängt, um die Dateneinspeisung und Validierung zu steuern, sollte deine eigene Formularlogik erst im Anschluss registriert werden. Stelle daher sicher, dass du deine Event‐Listener erst anhängst, nachdem das DOM vollständig geladen wurde oder die Formularsteuerelemente von Placer Toolkit erfolgreich mit dem DOM verbunden sind.
 </pc-callout>
-
-## Datenserialisierung
-
-Serialisierung ist nur ein fachsprachlicher Begriff für das Sammeln von Formulardaten. Wenn du auf Standardformular‐Submissions (z. B. `<form action="…">`) angewiesen bist, kannst du diesen Abschnitt wahrscheinlich überspringen. Die meisten Apps verwenden jedoch die [Fetch API](https://developer.mozilla.org/de/docs/Web/API/Fetch_API) oder eine Bibliothek wie [Axios](https://github.com/axios/axios), um Formulare über JavaScript zu übermitteln.
-
-Die [`FormData`](https://developer.mozilla.org/de/docs/Web/API/FormData)‐Schnittstelle bietet eine standardisierte Möglichkeit, Formulare im Browser zu serialisieren. Du kannst ein `FormData`‐Objekt von jedem `<form>`‐Element so erstellen:
-
-```javascript
-const form = document.querySelector("form");
-const data = new FormData(form);
-
-// Alle Formularsteuerelementdaten sind in einem FormData‐Objekt verfügbar
-```
-
-Manche finden `FormData` jedoch schwierig zu verwenden oder müssen eine JSON‐Nutzlast an ihren Server senden. Placer Toolkit bietet daher ein Serialisierungs‐Utility, das Formulardaten sammelt und stattdessen ein einfaches JavaScript‐Objekt zurückgibt.
-
-```javascript
-import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
-
-const form = document.querySelector("form");
-const data = serialize(form);
-
-// Alle Formularsteuerelementdaten sind in einem JavaScript‐Objekt verfügbar
-```
-
-Dies ergibt ein Objekt mit Name‐/Wert‐Paaren, die jedem Formularsteuerelement zugeordnet sind. Teilen mehrere Steuerelemente denselben Namen, werden die Werte als Array übergeben (z. B. `{ name: ["value1", "value2"] }`).
 
 ## Constraint‐Validierung
 
@@ -129,7 +103,9 @@ Um einen Wert auf ein bestimmtes [Muster](https://developer.mozilla.org/de/docs/
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Absenden</pc-button>
-        <pc-button type="reset">Zurücksetzen</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">
+            Zurücksetzen
+        </pc-button>
     </div>
 </form>
 
@@ -170,7 +146,9 @@ Einige Eingabetypen lösen automatisch Einschränkungen aus, z. B. `email` und
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Absenden</pc-button>
-        <pc-button type="reset">Zurücksetzen</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">
+            Zurücksetzen
+        </pc-button>
     </div>
 </form>
 
@@ -200,7 +178,9 @@ Um einen benutzerdefinierten Validierungsfehler zu erstellen, übergebe einen ni
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Absenden</pc-button>
-        <pc-button type="reset">Zurücksetzen</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">
+            Zurücksetzen
+        </pc-button>
     </div>
 </form>
 
@@ -283,12 +263,14 @@ Dieses Beispiel zeigt benutzerdefinierte Validierungs‐Styles mit `:state(user-
         <pc-option value="other">Andere</pc-option>
     </pc-select>
     <pc-checkbox value="accept" required>
-        Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie
+        Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie.
     </pc-checkbox>
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Absenden</pc-button>
-        <pc-button type="reset">Zurücksetzen</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">
+            Zurücksetzen
+        </pc-button>
     </div>
 </form>
 
@@ -383,7 +365,9 @@ Um die Fehlermeldungen des Browsers zu deaktivieren, musst du das `pc-invalid`�
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Absenden</pc-button>
-        <pc-button type="reset">Zurücksetzen</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">
+            Zurücksetzen
+        </pc-button>
     </div>
 </form>
 
@@ -454,28 +438,4 @@ Um die Fehlermeldungen des Browsers zu deaktivieren, musst du das `pc-invalid`�
         slot="icon"
     ></pc-icon>
     Dieses Beispiel soll das Konzept der Inline‐Fehlermeldungen demonstrieren. Es ist nicht für komplexere Formulare gedacht. Nutzer:innen, die diese Funktion benötigen, sollten eine geeignete Validierungslösung basierend auf den gezeigten Techniken implementieren. Abhängig von der Umsetzung können benutzerdefinierte Fehlermeldungen die Barrierefreiheit der Formularsteuerelemente beeinflussen.
-</pc-callout>
-
-## Zugehörige Formularsteuerelemente abrufen
-
-Derzeit gibt [`HTMLFormElement.elements`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormElement/elements) Placer‐Formularsteuerelemente nicht zurück, da der Browser deren Status als Custom Element‐Formularsteuerelemente nicht kennt. Placer Toolkit bietet jedoch eine `elements()`‐Funktion, die Ähnliches leistet. Statt eines [`HTMLFormControlsCollection`](https://developer.mozilla.org/de/docs/Web/API/HTMLFormControlsCollection) wird ein Array von HTML‐ und Placer‐Formularsteuerelementen in der Reihenfolge zurückgegeben, in der sie im DOM erscheinen.
-
-```javascript
-import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
-
-const form = document.querySelector("#my-form");
-const formControls = getFormControls(form);
-
-// Beispielausgabe: [input, pc-input, …]
-console.log(formControls);
-```
-
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="route"
-        slot="icon"
-    ></pc-icon>
-    Wahrscheinlich benötigst du diese Funktion nicht! Wenn du Formulardaten für die Übermittlung sammelst, solltest du eher zu [Datenserialisierung](#datenserialisierung) zurückgehen.
 </pc-callout>

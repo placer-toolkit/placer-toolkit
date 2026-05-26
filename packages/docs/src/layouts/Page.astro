@@ -24,6 +24,7 @@ import "placer-toolkit/dist/styles/themes/serene.css";
 
 import "../styles/main.css";
 import "../styles/fonts.css";
+import "../styles/print.css";
 import "../styles/anchor-headings.css";
 import "../styles/utilities.css";
 
@@ -214,14 +215,13 @@ const {
             }
         </script>
         <!-- Simple Analytics -->
-        <script src="https://scripts.simpleanalyticscdn.com/latest.js" async is:inline></script>
+        <script
+            src="https://scripts.simpleanalyticscdn.com/latest.js"
+            async
+            is:inline
+        ></script>
         <!-- Client router for SPA‐like navigation -->
         <ClientRouter />
-        <script is:inline>
-            document.addEventListener("astro:before-swap", () => {
-                console.clear();
-            });
-        </script>
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
     </head>
     <body>

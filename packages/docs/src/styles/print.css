@@ -1,0 +1,207 @@
+@media print {
+    /* Force light mode */
+    :root {
+        color-scheme: light;
+        color: var(--pc-color-text-normal);
+
+        --pc-color-surface-raised: oklch(100% 0 0);
+        --pc-color-surface-default: oklch(100% 0 0);
+        --pc-color-surface-lowered: var(--pc-color-neutral-95);
+        --pc-color-surface-border: var(--pc-color-neutral-90);
+
+        --pc-color-text-normal: var(--pc-color-neutral-10);
+        --pc-color-text-quiet: var(--pc-color-neutral-40);
+        --pc-color-text-link: var(--pc-color-primary-40);
+
+        --pc-color-overlay-modal: transparent;
+        --pc-color-overlay-inline: color-mix(
+            in oklab,
+            var(--pc-color-neutral-80) 30%,
+            transparent
+        );
+
+        --pc-color-shadow: transparent;
+
+        --pc-color-focus: var(--pc-color-primary-60);
+
+        --pc-color-mix-hover: oklch(from currentColor 0.2 c h) 5%;
+        --pc-color-mix-active: oklch(from currentColor 0.2 c h) 10%;
+
+        --pc-color-neutral-fill-quiet: var(--pc-color-neutral-95);
+        --pc-color-neutral-fill-normal: var(--pc-color-neutral-90);
+        --pc-color-neutral-fill-loud: var(--pc-color-neutral-20);
+        --pc-color-neutral-border-quiet: var(--pc-color-neutral-90);
+        --pc-color-neutral-border-normal: var(--pc-color-neutral-80);
+        --pc-color-neutral-border-loud: var(--pc-color-neutral-60);
+        --pc-color-neutral-on-quiet: var(--pc-color-neutral-40);
+        --pc-color-neutral-on-normal: var(--pc-color-neutral-30);
+        --pc-color-neutral-on-loud: oklch(100% 0 0);
+
+        --pc-color-primary-fill-quiet: var(--pc-color-primary-95);
+        --pc-color-primary-fill-normal: var(--pc-color-primary-90);
+        --pc-color-primary-fill-loud: var(--pc-color-primary-50);
+        --pc-color-primary-border-quiet: var(--pc-color-primary-90);
+        --pc-color-primary-border-normal: var(--pc-color-primary-80);
+        --pc-color-primary-border-loud: var(--pc-color-primary-60);
+        --pc-color-primary-on-quiet: var(--pc-color-primary-40);
+        --pc-color-primary-on-normal: var(--pc-color-primary-30);
+        --pc-color-primary-on-loud: oklch(100% 0 0);
+
+        --pc-color-success-fill-quiet: var(--pc-color-success-95);
+        --pc-color-success-fill-normal: var(--pc-color-success-90);
+        --pc-color-success-fill-loud: var(--pc-color-success-50);
+        --pc-color-success-border-quiet: var(--pc-color-success-90);
+        --pc-color-success-border-normal: var(--pc-color-success-80);
+        --pc-color-success-border-loud: var(--pc-color-success-60);
+        --pc-color-success-on-quiet: var(--pc-color-success-40);
+        --pc-color-success-on-normal: var(--pc-color-success-30);
+        --pc-color-success-on-loud: oklch(100% 0 0);
+
+        --pc-color-warning-fill-quiet: var(--pc-color-warning-95);
+        --pc-color-warning-fill-normal: var(--pc-color-warning-90);
+        --pc-color-warning-fill-loud: var(--pc-color-warning-50);
+        --pc-color-warning-border-quiet: var(--pc-color-warning-90);
+        --pc-color-warning-border-normal: var(--pc-color-warning-80);
+        --pc-color-warning-border-loud: var(--pc-color-warning-60);
+        --pc-color-warning-on-quiet: var(--pc-color-warning-40);
+        --pc-color-warning-on-normal: var(--pc-color-warning-30);
+        --pc-color-warning-on-loud: oklch(100% 0 0);
+
+        --pc-color-danger-fill-quiet: var(--pc-color-danger-95);
+        --pc-color-danger-fill-normal: var(--pc-color-danger-90);
+        --pc-color-danger-fill-loud: var(--pc-color-danger-50);
+        --pc-color-danger-border-quiet: var(--pc-color-danger-90);
+        --pc-color-danger-border-normal: var(--pc-color-danger-80);
+        --pc-color-danger-border-loud: var(--pc-color-danger-60);
+        --pc-color-danger-on-quiet: var(--pc-color-danger-40);
+        --pc-color-danger-on-normal: var(--pc-color-danger-30);
+        --pc-color-danger-on-loud: oklch(100% 0 0);
+    }
+
+    /* Collapse landmarks */
+    :root {
+        --sidebar-width: 0;
+        --table-of-contents-width: 0;
+        --content-width: 100%;
+    }
+
+    .navigation-bar .left-section .sidebar-toggle,
+    .navigation-bar .left-section small,
+    .navigation-bar .left-section pc-badge,
+    .navigation-bar .right-section,
+    .sidebar,
+    .toc {
+        display: none !important;
+    }
+
+    .navbar {
+        position: absolute !important;
+    }
+
+    .navigation-bar .left-section a::after {
+        content: "";
+    }
+
+    .content-layout-container {
+        padding-block-start: calc(
+            var(--navigation-bar-height) + var(--pc-content-spacing)
+        );
+    }
+
+    .content-layout-container .content-layout {
+        grid-template-columns: 1fr;
+        padding-inline-start: 0;
+    }
+
+    /* Page content styles */
+    .content-layout-container .content-layout #main-content {
+        padding-block: 0;
+        padding-inline: var(--pc-spacing-xl);
+
+        article {
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                break-after: avoid;
+            }
+
+            p,
+            li {
+                break-inside: avoid-page !important;
+                page-break-inside: avoid !important;
+                orphans: 2;
+                widows: 2;
+            }
+
+            pre {
+                overflow-x: hidden;
+                white-space: pre-wrap;
+            }
+
+            figure,
+            pre,
+            pre > code {
+                break-inside: avoid !important;
+            }
+
+            figure.code-block-container {
+                figcaption.terminal-bar {
+                    .circle.circle-red {
+                        box-shadow: inset 99rem 99rem
+                            color-mix(
+                                in oklab,
+                                var(--pc-color-red-60),
+                                transparent 40%
+                            );
+                    }
+
+                    .circle.circle-yellow {
+                        box-shadow: inset 99rem 99rem
+                            color-mix(
+                                in oklab,
+                                var(--pc-color-yellow-60),
+                                transparent 40%
+                            );
+                    }
+
+                    .circle.circle-green {
+                        box-shadow: inset 99rem 99rem
+                            color-mix(
+                                in oklab,
+                                var(--pc-color-green-60),
+                                transparent 40%
+                            );
+                    }
+                }
+
+                &:has(> figcaption.code-block-header) .code-block pre {
+                    border-radius: 0;
+                }
+
+                .code-block pc-copy-button {
+                    display: none;
+                }
+            }
+
+            pc-callout {
+                position: relative;
+                break-inside: avoid-page !important;
+                page-break-inside: avoid !important;
+            }
+
+            pc-callout,
+            pc-tab-group {
+                break-inside: avoid;
+            }
+
+            pc-button[appearance="primary"]::part(base) {
+                background-color: transparent;
+                color: var(--pc-color-primary-on-normal);
+                border-color: var(--pc-color-primary-border-normal);
+            }
+        }
+    }
+}

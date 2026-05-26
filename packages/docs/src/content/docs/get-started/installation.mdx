@@ -4,6 +4,8 @@ description: You can load Placer Toolkit via the CDN or by installing it locally
 order: 1
 ---
 
+import { tarballDownloadURL } from "../../../helpers/version.ts";
+
 You can load Placer Toolkit via the CDN or by installing it locally. We have many options to install Placer Toolkit depending on what setup you have.
 
 ## CDN installation
@@ -176,7 +178,7 @@ If you don’t or are unable to use the CDN, you can install Placer Toolkit from
         If you want to use the tarball file, download the tarball file into the root of your project first.
 
         <pc-button
-            href="https://github.com/placer-toolkit/placer-toolkit/releases/download/1.0.0-alpha.4/placer-toolkit-1.0.0-alpha.4.tgz"
+            href={tarballDownloadURL}
             appearance="primary"
             pill
             download
