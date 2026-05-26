@@ -49,7 +49,6 @@ export { PcVideoPlayer } from "./components/video-player/video-player.js";
 // Utilities
 export * from "./utilities/animation-registry.js";
 export * from "./utilities/animation.js";
-export * from "./utilities/form.js";
 export * from "./utilities/icon-library.js";
 export * from "./utilities/localize.js";
 export * from "./utilities/kit-code.js";

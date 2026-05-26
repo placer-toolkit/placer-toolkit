@@ -1,4 +1,5 @@
 ---
+import { getLanguageFromURL, useTranslations } from "../i18n/utilities.js";
 import { getShiki } from "../scripts/shiki-process.js";
 import { placerEclipse } from "../styles/syntax/placer-eclipse.ts";
 import { version } from "../helpers/version.js";
@@ -38,6 +39,9 @@ const lines = result.tokens;
 
 const uniqueID = Math.random().toString(36).slice(2, 11);
 
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+
 const { open, noCodepen = false } = Astro.props;
 
 const isOpen = open !== undefined && open !== false;
@@ -76,7 +80,9 @@ const isOpen = open !== undefined && open !== false;
     >
         <pre
             class="shiki"
-            aria-label="Horizontally scrollable code block"><code id={`code-content-${uniqueID}`} data-raw-code={rawCode}>{
+            aria-label={translation(
+                "ui.content.code.scroll.horizontal",
+            ) as string}><code id={`code-content-${uniqueID}`} data-raw-code={rawCode}>{
         lines.map((line) => {
             return (
                 <span class="line"><span class="code">{
@@ -470,19 +476,20 @@ const isOpen = open !== undefined && open !== false;
     }
 
     .code-block {
-        display: grid;
         position: relative;
-        grid-template-rows: 0fr;
+        max-block-size: 0;
         background-color: var(--pc-color-surface-raised);
         border-block-start: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-neutral-border-quiet);
         overflow: hidden;
-        transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* 🧪 interpolate-size is an experimental property (✓ Chrome 129, Edge 129) */
+        interpolate-size: allow-keywords;
+        transition: max-block-size 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .code-block.open {
-        grid-template-rows: 1fr;
-        transition: grid-template-rows 0.45s cubic-bezier(0.2, 1, 0.3, 1);
+        max-block-size: max-content;
+        transition: max-block-size 0.45s cubic-bezier(0.2, 1, 0.3, 1);
     }
 
     .code-block :is(pre, code) {

@@ -83,9 +83,13 @@ async function runBuild() {
 
         typeWatcher.stdout.on("data", (data) => {
             const output = data.toString().trim();
-            if (output.includes("error")) {
+            const errorMatch =
+                /([a-zA-Z0-9\._-]+\.ts\(\d+,\d+\): error TS\d+)/.exec(output);
+            const isSuccess = output.includes("Found 0 errors");
+
+            if (errorMatch) {
                 console.error(`\n❌ Type error detected:\n${output}`);
-            } else if (output.includes("Found 0 errors")) {
+            } else if (isSuccess) {
                 console.log("✨ Types updated successfully.");
             }
         });

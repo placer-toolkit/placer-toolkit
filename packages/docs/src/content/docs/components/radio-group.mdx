@@ -47,33 +47,35 @@ Add a descriptive hint to a radio group with the `hint` attribute. For hints tha
 
 ### Radio buttons
 
-Set the `appearance` attribute to `button` on all radios to turn the radios to radio buttons.
+Set the `appearance` attribute to `segmented` on all radios to turn them into segmented radios.
 
 ```demo
-<pc-radio-group
-    label="Horizontal options"
-    hint="Select an option that makes you proud."
-    orientation="horizontal"
-    name="group-3"
-    value="option-1"
->
-    <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
-    <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
-    <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
-</pc-radio-group>
+<div class="pc-stack">
+    <pc-radio-group
+        label="Horizontal options"
+        hint="Select an option that makes you proud."
+        orientation="horizontal"
+        name="group-3"
+        value="option-1"
+    >
+        <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
+        <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
+        <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
+    </pc-radio-group>
 
-<pc-radio-group
-    label="Vertical options"
-    hint="Select an option that makes you proud."
-    orientation="vertical"
-    name="group-4"
-    value="option-1"
-    style="max-inline-size: 300px"
->
-    <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
-    <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
-    <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
-</pc-radio-group>
+    <pc-radio-group
+        label="Vertical options"
+        hint="Select an option that makes you proud."
+        orientation="vertical"
+        name="group-4"
+        value="option-1"
+        style="max-inline-size: 300px"
+    >
+        <pc-radio appearance="segmented" value="option-1">Option 1</pc-radio>
+        <pc-radio appearance="segmented" value="option-2">Option 2</pc-radio>
+        <pc-radio appearance="segmented" value="option-3">Option 3</pc-radio>
+    </pc-radio-group>
+</div>
 ```
 
 ### Disabled
@@ -126,11 +128,7 @@ The size of [radios](/docs/components/radio) will be determined by the radio gro
 If you need to have radios of different sizes, add the `size` attribute on the individual radios instead.
 
 ```demo
-<pc-radio-group
-    size="medium"
-    label="Select a (mixed‐size) option"
-    value="medium"
->
+<pc-radio-group label="Select a mixed‐size option" value="medium">
     <pc-radio size="small" value="small">Small</pc-radio>
     <pc-radio size="medium" value="medium">Medium</pc-radio>
     <pc-radio size="large" value="large">Large</pc-radio>
@@ -159,15 +157,17 @@ Set the `orientation` attribute to `horizontal` to make a horizontal radio group
 Set the `required` attribute to make selecting an option mandatory. If a value hasn’t been selected, it will prevent the form from submitting and display an error message.
 
 ```demo
-<form class="radio-group-required">
+<form class="radio-group-required pc-stack">
     <pc-radio-group label="Select an option" name="group-8" required>
         <pc-radio value="option-1">Option 1</pc-radio>
         <pc-radio value="option-2">Option 2</pc-radio>
         <pc-radio value="option-3">Option 3</pc-radio>
     </pc-radio-group>
-    <br />
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
-    <pc-button appearance="neutral" type="reset">Reset</pc-button>
+
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
+    </div>
 </form>
 
 <script>
@@ -193,7 +193,9 @@ Use the `setCustomValidity()` method to set a custom validation message. This wi
         <pc-radio value="select-me">Select me</pc-radio>
     </pc-radio-group>
 
-    <pc-button appearance="primary" type="submit">Submit</pc-button>
+    <div class="buttons">
+        <pc-button appearance="primary" type="submit">Submit</pc-button>
+    </div>
 </form>
 
 <script>

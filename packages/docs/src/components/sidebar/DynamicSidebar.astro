@@ -709,34 +709,39 @@ const { isMobile = false } = Astro.props;
 
     pc-details ul li {
         display: flex;
+        position: relative;
         flex-direction: column;
-        margin-inline-start: calc(
+        transition: color var(--pc-transition-fast) ease-in-out;
+    }
+
+    pc-details ul li::before {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: calc(
             -1 * (var(--pc-spacing-l) + var(--pc-border-width-s))
         );
-        padding-inline-start: calc(
-            var(--pc-spacing-l) - var(--pc-border-width-s)
-        );
-        border-inline-start: var(--pc-border-width-s) var(--pc-border-style)
-            transparent;
-        transition: all var(--pc-transition-fast) ease-in-out;
+        inline-size: var(--pc-border-width-s);
+        background-color: transparent;
+        transition: background-color var(--pc-transition-fast) ease-in-out;
     }
 
     @media (hover: hover) {
-        pc-details ul li:has(> a:hover) {
-            border-color: var(--pc-color-neutral-on-quiet);
+        pc-details ul li:has(> a:hover)::before {
+            background-color: var(--pc-color-neutral-on-quiet);
         }
     }
 
-    pc-details ul li:has(> a:active) {
-        border-color: color-mix(
+    pc-details ul li:has(> a:active)::before {
+        background-color-color: color-mix(
             in oklab,
             var(--pc-color-neutral-on-quiet),
             var(--pc-color-mix-active)
         );
     }
 
-    pc-details ul li:has(> a[aria-current="page"]) {
-        border-color: var(--pc-color-primary-on-quiet);
+    pc-details ul li:has(> a[aria-current="page"])::before {
+        background-color: var(--pc-color-primary-on-quiet);
     }
 
     pc-details ul li a {

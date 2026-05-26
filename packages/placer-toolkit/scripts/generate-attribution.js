@@ -1,79 +1,58 @@
-import checker from "license-checker";
+import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-// This will be set up properly in the future.
-const LICENSE_BACKUP_DIR = path.resolve("../data/licenses");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, "..");
 
-checker.init(
-    {
-        start: "./",
-        customFormat: {
-            name: "",
-            version: "",
-            license: "",
-            repository: "",
-            licenseFile: "",
-        },
-    },
-    function (error, packages) {
-        if (error) {
-            console.error(error);
+const licenseTemplateDirectory = "./licenses/templates";
+const outputFile = "THIRD-PARTY-NOTICES.txt";
 
-            return;
-        }
+const requiredLicenses = [
+    { file: "MIT.txt", title: "MIT License" },
+    { file: "BSD-3-Clause.txt", title: "BSD-3-Clause License" },
+];
 
-        let output =
-            "# Third‐party licences\n\n" +
-            "This project incorporates components from the following third‐party projects. " +
-            "The full text of their respective licences is provided below.\n\n";
+console.log("🔍 Fetching dependency licenses…");
 
-        for (const [name, info] of Object.entries(packages)) {
-            if (name.startsWith("placer-toolkit")) {
-                continue;
-            }
+const rawJSON = execSync("pnpm licenses list --filter . --json --prod", {
+    cwd: projectRoot,
+    encoding: "utf8",
+    stdio: ["pipe", "pipe", "ignore"],
+}).toString();
+const data = JSON.parse(rawJSON);
 
-            let licenseText = null;
+let output = `Third‐party notices
 
-            const isReadme =
-                info.licenseFile &&
-                info.licenseFile.toLowerCase().includes("readme");
+This project incorporates components from the following third‐party projects. The full text of their respective licences is provided below.
 
-            if (info.licenseFile && fs.existsSync(info.licenseFile)) {
-                const rawText = fs.readFileSync(info.licenseFile, "utf8");
+---
 
-                if (!isReadme || rawText.toLowerCase().includes("copyright")) {
-                    licenseText = rawText;
-                }
-            }
+`;
 
-            if (!licenseText) {
-                const backupPath = path.join(
-                    LICENSE_BACKUP_DIR,
-                    `${name.replace("/", "__")}.txt`,
-                );
+const allPackages = Object.values(data).flat();
 
-                if (fs.existsSync(backupPath)) {
-                    licenseText = fs.readFileSync(backupPath, "utf8");
-                }
-            }
+allPackages.forEach((pkg) => {
+    const name = pkg.name;
+    const version = pkg.versions[0];
+    const license = pkg.license || "Unknown";
 
-            output += `### ${name}\n\n`;
-            output += `- **Licence:** ${info.license || "_Unknown_"}\n`;
-            output += `- **Repository:** ${info.repository || "_Not provided_"}\n`;
+    output += `${name} ${version}: ${license} License; copyright notice not retrievable\n`;
+});
 
-            if (licenseText) {
-                output += `<details>\n`;
-                output += `  <summary>View full ${info.license} licence text</summary>\n`;
-                output += `  <pre>${licenseText.trim()}</pre>\n`;
-                output += `</details>\n\n`;
-            } else {
-                output +=
-                    "- ⚠️ **Licence text not found:** Please manually verify at the repository link above.\n\n";
-            }
-        }
+requiredLicenses.forEach(({ file, title }) => {
+    const filePath = path.join(licenseTemplateDirectory, file);
 
-        fs.writeFileSync("THIRD-PARTY-NOTICES.md", output);
-        console.log("✅ THIRD-PARTY-NOTICES.md was successfully created.");
-    },
+    if (fs.existsSync(filePath)) {
+        output += `\n---\n\n${title}:\n\n${fs.readFileSync(filePath, "utf8")}`;
+    } else {
+        console.warn(`⚠️ Warning: Licence file not found at ${filePath}`);
+    }
+});
+
+fs.writeFileSync(outputFile, output);
+
+console.log(
+    `✅ ${outputFile} successfully generated with ${requiredLicenses.length <= 1 ? (requiredLicenses.length === 0 ? "no" : "one") : requiredLicenses.length} licence ${requiredLicenses.length === 1 ? "definition" : "definitions"}.`,
 );

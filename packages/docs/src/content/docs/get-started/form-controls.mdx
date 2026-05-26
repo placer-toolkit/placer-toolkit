@@ -15,34 +15,8 @@ If you don’t want to use client‐side validation, you can suppress this behav
         name="clock"
         slot="icon"
     ></pc-icon>
-    Placer Toolkit uses event listeners to intercept the form’s `formdata` and `submit` events. This allows it to inject data and trigger validation as necessary. If you’re also attaching an event listener to the form, _you must attach it after Placer form controls are connected to the DOM_, otherwise your logic will run before Placer Toolkit has a chance to inject form data and validate form controls.
+    Placer Toolkit intercepts form events to handle data injection and validation. To ensure your custom form logic runs after Placer Toolkit has prepared the form data, please attach your event listeners after the DOM has fully parsed or via a script that executes after the form controls have been connected.
 </pc-callout>
-
-## Data serialisation
-
-Serialisation is just a fancy word for collecting form data. If you’re relying on standard form submissions (i.e., `<form action="…">`), you can probably skip this section. However, most apps use the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) or a library such as [Axios](https://github.com/axios/axios) to submit forms using JavaScript.
-
-The [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) interface offers a standard way to serialise forms in the browser. You can create a `FormData` object from any `<form>` element like this.
-
-```javascript
-const form = document.querySelector("form");
-const data = new FormData(form);
-
-// All form control data is available in a FormData object
-```
-
-However, some people find `FormData` tricky to work wth or they need to pass a JSON payload to their server. To accommodate this, Placer Toolkit offers a serialisation utility that gathers form data and returns a simple JavaScript object instead.
-
-```javascript
-import { serialize } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
-
-const form = document.querySelector("form");
-const data = serialize(form);
-
-// All form control data is available in a JavaScript object
-```
-
-This results in an object with name/value pairs that map to each form control. If more than one form control share the same name, the values will be passed as an array (e.g., `{ name: ["value1", "value2"] }`).
 
 ## Constraint validation
 
@@ -129,7 +103,7 @@ To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Submit</pc-button>
-        <pc-button type="reset">Reset</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
     </div>
 </form>
 
@@ -170,7 +144,7 @@ Some input types will automatically trigger constraints, such as `email` and `ur
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Submit</pc-button>
-        <pc-button type="reset">Reset</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
     </div>
 </form>
 
@@ -200,7 +174,7 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Submit</pc-button>
-        <pc-button type="reset">Reset</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
     </div>
 </form>
 
@@ -288,7 +262,7 @@ This example demonstrates custom validation styles using `:state(user-invalid)` 
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Submit</pc-button>
-        <pc-button type="reset">Reset</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
     </div>
 </form>
 
@@ -383,7 +357,7 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
 
     <div class="buttons">
         <pc-button appearance="primary" type="submit">Submit</pc-button>
-        <pc-button type="reset">Reset</pc-button>
+        <pc-button appearance="danger" variant="plain" type="reset">Reset</pc-button>
     </div>
 </form>
 
@@ -454,28 +428,4 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
         slot="icon"
     ></pc-icon>
     This example is meant to demonstrate the concept of providing your own error messages inline. It is not intended to scale to more complex forms. Users who want this functionality are encouraged to build a more appropriate validation solution using the techniques shown below. Depending on how you implement this feature, custom error messages may affect the accessibility of your form controls.
-</pc-callout>
-
-## Getting associated form controls
-
-At this time, using [`HTMLFormElement.elements`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/elements) will not return Placer form controls because the browser is unaware of their status as custom element form controls. Fortunately, Placer Toolkit provides an `elements()` function that does something very similar. However, instead of returning an [`HTMLFormControlsCollection`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormControlsCollection), it returns an array of HTML and Placer form controls in the order they appear in the DOM.
-
-```javascript
-import { getFormControls } from "https://cdn.jsdelivr.net/npm/placer-toolkit@__PLACER_VERSION__/cdn/utilities/form.js";
-
-const form = document.querySelector("#my-form");
-const formControls = getFormControls(form);
-
-// Example output: [input, pc-input, …]
-console.log(formControls);
-```
-
-<pc-callout appearance="primary">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="route"
-        slot="icon"
-    ></pc-icon>
-    You probably don’t need this function! If you’re gathering form data for submission, you probably want to scroll to [data serialisation](#data-serialisation) instead.
 </pc-callout>

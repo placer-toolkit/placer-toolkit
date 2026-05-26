@@ -127,6 +127,7 @@
 }
 
 .display-input {
+    -webkit-appearance: none;
     position: relative;
     margin: 0;
     padding: 0;
@@ -139,7 +140,6 @@
     line-height: var(--pc-form-control-value-line-height);
     overflow: hidden;
     cursor: inherit;
-    -webkit-appearance: none;
 }
 
 .display-input:focus {
@@ -292,7 +292,10 @@ slot:not([name])::slotted(small) {
     font-weight: var(--pc-font-weight-semibold);
     color: var(--pc-color-text-quiet);
     padding-block: 0.5em;
-    padding-inline-start: 2em;
+    /* [Listbox padding] + [Option padding] + [Checkmark size] + [Checkmark padding] */
+    padding-inline-start: calc(
+        var(--pc-spacing-xs) + 0.5em + var(--pc-font-size-smaller) + 0.5em
+    );
 }
 
 @keyframes focus-ring-animation {

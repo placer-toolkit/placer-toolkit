@@ -105,7 +105,7 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
         | null = this.getAttribute("value") || null;
 
     /** The radio group’s size. This size will be applied to all child radios. */
-    @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
+    @property({ reflect: true }) size?: "small" | "medium" | "large";
 
     /** Indicates if an option of the radio group must be chosen or not. */
     @property({ type: Boolean, reflect: true }) required = false;
@@ -338,21 +338,6 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
         event.preventDefault();
     }
 
-    private syncRadios() {
-        if (customElements.get("pc-radio")) {
-            this.syncRadioElements();
-            return;
-        }
-
-        if (customElements.get("pc-radio")) {
-            this.syncRadioElements();
-        } else {
-            customElements
-                .whenDefined("pc-radio")
-                .then(() => this.syncRadios());
-        }
-    }
-
     /** Sets focus on the radio group. */
     focus(options?: FocusOptions) {
         if (this.disabled) {
@@ -402,7 +387,7 @@ export class PcRadioGroup extends PlacerFormAssociatedElement {
                 <slot
                     part="input"
                     class="input"
-                    @slotchange=${this.syncRadios}
+                    @slotchange=${this.syncRadioElements}
                 ></slot>
 
                 <slot

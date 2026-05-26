@@ -1,6 +1,6 @@
 ---
 title: Changelog
-description: Placer Toolkit follows Semantic Versioning. Breaking changes to components marked with the Stable badge will not be accepted until the next major version. As such, all contributions must align with the project’s roadmap. Features that are deemed no longer necessary may be removed, but only in the next major version. Components with the Experimental badge should not be used in production. They are made available as release candidates for development and testing purposes. As such, changes to experimental components will not be subject to semantic versioning.
+description: Placer Toolkit follows Semantic Versioning. Breaking changes to Stable components are restricted to major releases; Experimental components are exempt from this.
 order: 5
 ---
 
@@ -43,6 +43,21 @@ This rating applies to smaller, localised changes that affect only a minority of
 
 This rating flags minor changes that impact consistency or adherence to future API standards. It affects component usage going forward but does not break current functionality. A simple migration guide is always provided (e.g., the focus ring animation update in v1.0.0-alpha.1).
 
+## 1.0.0-alpha.6
+
+### Enhancements
+
+- Updated the Node.js requirement from version 20–24 to at least version 22.12.0. [pull:99]<br />**🚨 Major breaking change:** If you are not on Node 22.12.0 or later, you must update to a later version to continue using Placer Toolkit with npm.
+
+### Bug fixes
+
+- Resolved the inability to add mixed‐size radios in the [Radio Group](/docs/components/radio-group) component. [pull:99]
+- Removed the `utilities/form.js` file (includes the `serialize()` function) because it’s a remnant to versions prior to 1.0.0-alpha.4 without [`ElementInternals`](https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals). [pull:99]
+- Fixed the ability to select disabled radios in the [Radio](/docs/components/radio) component if the entire radio group is disabled. [pull:99]
+- Corrected the alignment of the `<small>` element in a listbox of the [Select](/docs/component/select) component. [pull:99]
+
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.5...1.0.0-alpha.6) between versions 1.0.0-alpha.5 and 1.0.0-alpha.6.
+
 ## 1.0.0-alpha.5
 
 ### Milestones
@@ -61,23 +76,23 @@ This rating flags minor changes that impact consistency or adherence to future A
 - Resolved the accessibility and DX issues in the [Tab Group](/docs/components/tab-group), [Tab](/docs/components/tab) and [Tab Panel](/docs/components/tab-panel) components. [pull:84]<br />**⚠️ Breaking change:** If you are using the `closable` attribute on the [Tab](/docs/components/tab) component, remove the `<script>` tag or related scripts to the closable tab feature, as the closable feature is now handled automatically in the component itself. You may retain the `pc-close` event for other uses though, as it is still being emitted.
 - Added horizontal orientation support to the [Radio Group](/docs/components/radio-group) component. [pull:84]
 - Replaced the optional arrow key navigation with <AutoKeyboardSwitch keyName="enter" /> to align with the [WAI-ARIA APG Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/switch). [pull:84]
-- Added the `updateStackingContext()` method in the [Popup](/docs/components/popup) component to update the stacking context in case it is under another instance of the top layer. [pull:84]
-- Improved the tab indicator animation in the [Tab Group](/docs/components/tab-group) component to be more lively. [pull:84]
-
-### Bug fixes
-
-- Resolved an issue where arrow key inputs on the [Radio Group](/docs/components/radio-group) component were mapped to the incorrect traversal order. [pull:84]
 - Removed the `base` part from the [Radio](/docs/components/radio) component. [pull:84]<br />**⚠️ Breaking change:** Target `<pc-radio>` itself instead of the `base` part of `<pc-radio>`.
+- Added the `updateStackingContext()` method in the [Popup](/docs/components/popup) component to update the stacking context in case it is under another instance of the top layer. [pull:84]
 - Removed the `control-checked` part from the [Radio](/docs/components/radio) component. [pull:84]<br />**⚠️ Breaking change:** Rewrite your CSS selectors accordingly with the help of this diff.
     ```css
     -pc-radio::part(control-checked) {}
     +pc-radio:state(checked)::part(control) {}
     ```
+- Improved the tab indicator animation in the [Tab Group](/docs/components/tab-group) component to be more lively. [pull:84]
+
+### Bug fixes
+
+- Resolved an issue where arrow key inputs on the [Radio Group](/docs/components/radio-group) component were mapped to the incorrect traversal order. [pull:84]
 - Removed the `aria-checked` attribute on the [Dropdown Item](/docs/components/dropdown-item) component if it isn’t `type="checkbox"`. [pull:84]
 - Corrected the switch’s behaviour in RTL by mirroring it. [pull:84]
 - Removed the `required` attribute on the [Slider](/docs/components/slider) component, as sliders always have a value and the native slider doesn’t have a `required` attribute. [pull:84]
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.4...1.0.0-alpha.5).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.4...1.0.0-alpha.5) between versions 1.0.0-alpha.4 and 1.0.0-alpha.5.
 
 ## 1.0.0-alpha.4
 
@@ -144,20 +159,20 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - Fixed the shadows of the [Scroller](/docs/components/scroller) component being under the content sometimes. [pull:78]
 - Removed the `aria-live` attribute in the [Callout](/docs/components/callout) component’s internals, as it is almost always used for static content. [pull:78]
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.3...1.0.0-alpha.4).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.3...1.0.0-alpha.4) between versions 1.0.0-alpha.3 and 1.0.0-alpha.4.
 
 ## 1.0.0-alpha.3
 
 ### Milestones
 
-- Changed the licencing of the documentation from MIT to CC BY 4.0 and all rights reserved. See more info [here](/docs/legal/licence). [pull:38]
+- Changed the licencing of the documentation from MIT to CC BY 4.0 and all rights reserved. [Read more about our licensing](/docs/legal/licence). [pull:38]
 
 ### Enhancements
 
 - Improved colour contrast in all Placer Toolkit components. [pull:38]
 - Added CDN files to the `"exports"` object in `package.json`. [pull:38]
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.2...1.0.0-alpha.3).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.2...1.0.0-alpha.3) between versions 1.0.0-alpha.2 and 1.0.0-alpha.3.
 
 ## 1.0.0-alpha.2
 
@@ -184,7 +199,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - The colour picker currently does not output correct alpha values in the input.
 - The label is visible when the colour picker is inline.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.1...1.0.0-alpha.2).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/1.0.0-alpha.1...1.0.0-alpha.2) between versions 1.0.0-alpha.1 and 1.0.0-alpha.2.
 
 ## 1.0.0-alpha.1
 
@@ -352,7 +367,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - Fixed many non‐working exported parts due to confusion with part names.<br />**⚠️ Breaking change:** The breaking change is listed in the Enhancements entry with the list of CSS part refactors.
 - Wrapped all `:hover` states in a `@media (hover: hover)` at‐rule to fix sticky hover states on mobile devices.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.5.1...1.0.0-alpha.1).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/0.5.1...1.0.0-alpha.1) between versions 0.5.1 and 1.0.0-alpha.1.
 
 ## 0.5.1
 
@@ -398,7 +413,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 
 - Submenus in the [Menu](/docs/components/menu) component are clipped in the base menu and/or other submenus.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.4.0...0.5.1).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/0.4.0...0.5.1) between versions 0.4.0 and 0.5.1.
 
 ## 0.5.0
 
@@ -431,7 +446,7 @@ Due to npm publishing restrictions, this version was unpublished shortly after r
 
 - During the `iconStyle` to `icon-style` attribute rename, we’ve later spotted some stories not including the attribute name but its value.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.3.0...0.4.0).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/0.3.0...0.4.0) between versions 0.3.0 and 0.4.0.
 
 ## 0.3.0
 
@@ -446,7 +461,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 
 - Fixed the missing indicator in the `end` placement of the [Tab Group](/docs/components/tab-group) component.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.2.0...0.3.0).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/0.2.0...0.3.0) between versions 0.2.0 and 0.3.0.
 
 ## 0.2.0 (re‐draft)
 
@@ -469,7 +484,7 @@ Need the full commit history? View it right [here](https://github.com/placer-too
 - Added corresponding `active` states to the form control design tokens.
 - Reorganised the `tsconfig.json` file to be easier to comprehend and understand.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/compare/0.1.0...0.2.0).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/compare/0.1.0...0.2.0) between versions 0.1.0 and 0.2.0.
 
 ## 0.1.0 (re‐draft)
 
@@ -492,4 +507,4 @@ This is the first official release of Placer Toolkit! We’re not going to get i
 - Added [Storybook](https://storybook.js.org) for UI testing and documentation.
 - Used [Rollup](https://rollupjs.org) to compile the Placer Toolkit library written in TypeScript into JavaScript.
 
-Need the full commit history? View it right [here](https://github.com/placer-toolkit/placer-toolkit/commits/0.1.0).
+[View the full commit history](https://github.com/placer-toolkit/placer-toolkit/commits/0.1.0) prior to version 0.1.0.

@@ -2,7 +2,6 @@ import { html } from "lit";
 import type { PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { PlacerFormAssociatedElement } from "../../internal/placer-form-associated-element.js";
-import { classMap } from "lit/directives/class-map.js";
 import formControlStyles from "../../styles/component-styles/form-control.css";
 import sizeStyles from "../../styles/utilities/size.css";
 import styles from "./radio.css";
@@ -41,7 +40,7 @@ export class PcRadio extends PlacerFormAssociatedElement {
         "default";
 
     /** The radio’s size. When used inside a radio group, the size will be determined by the radio group’s size so this attribute can typically be omitted. */
-    @property({ reflect: true }) size: "small" | "medium" | "large" = "medium";
+    @property({ reflect: true }) size?: "small" | "medium" | "large";
 
     /** Disables the radio. */
     @property({ type: Boolean }) disabled = false;
@@ -105,7 +104,7 @@ export class PcRadio extends PlacerFormAssociatedElement {
     }
 
     private handleClick = () => {
-        if (!this.disabled && !this.checked) {
+        if (!this.disabled && !this.forceDisabled) {
             this.checked = true;
         }
     };
