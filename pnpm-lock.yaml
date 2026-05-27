@@ -23,13 +23,13 @@ importers:
     dependencies:
       '@astrojs/mdx':
         specifier: ^5.0.3
-        version: 5.0.3(astro@6.1.10(@types/node@24.12.2)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0))
+        version: 5.0.3(astro@6.1.10(@types/node@24.12.4)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0))
       '@astrojs/sitemap':
-        specifier: ^3.7.2
-        version: 3.7.2
+        specifier: ^3.7.3
+        version: 3.7.3
       astro:
         specifier: ^6.1.10
-        version: 6.1.10(@types/node@24.12.2)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0)
+        version: 6.1.10(@types/node@24.12.4)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0)
       hastscript:
         specifier: ^9.0.1
         version: 9.0.1
@@ -72,7 +72,7 @@ importers:
         version: 5.1.0
       vite-plugin-compression:
         specifier: ^0.5.1
-        version: 0.5.1(vite@7.3.3(@types/node@24.12.2)(yaml@2.9.0))
+        version: 0.5.1(vite@7.3.3(@types/node@24.12.4)(yaml@2.9.0))
 
   packages/placer-toolkit:
     dependencies:
@@ -150,8 +150,8 @@ packages:
     resolution: {integrity: sha512-nksZQVjlferuWzhPsBpQ1JE5XuKAf1id1/9Hj4a9KG4+ofrlzxUUwX4YGQF/SuDiuiGKEnzopGOt38F3AnVWsQ==}
     engines: {node: '>=22.12.0'}
 
-  '@astrojs/sitemap@3.7.2':
-    resolution: {integrity: sha512-PqkzkcZTb5ICiyIR8VoKbIAP/laNRXi5tw616N1Ckk+40oNB8Can1AzVV56lrbC5GKSZFCyJYUVYqVivMisvpA==}
+  '@astrojs/sitemap@3.7.3':
+    resolution: {integrity: sha512-f8euLVsyeAmAkSm/1M2Kb8sL8byQmfgbvBNaHFItCheTj/IpiJYSEWVcqDHZ/yEHxiS7+w87mQkzwZaPHmk5GA==}
 
   '@astrojs/telemetry@3.3.1':
     resolution: {integrity: sha512-7fcIxXS9J4ls5tr8b3ww9rbAIz2+HrhNJYZdkAhhB4za/I5IZ/60g+Bs8q7zwG0tOIZfNB4JWhVJ1Qkl/OrNCw==}
@@ -995,8 +995,8 @@ packages:
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
 
-  '@types/node@24.12.2':
-    resolution: {integrity: sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==}
+  '@types/node@24.12.4':
+    resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
 
   '@types/sax@1.2.7':
     resolution: {integrity: sha512-rO73L89PJxeYM3s3pPPjiPgVVcymqU490g0YO5n5By0k2Erzj6tay/4lr1CHAAU4JyOWd1rpQ8bCf6cZfHU96A==}
@@ -2693,9 +2693,6 @@ packages:
     resolution: {integrity: sha512-4LCcse/U2MHZ63HAJVE+v71o7yOdIe4cZ70Wpf8D/IyjDKYQLV5GD46B+hSTjJsvV5PztjvHoU580EftxjDZFQ==}
     engines: {node: '>=12.20'}
 
-  zod@4.3.6:
-    resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
-
   zod@4.4.3:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
@@ -2768,12 +2765,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@5.0.3(astro@6.1.10(@types/node@24.12.2)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0))':
+  '@astrojs/mdx@5.0.3(astro@6.1.10(@types/node@24.12.4)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0))':
     dependencies:
       '@astrojs/markdown-remark': 7.1.0
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
-      astro: 6.1.10(@types/node@24.12.2)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0)
+      astro: 6.1.10(@types/node@24.12.4)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0)
       es-module-lexer: 2.0.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -2791,11 +2788,11 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/sitemap@3.7.2':
+  '@astrojs/sitemap@3.7.3':
     dependencies:
       sitemap: 9.0.1
       stream-replace-string: 2.0.0
-      zod: 4.3.6
+      zod: 4.4.3
 
   '@astrojs/telemetry@3.3.1':
     dependencies:
@@ -3422,13 +3419,13 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/node@24.12.2':
+  '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
 
   '@types/sax@1.2.7':
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 24.12.4
 
   '@types/trusted-types@2.0.7': {}
 
@@ -3518,7 +3515,7 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro@6.1.10(@types/node@24.12.2)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0):
+  astro@6.1.10(@types/node@24.12.4)(rollup@4.60.4)(typescript@5.9.3)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 3.0.1
       '@astrojs/internal-helpers': 0.9.0
@@ -3569,8 +3566,8 @@ snapshots:
       unist-util-visit: 5.1.0
       unstorage: 1.17.5
       vfile: 6.0.3
-      vite: 7.3.3(@types/node@24.12.2)(yaml@2.9.0)
-      vitefu: 1.1.3(vite@7.3.3(@types/node@24.12.2)(yaml@2.9.0))
+      vite: 7.3.3(@types/node@24.12.4)(yaml@2.9.0)
+      vitefu: 1.1.3(vite@7.3.3(@types/node@24.12.4)(yaml@2.9.0))
       xxhash-wasm: 1.1.0
       yargs-parser: 22.0.0
       zod: 4.4.3
@@ -5337,7 +5334,7 @@ snapshots:
 
   sitemap@9.0.1:
     dependencies:
-      '@types/node': 24.12.2
+      '@types/node': 24.12.4
       '@types/sax': 1.2.7
       arg: 5.0.2
       sax: 1.6.0
@@ -5589,16 +5586,16 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite-plugin-compression@0.5.1(vite@7.3.3(@types/node@24.12.2)(yaml@2.9.0)):
+  vite-plugin-compression@0.5.1(vite@7.3.3(@types/node@24.12.4)(yaml@2.9.0)):
     dependencies:
       chalk: 4.1.2
       debug: 4.4.3
       fs-extra: 10.1.0
-      vite: 7.3.3(@types/node@24.12.2)(yaml@2.9.0)
+      vite: 7.3.3(@types/node@24.12.4)(yaml@2.9.0)
     transitivePeerDependencies:
       - supports-color
 
-  vite@7.3.3(@types/node@24.12.2)(yaml@2.9.0):
+  vite@7.3.3(@types/node@24.12.4)(yaml@2.9.0):
     dependencies:
       esbuild: 0.27.7
       fdir: 6.5.0(picomatch@4.0.4)
@@ -5607,13 +5604,13 @@ snapshots:
       rollup: 4.60.4
       tinyglobby: 0.2.16
     optionalDependencies:
-      '@types/node': 24.12.2
+      '@types/node': 24.12.4
       fsevents: 2.3.3
       yaml: 2.9.0
 
-  vitefu@1.1.3(vite@7.3.3(@types/node@24.12.2)(yaml@2.9.0)):
+  vitefu@1.1.3(vite@7.3.3(@types/node@24.12.4)(yaml@2.9.0)):
     optionalDependencies:
-      vite: 7.3.3(@types/node@24.12.2)(yaml@2.9.0)
+      vite: 7.3.3(@types/node@24.12.4)(yaml@2.9.0)
 
   web-namespaces@2.0.1: {}
 
@@ -5643,8 +5640,6 @@ snapshots:
   yargs-parser@22.0.0: {}
 
   yocto-queue@1.2.2: {}
-
-  zod@4.3.6: {}
 
   zod@4.4.3: {}
 
