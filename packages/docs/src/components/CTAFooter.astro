@@ -1,0 +1,146 @@
+---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
+import { Image } from "astro:assets";
+
+import getStartedBackdrop from "../assets/get-started-backdrop.svg";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+---
+
+<section
+    class="get-started pc-dark"
+    aria-labelledby="cta-footer-start-building"
+>
+    <Image src={getStartedBackdrop} width={100} height={50} alt="" />
+
+    <h2 id="cta-footer-start-building">
+        {translation("ctaFooter.startBuilding")}
+    </h2>
+
+    <p>
+        {translation("ctaFooter.startBuilding.descriptive")}
+    </p>
+
+    <div class="pc-cluster pc-gap-m">
+        <pc-button
+            href={translatePath("/docs/get-started/installation")}
+            appearance="primary"
+            variant="filled"
+            pill
+        >
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="download"
+                slot="prefix"></pc-icon>
+            {translation("button.getStarted")}
+        </pc-button>
+        <pc-button
+            href={translatePath("/docs/components")}
+            appearance="primary"
+            variant="outlined"
+            pill
+        >
+            {translation("button.exploreComponents")}
+            <pc-icon
+                library="default"
+                icon-style="solid"
+                name="cubes"
+                slot="suffix"></pc-icon>
+        </pc-button>
+    </div>
+</section>
+
+<style>
+    .get-started {
+        display: flex;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-block: var(--pc-content-spacing);
+        padding-block: var(--pc-spacing-xl);
+        padding-inline: var(--pc-spacing-l);
+        min-block-size: 20rem;
+        block-size: auto;
+    }
+
+    .get-started img {
+        position: absolute;
+        inset: 0;
+        inline-size: 100%;
+        block-size: 100%;
+        /* If the image doesn’t load, add an indigo background
+           to keep the text legible in the light colour scheme. */
+        background-color: var(--pc-color-indigo-05);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-indigo-05);
+        border-radius: var(--pc-border-radius-xl);
+        object-fit: cover;
+        object-position: center;
+        user-select: none;
+        -webkit-user-select: none;
+        z-index: -1;
+    }
+
+    .get-started h2 {
+        letter-spacing: -0.03125em;
+    }
+
+    .get-started h2,
+    .get-started p {
+        max-inline-size: 34rem;
+        text-align: center;
+        text-shadow: var(--pc-shadow-offset-x-s) var(--pc-shadow-offset-y-s)
+            var(--pc-shadow-blur-s) var(--pc-color-shadow);
+    }
+
+    .get-started pc-button[variant="filled"]::part(base) {
+        --pc-color-fill-normal: var(--pc-color-indigo-20);
+        --pc-color-on-normal: var(--pc-color-indigo-70);
+
+        padding-inline: calc(
+            var(--pc-form-control-padding-inline) + var(--pc-spacing-xs)
+        );
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            oklch(100% 0 0 / 5%);
+        box-shadow: inset 0 1px 0 oklch(100% 0 0 / 10%);
+    }
+
+    @media (hover: hover) {
+        :global(html:not(.pc-theme-utility))
+            .get-started
+            pc-button[variant="filled"]::part(base):hover:not(:active) {
+            box-shadow: var(--pc-shadow-s);
+        }
+    }
+
+    .get-started pc-button[variant="outlined"]::part(base) {
+        --pc-color-fill-quiet: var(--pc-color-indigo-10);
+        --pc-color-border-loud: var(--pc-color-indigo-20);
+        --pc-color-on-quiet: var(--pc-color-indigo-60);
+
+        padding-inline: calc(
+            var(--pc-form-control-padding-inline) + var(--pc-spacing-xs)
+        );
+        box-shadow: inset 0 1px 0
+            color-mix(in oklab, var(--pc-color-indigo-20), transparent 75%);
+    }
+
+    @media screen and (max-width: 500px) {
+        .get-started .pc-cluster {
+            flex-direction: column;
+            inline-size: 100%;
+        }
+
+        .get-started .pc-cluster pc-button {
+            inline-size: 100%;
+        }
+    }
+</style>

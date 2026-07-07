@@ -1,0 +1,100 @@
+.landing-page {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-inline-size: 80rem;
+}
+
+.landing-page section {
+    position: relative;
+}
+
+@property --stardust-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: transparent;
+}
+
+.landing-page section .stardust {
+    --stardust-color: var(--pc-color-cyan-60);
+
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        270deg,
+        color-mix(in oklab, var(--stardust-color), transparent 20%) 0%,
+        color-mix(in oklab, var(--pc-color-indigo-20), transparent 60%) 100%
+    );
+    mask-image: radial-gradient(
+        #000c 0%,
+        #000000c9 5.64%,
+        #000000c2 10.6%,
+        #000000b7 14.9%,
+        #000000a8 18.7%,
+        #00000097 22.2%,
+        #00000084 25.4%,
+        #00000070 28.5%,
+        #0000005c 31.5%,
+        #00000048 34.6%,
+        #00000035 37.8%,
+        #00000024 41.3%,
+        #00000015 45.1%,
+        #0000000a 49.4%,
+        #00000003 54.36%,
+        #0000 60%
+    );
+    border-radius: var(--pc-border-radius-pill);
+    transition: --stardust-color 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    pointer-events: none;
+    z-index: -1;
+
+    &.adaptive--zero-lock-in {
+        &:has(~ pc-tab-group pc-tab[panel="html"][aria-selected="true"]) {
+            --stardust-color: var(--pc-color-red-60) !important;
+        }
+
+        &:has(~ pc-tab-group pc-tab[panel="react"][aria-selected="true"]) {
+            --stardust-color: var(--pc-color-cyan-60) !important;
+        }
+
+        &:has(~ pc-tab-group pc-tab[panel="vue"][aria-selected="true"]) {
+            --stardust-color: var(--pc-color-green-40) !important;
+        }
+
+        &:has(~ pc-tab-group pc-tab[panel="angular"][aria-selected="true"]) {
+            --stardust-color: var(--pc-color-pink-60) !important;
+        }
+
+        &:has(~ pc-tab-group pc-tab[panel="svelte"][aria-selected="true"]) {
+            --stardust-color: var(--pc-color-orange-50) !important;
+        }
+    }
+}
+
+.landing-page .heading-wrapper.level-h2 {
+    margin-block-start: var(--pc-content-spacing);
+}
+
+.landing-page .heading-wrapper.level-h2 h2 {
+    letter-spacing: -0.03125em;
+}
+
+.landing-page p:has(+ pc-button.learn-more-button) {
+    margin-block-end: calc(var(--pc-content-spacing) / 1.25);
+}
+
+.landing-page pc-button.learn-more-button {
+    margin-block-end: var(--pc-content-spacing);
+    inline-size: fit-content;
+    font-size: var(--pc-font-size-s);
+}
+
+.landing-page pc-button.learn-more-button::part(base) {
+    border-radius: var(--pc-border-radius-pill);
+}
+
+@media screen and (max-width: 1020px) {
+    .landing-page {
+        inline-size: calc(100dvw - (var(--pc-spacing-xl) * 2));
+    }
+}
