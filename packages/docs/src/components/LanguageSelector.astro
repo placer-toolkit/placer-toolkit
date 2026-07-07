@@ -23,7 +23,7 @@ const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
 
-<NavigationDropdown>
+<NavigationDropdown placement="bottom-end">
     <pc-button size="small" variant="plain" slot="trigger">
         <pc-icon
             class="icon-expand"

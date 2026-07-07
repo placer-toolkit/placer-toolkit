@@ -9,13 +9,11 @@ Generate a [QR code](https://www.qrcode.com) and render it using the [Canvas API
 QR codes are useful for providing small pieces of information to users who can quickly scan them with a smartphone. Most smartphones have built‐in QR code scanners, so simply pointing the camera at a QR code will decode it and allow the user to visit a website, dial a phone number, log into a Wi-Fi network and so on.
 
 ```demo:open
-<div class="qr-code-overview">
+<div class="qr-code-overview pc-stack">
     <pc-qr-code
         value="https://example.com"
         label="Scan this QR code to visit example.com."
     ></pc-qr-code>
-
-    <br />
 
     <pc-input label="Value" maxlength="255" clearable></pc-input>
 </div>

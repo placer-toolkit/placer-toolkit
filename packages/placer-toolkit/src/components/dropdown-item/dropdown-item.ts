@@ -54,8 +54,8 @@ setDefaultAnimation("submenu.hide", {
  *
  * @csspart checkmark - The checkmark icon (a `<pc-icon>` element) when the item is a checkbox.
  * @csspart checkmark-svg - The `svg` part in the checkmark’s `<pc-icon>` element.
- * @csspart icon - The container for the icon slot.
- * @csspart label - The container for the label slot.
+ * @csspart icon - The container for the `icon` slot.
+ * @csspart label - The container for the `label` slot.
  * @csspart details - The container for the details slot.
  * @csspart submenu-icon - The submenu indicator icon (a `<pc-icon>` element).
  * @csspart submenu-icon-svg - The `svg` part in the submenu icon’s `<pc-icon>` element.

@@ -36,13 +36,12 @@ Formats a number as a human‐readable byte value.
 Set the `value` attribute to a number to get the value in bytes.
 
 ```demo
-<pc-format-bytes value="12"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000000"></pc-format-bytes>
+<div class="pc-stack pc-gap-0">
+    <pc-format-bytes value="12"></pc-format-bytes>
+    <pc-format-bytes value="1200"></pc-format-bytes>
+    <pc-format-bytes value="1200000"></pc-format-bytes>
+    <pc-format-bytes value="1200000000"></pc-format-bytes>
+</div>
 ```
 
 ### Formatting bits
@@ -50,13 +49,12 @@ Set the `value` attribute to a number to get the value in bytes.
 To get the value in bits, set the `unit` attribute to `bit`.
 
 ```demo
-<pc-format-bytes value="12" unit="bit"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200" unit="bit"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000" unit="bit"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000000" unit="bit"></pc-format-bytes>
+<div class="pc-stack pc-gap-0">
+    <pc-format-bytes value="12" unit="bit"></pc-format-bytes>
+    <pc-format-bytes value="1200" unit="bit"></pc-format-bytes>
+    <pc-format-bytes value="1200000" unit="bit"></pc-format-bytes>
+    <pc-format-bytes value="1200000000" unit="bit"></pc-format-bytes>
+</div>
 ```
 
 ### Localisation
@@ -64,13 +62,12 @@ To get the value in bits, set the `unit` attribute to `bit`.
 Use the `lang` attribute to set the number formatting locale.
 
 ```demo
-<pc-format-bytes value="12" lang="fr"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200" lang="fr"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000" lang="fr"></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000000" lang="fr"></pc-format-bytes>
+<div class="pc-stack pc-gap-0">
+    <pc-format-bytes value="12" lang="fr"></pc-format-bytes>
+    <pc-format-bytes value="1200" lang="fr"></pc-format-bytes>
+    <pc-format-bytes value="1200000" lang="fr"></pc-format-bytes>
+    <pc-format-bytes value="1200000000" lang="fr"></pc-format-bytes>
+</div>
 ```
 
 ### SI conventions <pc-icon library="default" icon-style="solid" name="flask" style="font-size: calc(var(--pc-font-size-smaller) * 0.9)"></pc-icon>
@@ -88,11 +85,10 @@ Add the `use-si` attribute to change the formatting of the component to follow <
 </pc-callout>
 
 ```demo
-<pc-format-bytes value="12" use-si></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200" use-si></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000" use-si></pc-format-bytes>
-<br />
-<pc-format-bytes value="1200000000" use-si></pc-format-bytes>
+<div class="pc-stack pc-gap-0">
+    <pc-format-bytes value="12" use-si></pc-format-bytes>
+    <pc-format-bytes value="1200" use-si></pc-format-bytes>
+    <pc-format-bytes value="1200000" use-si></pc-format-bytes>
+    <pc-format-bytes value="1200000000" use-si></pc-format-bytes>
+</div>
 ```

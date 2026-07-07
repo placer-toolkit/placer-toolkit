@@ -1,11 +1,13 @@
-﻿WEBVTT
+WEBVTT
 
 STYLE
 ::cue(v[voice="Proog"]) {
     color: oklch(95% 0.25 95);
+    font-style: normal;
 }
 ::cue(v[voice="Emo"]) {
     color: oklch(85% 0.18 210);
+    font-style: normal;
 }
 ::cue(.ambience) {
     color: oklch(100% 0 0 / 60%);
@@ -13,6 +15,7 @@ STYLE
 }
 ::cue(.music) {
     color: oklch(100% 0 0 / 60%);
+    font-style: normal;
 }
 
 00:00:04.022 --> 00:00:05.291
@@ -208,8 +211,8 @@ easily die out here.</v>
 <v Proog>Listen to your breathing.</v>
 
 00:03:23.050 --> 00:03:25.789
-<c.ambience>(blocks thudding, quiet
-buzzing, clock still ticking)</c.ambience>
+<c.ambience>(blocks thudding,
+quiet buzzing, clock still ticking)</c.ambience>
 
 00:03:30.196 --> 00:03:32.939
 <c.ambience>(buzzing getting louder)</c.ambience>
@@ -472,7 +475,7 @@ to something that isn’t there?</v>
 00:07:44.894 --> 00:07:46.616
 <v Emo>… you’re a sick man!</v>
 
-00:07:46.658 --> 00:07:48.467 line:20%
+00:07:46.658 --> 00:07:48.467 position:50% line:0%
 <c.music>♪ (intense chase music)</c.music>
 
 00:07:46.658 --> 00:07:48.467

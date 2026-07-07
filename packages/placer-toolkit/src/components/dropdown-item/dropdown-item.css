@@ -213,27 +213,6 @@
     transform-origin: left bottom;
 }
 
-#submenu::before {
-    content: "";
-    display: none;
-    position: fixed;
-    inset: 0;
-    background-color: transparent;
-    clip-path: polygon(
-        var(--safe-triangle-cursor-x, 0) var(--safe-triangle-cursor-y, 0),
-        var(--safe-triangle-submenu-start-x, 0)
-            var(--safe-triangle-submenu-start-y, 0),
-        var(--safe-triangle-submenu-end-x, 0)
-            var(--safe-triangle-submenu-end-y, 0)
-    );
-    pointer-events: auto;
-    z-index: 9;
-}
-
-#submenu[data-visible]::before {
-    display: block;
-}
-
 ::slotted(pc-dropdown-item) {
     font-size: inherit;
 }

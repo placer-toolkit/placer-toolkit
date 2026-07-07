@@ -142,6 +142,53 @@ const isOpen = open !== undefined && open !== false;
 <script>
     import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
 
+    let activeResizeHandle: HTMLElement | null = null;
+    let startX = 0;
+    let startWidth = 0;
+
+    document.addEventListener("pointerdown", (event) => {
+        const handle = (event.target as HTMLElement).closest(".resize-handle");
+
+        if (!handle) {
+            return;
+        }
+
+        const demo = handle.closest(".code-demo");
+        const previewBlock = demo?.querySelector<HTMLElement>(".preview-block");
+
+        if (previewBlock) {
+            activeResizeHandle = handle as HTMLElement;
+            startX = event.clientX;
+            startWidth = previewBlock.offsetWidth;
+
+            document.body.style.cursor = "ew-resize";
+            document.body.style.userSelect = "none";
+        }
+    });
+
+    document.addEventListener("pointermove", (event) => {
+        if (!activeResizeHandle) {
+            return;
+        }
+
+        const demo = activeResizeHandle.closest(".code-demo");
+        const previewBlock = demo?.querySelector<HTMLElement>(".preview-block");
+
+        if (previewBlock) {
+            const deltaX = event.clientX - startX;
+            const newWidth = Math.max(160, startWidth + deltaX);
+
+            previewBlock.style.inlineSize = `${newWidth}px`;
+        }
+    });
+
+    document.addEventListener("pointerup", () => {
+        activeResizeHandle = null;
+
+        document.body.style.cursor = "";
+        document.body.style.userSelect = "";
+    });
+
     document.addEventListener("astro:page-load", () => {
         document
             .querySelectorAll<HTMLDivElement>(".code-demo")
@@ -303,45 +350,6 @@ const isOpen = open !== undefined && open !== false;
                 } else {
                     console.error("Code Demo: The toggle setup failed.");
                 }
-
-                let isResizing = false;
-                let startX = 0;
-                let startWidth = 0;
-
-                resizeHandle?.addEventListener("pointerdown", (event) => {
-                    event.preventDefault();
-
-                    if (!previewBlock) {
-                        return;
-                    }
-
-                    isResizing = true;
-                    startX = event.clientX;
-                    startWidth = previewBlock.offsetWidth;
-
-                    document.body.style.cursor = "ew-resize";
-                    document.body.style.userSelect = "none";
-                });
-
-                document.addEventListener("pointermove", (event) => {
-                    if (!isResizing || !previewBlock) {
-                        return;
-                    }
-
-                    const deltaX = event.clientX - startX;
-                    const newWidth = Math.max(160, startWidth + deltaX);
-
-                    previewBlock.style.inlineSize = `${newWidth}px`;
-                });
-
-                document.addEventListener("pointerup", () => {
-                    if (isResizing) {
-                        isResizing = false;
-
-                        document.body.style.cursor = "";
-                        document.body.style.userSelect = "";
-                    }
-                });
 
                 if (codepenButton) {
                     const currentVersion = codepenButton.dataset.version;
@@ -515,7 +523,7 @@ const isOpen = open !== undefined && open !== false;
     .code-block .shiki:focus-visible {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);
-        animation: focus-ring-animation var(--pc-transition-medium)
+        animation: inset-focus-ring-animation var(--pc-transition-medium)
             cubic-bezier(0.33, 1, 0.68, 1);
     }
 
@@ -650,6 +658,23 @@ const isOpen = open !== undefined && open !== false;
 
     .code-block.open .toggle-block pc-button pc-icon {
         transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes inset-focus-ring-animation {
+        0% {
+            outline-width: 0;
+            outline-offset: 0;
+        }
+
+        50% {
+            outline-width: calc(var(--pc-focus-ring-width) * 2);
+            outline-offset: calc(-1 * (var(--pc-focus-ring-width) * 2));
+        }
+
+        100% {
+            outline-width: var(--pc-focus-ring-width);
+            outline-offset: calc(-1 * var(--pc-focus-ring-width));
+        }
     }
 
     @media (hover: none), screen and (max-width: 600px) {

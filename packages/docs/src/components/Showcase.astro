@@ -16,14 +16,22 @@ const translatePath = useTranslatedPath(language);
             id="before-frame"
             src={translatePath("/showcase")}
             tabindex="-1"
+            loading="lazy"
+            title=""
             aria-hidden="true"
-            slot="before"></iframe>
+            slot="before"
+        >
+        </iframe>
         <iframe
             id="after-frame"
             src={translatePath("/showcase/?color-scheme=dark")}
             tabindex="-1"
+            loading="lazy"
+            title=""
             aria-hidden="true"
-            slot="after"></iframe>
+            slot="after"
+        >
+        </iframe>
     </pc-comparer>
 
     <div class="showcase-controls">
@@ -180,7 +188,7 @@ const translatePath = useTranslatedPath(language);
         align-items: stretch;
         justify-content: center;
         gap: var(--pc-spacing-xl);
-        margin-block-end: var(--pc-spacing-xxl);
+        margin-block-end: var(--pc-content-spacing);
     }
 
     pc-comparer {
@@ -199,18 +207,19 @@ const translatePath = useTranslatedPath(language);
 
     pc-comparer,
     pc-comparer > iframe {
+        margin: 0;
         inline-size: 100%;
-        block-size: 100%;
         border-radius: var(--pc-border-radius-xl);
     }
 
     pc-comparer > iframe {
+        block-size: 100%;
         pointer-events: none;
     }
 
     .showcase-controls {
         padding: var(--pc-spacing-l);
-        min-inline-size: 18rem;
+        min-inline-size: 25%;
         background-color: var(--pc-color-surface-raised);
         border: var(--pc-border-width-s) var(--pc-border-style)
             var(--pc-color-surface-border);

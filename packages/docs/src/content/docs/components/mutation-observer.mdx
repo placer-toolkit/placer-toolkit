@@ -9,11 +9,10 @@ The Mutation Observer component offers a thin, declarative interface to the [`Mu
 The mutation observer will report changes to the content it wraps through the `pc-mutation` event. When emitted, a collection of [`MutationRecord`](https://developer.mozilla.org/en-US/docs/Web/API/MutationRecord) objects will be attached to `event.detail` that contains information about how it changed.
 
 ```demo:open
-<div class="mutation-overview">
+<div class="mutation-overview pc-stack">
     <pc-mutation-observer attribute="appearance">
         <pc-button appearance="primary">Click to mutate</pc-button>
     </pc-mutation-observer>
-    <br />
     ⬆️ Click the button and watch the console
 </div>
 

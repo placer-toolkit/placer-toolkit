@@ -1062,13 +1062,38 @@ export class PcVideoPlayer extends PlacerElement {
 
         try {
             if (this.video) {
-                await this.video.play();
+                // Check if the video is ready
+                if (this.video.readyState >= 2) {
+                    // 2 = HAVE_CURRENT_DATA
+                    await this.video.play();
+                    this.dispatchEvent(new PcPlayEvent());
+                } else {
+                    // Wait for the video to be ready before playing
+                    this.video.addEventListener(
+                        "canplay",
+                        () => {
+                            this.video
+                                .play()
+                                .then(() =>
+                                    this.dispatchEvent(new PcPlayEvent()),
+                                )
+                                .catch((error) =>
+                                    console.error(
+                                        "Play failed after canplay:",
+                                        error,
+                                    ),
+                                );
+                        },
+                        { once: true },
+                    );
 
-                this.dispatchEvent(new PcPlayEvent());
+                    // Optional: Force a load if it hasn't started
+                    this.video.load();
+                }
             }
         } catch (error) {
             if (!(error instanceof Error) || error.name !== "AbortError") {
-                return;
+                console.error("Play error:", error);
             }
         }
     }

@@ -1,0 +1,339 @@
+---
+import {
+    getLanguageFromURL,
+    useTranslations,
+    useTranslatedPath,
+} from "../i18n/utilities.js";
+
+import { Image } from "astro:assets";
+
+import LanguageSelector from "../components/LanguageSelector.astro";
+import NavigationDropdown from "./composite/NavigationDropdown.astro";
+import NavigationDropdownItem from "./composite/NavigationDropdownItem.astro";
+import ThemeSelector from "../components/ThemeSelector.astro";
+
+import logo from "../assets/logo.svg";
+
+const language = getLanguageFromURL(Astro.url);
+const translation = useTranslations(language);
+const translatePath = useTranslatedPath(language);
+---
+
+<header role="banner" class="navbar pc-cloak">
+    <nav
+        class="navigation-bar"
+        aria-label={translation("navbar.aria") as string}
+    >
+        <div class="left-section">
+            <pc-button size="large" data-drawer="open mobile-sidebar">
+                <pc-icon
+                    class="rest-only"
+                    library="default"
+                    icon-style="solid"
+                    name="bars"
+                    label={translation("button.sidebar.open")}></pc-icon>
+                <pc-icon
+                    class="hover-only"
+                    library="default"
+                    icon-style="solid"
+                    name="burger"
+                    label={translation("button.sidebar.open")}></pc-icon>
+            </pc-button>
+            <a href={translatePath("/")}>
+                <Image
+                    src={logo}
+                    width={36}
+                    height={36}
+                    loading="eager"
+                    alt=""
+                />
+                <span class="pc-visually-hidden">Placer Toolkit</span>
+            </a>
+        </div>
+        <div class="middle-section">
+            <NavigationDropdown>
+                <pc-button slot="trigger">
+                    {translation("sidebar.section.getStarted")}
+                    <pc-icon
+                        class="arrow-down-move"
+                        library="default"
+                        icon-style="solid"
+                        name="chevron-down"
+                        slot="suffix"></pc-icon>
+                </pc-button>
+
+                <NavigationDropdownItem
+                    href={translatePath("/docs/get-started/installation")}
+                >
+                    {translation("sidebar.section.getStarted.installation")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/get-started/usage")}
+                >
+                    {translation("sidebar.section.getStarted.usage")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/get-started/customisation")}
+                >
+                    {translation("sidebar.section.getStarted.customisation")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/get-started/form-controls")}
+                >
+                    {translation("sidebar.section.getStarted.formControls")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/get-started/localisation")}
+                >
+                    {translation("sidebar.section.getStarted.localisation")}
+                </NavigationDropdownItem>
+            </NavigationDropdown>
+            <pc-button href={translatePath("/docs/components")}>
+                {translation("sidebar.section.components")}
+            </pc-button>
+            <NavigationDropdown>
+                <pc-button slot="trigger">
+                    {translation("sidebar.section.resources")}
+                    <pc-icon
+                        class="arrow-down-move"
+                        library="default"
+                        icon-style="solid"
+                        name="chevron-down"
+                        slot="suffix"></pc-icon>
+                </pc-button>
+
+                <NavigationDropdownItem
+                    href={translatePath("/docs/resources/community")}
+                >
+                    {translation("sidebar.section.resources.community")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/resources/contributing")}
+                >
+                    {translation("sidebar.section.resources.contributing")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/resources/brand-assets")}
+                >
+                    {translation("sidebar.section.resources.brandAssets")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href={translatePath("/docs/resources/changelog")}
+                >
+                    {translation("sidebar.section.resources.changelog")}
+                </NavigationDropdownItem>
+                <NavigationDropdownItem
+                    href="https://github.com/placer-toolkit/placer-toolkit/discussions"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                >
+                    {translation("sidebar.section.resources.support")}
+                </NavigationDropdownItem>
+            </NavigationDropdown>
+        </div>
+        <div class="right-section">
+            <ThemeSelector />
+            <LanguageSelector />
+            <pc-button class="search-button" data-dialog="open search-dialog">
+                <pc-icon
+                    class="icon-expand"
+                    library="default"
+                    icon-style="solid"
+                    name="magnifying-glass"
+                    label={translation("ui.search.label") as string}></pc-icon>
+            </pc-button>
+        </div>
+    </nav>
+</header>
+
+<script>
+    const searchButton = document.querySelector(
+        'pc-button[data-dialog="open search-dialog"]',
+    );
+    const innerButton = searchButton?.shadowRoot?.querySelector("button");
+
+    if (searchButton && innerButton) {
+        if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+            innerButton.setAttribute("aria-keyshortcuts", "Meta+K");
+        } else {
+            innerButton.setAttribute("aria-keyshortcuts", "Control+K");
+        }
+    }
+</script>
+
+<style>
+    :root {
+        --navigation-bar-height: 4rem !important;
+    }
+
+    .navbar {
+        position: fixed;
+        inset-block-start: 0;
+        inline-size: 100vw;
+        block-size: var(--navigation-bar-height);
+        z-index: 2;
+        pointer-events: auto;
+    }
+
+    .navigation-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: var(--pc-spacing-l);
+        padding-inline: var(--pc-spacing-m);
+        block-size: 100%;
+    }
+
+    .navigation-bar div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--pc-spacing-xs);
+    }
+
+    .navigation-bar div.right-section {
+        gap: 0.375rem;
+    }
+
+    .navigation-bar div > * {
+        flex-shrink: 0;
+    }
+
+    .navigation-bar .left-section,
+    .navigation-bar .middle-section {
+        padding: var(--pc-spacing-xs);
+        block-size: var(--pc-form-control-height);
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-quiet),
+            transparent 15%
+        );
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-pill);
+        box-shadow: var(--pc-shadow-s);
+    }
+
+    .navigation-bar .left-section {
+        font-size: var(--pc-font-size-l);
+    }
+
+    .navigation-bar .left-section pc-button::part(base),
+    .navigation-bar .left-section a,
+    .navigation-bar .middle-section pc-button::part(base),
+    .navigation-bar .middle-section a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        block-size: calc(
+            var(--pc-form-control-height) - (var(--pc-spacing-xs) * 2)
+        );
+        background-color: transparent;
+        color: var(--pc-color-neutral-on-quiet);
+        border: none;
+        border-radius: var(--pc-border-radius-pill);
+        will-change: transform;
+        text-decoration: none;
+    }
+
+    .navigation-bar .left-section pc-button::part(base),
+    .navigation-bar .left-section a {
+        inline-size: calc(
+            var(--pc-form-control-height) - (var(--pc-spacing-xs) * 2)
+        );
+        font-size: var(--pc-font-size-l);
+    }
+
+    @media (hover: hover) {
+        .navigation-bar .left-section pc-button::part(base):hover,
+        .navigation-bar .left-section a:hover,
+        .navigation-bar .middle-section pc-button::part(base):hover,
+        .navigation-bar .middle-section a:hover {
+            background-color: color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-normal),
+                transparent 60%
+            );
+        }
+    }
+
+    .navigation-bar .left-section pc-button::part(base):active,
+    .navigation-bar .left-section a:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            transparent 15%
+        );
+        transform: perspective(44px) translate3d(0px, 0px, -2px);
+    }
+
+    .navigation-bar .middle-section pc-button::part(base):active,
+    .navigation-bar .middle-section a:active {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-normal),
+            transparent 15%
+        );
+        transform: perspective(34px) translate3d(0px, 0px, -2px);
+    }
+
+    .navigation-bar .left-section a img {
+        scale: 1.05;
+        translate: 0.0625rem -0.0625rem;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .navigation-bar .right-section :global(pc-button::part(base)) {
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-neutral-fill-quiet),
+            transparent 15%
+        );
+        color: var(--pc-color-neutral-on-quiet);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: var(--pc-border-width-s) var(--pc-border-style)
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-pill);
+        font-size: var(--pc-font-size-m);
+        will-change: transform;
+        box-shadow: var(--pc-shadow-s);
+    }
+
+    @media (hover: hover) {
+        .navigation-bar .right-section :global(pc-button::part(base):hover) {
+            background-color: color-mix(
+                in oklab,
+                color-mix(
+                    in oklab,
+                    var(--pc-color-neutral-fill-quiet),
+                    var(--pc-color-mix-hover)
+                ),
+                transparent 15%
+            );
+        }
+    }
+
+    .navigation-bar .right-section :global(pc-button::part(base):active) {
+        background-color: color-mix(
+            in oklab,
+            color-mix(
+                in oklab,
+                var(--pc-color-neutral-fill-quiet),
+                var(--pc-color-mix-active)
+            ),
+            transparent 15%
+        );
+        transform: perspective(42px) translate3d(0px, 0px, -2px);
+    }
+
+    @media screen and (max-width: 800px) {
+        /* You can still access everything and more in the sidebar. */
+        .navigation-bar .middle-section {
+            display: none;
+        }
+    }
+</style>

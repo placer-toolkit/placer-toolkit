@@ -71,32 +71,30 @@ When using the `from` attribute, the element’s [`textContent`](https://develop
 To copy data from an attribute, use `from="id[attribute]"` where `id` is the id of the target element and `attribute` is the name of the attribute you’d like to copy. To copy data from a property, use `from="id.property"` where `id` is the id of the target element and `property` is the name of the property you’d like to copy.
 
 ```demo
-<!-- Copies the span’s textContent -->
-<span class="pc-align-items-center pc-gap-s">
-    <span id="my-phone">+1 555 555 0123</span>
-    <pc-copy-button from="my-phone"></pc-copy-button>
-</span>
+<div class="pc-stack">
+    <!-- Copies the span’s textContent -->
+    <span class="pc-align-items-center pc-gap-s">
+        <span id="my-phone">+1 555 555 0123</span>
+        <pc-copy-button from="my-phone"></pc-copy-button>
+    </span>
 
-<br />
+    <!-- Copies the input’s value property -->
+    <span class="pc-align-items-center pc-gap-s">
+        <pc-input
+            type="text"
+            id="my-input"
+            value="User input"
+            style="display: inline-block; max-inline-size: 300px"
+        ></pc-input>
+        <pc-copy-button from="my-input.value"></pc-copy-button>
+    </span>
 
-<!-- Copies the input’s value property -->
-<span class="pc-align-items-center pc-gap-s">
-    <pc-input
-        type="text"
-        id="my-input"
-        value="User input"
-        style="display: inline-block; max-inline-size: 300px"
-    ></pc-input>
-    <pc-copy-button from="my-input.value"></pc-copy-button>
-</span>
-
-<br />
-
-<!-- Copies the link’s href attribute -->
-<span class="pc-align-items-center pc-gap-s">
-    <a href="https://example.com" id="my-link">Example website</a>
-    <pc-copy-button from="my-link[href]"></pc-copy-button>
-</span>
+    <!-- Copies the link’s href attribute -->
+    <span class="pc-align-items-center pc-gap-s">
+        <a href="https://example.com" id="my-link">Example website</a>
+        <pc-copy-button from="my-link[href]"></pc-copy-button>
+    </span>
+</div>
 ```
 
 ### Handling errors

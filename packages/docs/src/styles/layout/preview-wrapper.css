@@ -6,9 +6,9 @@
     border-radius: var(--pc-border-radius-m);
 
     .preview-block:not(:has(~ .code-block, ~ .toggle-block)) {
+        aspect-ratio: 1 / 1;
         min-block-size: 1em;
         background-color: var(--pc-color-neutral-fill-loud);
         border-radius: var(--pc-border-radius-s);
-        aspect-ratio: 1 / 1;
     }
 }

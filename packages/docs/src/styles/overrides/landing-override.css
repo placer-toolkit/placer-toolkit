@@ -1,13 +1,16 @@
-@import "./fonts/space-grotesk.css";
+@import "../fonts/space-grotesk.css";
 
 .navbar {
-    background-color: color-mix(
-        in oklab,
-        var(--pc-color-surface-default) var(--navigation-opacity),
-        transparent
-    ) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background-image: linear-gradient(
+        to bottom,
+        color-mix(
+                in oklab,
+                var(--pc-color-surface-default),
+                transparent calc(100% - var(--navigation-opacity))
+            )
+            0%,
+        transparent 100%
+    );
 }
 
 html.pc-dark {

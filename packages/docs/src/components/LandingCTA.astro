@@ -17,7 +17,7 @@ const translation = useTranslations(language);
 const translatePath = useTranslatedPath(language);
 ---
 
-<div class="landing-cta">
+<section class="landing-cta" aria-labelledby="cta-headline">
     <div class="content">
         <div>
             <pc-callout
@@ -54,18 +54,14 @@ const translatePath = useTranslatedPath(language);
                 </div>
             </pc-callout>
 
-            <div
-                class="splash-logo theme-dependent-content-switcher"
-                role="heading"
-                aria-level="1"
-            >
+            <div class="splash-logo theme-dependent-content-switcher">
                 <Image
                     class="light-content"
                     src={placerToolkitLightLogo}
                     width="300"
                     height="58.25"
                     loading="eager"
-                    alt=""
+                    alt="Placer Toolkit"
                 />
                 <Image
                     class="dark-content"
@@ -73,22 +69,18 @@ const translatePath = useTranslatedPath(language);
                     width="300"
                     height="58.25"
                     loading="eager"
-                    alt=""
+                    alt="Placer Toolkit"
                 />
-                <span class="pc-visually-hidden">Placer Toolkit</span>
             </div>
 
             <h1
                 class="headline"
+                id="cta-headline"
                 set:html={translation("landingCTA.marketingLine")}
             />
 
             <h2 class="tagline">
-                <span>{translation("landingCTA.tagline.flexible")}</span>
-                <span>{translation("landingCTA.tagline.accessible")}</span>
-                <span style="white-space: nowrap">
-                    {translation("landingCTA.tagline.webComponents")}
-                </span>
+                {translation("landingCTA.tagline.combo")}
             </h2>
         </div>
         <div>
@@ -148,6 +140,9 @@ const translatePath = useTranslatedPath(language);
     </div>
     <div class="animation" aria-hidden="true">
         <div class="box">
+            <div class="inset-box"></div>
+            <div class="filter"></div>
+
             <Image
                 src={placerToolkitLogo}
                 width="56"
@@ -211,51 +206,68 @@ const translatePath = useTranslatedPath(language);
             data-pause={translation("ui.media.state.pauseAnimation")}
             data-play={translation("ui.media.state.playAnimation")}></pc-icon>
     </pc-button>
-</div>
+</section>
 
 <script>
     import type { PcAvatar } from "placer-toolkit/dist/components/avatar/avatar.js";
     import type { PcButton } from "placer-toolkit/dist/components/button/button.js";
 
-    const animation = document.querySelector<HTMLDivElement>(
-        ".landing-cta > .animation",
-    );
-    const centerPiece = animation?.querySelector<HTMLDivElement>(".box");
-    const pauseButton = document.querySelector<PcButton>(
-        ".landing-cta .pause-button",
-    );
+    let handler: () => void;
 
-    if (pauseButton && animation) {
-        pauseButton.addEventListener("click", () => {
-            const avatars = animation.querySelectorAll<PcAvatar>("pc-avatar");
+    document.addEventListener("astro:page-load", () => {
+        const animation = document.querySelector<HTMLDivElement>(
+            ".landing-cta > .animation",
+        );
+        const centerPiece = animation?.querySelector<HTMLDivElement>(".box");
+        const pauseButton = document.querySelector<PcButton>(
+            ".landing-cta .pause-button",
+        );
 
-            const currentState =
-                avatars[0]?.style.animationPlayState ||
-                getComputedStyle(avatars[0]).animationPlayState;
-            const isPaused = currentState === "paused";
-            const newState = isPaused ? "running" : "paused";
+        if (pauseButton && animation) {
+            handler = () => {
+                const avatars =
+                    animation.querySelectorAll<PcAvatar>("pc-avatar");
+                const currentState =
+                    avatars[0]?.style.animationPlayState ||
+                    getComputedStyle(avatars[0]).animationPlayState;
+                const isPaused = currentState === "paused";
+                const newState = isPaused ? "running" : "paused";
 
-            avatars.forEach((avatar) => {
-                avatar.style.animationPlayState = newState;
-            });
+                avatars.forEach((avatar) => {
+                    avatar.style.animationPlayState = newState;
+                });
 
-            if (centerPiece) {
-                centerPiece.style.animationPlayState = newState;
-            }
+                if (centerPiece) {
+                    centerPiece.style.animationPlayState = newState;
+                }
 
-            const icon = pauseButton.querySelector("pc-icon");
+                const icon = pauseButton.querySelector("pc-icon");
 
-            if (icon) {
-                icon.setAttribute("name", isPaused ? "pause" : "play");
-                icon.setAttribute(
-                    "label",
-                    isPaused
-                        ? (pauseButton.dataset.pause ?? "Pause animation")
-                        : (pauseButton.dataset.play ?? "Play animation"),
-                );
-            }
-        });
-    }
+                if (icon) {
+                    icon.setAttribute("name", isPaused ? "pause" : "play");
+                    icon.setAttribute(
+                        "label",
+                        isPaused
+                            ? (pauseButton.dataset.pause ?? "Pause animation")
+                            : (pauseButton.dataset.play ?? "Play animation"),
+                    );
+                }
+            };
+
+            pauseButton.removeEventListener("click", handler);
+            pauseButton.addEventListener("click", handler);
+        }
+    });
+
+    document.addEventListener("astro:before-swap", () => {
+        const pauseButton = document.querySelector<PcButton>(
+            ".landing-cta .pause-button",
+        );
+
+        if (pauseButton && handler) {
+            pauseButton.removeEventListener("click", handler);
+        }
+    });
 </script>
 
 <style>
@@ -268,14 +280,10 @@ const translatePath = useTranslatedPath(language);
         position: relative;
         align-items: flex-start;
         justify-content: center;
-        margin-inline: calc(-1 * 6rem);
-        margin-block-end: var(--pc-spacing-xxxl);
-        inline-size: calc(100% + (6rem * 2));
-        block-size: calc(
-            34.375rem + var(--pc-spacing-xxxl) + var(--pc-spacing-xxxl)
-        );
-        border-block-end: var(--pc-border-width-s) var(--pc-border-style)
-            var(--pc-color-surface-border);
+        margin-block-end: var(--pc-spacing-xxxxl);
+        padding-block-start: var(--pc-spacing-xxxl);
+        max-inline-size: 80rem;
+        block-size: auto;
     }
 
     .landing-cta > .content {
@@ -284,7 +292,6 @@ const translatePath = useTranslatedPath(language);
         align-items: flex-start;
         justify-content: space-evenly;
         flex-direction: column;
-        padding-inline: 6rem;
         inline-size: 100%;
         block-size: 100%;
     }
@@ -304,16 +311,17 @@ const translatePath = useTranslatedPath(language);
 
     .landing-cta > .content .headline {
         margin: 0;
+        letter-spacing: -0.03125em;
         line-height: 1.2;
         text-align: start;
-        letter-spacing: -0.03125em;
     }
 
     .landing-cta > .content .tagline {
-        margin-block-end: -0.5625rem;
+        margin-block-end: var(--pc-content-spacing);
         color: var(--pc-color-text-quiet);
         font-weight: var(--pc-font-weight-bold);
         font-size: var(--pc-font-size-l);
+        letter-spacing: -0.015625em;
         text-align: start;
     }
 
@@ -321,7 +329,7 @@ const translatePath = useTranslatedPath(language);
         display: flex;
         flex-direction: column;
         gap: var(--pc-spacing-s);
-        inline-size: 20vmax;
+        inline-size: 20rem;
         max-inline-size: 90dvw;
     }
 
@@ -404,56 +412,77 @@ const translatePath = useTranslatedPath(language);
         display: flex;
         position: relative;
         align-items: center;
-        margin-inline-end: 6rem;
         inline-size: 34.375rem;
         block-size: 100%;
     }
 
     .landing-cta > .animation .box {
+        display: flex;
         position: absolute;
+        align-items: center;
+        justify-content: center;
         inset-block-start: 50%;
         inset-inline-start: 50%;
-        padding: var(--pc-spacing-l);
         inline-size: 5.625rem;
         block-size: 5.625rem;
-        aspect-ratio: 1 / 1;
-        background-color: color-mix(
-            in oklab,
-            var(--pc-color-surface-raised),
-            transparent 40%
-        );
         border: var(--pc-border-width-s) var(--pc-border-style)
-            color-mix(in oklab, var(--pc-color-surface-border), transparent 40%);
+            var(--pc-color-surface-border);
+        border-radius: var(--pc-border-radius-xl);
         backdrop-filter: blur(8px);
         -webkit-backdrop-filter: blur(8px);
-        border-radius: var(--pc-border-radius-xl);
         translate: -50% -50%;
-        animation: core-pulse 7s ease-in-out infinite;
+        overflow: hidden;
+        animation: core-pulse 7s infinite ease-in-out;
         box-shadow: var(--pc-shadow-l);
         z-index: 1;
     }
 
-    .landing-cta > .animation .box::before {
+    .landing-cta > .animation .box .inset-box {
+        position: absolute;
+        inset: 0.25rem;
+        background-color: color-mix(
+            in oklab,
+            var(--pc-color-surface-lowered),
+            transparent 65%
+        );
+        border-radius: calc(var(--pc-border-radius-xl) - 0.25rem);
+        z-index: 2;
+    }
+
+    .landing-cta > .animation .box .filter {
+        position: absolute;
+        inset: 0;
+        scale: 0.97;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    .landing-cta > .animation .box .filter::before {
         content: "";
         position: absolute;
-        inset: -50px;
-        background: radial-gradient(
-            circle,
-            color-mix(
-                    in oklab,
-                    var(--pc-color-primary-fill-normal),
-                    transparent 95%
-                )
-                0%,
-            transparent 70%
+        inset: -1.25rem;
+        background-image: linear-gradient(
+            130deg,
+            transparent 45%,
+            color-mix(in oklab, var(--pc-color-primary-60), transparent 80%) 50%,
+            transparent 60%
         );
-        z-index: -1;
-        filter: blur(20px);
-        pointer-events: none;
+        background-size: 500%;
+        background-position-x: 100%;
+        filter: blur(8px);
+        mix-blend-mode: color-dodge;
+        animation: shimmer 7s infinite ease-in-out;
+    }
+
+    .landing-cta > .animation .box img {
+        user-select: none;
+        -webkit-user-select: none;
+        z-index: 4;
     }
 
     .landing-cta > .animation .avatars {
         --circle-radius: 200px;
+
         display: flex;
         position: relative;
         align-items: center;
@@ -545,8 +574,8 @@ const translatePath = useTranslatedPath(language);
 
     .landing-cta > .pause-button {
         position: absolute;
-        inset-block-end: var(--pc-spacing-l);
-        inset-inline-end: var(--pc-spacing-l);
+        inset-block-end: 0;
+        inset-inline-end: 0;
     }
 
     @keyframes tile-lifecycle {
@@ -592,6 +621,11 @@ const translatePath = useTranslatedPath(language);
     @keyframes core-pulse {
         0%,
         100% {
+            border-color: color-mix(
+                in oklab,
+                var(--pc-color-primary-border-loud),
+                var(--pc-color-surface-border) 90%
+            );
             box-shadow: var(--pc-shadow-offset-x-m) var(--pc-shadow-offset-y-m)
                 var(--pc-shadow-blur-l)
                 color-mix(
@@ -599,14 +633,14 @@ const translatePath = useTranslatedPath(language);
                     var(--pc-color-primary-border-loud),
                     transparent 90%
                 );
-            border-color: color-mix(
-                in oklab,
-                var(--pc-color-primary-border-loud),
-                transparent 90%
-            );
         }
 
         50% {
+            border-color: color-mix(
+                in oklab,
+                var(--pc-color-primary-border-loud),
+                var(--pc-color-surface-border) 60%
+            );
             box-shadow: var(--pc-shadow-offset-x-l) var(--pc-shadow-offset-y-l)
                 var(--pc-shadow-blur-l)
                 color-mix(
@@ -614,17 +648,19 @@ const translatePath = useTranslatedPath(language);
                     var(--pc-color-primary-border-loud),
                     transparent 70%
                 );
-            border-color: color-mix(
-                in oklab,
-                var(--pc-color-primary-border-loud),
-                transparent 60%
-            );
+        }
+    }
+
+    @keyframes shimmer {
+        to {
+            background-position-x: 0%;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .landing-cta > .animation .avatars pc-avatar,
-        .landing-cta > .animation .box {
+        .landing-cta > .animation .box,
+        .landing-cta > .animation .box * {
             opacity: 1;
             transform: rotate(var(--angle)) translate(var(--circle-radius))
                 rotate(calc(-1 * var(--angle))) scale(1);
@@ -670,24 +706,14 @@ const translatePath = useTranslatedPath(language);
             text-align: center;
         }
 
-        .landing-cta > .content .splash-buttons {
-            inline-size: 30vmax;
-        }
-
         .landing-cta > .animation {
             margin-inline-end: 0;
         }
     }
 
-    @media screen and (max-width: 768px) {
-        .landing-cta > .content .splash-buttons {
-            inline-size: 40vmax;
-        }
-    }
-
     @media screen and (max-width: 500px) {
-        .landing-cta > .animation .avatars {
-            --circle-radius: 150px;
+        .landing-cta > .animation {
+            scale: 0.75;
         }
     }
 
@@ -696,8 +722,8 @@ const translatePath = useTranslatedPath(language);
             inline-size: 100%;
         }
 
-        .landing-cta > .animation .avatars {
-            --circle-radius: 125px;
+        .landing-cta > .animation {
+            scale: 0.625;
         }
     }
 </style>

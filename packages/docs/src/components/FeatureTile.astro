@@ -116,6 +116,7 @@ const { label, icon, href, orientation } = Astro.props;
         padding: var(--pc-spacing-xl);
         inline-size: 100%;
         block-size: 100%;
+        background-color: transparent;
         color: var(--pc-color-text-normal);
         border-radius: var(--pc-border-radius-l);
         line-height: var(--pc-line-height-normal);
@@ -126,6 +127,10 @@ const { label, icon, href, orientation } = Astro.props;
             all var(--pc-transition-fast) ease-in-out,
             --mouse-x var(--pc-transition-slow) ease-in-out,
             --mouse-y var(--pc-transition-slow) ease-in-out;
+    }
+
+    .grid-tile::part(base):active {
+        scale: 0.98;
     }
 
     .grid-tile::part(base)::before {

@@ -130,6 +130,8 @@ export class PcDropdown extends PlacerElement {
         PcDropdownItem,
         ReturnType<typeof autoUpdate>
     > = new Map();
+    private submenuOverlay?: HTMLDivElement;
+    private activeSubmenuItem?: PcDropdownItem;
     private readonly localize = new LocalizeController(this);
     private userTypedQuery = "";
     private userTypedTimeout!: ReturnType<typeof setTimeout>;
@@ -179,6 +181,7 @@ export class PcDropdown extends PlacerElement {
 
         this.submenuCleanups.forEach((cleanup) => cleanup());
         this.submenuCleanups.clear();
+        this.removeSubmenuOverlay();
 
         document.removeEventListener("mousemove", this.handleGlobalMouseMove);
     }
@@ -293,6 +296,8 @@ export class PcDropdown extends PlacerElement {
         });
 
         this.openSubmenuStack = [];
+        this.activeSubmenuItem = undefined;
+        this.hideSubmenuOverlay();
     }
 
     /** Closes sibling submenus at the same level as the specified item. */
@@ -375,7 +380,7 @@ export class PcDropdown extends PlacerElement {
                 items.forEach((item, index) => (item.active = index === 0));
                 items[0].focus({ preventScroll: true });
             }
-        }, 250);
+        }, 1);
 
         await animationPromise;
 
@@ -416,6 +421,7 @@ export class PcDropdown extends PlacerElement {
         await stopAnimations(this);
 
         this.menu.hidden = true;
+        this.hideSubmenuOverlay();
 
         this.dispatchEvent(new PcAfterHideEvent());
     }
@@ -696,6 +702,7 @@ export class PcDropdown extends PlacerElement {
 
         this.closeSiblingSubmenus(openingItem);
         this.addToSubmenuStack(openingItem);
+        this.activeSubmenuItem = openingItem;
 
         this.setupSubmenuPosition(openingItem);
         this.processSubmenuItems(openingItem);
@@ -826,9 +833,40 @@ export class PcDropdown extends PlacerElement {
         });
     }
 
+    private ensureSubmenuOverlay(): HTMLDivElement {
+        if (!this.submenuOverlay) {
+            this.submenuOverlay = this.ownerDocument.createElement("div");
+            this.submenuOverlay.style.position = "fixed";
+            this.submenuOverlay.style.inset = "0";
+            this.submenuOverlay.style.display = "none";
+            this.submenuOverlay.style.backgroundColor = "transparent";
+            this.submenuOverlay.style.pointerEvents = "auto";
+            this.submenuOverlay.style.zIndex = "999999";
+            this.submenuOverlay.style.clipPath =
+                "polygon(var(--safe-triangle-cursor-x, 0) var(--safe-triangle-cursor-y, 0), var(--safe-triangle-submenu-start-x, 0) var(--safe-triangle-submenu-start-y, 0), var(--safe-triangle-submenu-end-x, 0) var(--safe-triangle-submenu-end-y, 0))";
+            this.ownerDocument.body.appendChild(this.submenuOverlay);
+        }
+
+        return this.submenuOverlay;
+    }
+
+    private removeSubmenuOverlay() {
+        this.submenuOverlay?.remove();
+        this.submenuOverlay = undefined;
+    }
+
+    private showSubmenuOverlay() {
+        this.ensureSubmenuOverlay().style.display = "block";
+    }
+
+    private hideSubmenuOverlay() {
+        this.submenuOverlay?.style.setProperty("display", "none");
+    }
+
     /** Updates the safe triangle coordinates for a submenu. */
     private updateSafeTriangleCoordinates(item: PcDropdownItem) {
         if (!item.submenuElement || !item.submenuOpen) {
+            this.hideSubmenuOverlay();
             return;
         }
 
@@ -836,35 +874,30 @@ export class PcDropdown extends PlacerElement {
             document.activeElement?.matches(":focus-visible");
 
         if (isKeyboardNavigation) {
-            item.submenuElement.style.setProperty(
-                "--safe-triangle-visible",
-                "none",
-            );
-
+            this.hideSubmenuOverlay();
             return;
         }
 
-        item.submenuElement.style.setProperty(
-            "--safe-triangle-visible",
-            "block",
-        );
+        this.activeSubmenuItem = item;
+        this.showSubmenuOverlay();
 
         const submenuRect = item.submenuElement.getBoundingClientRect();
         const isRTL = this.localize.dir() === "rtl";
+        const overlay = this.ensureSubmenuOverlay();
 
-        item.submenuElement.style.setProperty(
+        overlay.style.setProperty(
             "--safe-triangle-submenu-start-x",
             `${isRTL ? submenuRect.right : submenuRect.left}px`,
         );
-        item.submenuElement.style.setProperty(
+        overlay.style.setProperty(
             "--safe-triangle-submenu-start-y",
             `${submenuRect.top}px`,
         );
-        item.submenuElement.style.setProperty(
+        overlay.style.setProperty(
             "--safe-triangle-submenu-end-x",
             `${isRTL ? submenuRect.right : submenuRect.left}px`,
         );
-        item.submenuElement.style.setProperty(
+        overlay.style.setProperty(
             "--safe-triangle-submenu-end-y",
             `${submenuRect.bottom}px`,
         );
@@ -872,7 +905,8 @@ export class PcDropdown extends PlacerElement {
 
     /** Handle global mouse movement for safe triangle logic. */
     private handleGlobalMouseMove = (event: MouseEvent) => {
-        const currentSubmenuItem = this.getCurrentSubmenuItem();
+        const currentSubmenuItem =
+            this.activeSubmenuItem ?? this.getCurrentSubmenuItem();
 
         if (
             !currentSubmenuItem?.submenuOpen ||
@@ -894,40 +928,53 @@ export class PcDropdown extends PlacerElement {
             Math.min(event.clientY, submenuRect.bottom),
         );
 
-        currentSubmenuItem.submenuElement.style.setProperty(
+        const overlay = this.ensureSubmenuOverlay();
+
+        overlay.style.setProperty(
             "--safe-triangle-cursor-x",
             `${constrainedX}px`,
         );
-        currentSubmenuItem.submenuElement.style.setProperty(
+        overlay.style.setProperty(
             "--safe-triangle-cursor-y",
             `${constrainedY}px`,
         );
 
-        const isOverItem = currentSubmenuItem.matches(":hover");
+        const composedPath = event.composedPath();
+        const overlayHovered = composedPath.includes(
+            this.ensureSubmenuOverlay(),
+        );
+        const submenuItemHovered = currentSubmenuItem.matches(":hover");
+        const submenuElementHovered = Boolean(
+            currentSubmenuItem.submenuElement?.matches(":hover"),
+        );
+        const isOverItem =
+            submenuItemHovered ||
+            !!composedPath.find((element) => element === currentSubmenuItem);
         const isOverSubmenu =
-            currentSubmenuItem.submenuElement?.matches(":hover") ||
-            !!event
-                .composedPath()
-                .find(
-                    (element) =>
-                        element instanceof HTMLElement &&
-                        element.closest('[part="submenu"]') ===
-                            currentSubmenuItem.submenuElement,
-                );
+            submenuElementHovered ||
+            overlayHovered ||
+            !!composedPath.find(
+                (element) =>
+                    element instanceof HTMLElement &&
+                    element.closest('[part="submenu"]') ===
+                        currentSubmenuItem.submenuElement,
+            );
 
         if (!isOverItem && !isOverSubmenu) {
             setTimeout(() => {
                 if (
-                    !currentSubmenuItem.matches(":hover") &&
-                    !currentSubmenuItem.submenuElement?.matches(":hover")
+                    !submenuItemHovered &&
+                    !submenuElementHovered &&
+                    !overlayHovered
                 ) {
                     currentSubmenuItem.submenuOpen = false;
+                    this.activeSubmenuItem = undefined;
                 }
             }, 100);
         }
     };
 
-    /** Makes a selection, emits the `pc-select` event and closes the dropdown. */
+    /** Makes a selection, emits the `pc-select` event and closes the dropdown (unless it’s a checkbox item). */
     private makeSelection(item: PcDropdownItem) {
         const trigger = this.getTrigger();
 
@@ -975,7 +1022,9 @@ export class PcDropdown extends PlacerElement {
 
         this.dispatchEvent(pcSelect);
 
-        if (!pcSelect.defaultPrevented) {
+        const isCheckbox = item.type === "checkbox";
+
+        if (!pcSelect.defaultPrevented && !isCheckbox) {
             this.open = false;
             trigger?.focus({ preventScroll: true });
         }

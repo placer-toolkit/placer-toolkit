@@ -1,7 +1,7 @@
 import { getKitCode } from "../../utilities/kit-code.js";
 import type { IconLibrary } from "./library.js";
 
-const faVersion = "7.2.0";
+const faVersion = "7.3.0";
 
 function getIconURL(name: string, iconStyle: string, autoWidth: boolean) {
     const basePath = autoWidth ? "svgs" : "svgs-full";
@@ -19,7 +19,8 @@ function getIconURL(name: string, iconStyle: string, autoWidth: boolean) {
         • Ensuring compliance with GDPR and other privacy laws
         • Having a valid legal basis for this data processing
 
-       See the Placer Toolkit privacy policy under https://placer-toolkit.vercel.app/docs/legal/privacy for more information. */
+       See the Placer Toolkit privacy policy under
+       https://placer-toolkit.vercel.app/docs/legal/privacy for more information. */
     return isPro
         ? `https://ka-p.fontawesome.com/releases/v${faVersion}/${basePath}/${iconStyle}/${name}.svg?token=${encodeURIComponent(kitCode)}`
         : `https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@${faVersion}/${basePath}/${iconStyle}/${name}.svg`;
@@ -42,8 +43,11 @@ const library: IconLibrary = {
                 iconStyle?.startsWith("sharp-duotone") ||
                 iconStyle === "jelly-duo-regular" ||
                 iconStyle === "notdog-duo-solid" ||
+                iconStyle === "slab-press-duo-regular" ||
+                iconStyle === "slab-duo-regular" ||
                 iconStyle?.startsWith("thumbprint") ||
-                iconStyle === "utility-duo-semibold"
+                iconStyle === "utility-duo-semibold" ||
+                iconStyle === "vellum-solid"
             ) {
                 const paths = [...svg.querySelectorAll<SVGPathElement>("path")];
                 const primaryPath = paths.find(

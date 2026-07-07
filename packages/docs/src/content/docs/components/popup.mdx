@@ -144,13 +144,11 @@ Popup doesn’t provide any styles—just positioning! The popup’s preferred p
 Popups are inactive and hidden until the `active` attribute is applied. Removing the attribute will tear down all positioning logic and event listeners, meaning you can have many idle popups on the page without affecting performance.
 
 ```demo
-<div class="popup-active">
+<div class="popup-active pc-stack">
     <pc-popup placement="top" active>
         <span slot="anchor"></span>
         <div class="box"></div>
     </pc-popup>
-
-    <br />
 
     <pc-switch checked>Active</pc-switch>
 </div>

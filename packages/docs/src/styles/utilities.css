@@ -20,7 +20,7 @@ pc-icon.icon-shrink {
 pc-button:hover,
 pc-button:active {
     .arrow-up-move {
-        transform: translateY(-0.25em);
+        transform: translateY(-0.125em);
         transition: transform var(--pc-transition-medium)
             cubic-bezier(0.22, 1.5, 0.36, 1);
     }
@@ -32,7 +32,7 @@ pc-button:active {
     }
 
     .arrow-down-move {
-        transform: translateY(0.25em);
+        transform: translateY(0.125em);
         transition: transform var(--pc-transition-medium)
             cubic-bezier(0.22, 1.5, 0.36, 1);
     }

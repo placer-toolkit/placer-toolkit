@@ -133,7 +133,7 @@ import "../../styles/fonts.css";
                             <div class="pc-stack pc-gap-xs">
                                 <div class="pc-split pc-gap-xxxs">
                                     <strong>SuperBlaster</strong>
-                                    <strong>27,49 €</strong>
+                                    <strong>32,71 €</strong>
                                 </div>
                                 <div class="pc-split pc-gap-xxxs pc-caption-m">
                                     <span>Series 2000+</span>
@@ -153,7 +153,7 @@ import "../../styles/fonts.css";
                             <div class="pc-stack pc-gap-xs">
                                 <div class="pc-split pc-gap-xxxs">
                                     <strong>DroidCleaner</strong>
-                                    <strong>2 199,99 €</strong>
+                                    <strong>2 617,99 €</strong>
                                 </div>
                                 <div class="pc-split pc-gap-xxxs pc-caption-m">
                                     <span>Series 5564X</span>
@@ -168,8 +168,9 @@ import "../../styles/fonts.css";
                             <strong>2 227,48 €</strong>
                         </div>
                         <span class="pc-caption-m">
-                            Versandkosten und Steuern werden beim Bezahlen
-                            berechnet.
+                            Alle Preise inkl. 19 % <abbr title="Mehrwertsteuer">
+                                MwSt.
+                            </abbr>, zzgl. Versandkosten.
                         </span>
                         <pc-button
                             appearance="primary"
@@ -200,9 +201,8 @@ import "../../styles/fonts.css";
                         class="pc-body-l"
                         style="margin: 0; font-family: var(--pc-font-serif)"
                     >
-                        „Am Ende werden wir uns nicht an die Worte unserer
-                        Feinde erinnern, sondern an das Schweigen unserer
-                        Freunde.“
+                        „Es ist nicht genug zu wissen, man muss auch anwenden;
+                        es ist nicht genug zu wollen, man muss auch tun.“
                     </p>
                 </pc-card>
                 <pc-card>
@@ -265,14 +265,13 @@ import "../../styles/fonts.css";
                             </div>
                         </div>
 
+                        <!-- This is a simplified translation to mimic colloquialism,
+                             because no one realistically writes their to‐dos
+                             very formally. -->
                         <pc-checkbox checked>Katze füttern</pc-checkbox>
                         <pc-checkbox checked>Pflanzen gießen</pc-checkbox>
-                        <pc-checkbox checked>
-                            Zahnarzttermin vereinbaren
-                        </pc-checkbox>
-                        <pc-checkbox>
-                            Ein Kapitel aus einem Buch lesen
-                        </pc-checkbox>
+                        <pc-checkbox checked>Zahnarzt anrufen</pc-checkbox>
+                        <pc-checkbox>Ein Kapitel lesen</pc-checkbox>
                         <pc-checkbox>Wäsche waschen</pc-checkbox>
                     </div>
                 </pc-card>
@@ -401,9 +400,10 @@ import "../../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="user"
-                                        label="Name"></pc-icon>
+                                        label="Name"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
-                                <dd>Evan Cross</dd>
+                                <dd>Max Mustermann</dd>
                             </div>
                             <div class="pc-flank pc-align-items-center">
                                 <dt>
@@ -411,7 +411,8 @@ import "../../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="calendar-days"
-                                        label="Datum"></pc-icon>
+                                        label="Datum"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
                                 <dd>15. März 2025</dd>
                             </div>
@@ -421,7 +422,8 @@ import "../../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="credit-card"
-                                        label="Payment method"></pc-icon>
+                                        label="Zahlungsmethode"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
                                 <dd>Kredit‐/Debitkarte</dd>
                             </div>
@@ -454,7 +456,7 @@ import "../../styles/fonts.css";
                             <pc-badge>Beliebt</pc-badge>
                         </div>
                         <span class="pc-flank pc-align-items-baseline pc-gap-s">
-                            <span class="pc-heading-xl">8,33 €</span>
+                            <span class="pc-heading-xl">9,91 €</span>
                             <span class="pc-caption-l">pro Monat</span>
                         </span>
                         <p class="pc-caption-l">
@@ -514,11 +516,9 @@ import "../../styles/fonts.css";
                         <div class="pc-stack pc-gap-s">
                             <div class="pc-cluster pc-gap-s">
                                 <h3 class="pc-heading-s">randomguy-2650</h3>
-                                <pc-badge>Betreuer</pc-badge>
+                                <pc-badge>Core</pc-badge>
                             </div>
-                            <span class="pc-caption-m">
-                                Frontend‐Entwickler
-                            </span>
+                            <span class="pc-caption-m">Entwickler</span>
                         </div>
                         <pc-avatar
                             image="/avatars/randomguy-2650.png"
@@ -537,10 +537,10 @@ import "../../styles/fonts.css";
                         <pc-button variant="outlined" style="inline-size: 100%">
                             <pc-icon
                                 library="default"
-                                icon-style="solid"
-                                name="phone"
+                                icon-style="brands"
+                                name="github"
                                 slot="prefix"></pc-icon>
-                            Telefon
+                            GitHub
                         </pc-button>
                     </div>
                 </pc-card>

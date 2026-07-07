@@ -32,33 +32,25 @@ The `date` attribute determines the date/time to use when formatting. It must be
 Formatting options are based on those found in the [`Intl.DateTimeFormat` API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat). When formatting options are provided, the date/time will be formatted according to those values. When no formatting options are provided, a localised, numeric date will be displayed instead.
 
 ```demo
-<!-- Human‐readable date -->
-<pc-format-date month="long" day="numeric" year="numeric"></pc-format-date>
+<div class="pc-stack pc-gap-0">
+    <!-- Human‐readable date -->
+    <pc-format-date month="long" day="numeric" year="numeric"></pc-format-date>
 
-<br />
+    <!-- Time -->
+    <pc-format-date hour="numeric" minute="numeric"></pc-format-date>
 
-<!-- Time -->
-<pc-format-date hour="numeric" minute="numeric"></pc-format-date>
+    <!-- Weekday -->
+    <pc-format-date weekday="long"></pc-format-date>
 
-<br />
+    <!-- Month -->
+    <pc-format-date month="long"></pc-format-date>
 
-<!-- Weekday -->
-<pc-format-date weekday="long"></pc-format-date>
+    <!-- Year -->
+    <pc-format-date year="numeric"></pc-format-date>
 
-<br />
-
-<!-- Month -->
-<pc-format-date month="long"></pc-format-date>
-
-<br />
-
-<!-- Year -->
-<pc-format-date year="numeric"></pc-format-date>
-
-<br />
-
-<!-- No formatting options -->
-<pc-format-date></pc-format-date>
+    <!-- No formatting options -->
+    <pc-format-date></pc-format-date>
+</div>
 ```
 
 ### Hour formatting
@@ -66,9 +58,10 @@ Formatting options are based on those found in the [`Intl.DateTimeFormat` API](h
 By default, the browser will determine whether to use 12‐hour or 24‐hour time. To force one or the other, set the `hour-format` attribute to `12` or `24`.
 
 ```demo
-<pc-format-date hour="numeric" minute="numeric" hour-format="12"></pc-format-date>
-<br />
-<pc-format-date hour="numeric" minute="numeric" hour-format="24"></pc-format-date>
+<div class="pc-stack pc-gap-0">
+    <pc-format-date hour="numeric" minute="numeric" hour-format="12"></pc-format-date>
+    <pc-format-date hour="numeric" minute="numeric" hour-format="24"></pc-format-date>
+</div>
 ```
 
 ### Localisation
@@ -76,9 +69,15 @@ By default, the browser will determine whether to use 12‐hour or 24‐hour tim
 Use the `lang` attribute to set the date/time formatting locale.
 
 ```demo
-English (US): <pc-format-date lang="en-us"></pc-format-date>
-<br />
-French: <pc-format-date lang="fr"></pc-format-date>
-<br />
-Russian: <pc-format-date lang="ru"></pc-format-date>
+<div class="pc-stack pc-gap-0">
+    <span>
+        English (US): <pc-format-date lang="en-us"></pc-format-date>
+    </span>
+    <span>
+        French: <pc-format-date lang="fr"></pc-format-date>
+    </span>
+    <span>
+        Russian: <pc-format-date lang="ru"></pc-format-date>
+    </span>
+</div>
 ```

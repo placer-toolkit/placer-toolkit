@@ -330,7 +330,7 @@ const { isMobile = false } = Astro.props;
                                     }}
                                     href={link.href}
                                 >
-                                    {link.title}
+                                    {link.title}{" "}
                                     {link.isUntranslated && (
                                         <span
                                             class={
@@ -355,7 +355,7 @@ const { isMobile = false } = Astro.props;
                                                     }}
                                                     href={child.href}
                                                 >
-                                                    {child.title}
+                                                    {child.title}{" "}
                                                     {child.isUntranslated && (
                                                         <span class="">
                                                             {translation(

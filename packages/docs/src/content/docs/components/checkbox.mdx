@@ -35,7 +35,7 @@ Use the `checked` attribute to enable the checkbox.
 Use the `indeterminate` attribute to make the checkbox indeterminate.
 
 ```demo
-<div class="checkbox-indeterminate">
+<fieldset class="checkbox-indeterminate">
     <pc-checkbox data-role="all" indeterminate>All options</pc-checkbox>
 
     <ul>
@@ -49,7 +49,7 @@ Use the `indeterminate` attribute to make the checkbox indeterminate.
             <pc-checkbox data-role="option">Option 3</pc-checkbox>
         </li>
     </ul>
-</div>
+</fieldset>
 
 <script>
     const group = document.querySelector(".checkbox-indeterminate");
@@ -83,6 +83,13 @@ Use the `indeterminate` attribute to make the checkbox indeterminate.
 </script>
 
 <style>
+    .checkbox-indeterminate {
+        margin: 0;
+        padding: 0;
+        min-inline-size: 0;
+        border: none;
+    }
+
     .checkbox-indeterminate pc-checkbox {
         display: block;
     }

@@ -8,6 +8,12 @@ export default {
                 parser: "astro",
             },
         },
+        {
+            files: "package.json",
+            options: {
+                tabWidth: 2,
+            },
+        },
     ],
     arrowParens: "always",
     bracketSpacing: true,

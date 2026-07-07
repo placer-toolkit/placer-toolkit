@@ -20,36 +20,34 @@ const translatePath = useTranslatedPath(language);
                 <div class="logo-tagline pc-cluster pc-gap-s">
                     <Image src={Logo} width="32" height="32" alt="" />
                     <b class="tagline">
-                        <span>
-                            {translation("landingCTA.tagline.flexible")}
-                        </span>
-                        <span>
-                            {translation("landingCTA.tagline.accessible")}
-                        </span>
-                        <span style="white-space: nowrap">
-                            {translation("landingCTA.tagline.webComponents")}
-                        </span>
+                        {translation("landingCTA.tagline.combo")}
                     </b>
                 </div>
                 <div class="pc-body-s">
                     <p>
                         {translation("landingCTA.marketingLine.descriptive")}
                     </p>
-                    <p class="copyright">
-                        {translation("footer.copyright.left")}
-                        <pc-icon
-                            library="default"
-                            icon-style="solid"
-                            name="heart"
-                            label={translation("footer.copyright.centre")}
-                        ></pc-icon>
-                        <span
-                            set:html={translation("footer.copyright.right")}
-                        />
-                    </p>
+                    <p
+                        class="copyright"
+                        set:html={translation("footer.copyright")}
+                    />
                 </div>
             </div>
-            <div class="buttons pc-cluster">
+            <div class="buttons pc-cluster pc-gap-xs">
+                <pc-button
+                    href="https://github.com/placer-toolkit/placer-toolkit"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                    size="small"
+                    variant="plain"
+                >
+                    <pc-icon
+                        library="default"
+                        icon-style="brands"
+                        name="github"
+                        label="GitHub"></pc-icon>
+                </pc-button>
+
                 <pc-button
                     size="small"
                     variant="plain"
@@ -217,28 +215,35 @@ const translatePath = useTranslatedPath(language);
             var(--pc-color-surface-border);
     }
 
+    .footer-content {
+        margin-inline: auto;
+        max-inline-size: 80rem;
+    }
+
     .footer .info .logo-tagline .tagline {
         translate: 0 0.125rem;
     }
 
-    .footer .info .copyright pc-icon[name="heart"] {
+    .footer .info .copyright :global(pc-icon[name="heart"]) {
+        contain: layout;
         padding-inline: var(--pc-spacing-xxs);
         translate: 0 0.125rem;
+        will-change: transform;
         cursor: pointer;
     }
 
     @media (hover: hover) {
-        .footer .info .copyright pc-icon[name="heart"]:hover {
+        .footer .info .copyright :global(pc-icon[name="heart"]:hover) {
             color: var(--pc-color-red-60);
-            animation: fa-beat 1s ease-in-out infinite;
+            animation: heartbeat 1s ease-out infinite;
             transition: color var(--pc-transition-fast) ease-in-out;
         }
     }
 
     @media (hover: none) {
-        .footer .info .copyright pc-icon[name="heart"]:active {
+        .footer .info .copyright :global(pc-icon[name="heart"]:active) {
             color: var(--pc-color-red-60);
-            animation: fa-beat 1s ease-in-out infinite;
+            animation: heartbeat 1s ease-out infinite;
             transition: color var(--pc-transition-fast) ease-in-out;
         }
     }
@@ -260,16 +265,38 @@ const translatePath = useTranslatedPath(language);
     }
 
     .footer .footer-links .list-links li a {
+        background: linear-gradient(to right, currentColor, currentColor) 0
+            min(100%, 1.35em) / 0 1px no-repeat;
+        background-position-x: right;
+        border-radius: 0;
         font-weight: var(--pc-font-weight-normal);
+        transition:
+            color var(--pc-transition-fast) ease-in-out,
+            background-size var(--pc-transition-medium)
+                cubic-bezier(0.17, 0.84, 0.44, 1);
     }
 
-    @keyframes fa-beat {
+    @media (hover: hover) {
+        .footer .footer-links .list-links li a:hover {
+            background-position-x: left;
+            background-size: 100% 1px;
+        }
+    }
+
+    @media (hover: none) {
+        .footer .footer-links .list-links li a:active {
+            background-position-x: left;
+            background-size: 100% 1px;
+        }
+    }
+
+    @keyframes heartbeat {
         0%,
-        90% {
+        100% {
             transform: scale(1);
         }
 
-        45% {
+        50% {
             transform: scale(1.25);
         }
     }
