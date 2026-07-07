@@ -1,6 +1,10 @@
+---
+const { placement = "bottom-start" } = Astro.props;
+---
+
 <pc-popup
     class="navigation-dropdown"
-    placement="bottom-end"
+    placement={placement}
     distance="0"
     skidding="0"
     flip-fallback-strategy="best-fit"
@@ -117,6 +121,12 @@
                 return;
             }
 
+            if (popup.dataset.initialized === "true") {
+                return;
+            }
+
+            popup.dataset.initialized = "true";
+
             const triggerButton = popup.querySelector<PcButton>("pc-button");
             const internalTrigger =
                 triggerButton?.shadowRoot?.querySelector("button");
@@ -145,7 +155,9 @@
 
                 internalTrigger?.setAttribute("aria-expanded", "true");
 
-                links[0]?.focus();
+                setTimeout(() => {
+                    links[0]?.focus();
+                }, 1);
 
                 const { keyframes, options } = getAnimation(
                     menu,
@@ -226,6 +238,12 @@
             });
         });
     });
+
+    document.addEventListener("astro:before-swap", () => {
+        document.querySelectorAll(".navigation-dropdown").forEach((element) => {
+            element.removeAttribute("data-initialized");
+        });
+    });
 </script>
 
 <style>
@@ -259,6 +277,10 @@
 
     .navigation-dropdown[data-current-placement="right-end"] .dropdown-menu {
         transform-origin: left bottom;
+    }
+
+    .navigation-dropdown div[slot="anchor"] {
+        line-height: 0;
     }
 
     .navigation-dropdown .dropdown-menu {

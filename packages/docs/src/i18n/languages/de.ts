@@ -55,14 +55,30 @@ export default {
     "landingCTA.tagline.flexible": "Flexibel.",
     "landingCTA.tagline.accessible": "Barrierefrei.",
     "landingCTA.tagline.webComponents": "Webkomponenten.",
+    "landingCTA.tagline.combo": "Flexibel. Barrierefrei. Webkomponenten.",
+    "ctaFooter.startBuilding": "Leg los mit Placer Toolkit",
+    "ctaFooter.startBuilding.descriptive":
+        "Gestalte deine Benutzeroberfläche mit hochwertigen Webkomponenten – barrierefrei, frameworkagnostisch und leicht zu restylen.",
 
     // Sidebar sections
     "sidebar.section.getStarted": "Erste Schritte",
+    "sidebar.section.getStarted.installation": "Installation",
+    "sidebar.section.getStarted.usage": "Verwendung",
+    "sidebar.section.getStarted.customisation": "Anpassung",
+    "sidebar.section.getStarted.formControls": "Formularsteuerelemente",
+    "sidebar.section.getStarted.localisation": "Lokalisierung",
+
     "sidebar.section.designTokens": "Design‐Tokens",
     "sidebar.section.components": "Komponenten",
     "sidebar.section.layout": "Layout",
     "sidebar.section.styleUtilities": "Style‐Utilities",
+
     "sidebar.section.resources": "Ressourcen",
+    "sidebar.section.resources.community": "Community",
+    "sidebar.section.resources.contributing": "Mitwirken",
+    "sidebar.section.resources.brandAssets": "Marken‐Assets",
+    "sidebar.section.resources.changelog": "Changelog",
+    "sidebar.section.resources.support": "Support",
 
     // Component catalogue
     "catalog.components.actions": "Aktionen",
@@ -75,6 +91,7 @@ export default {
 
     // Labels
     "button.getStarted": "Los geht’s",
+    "button.exploreComponents": "Komponenten entdecken",
     "button.gotIt": "Alles klar!",
     "button.yikes": "Ups!",
     "button.powerUp": "Aufladen!",
@@ -190,12 +207,9 @@ export default {
     "apiTable.dependencies.note":
         "Diese Komponente importiert automatisch folgende Komponenten:",
 
-    // Code comparison
-    "codeComparison.signIn": "Anmelden",
-    "codeComparison.email": "E‐Mail",
-    "codeComparison.email.example": "test@beispiel.de",
-    "codeComparison.password": "Passwort",
-    "codeComparison.password.forgot": "Passwort vergessen?",
+    // Framework agnostic design
+    "frameworkAgnosticDesign.priceLabel": "15,49 €", // with VAT (MwSt.), 19 %
+    "frameworkAgnosticDesign.addToCart": "In den Warenkorb",
 
     // Footer headings
     "footer.heading.docs": "Docs",
@@ -227,10 +241,8 @@ export default {
     "nav.content.legal.licence": "Lizenz",
 
     // Footer copyright
-    "footer.copyright.left": "Mit",
-    "footer.copyright.centre": "Liebe",
-    "footer.copyright.right":
-        'von Placer und seinen Mitwirkenden gemacht • <span style="white-space: nowrap">© 2026</span>',
+    "footer.copyright":
+        'Mit <pc-icon library="default" icon-style="solid" name="heart" label="Liebe"></pc-icon> von Placer und seinen Mitwirkenden gemacht • <span style="white-space: nowrap">© 2026</span>',
 
     // 404 localisation text
     "notfound.title": "404 – Seite nicht gefunden",

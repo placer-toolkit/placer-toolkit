@@ -43,6 +43,7 @@ export { PcTabGroup } from "./components/tab-group/tab-group.js";
 export { PcTabPanel } from "./components/tab-panel/tab-panel.js";
 export { PcTag } from "./components/tag/tag.js";
 export { PcTextarea } from "./components/textarea/textarea.js";
+export { PcTimePicker } from "./components/time-picker/time-picker.js";
 export { PcTooltip } from "./components/tooltip/tooltip.js";
 export { PcVideoPlayer } from "./components/video-player/video-player.js";
 

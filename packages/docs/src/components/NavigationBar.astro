@@ -105,8 +105,9 @@ const translatePath = useTranslatedPath(language);
                     slot="prefix"></pc-icon>
                 <span class="label">{translation("ui.search.label")}</span>
                 <span slot="suffix">
-                    {/* prettier-ignore */}
-                    <kbd class="search-key">{translation("ui.keyboard.ctrl")}</kbd>
+                    <kbd class="search-key">
+                        {translation("ui.keyboard.ctrl")}
+                    </kbd>{" "}
                     <kbd class="search-key">K</kbd>
                 </span>
             </pc-button>
@@ -117,7 +118,6 @@ const translatePath = useTranslatedPath(language);
                 variant="plain"
                 size="small"
                 data-dialog="open search-dialog"
-                aria-keyshortcuts="Control+K"
             >
                 <pc-icon
                     class="icon-expand"
@@ -131,20 +131,23 @@ const translatePath = useTranslatedPath(language);
 </header>
 
 <script>
-    const searchButton = document.querySelector(
+    const searchButtons = document.querySelectorAll(
         'pc-button[data-dialog="open search-dialog"]',
     );
-    const innerButton = searchButton?.shadowRoot?.querySelector("button");
-    const switchKey = searchButton?.querySelector("kbd:first-child");
 
-    if (searchButton && switchKey && innerButton) {
-        if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
-            switchKey.textContent = "⌘";
-            innerButton.setAttribute("aria-keyshortcuts", "Meta+K");
-        } else {
-            innerButton.setAttribute("aria-keyshortcuts", "Control+K");
+    searchButtons.forEach((searchButton) => {
+        const innerButton = searchButton?.shadowRoot?.querySelector("button");
+        const switchKey = searchButton?.querySelector("kbd:first-child");
+
+        if (searchButton && switchKey && innerButton) {
+            if (/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+                switchKey.textContent = "⌘";
+                innerButton.setAttribute("aria-keyshortcuts", "Meta+K");
+            } else {
+                innerButton.setAttribute("aria-keyshortcuts", "Control+K");
+            }
         }
-    }
+    });
 </script>
 
 <style>

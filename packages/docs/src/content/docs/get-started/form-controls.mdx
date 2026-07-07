@@ -71,19 +71,10 @@ This form will not be submitted if a required field is incomplete.
 <script type="module">
     const form = document.querySelector(".input-validation-required");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-checkbox"),
-        customElements.whenDefined("pc-input"),
-        customElements.whenDefined("pc-option"),
-        customElements.whenDefined("pc-select"),
-        customElements.whenDefined("pc-textarea"),
-    ]).then(() => {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("All fields are valid!");
-        });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        alert("All fields are valid!");
     });
 </script>
 ```
@@ -110,15 +101,10 @@ To restrict a value to a specific [pattern](https://developer.mozilla.org/en-US/
 <script type="module">
     const form = document.querySelector(".input-validation-pattern");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-input"),
-    ]).then(() => {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("All fields are valid!");
-        });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        alert("All fields are valid!");
     });
 </script>
 ```
@@ -151,15 +137,10 @@ Some input types will automatically trigger constraints, such as `email` and `ur
 <script type="module">
     const form = document.querySelector(".input-validation-type");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-input"),
-    ]).then(() => {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("All fields are valid!");
-        });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        alert("All fields are valid!");
     });
 </script>
 ```
@@ -182,23 +163,18 @@ To create a custom validation error, pass a non‐empty string to the `setCustom
     const form = document.querySelector(".input-validation-custom");
     const input = form.querySelector("pc-input");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-input"),
-    ]).then(() => {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("All fields are valid!");
-        });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-        input.addEventListener("input", () => {
-            if (input.value === "placer toolkit") {
-                input.setCustomValidity("");
-            } else {
-                input.setCustomValidity("Hey, you’re supposed to type “placer toolkit” before submitting this!");
-            }
-        });
+        alert("All fields are valid!");
+    });
+
+    input.addEventListener("input", () => {
+        if (input.value === "placer toolkit") {
+            input.setCustomValidity("");
+        } else {
+            input.setCustomValidity("Hey, you’re supposed to type “placer toolkit” before submitting this!");
+        }
     });
 </script>
 ```
@@ -269,18 +245,10 @@ This example demonstrates custom validation styles using `:state(user-invalid)` 
 <script type="module">
     const form = document.querySelector(".input-validation-custom-styles");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-checkbox"),
-        customElements.whenDefined("pc-input"),
-        customElements.whenDefined("pc-option"),
-        customElements.whenDefined("pc-select")
-    ]).then(() => {
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            alert("All fields are valid!");
-        });
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        alert("All fields are valid!");
     });
 </script>
 
@@ -365,46 +333,44 @@ To disable the browser’s error messages, you need to cancel the `pc-invalid` e
     const form = document.querySelector(".input-validation-inline");
     const nameError = document.querySelector("#name-error");
 
-    // Wait for components to be defined before attaching the event listener to the form
-    await Promise.all([
-        customElements.whenDefined("pc-button"),
-        customElements.whenDefined("pc-input"),
-    ]).then(() => {
-        form.addEventListener(
-            "pc-invalid",
-            (event) => {
-                event.preventDefault();
-
-                nameError.innerHTML = `
-                    <pc-icon
-                        library="default"
-                        icon-style="solid"
-                        name="circle-exclamation"
-                        style="
-                            translate: 0 0.125rem;
-                            margin-inline-end: 0.125rem;
-                        "
-                    ></pc-icon>
-                    ${event.target.validationMessage}
-                `;
-
-                nameError.hidden = false;
-                event.target.focus();
-            },
-            { capture: true },
-        );
-
-        form.addEventListener("submit", (event) => {
+    form.addEventListener(
+        "pc-invalid",
+        (event) => {
             event.preventDefault();
-            nameError.hidden = true;
-            nameError.innerHTML = "";
-            setTimeout(() => alert("All fields are valid!"), 50);
-        });
 
-        form.addEventListener("reset", (event) => {
-            nameError.hidden = true;
-            nameError.innerHTML = "";
-        });
+            nameError.innerHTML = `
+                <pc-icon
+                    library="default"
+                    icon-style="solid"
+                    name="circle-exclamation"
+                    style="
+                        translate: 0 0.125rem;
+                        margin-inline-end: 0.125rem;
+                    "
+                ></pc-icon>
+
+                ${event.target.validationMessage}
+            `;
+
+            nameError.hidden = false;
+
+            event.target.focus();
+        },
+        { capture: true },
+    );
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        nameError.hidden = true;
+        nameError.innerHTML = "";
+
+        setTimeout(() => alert("All fields are valid!"), 50);
+    });
+
+    form.addEventListener("reset", (event) => {
+        nameError.hidden = true;
+        nameError.innerHTML = "";
     });
 </script>
 

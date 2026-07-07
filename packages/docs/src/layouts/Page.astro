@@ -7,6 +7,7 @@ import {
 
 import { ClientRouter } from "astro:transitions";
 
+import HeroNavigationBar from "../components/HeroNavigationBar.astro";
 import MobileSidebar from "../components/sidebar/MobileSidebar.astro";
 import MobileTableOfContents from "../components/table-of-contents/MobileTableOfContents.astro";
 import NavigationBar from "../components/NavigationBar.astro";
@@ -219,7 +220,8 @@ const {
             src="https://scripts.simpleanalyticscdn.com/latest.js"
             async
             is:inline
-        ></script>
+        >
+        </script>
         <!-- Client router for SPA‐like navigation -->
         <ClientRouter />
         <title>{hero ? title : `${title} | Placer Toolkit`}</title>
@@ -228,14 +230,20 @@ const {
         <div class="layout-container">
             <pc-button
                 class="skip-to-main-content pc-visually-hidden"
-                href="#_top"
+                href={!hero ? "#_top" : "#main-content"}
                 appearance="neutral"
                 variant="filled outlined"
             >
                 {translation("button.skipToMainContent")}
             </pc-button>
 
-            <NavigationBar noSidebar={noSidebar} />
+            {
+                !hero ? (
+                    <NavigationBar noSidebar={noSidebar} />
+                ) : (
+                    <HeroNavigationBar />
+                )
+            }
 
             <MobileSidebar />
 

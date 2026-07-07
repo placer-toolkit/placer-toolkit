@@ -3,9 +3,11 @@ WEBVTT
 STYLE
 ::cue(v[voice="Proog"]) {
     color: oklch(95% 0.25 95);
+    font-style: normal;
 }
 ::cue(v[voice="Emo"]) {
     color: oklch(85% 0.18 210);
+    font-style: normal;
 }
 ::cue(.ambience) {
     color: oklch(100% 0 0 / 60%);
@@ -13,6 +15,7 @@ STYLE
 }
 ::cue(.music) {
     color: oklch(100% 0 0 / 60%);
+    font-style: normal;
 }
 
 00:00:04.022 --> 00:00:05.522

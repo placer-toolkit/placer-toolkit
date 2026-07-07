@@ -7,16 +7,12 @@ import Uni404se from "../assets/uni404se.svg";
 
 import Page from "../layouts/Page.astro";
 
-import "../styles/landing-override.css";
+import "../styles/overrides/home-override.css";
+import "../styles/overrides/landing-override.css";
 
 const language = getLanguageFromURL(Astro.url);
 const translation = useTranslations(language);
 ---
-
-<link
-    rel="stylesheet"
-    href="https://fonts.bunny.net/css?family=alfa-slab-one:400|amatic-sc:700|bebas-neue:400|bungee-shade:400|caveat:700|chewy:400|creepster:400|dotgothic16:400|indie-flower:400|luckiest-guy:400|michroma:400|permanent-marker:400|press-start-2p:400|space-grotesk:700|special-elite:400|ultra:400&display=swap"
-/>
 
 <Page title={translation("notfound.title")} noSidebar showFooter hero>
     <div class="notfound-container">
@@ -102,45 +98,45 @@ const translation = useTranslations(language);
         ".notfound-font-switch",
     ) as HTMLElement;
 
-    const fontArray = [
-        "Space Grotesk",
-        "Alfa Slab One",
-        "Amatic SC",
-        "Bebas Neue",
-        "Bungee Shade",
-        "Caveat",
-        "Chewy",
-        "Creepster",
-        "DotGothic16",
-        "Indie Flower",
-        "Luckiest Guy",
-        "Michroma",
-        "Permanent Marker",
-        "Press Start 2P",
-        "Special Elite",
-        "Ultra",
+    const fontFeatures = [
+        "normal",
+        "ss01",
+        "ss02",
+        "ss03",
+        "ss04",
+        "ss05",
+        "ss06",
+        "ss07",
+        "ss08",
+        "ss09",
+        "ss10",
+        "ss11",
+        "ss12",
+        "ss13",
+        "ss14",
+        "ss15",
     ];
 
-    if ("fonts" in document) {
-        fontArray.forEach((font) => {
-            document.fonts.load(`1em "${font}"`);
-        });
+    if (notFoundFontSwitcher) {
+        notFoundFontSwitcher.style.fontFamily =
+            '"Uni404se", var(--pc-font-sans)';
     }
 
-    let lastRandomFontName = "Space Grotesk";
+    let lastFeatureIndex = 0;
 
     notFoundFontSwitcher?.addEventListener("click", () => {
         let randomIndex;
-        let randomFontName;
 
         do {
-            randomIndex = Math.floor(Math.random() * fontArray.length);
-            randomFontName = fontArray[randomIndex];
-        } while (randomFontName === lastRandomFontName);
+            randomIndex = Math.floor(Math.random() * fontFeatures.length);
+        } while (randomIndex === lastFeatureIndex);
 
-        notFoundFontSwitcher.style.fontFamily = `'${randomFontName}', var(--pc-font-sans)`;
+        const feature = fontFeatures[randomIndex];
 
-        lastRandomFontName = randomFontName;
+        notFoundFontSwitcher.style.fontFeatureSettings =
+            feature === "normal" ? "normal" : `"${feature}" on`;
+
+        lastFeatureIndex = randomIndex;
     });
 
     function trySetRandomLink() {
@@ -180,6 +176,14 @@ const translation = useTranslations(language);
 </script>
 
 <style>
+    @font-face {
+        font-family: "Uni404se";
+        src: url("/fonts/uni404se/Uni404se-Bold.woff2") format("woff2");
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+    }
+
     .notfound-container {
         display: grid;
         grid-template: 100% / 100%;
@@ -232,7 +236,7 @@ const translation = useTranslations(language);
 
     .notfound-container .content h1 {
         display: inline-block;
-        font-family: "Space Grotesk", var(--pc-font-sans);
+        font-family: "Uni404se", var(--pc-font-sans);
         font-size: 4rem;
         text-align: center;
         user-select: none;
@@ -361,7 +365,11 @@ const translation = useTranslations(language);
                 opacity: 0;
             }
 
-            .notfound-container .content footer pc-button:hover [slot="suffix"] {
+            .notfound-container
+                .content
+                footer
+                pc-button:hover
+                [slot="suffix"] {
                 opacity: 1;
             }
         }

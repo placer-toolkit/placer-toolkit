@@ -1,5 +1,13 @@
 /** @type {import("prettier").Config} */
 export default {
+    overrides: [
+        {
+            files: "package.json",
+            options: {
+                tabWidth: 2,
+            },
+        },
+    ],
     arrowParens: "always",
     bracketSpacing: true,
     htmlWhitespaceSensitivity: "ignore",

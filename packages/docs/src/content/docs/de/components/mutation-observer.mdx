@@ -9,11 +9,10 @@ Die Mutation Observer‐Komponente bietet eine schlanke, deklarative Schnittstel
 Der Mutation Observer meldet Änderungen an den Inhalten, die er umschließt, über das `pc-mutation`‐Event. Wenn dieses ausgelöst wird, wird eine Sammlung von [`MutationRecord`](https://developer.mozilla.org/de/docs/Web/API/MutationRecord)‐Objekten an `event.detail` angehängt, die Informationen darüber enthalten, wie sich der Inhalt verändert hat.
 
 ```demo:open
-<div class="mutation-overview">
+<div class="mutation-overview pc-stack">
     <pc-mutation-observer attribute="appearance">
         <pc-button appearance="primary">Klick zum Mutieren</pc-button>
     </pc-mutation-observer>
-    <br />
     ⬆️ Klick den Button und schau in die Konsole
 </div>
 

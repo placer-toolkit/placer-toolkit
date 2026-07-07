@@ -1,19 +1,22 @@
 ---
 import Page from "../../layouts/Page.astro";
 
-import CodeComparison from "../../components/CodeComparison.astro";
+import CTAFooter from "../../components/CTAFooter.astro";
 import FeatureTiles from "../../components/FeatureTiles.astro";
 import FeatureTile from "../../components/FeatureTile.astro";
+import FrameworkAgnosticDesign from "../../components/FrameworkAgnosticDesign.astro";
+import Heading from "../../components/Heading.astro";
+import IconGrid from "../../components/IconGrid.astro";
 import LandingCTA from "../../components/LandingCTA.astro";
 import Showcase from "../../components/Showcase.astro";
-import SpecialThanksGrid from "../../components/SpecialThanksGrid.astro";
 
 import EntirelyNative from "../../components/animations/EntirelyNative.astro";
 import FullyAccessible from "../../components/animations/FullyAccessible.astro";
 import GloballyReady from "../../components/animations/GloballyReady.astro";
 
 import "../../styles/catalog.css";
-import "../../styles/landing-override.css";
+import "../../styles/overrides/home-override.css";
+import "../../styles/overrides/landing-override.css";
 ---
 
 <script>
@@ -24,123 +27,191 @@ import "../../styles/landing-override.css";
     <div class="landing-page">
         <LandingCTA />
 
-        <h2 class="pc-heading-l">Was ist Placer Toolkit?</h2>
+        <section aria-labelledby="was-ist-placer-toolkit">
+            <Heading level="2">Was ist Placer Toolkit?</Heading>
 
-        <p>
-            <strong>Placer Toolkit</strong>{" "}
-            <span class="ipa" lang="de-fonipa">/ˈplakɐ ˈtuːlkɪt/</span>
-            ist eine Open‐Source‐Bibliothek für Webkomponenten, mit der du Websites
-            mit jedem Framework – oder ganz ohne – erstellen kannst.
-        </p>
+            <p>
+                <strong>Placer Toolkit</strong>{" "}
+                <span class="ipa" lang="de-fonipa">/ˈplakɐ ˈtuːlkɪt/</span>{" "}
+                ist eine Open‐Source‐Bibliothek für Webkomponenten, mit der du Websites
+                mit jedem Framework – oder ganz ohne – erstellen kannst.
+            </p>
 
-        <FeatureTiles>
-            <FeatureTile
-                label="Vollständig nativ"
-                icon="puzzle-piece"
-                href="/de/docs/get-started/usage"
-                orientation="horizontal"
+            <FeatureTiles>
+                <FeatureTile
+                    label="Vollständig nativ"
+                    icon="puzzle-piece"
+                    href="/de/docs/get-started/usage"
+                    orientation="horizontal"
+                >
+                    <EntirelyNative slot="image" />
+                    Placer Toolkit basiert auf Webstandards und funktioniert in jedem
+                    Framework – oder ganz ohne.
+                    <em>Keine Bindung, keine Kompromisse.</em>
+                </FeatureTile>
+                <FeatureTile
+                    label="Barrierefrei"
+                    icon="universal-access"
+                    href="/de/docs/legal/accessibility"
+                >
+                    <FullyAccessible slot="image" />
+                    Barrierefreiheit ist bei uns Standard – in allen Komponenten eingebaut.
+                    <em>Für jeden funktioniert’s, überall.</em>
+                </FeatureTile>
+                <FeatureTile
+                    label="Datenschutz ohne Stress"
+                    icon="shield-halved"
+                    href="/de/docs/legal/gdpr"
+                >
+                    Keine Tracker, keine Cookies, keine Sorgen. Lokal gehostet
+                    und DSGVO‐konform.
+                    <em>Privatsphäre by Design.</em>
+                </FeatureTile>
+                <FeatureTile
+                    label="Flexibel"
+                    icon="paintbrush"
+                    href="/de/docs/get-started/customisation"
+                >
+                    Komponenten lassen sich einfach neu gestalten, anpassen und
+                    auf dein Design abstimmen.
+                    <em>Deine Website, deine Regeln.</em>
+                </FeatureTile>
+                <FeatureTile
+                    label="Global einsatzbereit"
+                    icon="globe"
+                    href="/de/docs/get-started/localisation"
+                    orientation="horizontal"
+                >
+                    <GloballyReady slot="image" />
+                    Mit 75 Locales direkt einsatzbereit und beliebig erweiterbar.
+                    <em>Deine Website spricht jede Sprache.</em>
+                </FeatureTile>
+                <FeatureTile
+                    label="Minimaler Overhead"
+                    icon="feather"
+                    href="/de/docs/get-started/installation"
+                >
+                    Keine unnötigen Abhängigkeiten, kein Ballast. Nur das, was
+                    du wirklich brauchst.
+                    <em>Schlank, schnell, wartbar.</em>
+                </FeatureTile>
+            </FeatureTiles>
+        </section>
+
+        <section aria-labelledby="kein-vendorlockin">
+            <div
+                class="stardust adaptive--zero-lock-in"
+                style="
+                    --stardust-color: var(--pc-color-red-60);
+                    opacity: 0.5;
+                    transform: scaleX(1.5) scaleY(1.5) rotate(-7deg);
+                "
             >
-                <EntirelyNative slot="image" />
-                Placer Toolkit basiert auf Webstandards und funktioniert in jedem
-                Framework – oder ganz ohne.
-                <em>Keine Bindung, keine Kompromisse.</em>
-            </FeatureTile>
-            <FeatureTile
-                label="Barrierefrei"
-                icon="universal-access"
-                href="/de/docs/legal/accessibility"
+            </div>
+            <div
+                class="stardust adaptive--zero-lock-in"
+                style="
+                    --stardust-color: var(--pc-color-red-60);
+                    opacity: 0.25;
+                    transform: scaleX(2.5) scaleY(2) rotate(-7deg);
+                "
             >
-                <FullyAccessible slot="image" />
-                Barrierefreiheit ist bei uns Standard – in allen Komponenten eingebaut.
-                <em>Für jeden funktioniert’s, überall.</em>
-            </FeatureTile>
-            <FeatureTile
-                label="Datenschutz ohne Stress"
-                icon="shield-halved"
-                href="/de/docs/legal/gdpr"
-            >
-                Keine Tracker, keine Cookies, keine Sorgen. Lokal gehostet und
-                DSGVO‐konform.
-                <em>Privatsphäre by Design.</em>
-            </FeatureTile>
-            <FeatureTile
-                label="Flexibel"
-                icon="paintbrush"
+            </div>
+
+            <Heading level="2">Kein Vendor‐Lock‐in</Heading>
+
+            <p>
+                Egal ob du React, Vue, Angular, Svelte, ein anderes Framework
+                oder gar kein Framework verwendest – Placer Toolkit integriert
+                sich nahtlos. Keine proprietären Runtimes, keine versteckten
+                Abhängigkeiten – nur die Werkzeuge, die du brauchst, genau dort,
+                wo du sie brauchst.
+            </p>
+
+            <FrameworkAgnosticDesign />
+        </section>
+
+        <section aria-labelledby="gestalte-so-schnell-wie-du-denkst">
+            <Heading level="2">Gestalte so schnell, wie du denkst</Heading>
+
+            <p>
+                Placer Toolkit verwandelt komplexes Styling in eine Reihe von
+                Konfigurationsanpassungen. Personalisiere deine gesamte Ästhetik
+                im Handumdrehen über CSS‐Variablen oder nutze unsere
+                hochwertigen, integrierten Designs und Farbpaletten, um in
+                Minuten vom Prototypen zur Produktion zu gelangen.
+            </p>
+
+            <pc-button
+                class="learn-more-button"
+                appearance="primary"
+                variant="filled"
                 href="/de/docs/get-started/customisation"
             >
-                Komponenten lassen sich einfach neu gestalten, anpassen und auf
-                dein Design abstimmen. <em>Deine Website, deine Regeln.</em>
-            </FeatureTile>
-            <FeatureTile
-                label="Global einsatzbereit"
-                icon="globe"
-                href="/de/docs/get-started/localisation"
-                orientation="horizontal"
+                Mehr erfahren
+                <pc-icon
+                    class="arrow-right-move"
+                    library="default"
+                    icon-style="solid"
+                    name="chevron-right"
+                    slot="suffix"></pc-icon>
+            </pc-button>
+
+            <Showcase />
+        </section>
+
+        <section aria-labelledby="ikonografie-ohne-grenzen">
+            <div
+                class="stardust"
+                style="
+                    --stardust-color: var(--pc-color-pink-50);
+                    opacity: 0.5;
+                    transform: scaleX(1.5) scaleY(2.5) rotate(-7deg);
+                "
             >
-                <GloballyReady slot="image" />
-                Mit 75 Locales direkt einsatzbereit und beliebig erweiterbar.
-                <em>Deine Website spricht jede Sprache.</em>
-            </FeatureTile>
-            <FeatureTile
-                label="Minimaler Overhead"
-                icon="feather"
-                href="/de/docs/get-started/installation"
+            </div>
+            <div
+                class="stardust"
+                style="
+                    --stardust-color: var(--pc-color-pink-50);
+                    opacity: 0.25;
+                    transform: scaleX(2.5) scaleY(2.5) rotate(7deg);
+                "
             >
-                Keine unnötigen Abhängigkeiten, kein Ballast. Nur das, was du
-                wirklich brauchst.
-                <em>Schlank, schnell, wartbar.</em>
-            </FeatureTile>
-        </FeatureTiles>
+            </div>
 
-        <h2 class="pc-heading-l">Warum solltest du Placer Toolkit wählen?</h2>
+            <Heading level="2">Ikonografie ohne Grenzen</Heading>
 
-        <p>
-            <strong>
-                Fokus auf die Absicht, nicht auf die Implementierung.
-            </strong>
-            Klassische Toolkits verstecken deine Logik in einem „Klassendschungel“.
-            Placer Toolkit nutzt semantische Webkomponenten, um dein Markup wieder
-            lesbar zu machen. Wenige Zeilen, kein Ballast – nur sauberer, expressiver
-            Code, der dir genau sagt, was er tut.
-        </p>
+            <p>
+                Placer Toolkit kommt mit <a
+                    href="https://fontawesome.com"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                >
+                    Font Awesome
+                </a> und stellt dir über 2 100 kostenlose Icons direkt zur Verfügung.
+                Wenn dein Design mehr benötigt, verknüpfe einfach dein Pro‐ der Pro+‐Kit –
+                oder nutze alternativ eine beliebige Icon‐Bibliothek deiner Wahl.
+            </p>
 
-        <CodeComparison />
+            <pc-button
+                class="learn-more-button"
+                appearance="primary"
+                variant="filled"
+                href="/de/docs/components/icon"
+            >
+                Mehr erfahren
+                <pc-icon
+                    class="arrow-right-move"
+                    library="default"
+                    icon-style="solid"
+                    name="chevron-right"
+                    slot="suffix"></pc-icon>
+            </pc-button>
 
-        <h2 class="pc-heading-l">Designvorschau</h2>
+            <IconGrid />
+        </section>
 
-        <p>
-            Das Styling-System von Placer Toolkit basiert auf 18 einzigartigen
-            Kombinationen, die sich aus drei verschiedenen Designs, drei
-            vielseitigen Farbpaletten und zwei klaren Farbschemata ergeben.
-            Nutze diese interaktive Vorschau, um das gestalterische Potenzial
-            des Toolkits sofort zu erkunden.
-        </p>
-
-        <Showcase />
-
-        <h2 class="pc-heading-l">Open‐Source‐Unterstützung</h2>
-
-        <p>
-            Placer Toolkit wurde mithilfe dieser hervorragenden
-            Open‐Source‐Bibliotheken entwickelt, die verschiedene
-            Projektfunktionen unterstützen.
-        </p>
-
-        <SpecialThanksGrid />
+        <CTAFooter />
     </div>
 </Page>
-
-<style>
-    .landing-page {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        inline-size: calc(100dvw - (6rem * 2));
-    }
-
-    @media screen and (max-width: 1020px) {
-        .landing-page {
-            inline-size: calc(100dvw - (var(--pc-spacing-xl) * 2));
-        }
-    }
-</style>

@@ -1,40 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="34 25 235 154">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="34 25 235 154" fill="none">
     <g
-        stroke="var(--pc-color-neutral-border-normal)"
+        stroke="var(--pc-color-neutral-border-loud)"
         stroke-width="2"
         stroke-linecap="round"
     >
-        <path d="M150 100C170 60 187.333 39 202 37"></path>
-        <path d="M150 100C190 73.3333 220.667 60.6667 242 62"></path>
-        <path d="M150 100C183.333 100 219 100.667 257 102"></path>
-        <path d="M150 100C190 126.667 220.667 140.667 242 142"></path>
-        <path d="M150 100C170 140 187.333 162.333 202 167"></path>
-        <path d="M150 100C130 60 113.667 39 101 37"></path>
-        <path d="M150 100C110 73.3333 80.3333 60.6667 61 62"></path>
-        <path d="M150 100C116.667 100 82 100.667 46 102"></path>
-        <path d="M150 100C110 126.667 80.3333 140.667 61 142"></path>
-        <path d="M150 100C130 140 113.667 162.333 101 167"></path>
+        <path d="M150 100C170 60 187.333 39 198 42"></path>
+        <path d="M150 100C190 73.3333 220.667 60.6667 236 65"></path>
+        <path d="M150 100C183.333 100 219 100.667 248 102"></path>
+        <path d="M150 100C190 126.667 220.667 140.667 236 139"></path>
+        <path d="M150 100C170 140 187.333 162.333 198 162"></path>
+        <path d="M150 100C130 60 113.667 39 105 42"></path>
+        <path d="M150 100C110 73.3333 80.3333 60.6667 67 65"></path>
+        <path d="M150 100C116.667 100 82 100.667 55 102"></path>
+        <path d="M150 100C110 126.667 80.3333 140.667 67 139"></path>
+        <path d="M150 100C130 140 113.667 162.333 105 162"></path>
     </g>
-    <path class="pulse-line p1" d="M150 100C170 60 187.333 39 202 37"></path>
-    <path class="pulse-line p2" d="M150 100C190 73.3333 220.667 60.6667 242 62">
+    <path class="pulse-line p1" d="M150 100C170 60 187.333 39 198 42"></path>
+    <path class="pulse-line p2" d="M150 100C190 73.3333 220.667 60.6667 236 65">
     </path>
-    <path class="pulse-line p3" d="M150 100C183.333 100 219 100.667 257 102">
+    <path class="pulse-line p3" d="M150 100C183.333 100 219 100.667 248 102">
     </path>
     <path
         class="pulse-line p4"
-        d="M150 100C190 126.667 220.667 140.667 242 142"
+        d="M150 100C190 126.667 220.667 140.667 236 139"
     >
     </path>
-    <path class="pulse-line p5" d="M150 100C170 140 187.333 162.333 202 167">
+    <path class="pulse-line p5" d="M150 100C170 140 187.333 162.333 198 162">
     </path>
-    <path class="pulse-line p6" d="M150 100C130 60 113.667 39 101 37"></path>
-    <path class="pulse-line p7" d="M150 100C110 73.3333 80.3333 60.6667 61 62">
+    <path class="pulse-line p6" d="M150 100C130 60 113.667 39 105 42"></path>
+    <path class="pulse-line p7" d="M150 100C110 73.3333 80.3333 60.6667 67 65">
     </path>
-    <path class="pulse-line p8" d="M150 100C116.667 100 82 100.667 46 102">
+    <path class="pulse-line p8" d="M150 100C116.667 100 82 100.667 55 102">
     </path>
-    <path class="pulse-line p9" d="M150 100C110 126.667 80.3333 140.667 61 142">
+    <path class="pulse-line p9" d="M150 100C110 126.667 80.3333 140.667 67 139">
     </path>
-    <path class="pulse-line p10" d="M150 100C130 140 113.667 162.333 101 167">
+    <path class="pulse-line p10" d="M150 100C130 140 113.667 162.333 105 162">
     </path>
     <g class="node-group c1">
         <path
@@ -129,17 +129,6 @@
             <stop offset="1" stop-color="var(--pc-color-green-40)"></stop>
         </linearGradient>
         <linearGradient
-            id="checkmark-no-interaction"
-            x1="0"
-            y1="0"
-            x2="1"
-            y2="1"
-            gradientUnits="objectBoundingBox"
-        >
-            <stop stop-color="var(--pc-color-neutral-60)"></stop>
-            <stop offset="1" stop-color="var(--pc-color-neutral-40)"></stop>
-        </linearGradient>
-        <linearGradient
             id="center-piece"
             x1="126.812"
             y1="76"
@@ -156,7 +145,7 @@
 <style>
     .wire-track {
         fill: none;
-        stroke: var(--pc-color-neutral-border-normal);
+        stroke: var(--pc-color-neutral-border-loud);
         stroke-width: 2;
         stroke-linecap: round;
     }
@@ -173,21 +162,31 @@
     }
 
     .node-group path {
-        fill: url(#checkmark-no-interaction);
+        fill: var(--pc-color-neutral-border-loud);
         transition: fill 0.8s ease;
     }
 
-    :global(.grid-tiles .grid-tile:hover) .pulse-line,
+    @media (hover: hover) {
+        :global(.grid-tiles .grid-tile:hover) .pulse-line {
+            animation: global-flow 5s 1 linear forwards;
+        }
+    }
+
     :global(.grid-tiles .grid-tile:focus-within) .pulse-line {
-        animation: globalFlow 5s 1 linear forwards;
+        animation: global-flow 5s 1 linear forwards;
     }
 
-    :global(.grid-tiles .grid-tile:hover) .node-group path,
+    @media (hover: hover) {
+        :global(.grid-tiles .grid-tile:hover) .node-group path {
+            animation: global-fill-swap 5s 1 linear forwards;
+        }
+    }
+
     :global(.grid-tiles .grid-tile:focus-within) .node-group path {
-        animation: globalFillSwap 5s 1 linear forwards;
+        animation: global-fill-swap 5s 1 linear forwards;
     }
 
-    @keyframes globalFlow {
+    @keyframes global-flow {
         0% {
             stroke-dashoffset: 330;
             opacity: 0;
@@ -209,10 +208,10 @@
         }
     }
 
-    @keyframes globalFillSwap {
+    @keyframes global-fill-swap {
         0%,
         29% {
-            fill: url(#checkmark-no-interaction);
+            fill: var(--pc-color-neutral-border-loud);
         }
 
         30% {
@@ -226,7 +225,7 @@
 
         95%,
         100% {
-            fill: url(#checkmark-no-interaction);
+            fill: var(--pc-color-neutral-border-loud);
         }
     }
 </style>

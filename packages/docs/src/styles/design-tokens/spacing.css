@@ -11,21 +11,21 @@
 
     &::before {
         content: "";
+        aspect-ratio: 1 / 1;
         margin-inline-start: calc(var(--dot-size) * -1);
         inline-size: var(--dot-size);
         block-size: var(--dot-size);
         background-color: var(--pc-color-neutral-on-normal);
         border-radius: var(--pc-border-radius-circle);
-        aspect-ratio: 1 / 1;
     }
 
     &::after {
         content: "";
+        aspect-ratio: 1 / 1;
         margin-inline-end: calc(var(--dot-size) * -1);
         inline-size: var(--dot-size);
         block-size: var(--dot-size);
         background-color: var(--pc-color-neutral-on-normal);
         border-radius: var(--pc-border-radius-circle);
-        aspect-ratio: 1 / 1;
     }
 }

@@ -1,18 +1,33 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import { unified } from "@astrojs/markdown-remark";
 import rehypeSlug from "rehype-slug";
 import viteCompression from "vite-plugin-compression";
 import rehypeAnchorHeadings from "./src/plugins/anchor-headings.js";
 import remarkGitHubLinker from "./src/plugins/github-issue.js";
 import remarkCodeBlockToComponent from "./src/plugins/code-blocks.js";
 
+const processor = unified({
+    remarkPlugins: [
+        [
+            remarkGitHubLinker,
+            {
+                owner: "placer-toolkit",
+                repo: "placer-toolkit",
+            },
+        ],
+        remarkCodeBlockToComponent,
+    ],
+    rehypePlugins: [rehypeSlug, rehypeAnchorHeadings],
+});
+
 // Configuration reference: https://docs.astro.build/en/reference/configuration-reference
 export default defineConfig({
     site: "https://placer-toolkit.vercel.app",
     integrations: [
         mdx({
-            rehypePlugins: [rehypeSlug, rehypeAnchorHeadings],
+            processor: processor,
         }),
         sitemap({
             filter: (page: string) =>
@@ -29,16 +44,7 @@ export default defineConfig({
         },
     },
     markdown: {
-        remarkPlugins: [
-            [
-                remarkGitHubLinker,
-                {
-                    owner: "placer-toolkit",
-                    repo: "placer-toolkit",
-                },
-            ],
-            remarkCodeBlockToComponent,
-        ],
+        processor: processor,
     },
     vite: {
         plugins: [

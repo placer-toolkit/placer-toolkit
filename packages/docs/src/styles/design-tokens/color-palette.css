@@ -2,7 +2,8 @@
     display: grid;
     grid-template-columns: 200px repeat(11, 1fr);
     gap: 1rem var(--pc-spacing-xs);
-    margin: 2rem 0;
+    margin-block: 2rem;
+    margin-inline: 0;
 
     .color-palette-name {
         font-size: var(--pc-font-size-m);

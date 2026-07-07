@@ -257,7 +257,7 @@ Use the `details` slot to display details, such as keyboard shortcuts, inside [d
 
 ### Checkable items
 
-You can turn a [dropdown item](/docs/components/dropdown-item) into a checkable option by setting `type="checkbox"`. Add the `checked` attribute to make it checked initially. When clicked, the item’s checked state will toggle and the dropdown will close. You can cancel the `pc-select` event if you want to keep it open instead.
+You can turn a [dropdown item](/docs/components/dropdown-item) into a checkable option by setting `type="checkbox"`. Add the `checked` attribute to make it checked initially. When clicked, the item’s checked state will toggle.
 
 ```demo
 <pc-dropdown class="dropdown-checkboxes">
@@ -334,7 +334,7 @@ You can turn a [dropdown item](/docs/components/dropdown-item) into a radio opti
 ```demo
 <pc-dropdown>
     <pc-button slot="trigger">
-        Sort by
+        View options
         <pc-icon
             library="default"
             icon-style="solid"
@@ -344,33 +344,32 @@ You can turn a [dropdown item](/docs/components/dropdown-item) into a radio opti
     </pc-button>
 
     <div role="group">
-        <pc-dropdown-item type="radio" value="date" checked>
-            Show canvas
+        <pc-dropdown-item type="radio" value="icons" checked>
+            Icons
         </pc-dropdown-item>
-        <pc-dropdown-item type="radio" value="name">
-            Show grid
-        </pc-dropdown-item>
-        <pc-dropdown-item type="radio" value="priority">
-            Show source
+        <pc-dropdown-item type="radio" value="list">
+            List
         </pc-dropdown-item>
     </div>
+
     <pc-divider></pc-divider>
+
     <pc-dropdown-item>
-        Advanced options
+        Sort options
         <pc-dropdown-item
             type="radio"
-            value="ascending"
+            value="newest"
             slot="submenu"
             checked
         >
-            Ascending
+            Newest
         </pc-dropdown-item>
         <pc-dropdown-item
             type="radio"
-            value="descending"
+            value="oldest"
             slot="submenu"
         >
-            Descending
+            Oldest
         </pc-dropdown-item>
     </pc-dropdown-item>
 </pc-dropdown>

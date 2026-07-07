@@ -293,6 +293,11 @@ const isTerminal = ["bash", "shell", "sh"].includes(language);
         overflow-x: auto;
     }
 
+    .code-block-container:has(> figcaption) .code-block .shiki {
+        border-start-start-radius: 0;
+        border-start-end-radius: 0;
+    }
+
     .code-block .shiki:focus-visible {
         outline: var(--pc-focus-ring);
         outline-offset: var(--pc-focus-ring-offset);

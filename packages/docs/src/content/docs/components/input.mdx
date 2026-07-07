@@ -86,15 +86,11 @@ Use the `disabled` attribute to disable the input.
 Use the `size` attribute to change the input’s size.
 
 ```demo
-<pc-input size="small" placeholder="Small"></pc-input>
-
-<br />
-
-<pc-input size="medium" placeholder="Medium"></pc-input>
-
-<br />
-
-<pc-input size="large" placeholder="Large"></pc-input>
+<div class="pc-stack">
+    <pc-input size="small" placeholder="Small"></pc-input>
+    <pc-input size="medium" placeholder="Medium"></pc-input>
+    <pc-input size="large" placeholder="Large"></pc-input>
+</div>
 ```
 
 ### Pill
@@ -102,15 +98,11 @@ Use the `size` attribute to change the input’s size.
 Use the `pill` attribute to give inputs a pill‐shaped look.
 
 ```demo
-<pc-input size="small" placeholder="Small" pill></pc-input>
-
-<br />
-
-<pc-input size="medium" placeholder="Medium" pill></pc-input>
-
-<br />
-
-<pc-input size="large" placeholder="Large" pill></pc-input>
+<div class="pc-stack">
+    <pc-input size="small" placeholder="Small" pill></pc-input>
+    <pc-input size="medium" placeholder="Medium" pill></pc-input>
+    <pc-input size="large" placeholder="Large" pill></pc-input>
+</div>
 ```
 
 ### Input types
@@ -118,15 +110,11 @@ Use the `pill` attribute to give inputs a pill‐shaped look.
 Use the `type` attribute to control the input type that the browser renders.
 
 ```demo
-<pc-input type="email" placeholder="E‐mail"></pc-input>
-
-<br />
-
-<pc-input type="number" placeholder="Number"></pc-input>
-
-<br />
-
-<pc-input type="date" placeholder="Date"></pc-input>
+<div class="pc-stack">
+    <pc-input type="email" placeholder="E‐mail"></pc-input>
+    <pc-input type="number" placeholder="Number"></pc-input>
+    <pc-input type="date" placeholder="Date"></pc-input>
+</div>
 ```
 
 ### Prefixes and suffixes
@@ -134,52 +122,50 @@ Use the `type` attribute to control the input type that the browser renders.
 Use the `prefix` and `suffix` slots to add presentational icons and text. Avoid slotting in interactive elements, such as buttons and links.
 
 ```demo
-<pc-input size="small" placeholder="Small">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="message"
-        slot="suffix"
-    ></pc-icon>
-</pc-input>
+<div class="pc-stack">
+    <pc-input size="small" placeholder="Small">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="message"
+            slot="suffix"
+        ></pc-icon>
+    </pc-input>
 
-<br />
+    <pc-input size="medium" placeholder="Medium">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="message"
+            slot="suffix"
+        ></pc-icon>
+    </pc-input>
 
-<pc-input size="medium" placeholder="Medium">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="message"
-        slot="suffix"
-    ></pc-icon>
-</pc-input>
-
-<br />
-
-<pc-input size="large" placeholder="Large">
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="house"
-        slot="prefix"
-    ></pc-icon>
-    <pc-icon
-        library="default"
-        icon-style="solid"
-        name="message"
-        slot="suffix"
-    ></pc-icon>
-</pc-input>
+    <pc-input size="large" placeholder="Large">
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="house"
+            slot="prefix"
+        ></pc-icon>
+        <pc-icon
+            library="default"
+            icon-style="solid"
+            name="message"
+            slot="suffix"
+        ></pc-icon>
+    </pc-input>
+</div>
 ```

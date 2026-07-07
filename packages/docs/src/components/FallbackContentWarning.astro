@@ -23,7 +23,7 @@ const translation = useTranslations(language);
         name="triangle-exclamation"
         slot="icon"></pc-icon>
 
-    <p set:html={translation("ui.content.contentNotAvailableInYourLanguage")} />
+    <p>{translation("ui.content.contentNotAvailableInYourLanguage")}</p>
 </pc-callout>
 
 <style>

@@ -18,11 +18,13 @@ html ::selection,
 html.pc-light ::selection {
     background-color: var(--pc-color-primary-95);
     color: var(--pc-color-primary-30);
+    text-shadow: none;
 }
 
 html.pc-dark ::selection {
     background-color: var(--pc-color-primary-30);
     color: var(--pc-color-primary-90);
+    text-shadow: none;
 }
 
 html,

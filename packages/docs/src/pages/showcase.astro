@@ -133,7 +133,7 @@ import "../styles/fonts.css";
                             <div class="pc-stack pc-gap-xs">
                                 <div class="pc-split pc-gap-xxxs">
                                     <strong>SuperBlaster</strong>
-                                    <strong>27,49 €</strong>
+                                    <strong>$27,49</strong>
                                 </div>
                                 <div class="pc-split pc-gap-xxxs pc-caption-m">
                                     <span>Series 2000+</span>
@@ -153,7 +153,7 @@ import "../styles/fonts.css";
                             <div class="pc-stack pc-gap-xs">
                                 <div class="pc-split pc-gap-xxxs">
                                     <strong>DroidCleaner</strong>
-                                    <strong>2 199,99 €</strong>
+                                    <strong>$2 199,99</strong>
                                 </div>
                                 <div class="pc-split pc-gap-xxxs pc-caption-m">
                                     <span>Series 5564X</span>
@@ -165,7 +165,7 @@ import "../styles/fonts.css";
                     <div class="pc-stack" slot="footer">
                         <div class="pc-split">
                             <strong>Subtotal</strong>
-                            <strong>2 227,48 €</strong>
+                            <strong>$2 227,48</strong>
                         </div>
                         <span class="pc-caption-m">
                             Shipping and taxes are calculated at checkout.
@@ -381,7 +381,7 @@ import "../styles/fonts.css";
                         <div class="pc-split pc-align-items-start">
                             <dl class="pc-stack pc-gap-s">
                                 <dt class="pc-heading-s">Amount</dt>
-                                <dd class="pc-heading-l">1 784,54 €</dd>
+                                <dd class="pc-heading-l">$1 784,54</dd>
                             </dl>
                             <pc-badge appearance="success" variant="filled">
                                 Paid
@@ -395,9 +395,11 @@ import "../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="user"
-                                        label="Name"></pc-icon>
+                                        label="Name"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
-                                <dd>Evan Cross</dd>
+                                <!-- An intentionally stupid name -->
+                                <dd>Max Patternman</dd>
                             </div>
                             <div class="pc-flank pc-align-items-center">
                                 <dt>
@@ -405,7 +407,8 @@ import "../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="calendar-days"
-                                        label="Date"></pc-icon>
+                                        label="Date"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
                                 <dd>15 March 2025</dd>
                             </div>
@@ -415,7 +418,8 @@ import "../styles/fonts.css";
                                         library="default"
                                         icon-style="solid"
                                         name="credit-card"
-                                        label="Payment method"></pc-icon>
+                                        label="Payment method"
+                                        style="translate: 0 0.125rem"></pc-icon>
                                 </dt>
                                 <dd>Credit/debit card</dd>
                             </div>
@@ -448,7 +452,7 @@ import "../styles/fonts.css";
                             <pc-badge>Popular</pc-badge>
                         </div>
                         <span class="pc-flank pc-align-items-baseline pc-gap-s">
-                            <span class="pc-heading-xl">8,33 €</span>
+                            <span class="pc-heading-xl">$8,33</span>
                             <span class="pc-caption-l">per month</span>
                         </span>
                         <p class="pc-caption-l">
@@ -471,9 +475,7 @@ import "../styles/fonts.css";
                                     library="default"
                                     icon-style="solid"
                                     name="user"></pc-icon>
-                                <span class="pc-caption-m">
-                                    10 user slots
-                                </span>
+                                <span class="pc-caption-m">10 user slots</span>
                             </div>
                             <div class="pc-flank">
                                 <pc-icon
@@ -510,9 +512,7 @@ import "../styles/fonts.css";
                                 <h3 class="pc-heading-s">randomguy-2650</h3>
                                 <pc-badge>Core</pc-badge>
                             </div>
-                            <span class="pc-caption-m">
-                                Front‐end developer
-                            </span>
+                            <span class="pc-caption-m">Developer</span>
                         </div>
                         <pc-avatar
                             image="/avatars/randomguy-2650.png"
@@ -530,10 +530,10 @@ import "../styles/fonts.css";
                         <pc-button variant="outlined" style="inline-size: 100%">
                             <pc-icon
                                 library="default"
-                                icon-style="solid"
-                                name="phone"
+                                icon-style="brands"
+                                name="github"
                                 slot="prefix"></pc-icon>
-                            Phone
+                            GitHub
                         </pc-button>
                     </div>
                 </pc-card>
