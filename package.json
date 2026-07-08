@@ -23,6 +23,6 @@
         "prettier": "3.8.1"
     },
     "dependencies": {
-        "lint-staged": "^17.0.5"
+        "lint-staged": "^17.0.8"
     }
 }
